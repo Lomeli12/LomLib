@@ -5,7 +5,7 @@ Just a set of utilities that I use often. Will be a prerequisite for most my mod
 
 ## Website and Download
 
-http://anthony-lomeli.net/lomlib
+http://anthony-lomeli.net/project/minecraft-stuff/lomlib/
 
 ## Current Version
 

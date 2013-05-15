@@ -6,6 +6,17 @@ import net.minecraft.inventory.Slot;
 
 public class InventoryUtil
 {
+	/**
+	 * Meant to allow you to make a custom crafting grid on the fly. A 
+	 * bit bugged at the moment (DO NOT USE).
+	 * @param container
+	 * @param inventory
+	 * @param craftWidth
+	 * @param craftHeight
+	 * @param firstSlot
+	 * @param x
+	 * @param y
+	 */
 	@SuppressWarnings("unchecked")
     public static void createCraftMatrix(Container container, IInventory inventory, 
 		int craftWidth, int craftHeight, int firstSlot, int x, int y)

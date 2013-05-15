@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.util;
+package net.lomeli.lomlib.item;
 
 import cpw.mods.fml.common.FMLLog;
 import net.minecraft.item.Item;
