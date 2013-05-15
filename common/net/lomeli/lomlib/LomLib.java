@@ -24,8 +24,8 @@ public class LomLib
 	private LogHelper logger;
 	
 	@PreInit
-    public void preInit(FMLPreInitializationEvent event)
-    {
+	public void preInit(FMLPreInitializationEvent event)
+	{
 		logger = new LogHelper(LibraryStrings.MOD_NAME);
 		logger.log(Level.INFO, "Checking Minecraft version...");
 		if(new String("Minecraft " + LibraryStrings.minecraftVersion).equals(
@@ -38,6 +38,6 @@ public class LomLib
 				LibraryStrings.VERSION + ") is meant for Minecraft " + LibraryStrings.minecraftVersion +
 				" make sure you are using the newest version of this mod or check that it's compatible" +
 				" for your version of Minecraft."));
-    }
+	}
 	
 }
