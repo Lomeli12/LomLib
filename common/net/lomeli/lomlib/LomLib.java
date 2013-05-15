@@ -22,6 +22,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 public class LomLib
 {
 	private LogHelper logger;
+	
 	@PreInit
     public void preInit(FMLPreInitializationEvent event)
     {
