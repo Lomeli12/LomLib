@@ -7,16 +7,43 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
-
+/**
+ * Allows for the generating of ores in the nether
+ * @author Lomeli12
+ *
+ */
 public class WorldGenNether extends WorldGenerator
 {
     private int minableBlockId;
+    private int blockMetaData;
     private int numberOfBlocks;
 	
     public WorldGenNether(int blockId, int numBlocks)
     {
         minableBlockId = blockId;
         numberOfBlocks = numBlocks;
+        blockMetaData = 0;
+    }
+    
+    public WorldGenNether(int blockId, int numBlocks, int metaData)
+    {
+        minableBlockId = blockId;
+        numberOfBlocks = numBlocks;
+        blockMetaData = metaData;
+    }
+    
+    public WorldGenNether(Block blockId, int numBlocks)
+    {
+        minableBlockId = blockId.blockID;
+        numberOfBlocks = numBlocks;
+        blockMetaData = 0;
+    }
+    
+    public WorldGenNether(Block blockId, int metaData, int numBlocks)
+    {
+        minableBlockId = blockId.blockID;
+        numberOfBlocks = numBlocks;
+        blockMetaData = metaData;
     }
 
     @Override
@@ -62,7 +89,7 @@ public class WorldGenNether extends WorldGenerator
                         double d14 = (((double)i3 + 0.5D) - d8) / (d10 / 2D);
                         if(d12 * d12 + d13 * d13 + d14 * d14 < 1.0D && world.getBlockId(k2, l2, i3) == Block.netherrack.blockID)
                         {
-                            world.setBlock(k2, l2, i3, minableBlockId);
+                            world.setBlock(k2, l2, i3, minableBlockId, blockMetaData, 0);
                         }
                     }
                 }

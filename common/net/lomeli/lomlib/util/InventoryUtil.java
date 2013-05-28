@@ -16,6 +16,7 @@ public class InventoryUtil
 	 * @param firstSlot
 	 * @param x
 	 * @param y
+	 * @author Lomeli12
 	 */
 	@SuppressWarnings("unchecked")
     public static void createCraftMatrix(Container container, IInventory inventory, 

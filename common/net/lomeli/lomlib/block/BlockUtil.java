@@ -1,6 +1,7 @@
 package net.lomeli.lomlib.block;
 
 import cpw.mods.fml.common.FMLLog;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -27,12 +28,10 @@ public class BlockUtil
             Object obj = Class.forName(itemClass).getField(itemString)
                     .get(null);
             if (obj instanceof Block)
-            {
                 item = new ItemStack((Block) obj, 1, meta);
-            } else if (obj instanceof ItemStack)
-            {
+            else if (obj instanceof ItemStack)
                 item = (ItemStack) obj;
-            }
+            
         } catch (Exception ex)
         {
             FMLLog.warning("Could not retrieve block identified by: "
@@ -55,12 +54,10 @@ public class BlockUtil
             Object obj = Class.forName(itemClass).getField(itemString)
                     .get(null);
             if (obj instanceof Block)
-            {
                 item = new ItemStack((Block) obj);
-            } else if (obj instanceof ItemStack)
-            {
+            else if (obj instanceof ItemStack)
                 item = (ItemStack) obj;
-            }
+            
         } catch (Exception ex)
         {
             FMLLog.warning("Could not retrieve block identified by: "

@@ -1,6 +1,7 @@
 package net.lomeli.lomlib.item;
 
 import cpw.mods.fml.common.FMLLog;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -11,7 +12,7 @@ public class ItemUtil
 	 * instance of a certain item
 	 * @param itemID Id for the item or block you're looking for
 	 * @param inventory Inventory you are searching
-	 * @return
+	 * @author Lomeli12
 	 */
     public static int getSlotContainingItem(int itemID, ItemStack[] inventory)
     {
@@ -41,12 +42,10 @@ public class ItemUtil
             Object obj = Class.forName(itemClass).getField(itemString)
                     .get(null);
             if (obj instanceof Item)
-            {
                 item = new ItemStack((Item) obj, 1, meta);
-            } else if (obj instanceof ItemStack)
-            {
+            else if (obj instanceof ItemStack)
                 item = (ItemStack) obj;
-            }
+            
         } catch (Exception ex)
         {
             FMLLog.warning("Could not retrieve item identified by: "
@@ -71,12 +70,10 @@ public class ItemUtil
             Object obj = Class.forName(itemClass).getField(itemString)
                     .get(null);
             if (obj instanceof Item)
-            {
                 item = new ItemStack((Item) obj);
-            } else if (obj instanceof ItemStack)
-            {
+            else if (obj instanceof ItemStack)
                 item = (ItemStack) obj;
-            }
+            
         } catch (Exception ex)
         {
             FMLLog.warning("Could not retrieve item identified by: "
