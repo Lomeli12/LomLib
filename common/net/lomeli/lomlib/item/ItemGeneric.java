@@ -1,8 +1,5 @@
 package net.lomeli.lomlib.item;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;
 
@@ -29,7 +26,6 @@ public class ItemGeneric extends Item
 	}
 
 	@Override
-    @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister iconRegister)
     {
         itemIcon = iconRegister.registerIcon(this.modID + ":" + this.itemTexture);
