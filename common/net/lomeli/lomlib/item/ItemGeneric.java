@@ -15,10 +15,10 @@ public class ItemGeneric extends Item
 	
 	/**
 	 * @param id Item id
-	 * @param Texture The mod id
-	 * @param mod The item's texture file (without .png)
+	 * @param mod The mod id
+	 * @param Texture The item's texture file (without .png)
 	 */
-	public ItemGeneric(int id, String Texture, String mod)
+	public ItemGeneric(int id, String mod, String Texture)
 	{
 		super(id);
 		this.modID = mod;

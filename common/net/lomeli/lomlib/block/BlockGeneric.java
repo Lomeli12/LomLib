@@ -41,6 +41,11 @@ public class BlockGeneric extends Block
 	    this.drop = dropID;
 	}
 	
+	public String getBlockTexture()
+	{
+		return this.blockTexture;
+	}
+	
 	@Override
     public void registerIcons(IconRegister iconRegister)
     {

@@ -57,10 +57,10 @@ public class WorldGenCoral extends WorldGenerator
 						double d15 = ((double)m + 0.5D - d9) / (d11 / 2.0D);
 						if(d13 * d13 + d14 * d14 + d15 * d15 < 1.0D
 							&& world.getBlockId(j, k, m) == block.blockID 
-							&& BlockUtil.checkWater(world, x, y + 1, z, block)
-							&& BlockUtil.checkWater(world, x, y + 2, z, block)
-							&& BlockUtil.checkWater(world, x, y + 3, z, block)
-							&& BlockUtil.checkWater(world, x, y + 4, z, block))
+							&& BlockUtil.isBlockInWater(world, x, y + 1, z)
+							&& BlockUtil.isBlockInWater(world, x, y + 2, z)
+							&& BlockUtil.isBlockInWater(world, x, y + 3, z)
+							&& BlockUtil.isBlockInWater(world, x, y + 4, z))
 							{
 							world.setBlock(j, k, m, coralID);
 							world.setBlock(j + 1, k, m, coralID);

@@ -3,7 +3,6 @@ package net.lomeli.lomlib.block;
 import cpw.mods.fml.common.FMLLog;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
@@ -67,49 +66,35 @@ public class BlockUtil
         return item;
     }
     
-    private static boolean land = false;
-    
-	/**
-	 * Checks if a block is water and if it's stationary
-	 * <p>From q3hardcore's Coral Reef Mod
-	 * @author q3hardcore
-	 */
-	public static boolean checkWater(World world, int x, int y, int z, boolean stationary, Block block) {
-		if(checkWater(world, x, y, z, block)) {
-			int blockID = world.getBlockId(x, y, z);
-			if(blockID > 0 && blockID < Block.blocksList.length) {
-				Block waterBlock = Block.blocksList[blockID];
-				if(waterBlock != null) {
-					boolean waterStationary = waterBlock.func_82506_l();
-					return waterStationary == stationary;
-				}
-			}
-			return false;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * Checks if a block is water.
-	 * <p>From q3hardcore's Coral Reef Mod
-	 * @author q3hardcore
-	 */
-	public static boolean checkWater(World world, int x, int y, int z, Block block) {
-		int blockID = world.getBlockId(x, y, z);
-
-		// if the block is any type of coral, it's not water
-		if(blockID == block.blockID) {
-			return false;
-		}
-
-		if(land) {
+    /**
+     * Checks if the block is adjacent to a water block.
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @return True if next to water block, otherwise false
+     * @author Lomeli12
+     */
+    public static boolean isBlockInWater(World world, int x, int y, int z)
+	{
+		if((world.getBlockId(x, y - 1, z) == Block.dirt.blockID ||
+			world.getBlockId(x, y - 1, z) == Block.glass.blockID ||
+			world.getBlockId(x, y - 1, z) == Block.sand.blockID ||
+			world.getBlockId(x, y - 1, z) == Block.blockClay.blockID) &&
+			(world.getBlockId(x, y + 1, z) == Block.waterStill.blockID ||
+			world.getBlockId(x, y - 1, z) == Block.waterStill.blockID ||
+			world.getBlockId(x + 1, y , z) == Block.waterStill.blockID ||
+			world.getBlockId(x - 1, y , z) == Block.waterStill.blockID ||
+			world.getBlockId(x, y , z + 1) == Block.waterStill.blockID ||
+			world.getBlockId(x, y , z - 1) == Block.waterStill.blockID ||
+			world.getBlockId(x, y + 1, z) == Block.waterMoving.blockID ||
+			world.getBlockId(x, y - 1, z) == Block.waterMoving.blockID ||
+			world.getBlockId(x + 1, y , z) == Block.waterMoving.blockID ||
+			world.getBlockId(x - 1, y , z) == Block.waterMoving.blockID ||
+			world.getBlockId(x, y , z + 1) == Block.waterMoving.blockID ||
+			world.getBlockId(x, y , z - 1) == Block.waterMoving.blockID))
 			return true;
-		} else {
-			if(world.getBlockMaterial(x, y, z) == Material.water) {
-				return true;
-			}
-		}
-		return false;
+		else
+			return false;
 	}
 }
