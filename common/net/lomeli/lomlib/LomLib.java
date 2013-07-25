@@ -10,6 +10,8 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
+import com.jadarstudios.developercapes.DevCapesUtil;
+
 /**
  * Simply here so it shows Forge Modloader will pick it up
  * and so my mods can see if it's installed
@@ -38,6 +40,8 @@ public class LomLib
 				LibraryStrings.VERSION + ") is meant for Minecraft " + LibraryStrings.minecraftVersion +
 				" make sure you are using the newest version of this mod or check that it's compatible" +
 				" for your version of Minecraft."));
+		
+		DevCapesUtil.getInstance().addFileUrl(LibraryStrings.CAPE_URL);
 	}
 	
 }

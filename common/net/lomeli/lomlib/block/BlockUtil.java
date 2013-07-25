@@ -75,13 +75,9 @@ public class BlockUtil
      * @return True if next to water block, otherwise false
      * @author Lomeli12
      */
-    public static boolean isBlockInWater(World world, int x, int y, int z)
+    public static boolean isBlockAdjacentToWater(World world, int x, int y, int z)
 	{
-		if((world.getBlockId(x, y - 1, z) == Block.dirt.blockID ||
-			world.getBlockId(x, y - 1, z) == Block.glass.blockID ||
-			world.getBlockId(x, y - 1, z) == Block.sand.blockID ||
-			world.getBlockId(x, y - 1, z) == Block.blockClay.blockID) &&
-			(world.getBlockId(x, y + 1, z) == Block.waterStill.blockID ||
+		if(world.getBlockId(x, y + 1, z) == Block.waterStill.blockID ||
 			world.getBlockId(x, y - 1, z) == Block.waterStill.blockID ||
 			world.getBlockId(x + 1, y , z) == Block.waterStill.blockID ||
 			world.getBlockId(x - 1, y , z) == Block.waterStill.blockID ||
@@ -92,7 +88,28 @@ public class BlockUtil
 			world.getBlockId(x + 1, y , z) == Block.waterMoving.blockID ||
 			world.getBlockId(x - 1, y , z) == Block.waterMoving.blockID ||
 			world.getBlockId(x, y , z + 1) == Block.waterMoving.blockID ||
-			world.getBlockId(x, y , z - 1) == Block.waterMoving.blockID))
+			world.getBlockId(x, y , z - 1) == Block.waterMoving.blockID)
+			return true;
+		else
+			return false;
+	}
+    /**
+     * Similar to isBlockAdjacentToWater(), but restricted to water source blocks
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @return True if next to water block, otherwise false
+     * @author Lomeli12
+     */
+    public static boolean isBlockAdjacentToWaterSource(World world, int x, int y, int z)
+	{
+		if(world.getBlockId(x, y + 1, z) == Block.waterStill.blockID ||
+			world.getBlockId(x, y - 1, z) == Block.waterStill.blockID ||
+			world.getBlockId(x + 1, y , z) == Block.waterStill.blockID ||
+			world.getBlockId(x - 1, y , z) == Block.waterStill.blockID ||
+			world.getBlockId(x, y , z + 1) == Block.waterStill.blockID ||
+			world.getBlockId(x, y , z - 1) == Block.waterStill.blockID)
 			return true;
 		else
 			return false;

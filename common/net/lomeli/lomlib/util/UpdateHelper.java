@@ -11,8 +11,8 @@ import org.w3c.dom.NodeList;
 
 public class UpdateHelper 
 {
-	private static boolean isUpdated;
-	private static String downloadURL;
+	private boolean isUpdated;
+	private String downloadURL;
 	
 	public UpdateHelper()
 	{
