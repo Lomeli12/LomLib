@@ -1,12 +1,12 @@
 LomLib
 ======
 
-Just a set of utilities that I use often. Will be a prerequisite for most my mods in the near future.
+Just a set of utilities that I use often. A prerequisite for most my mods.
 
 ## Website and Download
 
-http://anthony-lomeli.net/project/minecraft-stuff/lomlib/
+http://anthony-lomeli.net/?page_id=24
 
 ## Current Version
 
-1.0.0
+1.0.4
