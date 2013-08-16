@@ -2,8 +2,6 @@
  * Developer Capes by Jadar
  * License: Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
  * version 2.0
- * 
- * Moved to prevent conflicts with any modified versions.
  */
 package com.jadarstudios.developercapes;
 
