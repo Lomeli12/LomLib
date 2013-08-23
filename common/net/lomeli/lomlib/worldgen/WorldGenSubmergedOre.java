@@ -1,7 +1,9 @@
 package net.lomeli.lomlib.worldgen;
 
 import java.util.Random;
+import java.util.logging.Level;
 
+import net.lomeli.lomlib.LomLib;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
@@ -84,6 +86,8 @@ public class WorldGenSubmergedOre extends WorldGenerator
                                     || j2 == Block.blockClay.blockID
                                     || j2 == Block.stone.blockID)
                             {
+                            	if(LomLib.debug)
+                                	LomLib.logger.log(Level.INFO, "Generating block " + blockID + "at " + i1 + "," + i2 + "," + j1);
                                 par1World.setBlock(i1, i2, j1, blockID, blockMetaData, 1);
                             }
                         }

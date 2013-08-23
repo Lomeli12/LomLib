@@ -1,7 +1,9 @@
 package net.lomeli.lomlib.worldgen;
 
 import java.util.Random;
+import java.util.logging.Level;
 
+import net.lomeli.lomlib.LomLib;
 import net.lomeli.lomlib.block.BlockUtil;
 
 import net.minecraft.world.World;
@@ -86,6 +88,8 @@ public class WorldGenCoral extends WorldGenerator
                                || j2 == Block.stone.blockID) && 
                                BlockUtil.isBlockAdjacentToWater(par1World, i1, i2 + 1, j1))
                             {
+                            	if(LomLib.debug)
+                                	LomLib.logger.log(Level.INFO, "Generating block " + blockID + "at " + i1 + "," + (i2+1) + "," + j1);
                                 par1World.setBlock(i1, i2+1, j1, blockID, blockMetaData, 1);
                             }
                         }

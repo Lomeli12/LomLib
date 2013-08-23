@@ -1,7 +1,9 @@
 package net.lomeli.lomlib.worldgen;
 
 import java.util.Random;
+import java.util.logging.Level;
 
+import net.lomeli.lomlib.LomLib;
 import net.minecraft.block.Block;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -89,6 +91,8 @@ public class WorldGenNether extends WorldGenerator
                         double d14 = (((double)i3 + 0.5D) - d8) / (d10 / 2D);
                         if(d12 * d12 + d13 * d13 + d14 * d14 < 1.0D && world.getBlockId(k2, l2, i3) == Block.netherrack.blockID)
                         {
+                        	if(LomLib.debug)
+                            	LomLib.logger.log(Level.INFO, "Generating block " + minableBlockId + "at " + k2 + "," + l2 + "," + i3);
                             world.setBlock(k2, l2, i3, minableBlockId, blockMetaData, 0);
                         }
                     }

@@ -1,2 +1,3 @@
 Manifest-Version: 1.0
-FMLCorePlugin: com.jadarstudios.developercapes.asm.DevCapesLoadingPlugin
+FMLCorePlugin: net.lomeli.lomlib.asm.LoadingPlugin
+AccessTransformer: lomlib_at.cfg

@@ -4,7 +4,9 @@
 	
 	<target name="clean">
 		<delete file="${dir.development}\forge\mcp\src\minecraft\mcmod.info" />
-		<delete dir="${dir.development}\forge\mcp\src\minecraft\net\lomeli" />
+        <delete file="${dir.development}\forge\mcp\src\minecraft\pack.mcmeta" />
+		<delete file="${dir.development}\forge\mcp\src\minecraft\lomlib_at.cfg" />
+        <delete dir="${dir.development}\forge\mcp\src\minecraft\net\lomeli" />
         <delete dir="${dir.development}\forge\mcp\src\minecraft\com" />
         <delete dir="${dir.development}\forge\mcp\src\minecraft\buildcraft" />
         <delete dir="${dir.development}\forge\mcp\src\minecraft\smalldeadguy" />
@@ -52,6 +54,8 @@
 		<jar destfile="..\..\${dir.share}\${dir.modname}\${release.minecraft.version}\${release.mod.version}\${release.mod.name}-universal-${release.mod.version}.jar">
 			<fileset dir="${dir.development}\forge\mcp\src\minecraft\">
                 <include name="mcmod.info" />
+                <include name="lomlib_at.cfg" />
+                <include name="pack.mcmeta" />
                 <include name="META-INF/**" />
             </fileset>
 			<fileset dir="${dir.development}\forge\mcp\reobf\minecraft" />
@@ -74,6 +78,8 @@
 			<fileset dir="${dir.development}\forge\mcp\src\minecraft\">
                 <include name="mcmod.info" />
                 <include name="META-INF/**" />
+                <include name="lomlib_at.cfg" />
+                <include name="pack.mcmeta" />
                 <exclude name="**/minecraft/**" />
             </fileset>
 			<fileset dir="${dir.development}\forge\mcp\reobf\minecraft" excludes="**/minecraft/**" />

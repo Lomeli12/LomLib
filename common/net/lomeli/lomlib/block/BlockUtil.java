@@ -1,15 +1,17 @@
 package net.lomeli.lomlib.block;
 
+import java.util.logging.Level;
+
 import cpw.mods.fml.common.FMLLog;
 
+import net.lomeli.lomlib.LomLib;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class BlockUtil
 {
-    public static Block getBlock(World world, int x, int y, int z)
-    {
+    public static Block getBlock(World world, int x, int y, int z){
         return Block.blocksList[world.getBlockId(x, y, z)];
     }
     /**
@@ -31,6 +33,8 @@ public class BlockUtil
                 item = new ItemStack((Block) obj, 1, meta);
             else if (obj instanceof ItemStack)
                 item = (ItemStack) obj;
+            if(LomLib.debug)
+            	LomLib.logger.log(Level.INFO, obj.toString());
             
         } catch (Exception ex)
         {
@@ -57,6 +61,9 @@ public class BlockUtil
                 item = new ItemStack((Block) obj);
             else if (obj instanceof ItemStack)
                 item = (ItemStack) obj;
+            
+            if(LomLib.debug)
+            	LomLib.logger.log(Level.INFO, obj.toString());
             
         } catch (Exception ex)
         {

@@ -1,17 +1,18 @@
 package net.lomeli.lomlib;
 
+import java.io.File;
 import java.util.logging.Level;
 
+import net.lomeli.lomlib.capes.CapeUtil;
 import net.lomeli.lomlib.libs.LibraryStrings;
 import net.lomeli.lomlib.util.LogHelper;
 
+import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
-
-import com.jadarstudios.developercapes.DevCapesUtil;
 
 /**
  * Simply here so Forge Modloader will pick it up
@@ -28,10 +29,26 @@ public class LomLib
 	
 	public static LogHelper logger;
 	
+	public static boolean debug;
+	
 	@Mod.EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
 		logger = new LogHelper(LibraryStrings.MOD_NAME);
+		
+		configureMod(event.getSuggestedConfigurationFile());
+		
+		CapeUtil.getInstance().readXML();
+	}
+	
+	public void configureMod(File configFile){
+		Configuration config = new Configuration(configFile);
+		
+		config.load();
+		
+		debug = config.get("Options", "debugMode", false, LibraryStrings.DEBUG_MODE).getBoolean(false);
+		
+		config.save();
 		
 		logger.log(Level.INFO, "Checking Minecraft Forge version...");
 		
@@ -44,8 +61,6 @@ public class LomLib
 				LibraryStrings.VERSION + ") works best with Minecraft Forge v" + 
 				LibraryStrings.recommendedForgeVersion + ". Using that version is recommended"));
 		}
-		
-		DevCapesUtil.getInstance().addFileUrl(LibraryStrings.CAPE_URL);
 	}
 	
 }
