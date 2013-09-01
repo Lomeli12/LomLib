@@ -3,7 +3,6 @@ package net.lomeli.lomlib;
 import java.io.File;
 import java.util.logging.Level;
 
-import net.lomeli.lomlib.capes.CapeUtil;
 import net.lomeli.lomlib.libs.LibraryStrings;
 import net.lomeli.lomlib.util.LogHelper;
 
@@ -11,6 +10,7 @@ import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
@@ -27,6 +27,9 @@ public class LomLib
 	@Mod.Instance(LibraryStrings.MOD_ID)
 	public static LomLib instance;
 	
+	@SidedProxy(clientSide="net.lomeli.lomlib.ClientProxy", serverSide="net.lomeli.lomlib.CommonProxy")
+	public static CommonProxy proxy;
+	
 	public static LogHelper logger;
 	
 	public static boolean debug;
@@ -38,7 +41,7 @@ public class LomLib
 		
 		configureMod(event.getSuggestedConfigurationFile());
 		
-		CapeUtil.getInstance().readXML();
+		proxy.loadCapes();
 	}
 	
 	public void configureMod(File configFile){

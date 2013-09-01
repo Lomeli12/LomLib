@@ -23,9 +23,7 @@ import net.minecraft.util.ResourceLocation;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-@SideOnly(Side.CLIENT)
 public class CapeUtil {
 	private static CapeUtil instance = new CapeUtil();
 	
