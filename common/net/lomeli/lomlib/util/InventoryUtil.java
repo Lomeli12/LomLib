@@ -2,11 +2,15 @@ package net.lomeli.lomlib.util;
 
 import net.lomeli.lomlib.libs.Incomplete;
 
+import net.minecraft.crash.CrashReport;
+import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ReportedException;
 
 public class InventoryUtil {
     /**
@@ -87,5 +91,151 @@ public class InventoryUtil {
             InventoryPlayer inventory) {
         return getPlayerInvSlotContainingItem(stack.itemID,
                 stack.getItemDamage(), inventory);
+    }
+
+    public static int getFirstEmptyStack(IInventory inventory) {
+        for(int i = 0; i < inventory.getSizeInventory(); ++i) {
+            if(inventory.getStackInSlot(i) == null) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    public static void addItemsToInventory(ItemStack stack, IInventory inventory) {
+        if(stack == null) {
+            return;
+        }else if(stack.stackSize == 0) {
+            return;
+        }else {
+            try {
+                int i;
+
+                if(stack.isItemDamaged()) {
+                    i = getFirstEmptyStack(inventory);
+
+                    if(i >= 0) {
+                        inventory.setInventorySlotContents(i,
+                                ItemStack.copyItemStack(stack));
+                        inventory.getStackInSlot(i).animationsToGo = 5;
+                        stack.stackSize = 0;
+                        return;
+                    }else {
+                        return;
+                    }
+                }else {
+                    do {
+                        i = stack.stackSize;
+                        stack.stackSize = storePartialItemStack(stack,
+                                inventory);
+                    }while(stack.stackSize > 0 && stack.stackSize < i);
+
+                    if(stack.stackSize == i) {
+                        stack.stackSize = 0;
+                        return;
+                    }
+                    return;
+                }
+            }catch(Throwable throwable) {
+                CrashReport crashreport = CrashReport.makeCrashReport(
+                        throwable, "Adding item to inventory");
+                CrashReportCategory crashreportcategory = crashreport
+                        .makeCategory("Item being added");
+                crashreportcategory.addCrashSection("Item ID",
+                        Integer.valueOf(stack.itemID));
+                crashreportcategory.addCrashSection("Item data",
+                        Integer.valueOf(stack.getItemDamage()));
+                throw new ReportedException(crashreport);
+            }
+        }
+    }
+
+    private static int storePartialItemStack(ItemStack par1ItemStack,
+            IInventory inventory) {
+        int i = par1ItemStack.itemID;
+        int j = par1ItemStack.stackSize;
+        int k;
+
+        if(par1ItemStack.getMaxStackSize() == 1) {
+            k = getFirstEmptyStack(inventory);
+
+            if(k < 0) {
+                return j;
+            }else {
+                if(inventory.getStackInSlot(k) == null) {
+                    inventory.setInventorySlotContents(k,
+                            ItemStack.copyItemStack(par1ItemStack));
+                }
+
+                return 0;
+            }
+        }else {
+            k = storeItemStack(par1ItemStack, inventory);
+
+            if(k < 0) {
+                k = getFirstEmptyStack(inventory);
+            }
+
+            if(k < 0) {
+                return j;
+            }else {
+                if(inventory.getStackInSlot(k) == null) {
+                    inventory.setInventorySlotContents(k, new ItemStack(i, 0,
+                            par1ItemStack.getItemDamage()));
+
+                    if(par1ItemStack.hasTagCompound()) {
+                        inventory.getStackInSlot(k).setTagCompound(
+                                (NBTTagCompound) par1ItemStack.getTagCompound()
+                                        .copy());
+                    }
+                }
+
+                int l = j;
+
+                if(j > inventory.getStackInSlot(k).getMaxStackSize()
+                        - inventory.getStackInSlot(k).stackSize) {
+                    l = inventory.getStackInSlot(k).getMaxStackSize()
+                            - inventory.getStackInSlot(k).stackSize;
+                }
+
+                if(l > inventory.getInventoryStackLimit()
+                        - inventory.getStackInSlot(k).stackSize) {
+                    l = inventory.getInventoryStackLimit()
+                            - inventory.getStackInSlot(k).stackSize;
+                }
+
+                if(l == 0) {
+                    return j;
+                }else {
+                    j -= l;
+                    inventory.getStackInSlot(k).stackSize += l;
+                    inventory.getStackInSlot(k).animationsToGo = 5;
+                    return j;
+                }
+            }
+        }
+    }
+
+    private static int storeItemStack(ItemStack par1ItemStack,
+            IInventory inventory) {
+        for(int i = 0; i < inventory.getSizeInventory(); ++i) {
+            if(inventory.getStackInSlot(i) != null
+                    && inventory.getStackInSlot(i).itemID == par1ItemStack.itemID
+                    && inventory.getStackInSlot(i).isStackable()
+                    && inventory.getStackInSlot(i).stackSize < inventory
+                            .getStackInSlot(i).getMaxStackSize()
+                    && inventory.getStackInSlot(i).stackSize < inventory
+                            .getInventoryStackLimit()
+                    && (!inventory.getStackInSlot(i).getHasSubtypes() || inventory
+                            .getStackInSlot(i).getItemDamage() == par1ItemStack
+                            .getItemDamage())
+                    && ItemStack.areItemStackTagsEqual(
+                            inventory.getStackInSlot(i), par1ItemStack)) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 }

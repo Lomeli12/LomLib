@@ -1,39 +1,36 @@
 package net.lomeli.lomlib.asm;
 
+import cpw.mods.fml.common.asm.transformers.AccessTransformer;
+
 import static scala.tools.asm.Opcodes.ACC_PRIVATE;
 import static scala.tools.asm.Opcodes.ACC_PUBLIC;
 import static scala.tools.asm.Opcodes.ACC_STATIC;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.logging.Level;
 
 import scala.tools.asm.ClassReader;
-import scala.tools.asm.ClassWriter;
 import scala.tools.asm.tree.ClassNode;
 import scala.tools.asm.tree.FieldNode;
 import scala.tools.asm.tree.MethodNode;
 
-import net.lomeli.lomlib.LomLib;
+public class CapeAccessTransformer extends AccessTransformer {
 
-import net.minecraft.launchwrapper.IClassTransformer;
+    public CapeAccessTransformer() throws IOException {
+        super();
+    }
 
-public class AccessTransformer implements IClassTransformer {
-
-    private final String[] obfClassToTransform = { "ber" };
+    private final String[] obfClassToTransform = { "beu" };
     private final String[] classToTransform = { "net.minecraft.client.entity.AbstractClientPlayer" };
-    private final String[] obfFieldsToTransform = { "c", "e" };
-    private final String[] fieldsToTransform = { "field_110315_c",
-            "field_110313_e", "field_110312_d", "field_110316_a" };
+    private final String[] obfFieldsToTransform = { "field_110315_c", "field_110313_e" };
+    private final String[] fieldsToTransform = { "downloadImageCape", "locationCape" };
     private final String[] obfMethodsToTransform = {};
     private final String[] methodsToTransform = {};
 
     @Override
     public byte[] transform(String name, String newName, byte[] bytes) {
-        if(contains(classToTransform, name)
-                || contains(obfClassToTransform, name)) {
-            LomLib.logger.log(Level.INFO,
-                    "[DevCapes]: **Transforming AbstractClientPlayer**");
+        if(contains(classToTransform, name) || contains(obfClassToTransform, name)) {
             ClassNode classNode = new ClassNode();
             ClassReader classReader = new ClassReader(bytes);
             classReader.accept(classNode, 0);
@@ -42,12 +39,7 @@ public class AccessTransformer implements IClassTransformer {
             while(fields.hasNext()) {
                 FieldNode f = fields.next();
                 String n = f.name;
-                if(contains(fieldsToTransform, n)
-                        || contains(obfFieldsToTransform, n)) {
-                    if(LomLib.debug)
-                        LomLib.logger.log(Level.INFO,
-                                "[DevCapes]: Found field " + f.name
-                                        + ", making it public.");
+                if(contains(fieldsToTransform, n) || contains(obfFieldsToTransform, n)) {
                     f.access = ACC_PUBLIC;
                 }
             }
@@ -55,12 +47,7 @@ public class AccessTransformer implements IClassTransformer {
             while(methods.hasNext()) {
                 MethodNode m = methods.next();
                 String n = m.name;
-                if(contains(methodsToTransform, n)
-                        || contains(obfMethodsToTransform, n)) {
-                    if(LomLib.debug)
-                        LomLib.logger.log(Level.INFO,
-                                "[DevCapes]: Found method " + m.name
-                                        + ", making it public.");
+                if(contains(methodsToTransform, n) || contains(obfMethodsToTransform, n)) {
 
                     if(m.access == ACC_PRIVATE + ACC_STATIC)
                         m.access = ACC_PUBLIC + ACC_STATIC;
@@ -70,13 +57,8 @@ public class AccessTransformer implements IClassTransformer {
                         m.access = ACC_PUBLIC + ACC_STATIC;
                 }
             }
-
-            ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_MAXS
-                    | ClassWriter.COMPUTE_FRAMES);
-            classNode.accept(classWriter);
-            return classWriter.toByteArray();
-        }else
-            return bytes;
+        }
+        return bytes;
     }
 
     private boolean contains(final String[] array, final String key) {

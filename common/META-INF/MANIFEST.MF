@@ -1,3 +1,2 @@
 Manifest-Version: 1.0
 FMLCorePlugin: net.lomeli.lomlib.asm.LoadingPlugin
-AccessTransformer: lomlib_at.cfg

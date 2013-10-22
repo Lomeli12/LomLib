@@ -3,13 +3,21 @@ package net.lomeli.lomlib;
 import java.io.File;
 import java.util.logging.Level;
 
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkMod;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.LoadController;
+import cpw.mods.fml.common.DummyModContainer;
+import cpw.mods.fml.common.ModMetadata;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+
+import net.lomeli.lomlib.capes.CapeUtil;
+import net.lomeli.lomlib.entity.EntityBlock;
 import net.lomeli.lomlib.libs.LibraryStrings;
+import net.lomeli.lomlib.render.RenderEntityBlock;
 import net.lomeli.lomlib.util.LogHelper;
+import net.lomeli.lomlib.util.ResourceUtil;
 
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
@@ -20,27 +28,34 @@ import net.minecraftforge.common.MinecraftForge;
  * 
  * @author Lomeli12
  */
-
-@Mod(modid = LibraryStrings.MOD_ID, name = LibraryStrings.MOD_NAME, version = LibraryStrings.VERSION, dependencies = "required-after:Forge")
-@NetworkMod(clientSideRequired = true, serverSideRequired = false)
-public class LomLib {
-    @Mod.Instance(LibraryStrings.MOD_ID)
-    public static LomLib instance;
-
-    @SidedProxy(clientSide = "net.lomeli.lomlib.ClientProxy", serverSide = "net.lomeli.lomlib.CommonProxy")
-    public static CommonProxy proxy;
+public class LomLib extends DummyModContainer{
+    public LomLib(){
+        super(new ModMetadata());
+        ModMetadata meta = getMetadata();
+        meta.modId = LibraryStrings.MOD_ID;
+        meta.name = LibraryStrings.MOD_NAME;
+        meta.version = LibraryStrings.VERSION;
+        meta.authorList.add("Lomeli12");
+        meta.url = "http://www.anthony-lomeli.net/";
+        meta.description = "Shared library mod required by several of Lomeli's Mods.";
+    }
 
     public static LogHelper logger;
 
-    public static boolean debug;
+    public static boolean debug, capes;
 
-    @Mod.EventHandler
+    @Subscribe
     public void preInit(FMLPreInitializationEvent event) {
         logger = new LogHelper(LibraryStrings.MOD_NAME);
 
         configureMod(event.getSuggestedConfigurationFile());
 
-        proxy.loadCapes();
+        if(event.getSide().isClient()){
+            ResourceUtil.initResourceUtil();
+            RenderingRegistry.registerEntityRenderingHandler(EntityBlock.class, RenderEntityBlock.INSTANCE);
+            if(LomLib.capes)
+                CapeUtil.getInstance().readXML();
+        }
     }
 
     public void configureMod(File configFile) {
@@ -50,6 +65,7 @@ public class LomLib {
 
         debug = config.get("Options", "debugMode", false,
                 LibraryStrings.DEBUG_MODE).getBoolean(false);
+        capes = config.get("Options", "capes", true, LibraryStrings.CAPES).getBoolean(true);
 
         config.save();
 
@@ -58,7 +74,6 @@ public class LomLib {
         if(LibraryStrings.recommendedForgeVersion
                 .equalsIgnoreCase(MinecraftForge.getBrandingVersion()
                         .substring(16))) {
-            System.out.println("Using recommended version of Minecraft Forge");
             logger.log(Level.FINE,
                     "Using recommended version of Minecraft Forge");
         }else {
@@ -69,6 +84,12 @@ public class LomLib {
                             + ") works best with Minecraft Forge v"
                             + LibraryStrings.recommendedForgeVersion + ". Using that version is recommended"));
         }
+    }
+    
+    @Override
+    public boolean registerBus(EventBus bus, LoadController controller){
+        bus.register(this);
+        return true;
     }
 
 }

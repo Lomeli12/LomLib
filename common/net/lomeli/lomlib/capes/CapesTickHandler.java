@@ -2,6 +2,7 @@ package net.lomeli.lomlib.capes;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.logging.Level;
 
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -39,7 +40,7 @@ public class CapesTickHandler implements ITickHandler {
                 if(CapeUtil.getInstance().getUserCape(lowerUsername) != null) {
                     if(!p.downloadImageCape.isTextureUploaded()) {
                         if(LomLib.debug)
-                            System.out.println("Changing cape of: "
+                            LomLib.logger.log(Level.FINE, "Changing cape of: "
                                     + p.username);
                         p.locationCape = CapeUtil.getInstance()
                                 .getUserResource(lowerUsername);

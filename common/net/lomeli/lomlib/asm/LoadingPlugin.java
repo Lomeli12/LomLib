@@ -6,28 +6,28 @@ import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 
 @IFMLLoadingPlugin.TransformerExclusions({ "net.lomeli.lomlib.asm" })
 public class LoadingPlugin implements IFMLLoadingPlugin {
-    @Override
-    @Deprecated
-    public String[] getLibraryRequestClass() {
-        return null;
-    }
 
     @Override
     public String[] getASMTransformerClass() {
-        return new String[] { "net.lomeli.lomlib.asm.AccessTransformer" };
+        return new String[] { "net.lomeli.lomlib.asm.CapeAccessTransformer" };
     }
 
     @Override
     public String getModContainerClass() {
-        return null;
+        return "net.lomeli.lomlib.LomLib";
     }
 
     @Override
     public String getSetupClass() {
-        return "net.lomeli.lomlib.asm.LoadingPlugin";
+        return null;
     }
 
     @Override
     public void injectData(Map<String, Object> data) {
+    }
+
+    @Override
+    public String[] getLibraryRequestClass() {
+        return null;
     }
 }

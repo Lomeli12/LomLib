@@ -6,6 +6,8 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
@@ -29,6 +31,19 @@ public class ResourceUtil {
     
     public static ResourceLocation getEntityTexture(String modid, String texture) {
         return getResourceUtil(modid, "textures/entities/" + texture);
+    }
+    
+    public static ResourceLocation getIcon(String modid, String icon){
+        return getResourceUtil(modid, "textures/icons/" + icon);
+    }
+    
+    public static ResourceLocation getResource(String modid, String folder, String icon){
+        return getResourceUtil(modid, "textures/"+ folder + "/" + icon);
+    }
+    
+    public static Icon getIconfromRegistry(String modid, String folder, String icon){
+        return ((TextureMap) Minecraft.getMinecraft().getTextureManager()
+                .getTexture(ResourceUtil.getResource(modid, folder, icon))).getAtlasSprite("missingno");
     }
     
     public static File getModsFolder() {

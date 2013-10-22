@@ -56,7 +56,7 @@ public class WorldGenSubmergedOre extends WorldGenerator {
         if(par1World.getBlockMaterial(par3, par4, par5) != Material.water) {
             return false;
         }else {
-            int l = par2Random.nextInt(this.numberOfBlocks - 2) + 2;
+            int l = par2Random.nextInt(this.numberOfBlocks) + 2;
             byte b0 = 1;
 
             for(int i1 = par3 - l; i1 <= par3 + l; ++i1) {
