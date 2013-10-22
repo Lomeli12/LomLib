@@ -9,4 +9,4 @@ http://anthony-lomeli.net/?page_id=24
 
 ## Current Version
 
-1.0.4
+1.0.7
