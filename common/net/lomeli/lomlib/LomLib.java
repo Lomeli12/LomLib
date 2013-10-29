@@ -17,17 +17,12 @@ import net.lomeli.lomlib.entity.EntityBlock;
 import net.lomeli.lomlib.libs.LibraryStrings;
 import net.lomeli.lomlib.render.RenderEntityBlock;
 import net.lomeli.lomlib.util.LogHelper;
+import net.lomeli.lomlib.util.ModLoaded;
 import net.lomeli.lomlib.util.ResourceUtil;
 
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 
-/**
- * Simply here so Forge Modloader will pick it up and so my mods can see if it's
- * installed
- * 
- * @author Lomeli12
- */
 public class LomLib extends DummyModContainer{
     public LomLib(){
         super(new ModMetadata());
@@ -53,8 +48,10 @@ public class LomLib extends DummyModContainer{
         if(event.getSide().isClient()){
             ResourceUtil.initResourceUtil();
             RenderingRegistry.registerEntityRenderingHandler(EntityBlock.class, RenderEntityBlock.INSTANCE);
-            if(LomLib.capes)
-                CapeUtil.getInstance().readXML();
+            if(LomLib.capes){
+                if(!ModLoaded.isModInstalled("Optifine"))
+                    CapeUtil.getInstance().readXML();
+            }
         }
     }
 
