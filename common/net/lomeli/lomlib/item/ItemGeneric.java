@@ -29,7 +29,6 @@ public class ItemGeneric extends Item {
 
     @Override
     public void registerIcons(IconRegister iconRegister) {
-        itemIcon = iconRegister.registerIcon(this.modID + ":"
-                + this.itemTexture);
+        itemIcon = iconRegister.registerIcon(this.modID + ":" + this.itemTexture);
     }
 }

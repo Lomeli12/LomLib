@@ -70,10 +70,7 @@ public class CapeUtil {
         if(capeResources.get(user) == null)
             capeResources.put(user, new ResourceLocation("LomLib/" + user));
         if(capes.get(user) == null)
-            capes.put(
-                    user,
-                    makeDownloadThread(capeResources.get(user), cape, null,
-                            new CapeBuffer()));
+            capes.put(user, makeDownloadThread(capeResources.get(user), cape, null, new CapeBuffer()));
     }
 
     public void giveUserCape(String user) {
@@ -104,14 +101,11 @@ public class CapeUtil {
         return url;
     }
 
-    public static ThreadDownloadImageData makeDownloadThread(
-            ResourceLocation par0ResourceLocation, String par1Str,
+    public static ThreadDownloadImageData makeDownloadThread(ResourceLocation par0ResourceLocation, String par1Str,
             ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer) {
-        TextureManager texturemanager = Minecraft.getMinecraft()
-                .getTextureManager();
+        TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
 
-        TextureObject object = new ThreadDownloadImageData(par1Str,
-                par2ResourceLocation, par3IImageBuffer);
+        TextureObject object = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);
         // Binds ResourceLocation to this.
         texturemanager.loadTexture(par0ResourceLocation, object);
 

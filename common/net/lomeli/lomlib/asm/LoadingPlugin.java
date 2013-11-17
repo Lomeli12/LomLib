@@ -3,8 +3,9 @@ package net.lomeli.lomlib.asm;
 import java.util.Map;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
+import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
 
-@IFMLLoadingPlugin.TransformerExclusions({ "net.lomeli.lomlib.asm" })
+@TransformerExclusions({ "net.lomeli.lomlib.asm" })
 public class LoadingPlugin implements IFMLLoadingPlugin {
 
     @Override
@@ -27,6 +28,7 @@ public class LoadingPlugin implements IFMLLoadingPlugin {
     }
 
     @Override
+    @Deprecated
     public String[] getLibraryRequestClass() {
         return null;
     }

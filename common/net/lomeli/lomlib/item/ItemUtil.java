@@ -18,22 +18,19 @@ public class ItemUtil {
      * @author Lomeli12
      */
 
-    public static ItemStack getItem(String itemString, int meta,
-            String itemClassLoc) {
+    public static ItemStack getItem(String itemString, int meta, String itemClassLoc) {
         ItemStack item = null;
 
         try {
             String itemClass = itemClassLoc;
-            Object obj = Class.forName(itemClass).getField(itemString)
-                    .get(null);
+            Object obj = Class.forName(itemClass).getField(itemString).get(null);
             if(obj instanceof Item)
                 item = new ItemStack((Item) obj, 1, meta);
             else if(obj instanceof ItemStack)
                 item = (ItemStack) obj;
 
         }catch(Exception ex) {
-            FMLLog.warning("Could not retrieve item identified by: "
-                    + itemString);
+            FMLLog.warning("Could not retrieve item identified by: " + itemString);
         }
         return item;
     }
@@ -52,20 +49,18 @@ public class ItemUtil {
 
         try {
             String itemClass = itemClassLoc;
-            Object obj = Class.forName(itemClass).getField(itemString)
-                    .get(null);
+            Object obj = Class.forName(itemClass).getField(itemString).get(null);
             if(obj instanceof Item)
                 item = new ItemStack((Item) obj);
             else if(obj instanceof ItemStack)
                 item = (ItemStack) obj;
 
         }catch(Exception ex) {
-            FMLLog.warning("Could not retrieve item identified by: "
-                    + itemString);
+            FMLLog.warning("Could not retrieve item identified by: " + itemString);
         }
         return item;
     }
-    
+
     public static ItemStack consumeItem(ItemStack stack) {
         if(stack.stackSize == 1) {
             if(stack.getItem().hasContainerItem()) {

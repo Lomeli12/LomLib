@@ -81,6 +81,8 @@
                 <include name="lomlib_at.cfg" />
                 <include name="pack.mcmeta" />
                 <exclude name="**/minecraft/**" />
+                <exclude name="**/minecraftforge/**" />
+                <exclude name="cpw/**" />
             </fileset>
 			<fileset dir="${dir.development}\forge\mcp\reobf\minecraft" excludes="**/minecraft/**" />
 		</jar>

@@ -46,8 +46,7 @@ public class NBTUtil {
         return itemStack.stackTagCompound.getString(keyName);
     }
 
-    public static void setString(ItemStack itemStack, String keyName,
-            String keyValue) {
+    public static void setString(ItemStack itemStack, String keyName, String keyValue) {
         initNBTTagCompound(itemStack);
 
         itemStack.stackTagCompound.setString(keyName, keyValue);
@@ -63,8 +62,7 @@ public class NBTUtil {
         return itemStack.stackTagCompound.getBoolean(keyName);
     }
 
-    public static void setBoolean(ItemStack itemStack, String keyName,
-            boolean keyValue) {
+    public static void setBoolean(ItemStack itemStack, String keyName, boolean keyValue) {
         initNBTTagCompound(itemStack);
 
         itemStack.stackTagCompound.setBoolean(keyName, keyValue);
@@ -80,8 +78,7 @@ public class NBTUtil {
         return itemStack.stackTagCompound.getByte(keyName);
     }
 
-    public static void setByte(ItemStack itemStack, String keyName,
-            byte keyValue) {
+    public static void setByte(ItemStack itemStack, String keyName, byte keyValue) {
         initNBTTagCompound(itemStack);
 
         itemStack.stackTagCompound.setByte(keyName, keyValue);
@@ -97,8 +94,7 @@ public class NBTUtil {
         return itemStack.stackTagCompound.getShort(keyName);
     }
 
-    public static void setShort(ItemStack itemStack, String keyName,
-            short keyValue) {
+    public static void setShort(ItemStack itemStack, String keyName, short keyValue) {
         initNBTTagCompound(itemStack);
 
         itemStack.stackTagCompound.setShort(keyName, keyValue);
@@ -114,8 +110,7 @@ public class NBTUtil {
         return itemStack.stackTagCompound.getInteger(keyName);
     }
 
-    public static void setInteger(ItemStack itemStack, String keyName,
-            int keyValue) {
+    public static void setInteger(ItemStack itemStack, String keyName, int keyValue) {
         initNBTTagCompound(itemStack);
 
         itemStack.stackTagCompound.setInteger(keyName, keyValue);
@@ -131,8 +126,7 @@ public class NBTUtil {
         return itemStack.stackTagCompound.getLong(keyName);
     }
 
-    public static void setLong(ItemStack itemStack, String keyName,
-            long keyValue) {
+    public static void setLong(ItemStack itemStack, String keyName, long keyValue) {
         initNBTTagCompound(itemStack);
 
         itemStack.stackTagCompound.setLong(keyName, keyValue);
@@ -148,8 +142,7 @@ public class NBTUtil {
         return itemStack.stackTagCompound.getFloat(keyName);
     }
 
-    public static void setFloat(ItemStack itemStack, String keyName,
-            float keyValue) {
+    public static void setFloat(ItemStack itemStack, String keyName, float keyValue) {
         initNBTTagCompound(itemStack);
 
         itemStack.stackTagCompound.setFloat(keyName, keyValue);
@@ -165,8 +158,7 @@ public class NBTUtil {
         return itemStack.stackTagCompound.getDouble(keyName);
     }
 
-    public static void setDouble(ItemStack itemStack, String keyName,
-            double keyValue) {
+    public static void setDouble(ItemStack itemStack, String keyName, double keyValue) {
         initNBTTagCompound(itemStack);
 
         itemStack.stackTagCompound.setDouble(keyName, keyValue);

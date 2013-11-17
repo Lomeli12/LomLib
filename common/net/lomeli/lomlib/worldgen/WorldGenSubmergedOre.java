@@ -51,8 +51,7 @@ public class WorldGenSubmergedOre extends WorldGenerator {
     }
 
     @Override
-    public boolean generate(World par1World, Random par2Random, int par3,
-            int par4, int par5) {
+    public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5) {
         if(par1World.getBlockMaterial(par3, par4, par5) != Material.water) {
             return false;
         }else {
@@ -68,17 +67,12 @@ public class WorldGenSubmergedOre extends WorldGenerator {
                         for(int i2 = par4 - b0; i2 <= par4 + b0; ++i2) {
                             int j2 = par1World.getBlockId(i1, i2, j1);
 
-                            if(j2 == Block.dirt.blockID
-                                    || j2 == Block.sand.blockID
-                                    || j2 == Block.blockClay.blockID
+                            if(j2 == Block.dirt.blockID || j2 == Block.sand.blockID || j2 == Block.blockClay.blockID
                                     || j2 == Block.stone.blockID) {
                                 if(LomLib.debug)
-                                    LomLib.logger.log(Level.INFO,
-                                            "Generating block " + blockID
-                                                    + "at " + i1 + "," + i2
-                                                    + "," + j1);
-                                par1World.setBlock(i1, i2, j1, blockID,
-                                        blockMetaData, 1);
+                                    LomLib.logger.log(Level.INFO, "Generating block " + blockID + "at " + i1 + "," + i2 + ","
+                                            + j1);
+                                par1World.setBlock(i1, i2, j1, blockID, blockMetaData, 1);
                             }
                         }
                     }

@@ -37,8 +37,7 @@ public class BlockGeneric extends Block {
         this.drop = id;
     }
 
-    public BlockGeneric(int id, Material material, String mod, String texture,
-            int dropID) {
+    public BlockGeneric(int id, Material material, String mod, String texture, int dropID) {
         super(id, material);
         this.modID = mod;
         this.blockTexture = texture;

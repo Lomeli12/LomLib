@@ -12,8 +12,7 @@ public class ModLoaded {
         return isModInstalled(modID, modName, false);
     }
 
-    public static boolean isModInstalled(String modID, String modName,
-            boolean display) {
+    public static boolean isModInstalled(String modID, String modName, boolean display) {
         boolean isInstalled = false;
         if(Loader.isModLoaded(modID)) {
             try {
@@ -23,15 +22,13 @@ public class ModLoaded {
                 isInstalled = true;
             }catch(Exception ex) {
                 if(display)
-                    LomLib.logger.log(Level.WARNING,
-                            (modName + " is not installed!"));
+                    LomLib.logger.log(Level.WARNING, (modName + " is not installed!"));
 
                 isInstalled = false;
             }
         }else {
             if(display)
-                LomLib.logger.log(Level.WARNING,
-                        (modName + " is not installed!"));
+                LomLib.logger.log(Level.WARNING, (modName + " is not installed!"));
 
             isInstalled = false;
         }
@@ -53,15 +50,13 @@ public class ModLoaded {
                 isInstalled = true;
             }catch(Exception ex) {
                 if(display)
-                    LomLib.logger.log(Level.WARNING,
-                            (modID + " is not installed!"));
+                    LomLib.logger.log(Level.WARNING, (modID + " is not installed!"));
 
                 isInstalled = false;
             }
         }else {
             if(display)
-                LomLib.logger
-                        .log(Level.WARNING, (modID + " is not installed!"));
+                LomLib.logger.log(Level.WARNING, (modID + " is not installed!"));
 
             isInstalled = false;
         }

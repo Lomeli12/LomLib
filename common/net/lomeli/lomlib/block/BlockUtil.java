@@ -123,6 +123,6 @@ public class BlockUtil {
     }
 
     public static boolean isAboveBlock(Entity entity, int x, int y, int z) {
-        return ((entity.posX < x + 1.4D && entity.posX >= x) && (entity.posY < y + 1.4D && entity.posY >= y) && (entity.posZ < z + 1.4D && entity.posZ >= z));
+        return ((entity.posX < x + 1.4D && entity.posX >= x) && (entity.posY < y + 1.5D && entity.posY >= y) && (entity.posZ < z + 1.4D && entity.posZ >= z));
     }
 }

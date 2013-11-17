@@ -6,8 +6,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 
 public class CustomBookUtil {
-    
-    public static ItemStack createNewBook(String author, String title, String[] pageText){
+
+    public static ItemStack createNewBook(String author, String title, String[] pageText) {
         ItemStack newBook = new ItemStack(Item.writtenBook);
         NBTUtil.setString(newBook, "author", author);
         NBTUtil.setString(newBook, "title", title);

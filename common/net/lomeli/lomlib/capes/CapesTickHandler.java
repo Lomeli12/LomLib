@@ -37,15 +37,12 @@ public class CapesTickHandler implements ITickHandler {
 
                 String lowerUsername = p.username.toLowerCase();
 
-                if(CapeUtil.getInstance().getUserCape(lowerUsername) != null) {
+                if(p.getTextureCape() != null && CapeUtil.getInstance().getUserCape(lowerUsername) != null) {
                     if(!p.downloadImageCape.isTextureUploaded()) {
                         if(LomLib.debug)
-                            LomLib.logger.log(Level.FINE, "Changing cape of: "
-                                    + p.username);
-                        p.locationCape = CapeUtil.getInstance()
-                                .getUserResource(lowerUsername);
-                        p.downloadImageCape = CapeUtil.getInstance()
-                                .getUserCape(lowerUsername);
+                            LomLib.logger.log(Level.FINE, "Changing cape of: " + p.username);
+                        p.locationCape = CapeUtil.getInstance().getUserResource(lowerUsername);
+                        p.downloadImageCape = CapeUtil.getInstance().getUserCape(lowerUsername);
                     }
                 }
 

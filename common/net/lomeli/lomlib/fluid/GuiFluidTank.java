@@ -1,59 +1,74 @@
 package net.lomeli.lomlib.fluid;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.texture.TextureMap;
+import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import net.lomeli.lomlib.gui.GuiContainerPlus;
+
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-public class GuiFluidTank extends GuiContainer {
+@SideOnly(Side.CLIENT)
+public class GuiFluidTank extends GuiContainerPlus {
+
+    public static final ResourceLocation MC_BLOCK_SHEET = new ResourceLocation("textures/atlas/blocks.png");
 
     public GuiFluidTank(Container par1Container) {
         super(par1Container);
     }
 
-    protected void displayGauge(int j, int k, int u, int v, int squaled, FluidStack liquid, ResourceLocation TEXTURE) {
-        if (liquid == null) {
-            return;
-        }
-        int start = 0;
-
-        Icon liquidIcon = null;
-        Fluid fluid = liquid.getFluid();
-        if (fluid != null && fluid.getStillIcon() != null) {
-            liquidIcon = FluidRender.getFluidTexture(fluid, false);
-        }
-        mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-
-        if (liquidIcon != null) {
-            while (true) {
-                int x;
-
-                if (squaled > 16) {
-                    x = 16;
-                    squaled -= 16;
-                } else {
-                    x = squaled;
-                    squaled = 0;
-                }
-
-                drawTexturedModelRectFromIcon(j + u, k + v + 58 - x - start, liquidIcon, 16, 16 - (16 - x));
-                start = start + 16;
-
-                if (x == 0 || squaled == 0) {
-                    break;
-                }
-            }
-        }
-
-        mc.renderEngine.bindTexture(TEXTURE);
-        drawTexturedModalRect(j, k, u, v, 16, 60);
+    @Override
+    protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
     }
 
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
+    public void drawFluid(int x, int y, FluidStack fluid, int width, int height) {
+        if(fluid == null || fluid.getFluid() == null)
+            return;
+        mc.renderEngine.bindTexture(MC_BLOCK_SHEET);
+        drawTiledTexture(x, y, fluid.getFluid().getIcon(fluid), width, height);
+    }
+
+    public void drawTiledTexture(int x, int y, Icon icon, int width, int height) {
+
+        int i = 0;
+        int j = 0;
+
+        int drawHeight = 0;
+        int drawWidth = 0;
+
+        for(i = 0; i < width; i += 16) {
+            for(j = 0; j < height; j += 16) {
+                drawWidth = (width - i) < 16 ? (width - i) : 16;
+                drawHeight = (height - j) < 16 ? (height - j) : 16;
+                drawScaledTexturedModelRectFromIcon(x + i, y + j, icon, drawWidth, drawHeight);
+            }
+        }
+        GL11.glColor4f(1f, 1f, 1f, 1F);
+    }
+
+    public void drawScaledTexturedModelRectFromIcon(int x, int y, Icon icon, int width, int height) {
+
+        if(icon == null) {
+            return;
+        }
+        double minU = icon.getMinU();
+        double maxU = icon.getMaxU();
+        double minV = icon.getMinV();
+        double maxV = icon.getMaxV();
+
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV(x + 0, y + height, this.zLevel, minU, minV + (maxV - minV) * height / 16F);
+        tessellator.addVertexWithUV(x + width, y + height, this.zLevel, minU + (maxU - minU) * width / 16F, minV + (maxV - minV)
+                * height / 16F);
+        tessellator.addVertexWithUV(x + width, y + 0, this.zLevel, minU + (maxU - minU) * width / 16F, minV);
+        tessellator.addVertexWithUV(x + 0, y + 0, this.zLevel, minU, minV);
+        tessellator.draw();
     }
 }

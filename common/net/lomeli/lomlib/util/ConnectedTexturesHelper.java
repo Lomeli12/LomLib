@@ -28,8 +28,7 @@ public class ConnectedTexturesHelper {
      * @param blockID
      * @param iconArray
      */
-    public static void setBlockMetaForTextures(World world, int x, int y,
-            int z, int blockID) {
+    public static void setBlockMetaForTextures(World world, int x, int y, int z, int blockID) {
         int meta = 0;
 
         if(world.getBlockId(x, y + 1, z) == blockID) {
@@ -67,8 +66,7 @@ public class ConnectedTexturesHelper {
      * @return Corresponding icon
      */
     @Incomplete
-    public static Icon getBlockTexture(World world, Icon[] iconArray, int x,
-            int y, int z, int side, int blockID) {
+    public static Icon getBlockTexture(World world, Icon[] iconArray, int x, int y, int z, int side, int blockID) {
         Icon faceIcon = null;
         if(iconArray.length != 16)
             return faceIcon;

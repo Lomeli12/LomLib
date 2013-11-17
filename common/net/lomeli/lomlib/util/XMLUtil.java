@@ -16,7 +16,6 @@ import org.xml.sax.SAXException;
 
 public class XMLUtil {
 
-    
     public static Object praseXML(String URLLoc, String nodeName) {
         Object var1 = new Object();
         try {
