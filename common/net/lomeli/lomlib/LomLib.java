@@ -19,8 +19,9 @@ import net.lomeli.lomlib.render.RenderEntityBlock;
 import net.lomeli.lomlib.util.DeofUtil;
 import net.lomeli.lomlib.util.LogHelper;
 import net.lomeli.lomlib.util.ResourceUtil;
+import net.lomeli.lomlib.util.XMLConfiguration;
+import net.lomeli.lomlib.util.XMLConfiguration.ConfigEnum;
 
-import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 
 public class LomLib extends DummyModContainer {
@@ -64,14 +65,14 @@ public class LomLib extends DummyModContainer {
     }
 
     public void configureMod(File configFile) {
-        Configuration config = new Configuration(configFile);
-
-        config.load();
-
-        debug = config.get("Options", "debugMode", false, LibraryStrings.DEBUG_MODE).getBoolean(false);
-        capes = config.get("Options", "capes", true, LibraryStrings.CAPES).getBoolean(true);
-
-        config.save();
+        XMLConfiguration config = new XMLConfiguration(configFile);
+        
+        config.loadXml();
+        
+        debug = config.getBoolean("debugMode", false, LibraryStrings.DEBUG_MODE, ConfigEnum.GENERAL_CONFIG);
+        capes = config.getBoolean("capes", true, LibraryStrings.CAPES, ConfigEnum.GENERAL_CONFIG);
+        
+        config.saveXML();
 
         logger.log(Level.INFO, "Checking Minecraft Forge version...");
 

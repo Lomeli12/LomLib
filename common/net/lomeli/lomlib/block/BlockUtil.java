@@ -125,4 +125,38 @@ public class BlockUtil {
     public static boolean isAboveBlock(Entity entity, int x, int y, int z) {
         return ((entity.posX < x + 1.4D && entity.posX >= x) && (entity.posY < y + 1.5D && entity.posY >= y) && (entity.posZ < z + 1.4D && entity.posZ >= z));
     }
+    
+    /**
+     * Use to check if double chest or not.
+     * @param world
+     * @param x
+     * @param y
+     * @param z
+     * @return
+     */
+    public static boolean isThereANeighborChest(World world, int x, int y, int z){
+        boolean yesThereIs = false;
+        if(world.getBlockId(x, y, z) == Block.chest.blockID){
+            if(world.getBlockId(x + 1, y, z) == Block.chest.blockID)
+                yesThereIs = true;
+            if(world.getBlockId(x - 1, y, z) == Block.chest.blockID)
+                yesThereIs = true;
+            if(world.getBlockId(x, y, z + 1) == Block.chest.blockID)
+                yesThereIs = true;
+            if(world.getBlockId(x, y, z - 1) == Block.chest.blockID)
+                yesThereIs = true;
+        }
+        else if(world.getBlockId(x, y, z) == Block.chestTrapped.blockID){
+            if(world.getBlockId(x + 1, y, z) == Block.chestTrapped.blockID)
+                yesThereIs = true;
+            if(world.getBlockId(x - 1, y, z) == Block.chestTrapped.blockID)
+                yesThereIs = true;
+            if(world.getBlockId(x, y, z + 1) == Block.chestTrapped.blockID)
+                yesThereIs = true;
+            if(world.getBlockId(x, y, z - 1) == Block.chestTrapped.blockID)
+                yesThereIs = true;
+        }
+        
+        return yesThereIs;
+    }
 }

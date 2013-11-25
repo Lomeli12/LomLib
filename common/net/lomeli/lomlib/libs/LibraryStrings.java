@@ -11,5 +11,5 @@ public class LibraryStrings {
     public static final String CAPE_XML = "https://dl.dropboxusercontent.com/u/17430088/Minecraft%20Mods/Capes/lomlibcapes.xml";
     public static final String DEBUG_MODE = "Will display different types of information when set to true. Useful for those who are using LomLib to develop their mods.";
     public static final String CAPES = "Enable capes for approved users.(Client-side only)";
-    public static String recommendedForgeVersion = "9.11.1.935";
+    public static String recommendedForgeVersion = "9.11.1.953";
 }

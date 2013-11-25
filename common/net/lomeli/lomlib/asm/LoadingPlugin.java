@@ -28,7 +28,6 @@ public class LoadingPlugin implements IFMLLoadingPlugin {
     }
 
     @Override
-    @Deprecated
     public String[] getLibraryRequestClass() {
         return null;
     }

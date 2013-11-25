@@ -1,10 +1,12 @@
 package net.lomeli.lomlib.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.URL;
+import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -13,6 +15,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import net.lomeli.lomlib.LomLib;
 
 public class XMLUtil {
 
@@ -85,4 +89,43 @@ public class XMLUtil {
     public static byte getByte(String URLLoc, String nodeName) {
         return new Byte(getString(URLLoc, nodeName));
     }
+
+    @SuppressWarnings("unused")
+    private static boolean isValidXMLFile(String filename) {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+        try {
+            File f = new File(filename);
+            if(f.exists()) {
+                DocumentBuilder builder = factory.newDocumentBuilder();
+                Document document = builder.parse(f);
+                return true;
+            }
+        }catch(Exception e) {
+            LomLib.logger.log(Level.WARNING, "Invalid XML file!");
+        }
+        return true;
+    }
+
+    @SuppressWarnings("unused")
+    public static boolean isValidXMLFile(File config) {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        try {
+            if(config != null && config.exists()) {
+                DocumentBuilder builder = factory.newDocumentBuilder();
+                Document document = builder.parse(config);
+                return true;
+            }
+        }catch(Exception e) {
+            LomLib.logger.log(Level.WARNING, "Invalid configuration file!");
+            if(config.exists()) {
+                LomLib.logger.log(Level.WARNING, "Removing invalid file...");
+                config.delete();
+                LomLib.logger.log(Level.INFO, "Done!");
+            }
+            return false;
+        }
+        return true;
+    }
+
 }
