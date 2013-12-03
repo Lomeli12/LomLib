@@ -4,6 +4,9 @@ import org.lwjgl.opengl.GL11;
 
 import net.lomeli.lomlib.entity.EntityBlock;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
@@ -14,6 +17,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+@SideOnly(Side.CLIENT)
 public class RenderEntityBlock extends Render {
 
     public static RenderEntityBlock INSTANCE = new RenderEntityBlock();

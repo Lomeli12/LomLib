@@ -6,16 +6,15 @@ import java.util.logging.Level;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 import net.lomeli.lomlib.capes.CapeUtil;
-import net.lomeli.lomlib.entity.EntityBlock;
+import net.lomeli.lomlib.command.CommandLomLib;
 import net.lomeli.lomlib.libs.LibraryStrings;
-import net.lomeli.lomlib.render.RenderEntityBlock;
 import net.lomeli.lomlib.util.DeofUtil;
 import net.lomeli.lomlib.util.LogHelper;
 import net.lomeli.lomlib.util.ResourceUtil;
@@ -39,27 +38,33 @@ public class LomLib extends DummyModContainer {
     public static LogHelper logger;
 
     public static boolean debug, capes, optiFailSafe;
+    
+    @Subscribe
+    public void serverStarting(FMLServerStartingEvent event){
+        event.registerServerCommand(new CommandLomLib());
+    }
 
     @Subscribe
     public void preInit(FMLPreInitializationEvent event) {
         logger = new LogHelper(LibraryStrings.MOD_NAME);
 
         configureMod(event.getSuggestedConfigurationFile());
+        
         if(event.getSide().isClient()) {
             ResourceUtil.initResourceUtil();
-            RenderingRegistry.registerEntityRenderingHandler(EntityBlock.class, RenderEntityBlock.INSTANCE);
+            
             if(LomLib.capes) {
 
                 DeofUtil.setFieldAccess("net.minecraft.client.entity.AbstractClientPlayer", "downloadImageCape", true);
                 DeofUtil.setFieldAccess("net.minecraft.client.entity.AbstractClientPlayer", "locationCape", true);
-
+/*
                 if(isOptifineInstalled()) {
                     logger.log(Level.WARNING,
                             "Optifine detected, capes disabled due to possible crash. If you want LomLib capes, please remove Optifine.");
                     logger.log(Level.WARNING,
                             "Or complain to Optifine's creator about that illegalAccess check thing, it's annoying. >_<");
                 }else
-                    CapeUtil.getInstance().readXML();
+                    */CapeUtil.getInstance().readXML();
             }
         }
     }

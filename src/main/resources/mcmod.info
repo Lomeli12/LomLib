@@ -1,0 +1,15 @@
+[
+{
+  "modid": "LomLib",
+  "name": "LomLib",
+  "description": "Shared library mod required by several of Lomeli's Mods.",
+  "version": "1.0.8",
+  "mcversion": "1.6.4",
+  "url": "http://www.anthony-lomeli.net/",
+  "updateUrl": "",
+  "authors": ["Lomeli12"],
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

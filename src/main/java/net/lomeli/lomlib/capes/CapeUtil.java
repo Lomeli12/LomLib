@@ -13,6 +13,7 @@ import org.w3c.dom.NodeList;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 import net.lomeli.lomlib.libs.LibraryStrings;
 import net.lomeli.lomlib.util.XMLUtil;
@@ -24,6 +25,7 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureObject;
 import net.minecraft.util.ResourceLocation;
 
+@SideOnly(Side.CLIENT)
 public class CapeUtil {
     private static CapeUtil instance = new CapeUtil();
 

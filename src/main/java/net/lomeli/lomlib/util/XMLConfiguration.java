@@ -26,8 +26,16 @@ public class XMLConfiguration {
     private boolean work;
 
     public XMLConfiguration(File configFile) {
-        String filePath = configFile.getAbsolutePath().replace("cfg", "xml");
-        configurationFile = new File(filePath);
+        this(configFile, false);
+    }
+
+    public XMLConfiguration(File configFile, boolean useCfgExt) {
+        if(useCfgExt)
+            configurationFile = configFile;
+        else {
+            String filePath = configFile.getAbsolutePath().replace("cfg", "xml");
+            configurationFile = new File(filePath);
+        }
         todo1 = new ArrayList<String>();
         todo2 = new ArrayList<String>();
         todo3 = new ArrayList<String>();
@@ -48,35 +56,34 @@ public class XMLConfiguration {
 
                 Element rootElement = document.createElement("configuration");
                 document.appendChild(rootElement);
-                
+
                 Element block = document.createElement(ConfigEnum.BLOCK_ID.getName());
                 Element item = document.createElement(ConfigEnum.ITEM_ID.getName());
                 Element general = document.createElement(ConfigEnum.GENERAL_CONFIG.getName());
                 Element other = document.createElement(ConfigEnum.OTHER.getName());
 
-                Element[] elements = {block, item, general, other};
-                
-                for(Element j : elements){
+                Element[] elements = { block, item, general, other };
+
+                for(Element j : elements) {
                     rootElement.appendChild(j);
                 }
-                
+
                 for(int i = 0; i < todo1.size(); i++) {
                     Element root = elements[todo4.get(i).loc];
                     if(root == null)
                         root = rootElement;
-                    if(!todo3.get(i).isEmpty()){
+                    if(!todo3.get(i).isEmpty()) {
                         Comment newComment = document.createComment(todo3.get(i).toString());
                         root.appendChild(newComment);
                     }
                     Element newElement = document.createElement(todo1.get(i).toString());
                     newElement.appendChild(document.createTextNode(todo2.get(i).toString()));
                     root.appendChild(newElement);
-                    
+
                 }
-                
-                
+
                 rootElement.normalize();
-                
+
                 DOMSource source = new DOMSource(document);
 
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -105,8 +112,8 @@ public class XMLConfiguration {
         todo2.add(String.valueOf(praseLocalXMLFile(configurationFile, nodeName)));
         return new Integer(String.valueOf(praseLocalXMLFile(configurationFile, nodeName)));
     }
-    
-    public int getInt(String nodeName, int defaultValue, ConfigEnum enumType){
+
+    public int getInt(String nodeName, int defaultValue, ConfigEnum enumType) {
         return getInt(nodeName, defaultValue, "", enumType);
     }
 
@@ -122,8 +129,8 @@ public class XMLConfiguration {
         todo2.add(String.valueOf(praseLocalXMLFile(configurationFile, nodeName)));
         return new Double(String.valueOf(praseLocalXMLFile(configurationFile, nodeName)));
     }
-    
-    public double getDouble(String nodeName, double defaultValue, ConfigEnum enumType){
+
+    public double getDouble(String nodeName, double defaultValue, ConfigEnum enumType) {
         return getDouble(nodeName, defaultValue, "", enumType);
     }
 
@@ -139,8 +146,8 @@ public class XMLConfiguration {
         todo2.add(String.valueOf(praseLocalXMLFile(configurationFile, nodeName)));
         return new Boolean(String.valueOf(praseLocalXMLFile(configurationFile, nodeName)));
     }
-    
-    public boolean getBoolean(String nodeName, boolean defaultValue, ConfigEnum enumType){
+
+    public boolean getBoolean(String nodeName, boolean defaultValue, ConfigEnum enumType) {
         return getBoolean(nodeName, defaultValue, "", enumType);
     }
 
@@ -156,8 +163,8 @@ public class XMLConfiguration {
         todo2.add(String.valueOf(praseLocalXMLFile(configurationFile, nodeName)));
         return String.valueOf(praseLocalXMLFile(configurationFile, nodeName));
     }
-    
-    public String getString(String nodeName, String defaultValue, ConfigEnum enumType){
+
+    public String getString(String nodeName, String defaultValue, ConfigEnum enumType) {
         return getString(nodeName, defaultValue, "", enumType);
     }
 
@@ -180,22 +187,20 @@ public class XMLConfiguration {
         return obj;
     }
 
-    public static enum ConfigEnum{
-        BLOCK_ID("BlockIDs", 0),
-        ITEM_ID("ItemIDs", 1),
-        GENERAL_CONFIG("GeneralConfig", 2),
-        OTHER("Other", 3);
-        
+    public static enum ConfigEnum {
+        BLOCK_ID("BlockIDs", 0), ITEM_ID("ItemIDs", 1), GENERAL_CONFIG("GeneralConfig", 2), OTHER("Other", 3);
+
         private String name;
         private int loc;
-        ConfigEnum(String name, int number){
+
+        private ConfigEnum(String name, int number) {
             this.name = name;
             this.loc = number;
         }
-        
-        String getName(){
+
+        String getName() {
             return this.name;
         }
     }
-    
+
 }

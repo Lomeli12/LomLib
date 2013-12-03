@@ -4,13 +4,14 @@ import java.util.Map;
 
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin.TransformerExclusions;
+import cpw.mods.fml.relauncher.IFMLLoadingPlugin.MCVersion;
 
 @TransformerExclusions({ "net.lomeli.lomlib.asm" })
-public class LoadingPlugin implements IFMLLoadingPlugin {
-
+@MCVersion("1.6.4")
+public class LomLibPlugin implements IFMLLoadingPlugin {
     @Override
     public String[] getASMTransformerClass() {
-        return new String[] { "net.lomeli.lomlib.asm.CapeAccessTransformer" };
+        return new String[] { "net.lomeli.lomlib.asm.LomLibAccessTransformer" };
     }
 
     @Override
@@ -25,10 +26,5 @@ public class LoadingPlugin implements IFMLLoadingPlugin {
 
     @Override
     public void injectData(Map<String, Object> data) {
-    }
-
-    @Override
-    public String[] getLibraryRequestClass() {
-        return null;
     }
 }

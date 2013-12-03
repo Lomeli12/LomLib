@@ -1,0 +1,60 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.0-SNAPSHOT'
+    }
+}
+apply plugin: "forge"
+
+def loadProperties(String sourceFileName) {
+    def config = new Properties()
+        def propFile = new File(sourceFileName)
+            if (propFile.canRead()) {
+                config.load(new FileInputStream(propFile))
+                    for (Map.Entry property in config) {
+                        ext[property.key] = property.value;
+                    }
+            }
+}
+
+loadProperties 'build.properties'
+
+group = 'net.lomeli.lomlib'
+archivesBaseName = 'LomLib-universal'
+version = "$releaseVersion"
+
+minecraft {
+    version = "$mcVersion-$forgeVersion" // grab latest forge
+    assetDir = "build/vanilla/assets"
+}
+
+processResources {
+    exclude '**/xcf/**'
+
+    from(sourceSets.main.resources.srcDirs) {
+        include '**/*.info'
+
+        // Fix those tokens
+        expand 'VERSION':project.version
+    }
+    from(sourceSets.main.resources.srcDirs) {
+        exclude '**/*.info'
+    }
+}
+
+repositories {
+	mavenCentral()
+}
+
+jar {
+	appendix = 'universal'
+    manifest {
+        attributes 'FMLCorePlugin':'net.lomeli.lomlib.asm.LomLibPlugin'
+    }
+}
