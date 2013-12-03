@@ -39,9 +39,6 @@ processResources {
 
     from(sourceSets.main.resources.srcDirs) {
         include '**/*.info'
-
-        // Fix those tokens
-        expand 'VERSION':project.version
     }
     from(sourceSets.main.resources.srcDirs) {
         exclude '**/*.info'
