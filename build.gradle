@@ -58,7 +58,7 @@ dependencies {
 }
 
 group = 'net.lomeli.lomlib'
-archivesBaseName = 'LomLib-universal'
+archivesBaseName = 'LomLib'
 version = "$releaseVersion"
 
 minecraft {
@@ -79,7 +79,7 @@ processResources {
 
 
 jar {
-	appendix = 'build-$buildNumber-universal'
+	appendix = "universal-$buildNumber"
     manifest {
         attributes 'FMLCorePlugin':'net.lomeli.lomlib.asm.LomLibPlugin'
     }
@@ -87,7 +87,7 @@ jar {
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output
-    appendix = 'build-$buildNumber-deobf'
+    appendix = "dev-$buildNumber"
 }
 
 artifacts {
