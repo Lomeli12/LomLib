@@ -10,6 +10,26 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.0-SNAPSHOT'
     }
 }
+
+repositories {
+    ivy {
+        name 'Forge FS legacy'
+        artifactPattern "http://files.minecraftforge.net/[module]/[module]-dev-[revision].[ext]"
+    }
+    ivy {
+        name 'CB FS'
+        artifactPattern "http://www.chickenbones.craftsaddle.org/Files/New_Versions/1.6.4/[module]-dev%20[revision].[ext]"
+    }
+    maven {
+        name 'ForgeFS'
+        url 'http://files.minecraftforge.net/maven'
+    }
+    maven {
+        name 'MinecraftS3'
+        url 'http://s3.amazonaws.com/Minecraft.Download/libraries'
+    }
+}
+
 apply plugin: "forge"
 
 def loadProperties(String sourceFileName) {
@@ -24,6 +44,12 @@ def loadProperties(String sourceFileName) {
 }
 
 loadProperties 'build.properties'
+
+dependencies {
+    compile name: 'CodeChickenLib', version: '1.6.4-1.0.0.44', ext: 'jar'
+    compile name: 'CodeChickenCore', version: '0.9.0.7', ext: 'jar'
+    compile name: 'NotEnoughItems', version: '1.6.1.5_d1', ext: 'jar'
+}
 
 group = 'net.lomeli.lomlib'
 archivesBaseName = 'LomLib-universal'

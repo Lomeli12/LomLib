@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.util;
+package net.lomeli.lomlib.render;
 
 import net.lomeli.lomlib.libs.Incomplete;
 

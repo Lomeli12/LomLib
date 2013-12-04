@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.util;
+package net.lomeli.lomlib.asm;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

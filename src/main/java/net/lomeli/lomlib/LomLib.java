@@ -9,13 +9,14 @@ import com.google.common.eventbus.Subscribe;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.ModMetadata;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 import net.lomeli.lomlib.capes.CapeUtil;
 import net.lomeli.lomlib.command.CommandLomLib;
 import net.lomeli.lomlib.libs.LibraryStrings;
-import net.lomeli.lomlib.util.DeofUtil;
+import net.lomeli.lomlib.nei.NEIAddon;
 import net.lomeli.lomlib.util.LogHelper;
 import net.lomeli.lomlib.util.ResourceUtil;
 import net.lomeli.lomlib.util.XMLConfiguration;
@@ -53,20 +54,15 @@ public class LomLib extends DummyModContainer {
         if(event.getSide().isClient()) {
             ResourceUtil.initResourceUtil();
             
-            if(LomLib.capes) {
-
-                DeofUtil.setFieldAccess("net.minecraft.client.entity.AbstractClientPlayer", "downloadImageCape", true);
-                DeofUtil.setFieldAccess("net.minecraft.client.entity.AbstractClientPlayer", "locationCape", true);
-/*
-                if(isOptifineInstalled()) {
-                    logger.log(Level.WARNING,
-                            "Optifine detected, capes disabled due to possible crash. If you want LomLib capes, please remove Optifine.");
-                    logger.log(Level.WARNING,
-                            "Or complain to Optifine's creator about that illegalAccess check thing, it's annoying. >_<");
-                }else
-                    */CapeUtil.getInstance().readXML();
-            }
+            if(LomLib.capes)
+                CapeUtil.getInstance().readXML();
         }
+    }
+    
+    @Subscribe
+    public void postInit(FMLPostInitializationEvent event) {
+        if(event.getSide().isClient())
+            NEIAddon.loadAddon();
     }
 
     public void configureMod(File configFile) {
