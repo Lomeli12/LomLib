@@ -17,7 +17,7 @@ public class ShapelessFluidRecipeHandler extends ShapelessRecipeHandler {
 
     @Override
     public String getRecipeName(){
-        return "Shapeless Fluid Recipe";//StatCollector.translateToLocal("recipe.shapelessFluid");
+        return "Shapeless Fluid Recipe";//StatCollector.translateToLocal("recipe.shapelessFluid"); because statcollector won't work :(
     }
     
     @SuppressWarnings("unchecked")

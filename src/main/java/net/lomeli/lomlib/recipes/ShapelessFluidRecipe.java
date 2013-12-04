@@ -38,12 +38,12 @@ public class ShapelessFluidRecipe implements IRecipe {
         for (Object in : recipe) {
             if (in instanceof ItemStack) {
                 if (FluidContainerRegistry.isFilledContainer((ItemStack) in))
-                    input.add(FluidUtil.getContainsForFluid(FluidUtil.getContainerFluid((ItemStack) in)));
+                    input.add(FluidUtil.getContainersForFluid(FluidUtil.getContainerFluid((ItemStack) in)));
                 else
                     input.add(((ItemStack) in).copy());
             } else if (in instanceof Item) {
                 if (FluidContainerRegistry.isFilledContainer(new ItemStack((Item) in)))
-                    input.add(FluidUtil.getContainsForFluid(FluidUtil.getContainerFluid(new ItemStack((Item) in))));
+                    input.add(FluidUtil.getContainersForFluid(FluidUtil.getContainerFluid(new ItemStack((Item) in))));
                 else
                     input.add(new ItemStack((Item) in));
             } else if (in instanceof Block)
@@ -52,7 +52,7 @@ public class ShapelessFluidRecipe implements IRecipe {
                 if (((String) in).startsWith("liquid$")) {
                     String liquidName = ((String) in).substring(7);
                     if (FluidRegistry.isFluidRegistered(liquidName))
-                        input.add(FluidUtil.getContainsForFluid(FluidRegistry.getFluid(liquidName)));
+                        input.add(FluidUtil.getContainersForFluid(FluidRegistry.getFluid(liquidName)));
                 } else
                     input.add(OreDictionary.getOres((String) in));
             } else {
@@ -85,7 +85,7 @@ public class ShapelessFluidRecipe implements IRecipe {
                     finalObj = OreDictionary.getOres(replace.getValue());
                     break;
                 } else if (FluidContainerRegistry.isFilledContainer(replace.getKey())) {
-                    finalObj = FluidUtil.getContainsForFluid(FluidContainerRegistry.getFluidForFilledItem(replace.getKey()).getFluid());
+                    finalObj = FluidUtil.getContainersForFluid(FluidContainerRegistry.getFluidForFilledItem(replace.getKey()).getFluid());
                     break;
                 }
             }

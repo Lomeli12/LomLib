@@ -85,12 +85,12 @@ public class ShapedFluidRecipe implements IRecipe {
 
             if (in instanceof ItemStack) {
                 if (FluidContainerRegistry.isFilledContainer((ItemStack) in))
-                    itemMap.put(chr, FluidUtil.getContainsForFluid(FluidUtil.getContainerFluid((ItemStack) in)));
+                    itemMap.put(chr, FluidUtil.getContainersForFluid(FluidUtil.getContainerFluid((ItemStack) in)));
                 else
                     itemMap.put(chr, ((ItemStack) in).copy());
             } else if (in instanceof Item)
                 if (FluidContainerRegistry.isFilledContainer(new ItemStack((Item) in)))
-                    itemMap.put(chr, FluidUtil.getContainsForFluid(FluidUtil.getContainerFluid(new ItemStack((Item) in))));
+                    itemMap.put(chr, FluidUtil.getContainersForFluid(FluidUtil.getContainerFluid(new ItemStack((Item) in))));
                 else
                     itemMap.put(chr, new ItemStack((Item) in));
             else if (in instanceof Block)
@@ -99,7 +99,7 @@ public class ShapedFluidRecipe implements IRecipe {
                 if (((String) in).startsWith("liquid$")) {
                     String liquidName = ((String) in).substring(7);
                     if (FluidRegistry.isFluidRegistered(liquidName))
-                        itemMap.put(chr, FluidUtil.getContainsForFluid(FluidRegistry.getFluid(liquidName)));
+                        itemMap.put(chr, FluidUtil.getContainersForFluid(FluidRegistry.getFluid(liquidName)));
                 } else
                     itemMap.put(chr, OreDictionary.getOres((String) in));
             } else {
@@ -147,7 +147,7 @@ public class ShapedFluidRecipe implements IRecipe {
                     input[i] = OreDictionary.getOres(replace.getValue());
                     break;
                 } else if (FluidContainerRegistry.isFilledContainer(replace.getKey())) {
-                    input[i] = FluidUtil.getContainsForFluid(FluidContainerRegistry.getFluidForFilledItem(replace.getKey()).getFluid());
+                    input[i] = FluidUtil.getContainersForFluid(FluidContainerRegistry.getFluidForFilledItem(replace.getKey()).getFluid());
                     break;
                 }
             }

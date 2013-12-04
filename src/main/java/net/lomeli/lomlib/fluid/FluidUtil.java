@@ -76,7 +76,7 @@ public class FluidUtil {
         return fluid;
     }
 
-    public static ArrayList<ItemStack> getContainsForFluid(Fluid targetFluid) {
+    public static ArrayList<ItemStack> getContainersForFluid(Fluid targetFluid) {
         ArrayList<ItemStack> list = new ArrayList<ItemStack>();
 
         if (targetFluid != null) {

@@ -16,7 +16,7 @@ public class ShapedFluidRecipeHandler extends ShapedRecipeHandler {
 
     @Override
     public String getRecipeName(){
-        return "Shaped Fluid Recipe";//StatCollector.translateToLocal("recipe.shapedFluid");
+        return "Shaped Fluid Recipe";//StatCollector.translateToLocal("recipe.shapedFluid"); because statcollector won't work :(
     }
     
     @SuppressWarnings("unchecked")
