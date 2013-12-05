@@ -7,39 +7,58 @@ Just a set of utilities that I use often. A prerequisite for most my mods.
 
 http://anthony-lomeli.net/?page_id=24
 
-## Current Version
+## Version
 
-1.0.7
+**Current Stable Version:** 1.0.7
 
-## Dev Version
-
-1.0.8
+**Dev Version:** 1.0.8
 
 ## How to develop with LomLib
 
-### New Forge Gradle way
-1. Download and install the JDK and all the class path stuff (not gonna show here cause you should know).
+### Setting up your project to use LomLib
+***
 
+#### Easy Way
+
+1. Setup your Forge Development Environment like normal
+2. Download the latest Dev Version from http://anthony-lomeli.net/MinecraftMods/LomLib/dev/
+3. Place the development jar in `jars/mods`(or equivalent).
+4. Add the jar to your project's build path. In eclipse, this can be done in the package exploerer by *Right-Clicking your project->Properties->Java Build Path->Libraries->Add External JARs...*
+
+#### Hard Way
+
+1. Setup your Forge Development Environment like normal
 2. Download LomLib's source
+3. Create a new Project in Eclipse called LomLib
+4. Place LomLib's source in the appropriate folders
+5. Add the LomLib project to your project's build path. In eclipse, this can be done in the package exploerer by *Right-Clicking your project->Properties->Java Build Path->Projects->Add...*
 
-**If you want to compile LomLib**
+### Compiling your mod with LomLib
+***
 
-1. Run `gradlew.bat build` (Windows) or `./gradlew build` (Unix)
-2. Run `gradlew.bat setupDevWorkspace` (Windows) or `./gradlew setupDevWorkspace` (Unix)
+Depending on whether your using ForgeGradle or not will effect how you compile your mod. 
 
-3. A compiled version of LomLib will be located in the *build/libs* folder
+#### If you're using pre-ForgeGradle enviroment
 
-**If you want to develop with LomLib**
+**If using Easy Way:** Just drop a copy of the dev jar in your `/mcp/lib` folder and compile like normal.
 
-1. Follow this tutorial on how to setup ForgeGradle http://www.minecraftforge.net/forum/index.php/topic,14048.0.html
+**If using Hard Way:** Make sure to include LomLib's source with your mod when compiling and not to include the class files when packaging your mod. I recommend using Apache Ant to automate this and make your life easier.
 
-2. During the setup a folder called *mods* should've been created. Place LomLib_dummy.jar into that folder.
+#### If you're using a ForgeGradle Enviroment
 
-3. Copy LomLib's source and resources to their repective folders in the ForgeGradle workspace.
+Open up your *build.gradle* file with your favorite text editor and add this to it:
 
-### Old Way
-1. Download JDK, Scala, and Forge and install each.
-2. Download LomLib source
-3. Place LomLib_dummy.jar into <development directory>\forge\mcp\jars\mods\
-4. Place the contents of *common* into <development directory>\forge\mcp\src\minecraft\
-5. Enjoy
+    repositories {
+	    ivy {
+        	name 'LomLib'
+        	artifactPattern "http://anthony-lomeli.net/MinecraftMods/LomLib/dev/[module]-dev-[revision].[ext]"
+    	}
+	}
+	
+	dependencies {
+    	compile name: 'LomLib, version: '16-1.0.8', ext: 'jar'
+	}
+
+Remember to modify the version number to match the version of LomLib you're using. Then just run `gradlew build` like usual and your mod should compile like normal.
+
+
