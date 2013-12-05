@@ -1,2 +1,2 @@
-recipe.shapedFluid=Shaped Fluid Recipe
-recipe.shapelessFluid=Shapeless Fluid Recipe
+recipe.lomlib:shapedFluid=Shaped Fluid Recipe
+recipe.lomlib:shapelessFluid=Shapeless Fluid Recipe

@@ -2,11 +2,13 @@ package net.lomeli.lomlib.nei;
 
 import java.util.List;
 
+//import net.lomeli.lomlib.libs.LibraryStrings;
 import net.lomeli.lomlib.recipes.ShapedFluidRecipe;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+//import net.minecraft.util.StatCollector;
 
 import codechicken.core.ReflectionManager;
 import codechicken.nei.NEIServerUtils;
@@ -16,7 +18,7 @@ public class ShapedFluidRecipeHandler extends ShapedRecipeHandler {
 
     @Override
     public String getRecipeName(){
-        return "Shaped Fluid Recipe";//StatCollector.translateToLocal("recipe.shapedFluid"); because statcollector won't work :(
+        return "Shaped Fluid Recipe";//StatCollector.translateToLocal(LibraryStrings.NEI_SHAPED); because statcollector won't work :(
     }
     
     @SuppressWarnings("unchecked")

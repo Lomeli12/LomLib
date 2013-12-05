@@ -12,4 +12,7 @@ public class LibraryStrings {
     public static final String DEBUG_MODE = "Will display different types of information when set to true. Useful for those who are using LomLib to develop their mods.";
     public static final String CAPES = "Enable capes for approved users.(Client-side only)";
     public static String recommendedForgeVersion = "9.11.1.953";
+    
+    public static final String NEI_SHAPED = "recipe.lomlib:shapedFluid";
+    public static final String NEI_SHAPELESS = "recipe.lomlib:shapelessFluid";
 }

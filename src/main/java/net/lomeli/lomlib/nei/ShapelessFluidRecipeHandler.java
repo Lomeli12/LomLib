@@ -7,17 +7,19 @@ import codechicken.core.ReflectionManager;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.recipe.ShapelessRecipeHandler;
 
+//import net.lomeli.lomlib.libs.LibraryStrings;
 import net.lomeli.lomlib.recipes.ShapelessFluidRecipe;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+//import net.minecraft.util.StatCollector;
 
 public class ShapelessFluidRecipeHandler extends ShapelessRecipeHandler {
 
     @Override
     public String getRecipeName(){
-        return "Shapeless Fluid Recipe";//StatCollector.translateToLocal("recipe.shapelessFluid"); because statcollector won't work :(
+        return "Shapeless Fluid Recipe";//StatCollector.translateToLocal(LibraryStrings.NEI_SHAPELESS); because statcollector won't work :(
     }
     
     @SuppressWarnings("unchecked")
