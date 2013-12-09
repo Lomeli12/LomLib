@@ -41,6 +41,10 @@ public class ResourceUtil {
     public static ResourceLocation getIcon(String modid, String icon) {
         return getResourceUtil(modid, "textures/icons/" + icon);
     }
+    
+    public static ResourceLocation getModelTexture(String modid, String texture) {
+        return getResourceUtil(modid, "textures/model/" + texture);
+    }
 
     public static ResourceLocation getResource(String modid, String folder, String icon) {
         return getResourceUtil(modid, "textures/" + folder + "/" + icon);

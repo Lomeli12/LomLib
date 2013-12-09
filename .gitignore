@@ -1,6 +1,7 @@
 build
 .gradle
 *.class
+ftp.properties
 
 # Package Files #
 *.war

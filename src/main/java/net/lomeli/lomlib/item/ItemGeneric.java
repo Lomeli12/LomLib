@@ -3,6 +3,9 @@ package net.lomeli.lomlib.item;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 /**
  * Meant to be a very generic item that is already ready for custom mod textures
  * and not require a generic item class
@@ -28,6 +31,7 @@ public class ItemGeneric extends Item {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister iconRegister) {
         itemIcon = iconRegister.registerIcon(this.modID + ":" + this.itemTexture);
     }

@@ -7,6 +7,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 /**
  * Meant to be a very generic block that is already ready for custom mod
  * textures and not require a generic block class
@@ -49,6 +52,7 @@ public class BlockGeneric extends Block {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister iconRegister) {
         blockIcon = iconRegister.registerIcon(modID + ":" + blockTexture);
     }

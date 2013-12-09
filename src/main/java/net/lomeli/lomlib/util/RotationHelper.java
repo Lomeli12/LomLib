@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.google.common.collect.BiMap;
 
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 import net.minecraftforge.common.ForgeDirection;
@@ -106,5 +107,26 @@ public class RotationHelper {
         }
 
         return -1;
+    }
+    
+    public static ForgeDirection getOrientationFromTile(TileEntity baseTile, TileEntity targetTile){
+        int x = (targetTile.xCoord - baseTile.xCoord),y = (targetTile.yCoord - baseTile.yCoord), z = (targetTile.zCoord - baseTile.zCoord);
+        if(x != 0){
+            if(x == 1)
+                return ForgeDirection.EAST;
+            else
+                return ForgeDirection.WEST;
+        }else if(y != 0){
+            if(y == 1)
+                return ForgeDirection.UP;
+            else
+                return ForgeDirection.DOWN;
+        }else if(z != 0){
+            if(z == 1)
+                return ForgeDirection.SOUTH;
+            else
+                return ForgeDirection.NORTH;
+        }
+        return ForgeDirection.UNKNOWN;
     }
 }
