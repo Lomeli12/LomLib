@@ -23,32 +23,30 @@ public class CapesTickHandler implements ITickHandler {
 
     @Override
     public void tickStart(EnumSet<TickType> type, Object... tickData) {
-        if((mc.theWorld != null) && (mc.theWorld.playerEntities.size() > 0)) {
+        if ((mc.theWorld != null) && (mc.theWorld.playerEntities.size() > 0)) {
 
             @SuppressWarnings("unchecked")
             List<AbstractClientPlayer> players = mc.theWorld.playerEntities;
 
-            if(counter >= players.size())
+            if (counter >= players.size())
                 counter = 0;
 
             AbstractClientPlayer p = players.get(counter);
-            if(p != null) {
+            if (p != null) {
 
                 String lowerUsername = p.username.toLowerCase();
 
-                if(p.getTextureCape() != null) {
-                    if(!p.getTextureCape().isTextureUploaded()) {
-                        if(CapeUtil.getInstance().getUserCape(lowerUsername) != null
-                                && CapeUtil.getInstance().getUserResource(lowerUsername) != null) {
-                            if(LomLib.debug)
+                if (p.getTextureCape() != null) {
+                    if (!p.getTextureCape().isTextureUploaded()) {
+                        if (CapeUtil.getInstance().getUserCape(lowerUsername) != null && CapeUtil.getInstance().getUserResource(lowerUsername) != null) {
+                            if (LomLib.debug)
                                 LomLib.logger.log(Level.INFO, "Changing cape of: " + p.username);
                             setPlayerCape(p, lowerUsername);
                         }
                     }
-                }else {
-                    if(CapeUtil.getInstance().getUserCape(lowerUsername) != null
-                            && CapeUtil.getInstance().getUserResource(lowerUsername) != null) {
-                        if(LomLib.debug)
+                } else {
+                    if (CapeUtil.getInstance().getUserCape(lowerUsername) != null && CapeUtil.getInstance().getUserResource(lowerUsername) != null) {
+                        if (LomLib.debug)
                             LomLib.logger.log(Level.INFO, "Changing cape of: " + p.username);
                         setPlayerCape(p, lowerUsername);
                     }
@@ -60,11 +58,10 @@ public class CapesTickHandler implements ITickHandler {
 
     private void setPlayerCape(AbstractClientPlayer player, String username) {
         try {
-            AbstractClientPlayer.class.getDeclaredField("downloadImageCape").set(player,
-                    CapeUtil.getInstance().getUserCape(username));
-            AbstractClientPlayer.class.getDeclaredField("locationCape").set(player,
-                    CapeUtil.getInstance().getUserResource(username));
-        }catch(Exception e) {
+            AbstractClientPlayer.class.getDeclaredField("downloadImageCape").set(player, CapeUtil.getInstance().getUserCape(username));
+            AbstractClientPlayer.class.getDeclaredField("locationCape").set(player, CapeUtil.getInstance().getUserResource(username));
+        } catch (Exception e) {
+            LomLib.logger.log(Level.INFO, "Could not apply cape to " + username);
         }
     }
 
