@@ -1,11 +1,10 @@
-package net.lomeli.lomlib.fluid;
+package net.lomeli.lomlib.render;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
-import net.lomeli.lomlib.render.RenderEntityBlock;
 import net.lomeli.lomlib.render.RenderEntityBlock.BlockInterface;
 
 import net.minecraft.block.Block;

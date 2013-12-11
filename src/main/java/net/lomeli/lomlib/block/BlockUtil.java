@@ -8,7 +8,9 @@ import net.lomeli.lomlib.LomLib;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class BlockUtil {
@@ -32,14 +34,14 @@ public class BlockUtil {
         try {
             String itemClass = BlockClass;
             Object obj = Class.forName(itemClass).getField(itemString).get(null);
-            if(obj instanceof Block)
+            if (obj instanceof Block)
                 item = new ItemStack((Block) obj, 1, meta);
-            else if(obj instanceof ItemStack)
+            else if (obj instanceof ItemStack)
                 item = (ItemStack) obj;
-            if(LomLib.debug)
+            if (LomLib.debug)
                 LomLib.logger.log(Level.INFO, obj.toString());
 
-        }catch(Exception ex) {
+        } catch (Exception ex) {
             FMLLog.warning("Could not retrieve block identified by: " + itemString);
         }
         return item;
@@ -59,15 +61,15 @@ public class BlockUtil {
         try {
             String itemClass = BlockClass;
             Object obj = Class.forName(itemClass).getField(itemString).get(null);
-            if(obj instanceof Block)
+            if (obj instanceof Block)
                 item = new ItemStack((Block) obj);
-            else if(obj instanceof ItemStack)
+            else if (obj instanceof ItemStack)
                 item = (ItemStack) obj;
 
-            if(LomLib.debug)
+            if (LomLib.debug)
                 LomLib.logger.log(Level.INFO, obj.toString());
 
-        }catch(Exception ex) {
+        } catch (Exception ex) {
             FMLLog.warning("Could not retrieve block identified by: " + itemString);
         }
         return item;
@@ -84,17 +86,12 @@ public class BlockUtil {
      * @author Lomeli12
      */
     public static boolean isBlockAdjacentToWater(World world, int x, int y, int z) {
-        if(world.getBlockId(x, y + 1, z) == Block.waterStill.blockID || world.getBlockId(x, y - 1, z) == Block.waterStill.blockID
-                || world.getBlockId(x + 1, y, z) == Block.waterStill.blockID
-                || world.getBlockId(x - 1, y, z) == Block.waterStill.blockID
-                || world.getBlockId(x, y, z + 1) == Block.waterStill.blockID
-                || world.getBlockId(x, y, z - 1) == Block.waterStill.blockID
-                || world.getBlockId(x, y + 1, z) == Block.waterMoving.blockID
-                || world.getBlockId(x, y - 1, z) == Block.waterMoving.blockID
-                || world.getBlockId(x + 1, y, z) == Block.waterMoving.blockID
-                || world.getBlockId(x - 1, y, z) == Block.waterMoving.blockID
-                || world.getBlockId(x, y, z + 1) == Block.waterMoving.blockID
-                || world.getBlockId(x, y, z - 1) == Block.waterMoving.blockID)
+        if (world.getBlockId(x, y + 1, z) == Block.waterStill.blockID || world.getBlockId(x, y - 1, z) == Block.waterStill.blockID
+                || world.getBlockId(x + 1, y, z) == Block.waterStill.blockID || world.getBlockId(x - 1, y, z) == Block.waterStill.blockID
+                || world.getBlockId(x, y, z + 1) == Block.waterStill.blockID || world.getBlockId(x, y, z - 1) == Block.waterStill.blockID
+                || world.getBlockId(x, y + 1, z) == Block.waterMoving.blockID || world.getBlockId(x, y - 1, z) == Block.waterMoving.blockID
+                || world.getBlockId(x + 1, y, z) == Block.waterMoving.blockID || world.getBlockId(x - 1, y, z) == Block.waterMoving.blockID
+                || world.getBlockId(x, y, z + 1) == Block.waterMoving.blockID || world.getBlockId(x, y, z - 1) == Block.waterMoving.blockID)
             return true;
         else
             return false;
@@ -112,11 +109,9 @@ public class BlockUtil {
      * @author Lomeli12
      */
     public static boolean isBlockAdjacentToWaterSource(World world, int x, int y, int z) {
-        if(world.getBlockId(x, y + 1, z) == Block.waterStill.blockID || world.getBlockId(x, y - 1, z) == Block.waterStill.blockID
-                || world.getBlockId(x + 1, y, z) == Block.waterStill.blockID
-                || world.getBlockId(x - 1, y, z) == Block.waterStill.blockID
-                || world.getBlockId(x, y, z + 1) == Block.waterStill.blockID
-                || world.getBlockId(x, y, z - 1) == Block.waterStill.blockID)
+        if (world.getBlockId(x, y + 1, z) == Block.waterStill.blockID || world.getBlockId(x, y - 1, z) == Block.waterStill.blockID
+                || world.getBlockId(x + 1, y, z) == Block.waterStill.blockID || world.getBlockId(x - 1, y, z) == Block.waterStill.blockID
+                || world.getBlockId(x, y, z + 1) == Block.waterStill.blockID || world.getBlockId(x, y, z - 1) == Block.waterStill.blockID)
             return true;
         else
             return false;
@@ -125,38 +120,53 @@ public class BlockUtil {
     public static boolean isAboveBlock(Entity entity, int x, int y, int z) {
         return ((entity.posX < x + 1.4D && entity.posX >= x) && (entity.posY < y + 1.5D && entity.posY >= y) && (entity.posZ < z + 1.4D && entity.posZ >= z));
     }
-    
+
     /**
      * Use to check if double chest or not.
+     * 
      * @param world
      * @param x
      * @param y
      * @param z
      * @return
      */
-    public static boolean isThereANeighborChest(World world, int x, int y, int z){
+    public static boolean isThereANeighborChest(World world, int x, int y, int z) {
         boolean yesThereIs = false;
-        if(world.getBlockId(x, y, z) == Block.chest.blockID){
-            if(world.getBlockId(x + 1, y, z) == Block.chest.blockID)
+        if (world.getBlockId(x, y, z) == Block.chest.blockID) {
+            if (world.getBlockId(x + 1, y, z) == Block.chest.blockID)
                 yesThereIs = true;
-            if(world.getBlockId(x - 1, y, z) == Block.chest.blockID)
+            if (world.getBlockId(x - 1, y, z) == Block.chest.blockID)
                 yesThereIs = true;
-            if(world.getBlockId(x, y, z + 1) == Block.chest.blockID)
+            if (world.getBlockId(x, y, z + 1) == Block.chest.blockID)
                 yesThereIs = true;
-            if(world.getBlockId(x, y, z - 1) == Block.chest.blockID)
+            if (world.getBlockId(x, y, z - 1) == Block.chest.blockID)
+                yesThereIs = true;
+        } else if (world.getBlockId(x, y, z) == Block.chestTrapped.blockID) {
+            if (world.getBlockId(x + 1, y, z) == Block.chestTrapped.blockID)
+                yesThereIs = true;
+            if (world.getBlockId(x - 1, y, z) == Block.chestTrapped.blockID)
+                yesThereIs = true;
+            if (world.getBlockId(x, y, z + 1) == Block.chestTrapped.blockID)
+                yesThereIs = true;
+            if (world.getBlockId(x, y, z - 1) == Block.chestTrapped.blockID)
                 yesThereIs = true;
         }
-        else if(world.getBlockId(x, y, z) == Block.chestTrapped.blockID){
-            if(world.getBlockId(x + 1, y, z) == Block.chestTrapped.blockID)
-                yesThereIs = true;
-            if(world.getBlockId(x - 1, y, z) == Block.chestTrapped.blockID)
-                yesThereIs = true;
-            if(world.getBlockId(x, y, z + 1) == Block.chestTrapped.blockID)
-                yesThereIs = true;
-            if(world.getBlockId(x, y, z - 1) == Block.chestTrapped.blockID)
-                yesThereIs = true;
-        }
-        
+
         return yesThereIs;
+    }
+
+    public static int determineOrientation(World world, int x, int y, int z, EntityLivingBase entity) {
+        if (MathHelper.abs((float) entity.posX - (float) x) < 2.0F && MathHelper.abs((float) entity.posZ - (float) z) < 2.0F) {
+            double d0 = entity.posY + 1.82D - (double) entity.yOffset;
+
+            if (d0 - (double) y > 2.0D)
+                return 1;
+
+            if ((double) y - d0 > 0.0D)
+                return 0;
+        }
+
+        int l = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+        return l == 0 ? 2 : (l == 1 ? 5 : (l == 2 ? 3 : (l == 3 ? 4 : 0)));
     }
 }

@@ -133,9 +133,8 @@ public class RenderEntityBlock extends Render {
         if(doLight) {
             f4 = block.getBlockBrightness(blockAccess, i, j, k);
             f5 = block.getBlockBrightness(blockAccess, i, j, k);
-            if(f5 < f4) {
+            if(f5 < f4)
                 f5 = f4;
-            }
             tessellator.setColorOpaque_F(f * f5, f * f5, f * f5);
         }
 
@@ -143,9 +142,8 @@ public class RenderEntityBlock extends Render {
 
         if(doLight) {
             f5 = block.getBlockBrightness(blockAccess, i, j, k);
-            if(f5 < f4) {
+            if(f5 < f4)
                 f5 = f4;
-            }
             tessellator.setColorOpaque_F(f1 * f5, f1 * f5, f1 * f5);
         }
 
@@ -153,9 +151,8 @@ public class RenderEntityBlock extends Render {
 
         if(doLight) {
             f5 = block.getBlockBrightness(blockAccess, i, j, k);
-            if(f5 < f4) {
+            if(f5 < f4)
                 f5 = f4;
-            }
             tessellator.setColorOpaque_F(f2 * f5, f2 * f5, f2 * f5);
         }
 
@@ -163,9 +160,8 @@ public class RenderEntityBlock extends Render {
 
         if(doLight) {
             f5 = block.getBlockBrightness(blockAccess, i, j, k);
-            if(f5 < f4) {
+            if(f5 < f4)
                 f5 = f4;
-            }
             tessellator.setColorOpaque_F(f2 * f5, f2 * f5, f2 * f5);
         }
 
@@ -173,9 +169,8 @@ public class RenderEntityBlock extends Render {
 
         if(doLight) {
             f5 = block.getBlockBrightness(blockAccess, i, j, k);
-            if(f5 < f4) {
+            if(f5 < f4)
                 f5 = f4;
-            }
             tessellator.setColorOpaque_F(f3 * f5, f3 * f5, f3 * f5);
         }
 
@@ -183,16 +178,14 @@ public class RenderEntityBlock extends Render {
 
         if(doLight) {
             f5 = block.getBlockBrightness(blockAccess, i, j, k);
-            if(f5 < f4) {
+            if(f5 < f4) 
                 f5 = f4;
-            }
             tessellator.setColorOpaque_F(f3 * f5, f3 * f5, f3 * f5);
         }
 
         renderBlocks.renderFaceXPos(null, 0, 0, 0, block.getBlockTextureFromSide(5));
 
-        if(doTessellating) {
+        if(doTessellating)
             tessellator.draw();
-        }
     }
 }

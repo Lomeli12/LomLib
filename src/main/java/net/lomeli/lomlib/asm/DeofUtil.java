@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.logging.Level;
 
 import net.lomeli.lomlib.LomLib;
+
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 
 public class DeofUtil {

@@ -17,7 +17,9 @@ import net.lomeli.lomlib.capes.CapeUtil;
 import net.lomeli.lomlib.command.CommandLomLib;
 import net.lomeli.lomlib.libs.LibraryStrings;
 import net.lomeli.lomlib.nei.NEIAddon;
+import net.lomeli.lomlib.render.RenderUtil;
 import net.lomeli.lomlib.util.LogHelper;
+import net.lomeli.lomlib.util.ModLoaded;
 import net.lomeli.lomlib.util.ResourceUtil;
 import net.lomeli.lomlib.util.XMLConfiguration;
 import net.lomeli.lomlib.util.XMLConfiguration.ConfigEnum;
@@ -61,8 +63,10 @@ public class LomLib extends DummyModContainer {
     
     @Subscribe
     public void postInit(FMLPostInitializationEvent event) {
-        if(event.getSide().isClient())
-            NEIAddon.loadAddon();
+        if(event.getSide().isClient()){
+            if(ModLoaded.isModInstalled("NotEnoughItems"))
+                NEIAddon.loadAddon();
+        }
     }
 
     public void configureMod(File configFile) {
@@ -90,6 +94,7 @@ public class LomLib extends DummyModContainer {
     @Override
     public boolean registerBus(EventBus bus, LoadController controller) {
         bus.register(this);
+        bus.register(new RenderUtil());
         return true;
     }
 

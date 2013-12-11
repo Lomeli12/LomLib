@@ -75,7 +75,7 @@ public class CommandLomLib extends CommandBase {
             } else if (argument1.equalsIgnoreCase("clearLivingEntities")) {
                 for (Entity entity : entityList) {
                     if (entity instanceof EntityLivingBase) {
-                        entity.setDead();
+                        ((EntityLivingBase)entity).setDead();
                     }
                 }
                 sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All Living mobs have been removed.");
