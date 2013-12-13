@@ -23,11 +23,12 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Transformation;
 import codechicken.lib.vec.Translation;
 
-@SideOnly(Side.CLIENT)
 public class RenderUtil {
     
+    @SideOnly(Side.CLIENT)
     private static Set<LightCache> renderQueue = new HashSet<LightCache>();
     
+    @SideOnly(Side.CLIENT)
     @ForgeSubscribe
     public void onRenderWorldLast(RenderWorldLastEvent event) {
         Tessellator tess = Tessellator.instance;
@@ -46,29 +47,35 @@ public class RenderUtil {
         GL11.glPopMatrix();
     }
     
+    @SideOnly(Side.CLIENT)
     public static void addGlow(int x, int y, int z, int color, Cuboid6 box, int alpha){
         renderQueue.add(new LightCache(x, y, z, color, box, alpha));
     }
     
+    @SideOnly(Side.CLIENT)
     public static void addGlow(int x, int y, int z, int color, Cuboid6 box){
         renderQueue.add(new LightCache(x, y, z, color, box));
     }
     
+    @SideOnly(Side.CLIENT)
     private static void renderGlow(Tessellator tess, World world, LightCache cc) {
         CCRenderState.setBrightness(world, cc.pos.x, cc.pos.y, cc.pos.z);
         renderGlow(tess, cc.cube, cc.color, cc.t, cc.alpha);
     }
     
+    @SideOnly(Side.CLIENT)
     public static void renderGlow(Tessellator tess, Cuboid6 cuboid, int colour, Transformation t, int alpha) {
         tess.setColorRGBA_I(colour, alpha);
         RenderUtils.renderBlock(cuboid, 0, t, null, null);
     }
     
+    @SideOnly(Side.CLIENT)
     public static void renderGlow(Tessellator tess, Cuboid6 cuboid, int colour, Transformation t) {
         tess.setColorRGBA_I(colour, 128);
         RenderUtils.renderBlock(cuboid, 0, t, null, null);
     }
     
+    @SideOnly(Side.CLIENT)
     public static void prepareRenderState() {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
@@ -80,6 +87,7 @@ public class RenderUtil {
         CCRenderState.startDrawing(7);
     }
 
+    @SideOnly(Side.CLIENT)
     public static void restoreRenderState() {
         CCRenderState.draw();
         GL11.glDepthMask(true);
@@ -91,6 +99,7 @@ public class RenderUtil {
         GL11.glDisable(GL11.GL_BLEND);
     }
     
+    @SideOnly(Side.CLIENT)
     private static class LightCache {
         final BlockCoord pos;
         final int color, alpha;

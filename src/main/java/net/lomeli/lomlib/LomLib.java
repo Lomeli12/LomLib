@@ -64,6 +64,8 @@ public class LomLib extends DummyModContainer {
     @Subscribe
     public void postInit(FMLPostInitializationEvent event) {
         if(event.getSide().isClient()){
+            MinecraftForge.EVENT_BUS.register(new RenderUtil());
+            
             if(ModLoaded.isModInstalled("NotEnoughItems"))
                 NEIAddon.loadAddon();
         }
@@ -94,7 +96,6 @@ public class LomLib extends DummyModContainer {
     @Override
     public boolean registerBus(EventBus bus, LoadController controller) {
         bus.register(this);
-        bus.register(new RenderUtil());
         return true;
     }
 
