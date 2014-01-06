@@ -61,7 +61,8 @@ public class CapesTickHandler implements ITickHandler {
             AbstractClientPlayer.class.getDeclaredField("downloadImageCape").set(player, CapeUtil.getInstance().getUserCape(username));
             AbstractClientPlayer.class.getDeclaredField("locationCape").set(player, CapeUtil.getInstance().getUserResource(username));
         } catch (Exception e) {
-            LomLib.logger.log(Level.INFO, "Could not apply cape to " + username);
+            if(LomLib.debug)
+                LomLib.logger.log(Level.INFO, "Could not apply cape to " + username);
         }
     }
 

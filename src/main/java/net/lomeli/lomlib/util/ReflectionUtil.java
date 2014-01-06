@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.asm;
+package net.lomeli.lomlib.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -8,7 +8,7 @@ import net.lomeli.lomlib.LomLib;
 
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 
-public class DeofUtil {
+public class ReflectionUtil {
 
 	public static void setFieldAccess(String className, String fieldName,
 			boolean access, boolean debug) {
@@ -93,4 +93,38 @@ public class DeofUtil {
 			IllegalArgumentException, IllegalAccessException {
 		return (ThreadDownloadImageData) getField(targetClass, fieldName).get(instance);
 	}
+	
+	public static int getIntField(Object obj, String fieldName){
+        try{
+            return obj.getClass().getDeclaredField(fieldName).getInt(obj);
+        }catch(Exception e){
+            return 0;
+        }
+    }
+    
+    public static Object getField(Object obj, String field){
+        try{
+            return obj.getClass().getDeclaredField(field).get(obj);
+        }catch(Exception e){
+            return null;
+        }
+    }
+    
+    public static void setField(Object obj, String field, Object set){
+        try{
+            obj.getClass().getDeclaredField(field).set(obj, set);
+        }catch(Exception e){
+            if(LomLib.debug)
+                LomLib.logger.log(Level.WARNING, "Could not modify field " + field + " in " + obj.toString());
+        }
+    }
+    
+    public static void useMethod(Object obj, String method, Object... arguments){
+        try{
+            obj.getClass().getDeclaredMethod(method, arguments.getClass()).invoke(obj, arguments);
+        }catch(Exception e){
+            if(LomLib.debug)
+                LomLib.logger.log(Level.WARNING, "Could not use method " + method + " within " + obj.toString());
+        }
+    }
 }

@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.lomeli.lomlib.block.BlockUtil;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -14,6 +15,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 public class EntityUtil {
@@ -28,13 +31,13 @@ public class EntityUtil {
     }
 
     public static boolean isUndeadEntity(EntityLivingBase entity) {
-        if(isHostileEntity(entity))
+        if (isHostileEntity(entity))
             return entity.getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD);
         return false;
     }
 
     public static boolean isEntityMoving(Entity entity) {
-        if(entity != null && (entity.motionX != 0 || entity.motionY != 0 || entity.motionZ != 0))
+        if (entity != null && (entity.motionX != 0 || entity.motionY != 0 || entity.motionZ != 0))
             return true;
         return false;
     }
@@ -48,16 +51,16 @@ public class EntityUtil {
      * @param hostile
      */
     public static void entityDropItem(EntityLivingBase entity, ItemStack itemStack, double dropRate, boolean hostile) {
-        if(hostile) {
-            if(isHostileEntity(entity)) {
+        if (hostile) {
+            if (isHostileEntity(entity)) {
                 double random = Math.random();
 
-                if(random < dropRate)
+                if (random < dropRate)
                     entity.entityDropItem(itemStack, 0.0F);
             }
-        }else {
+        } else {
             double random = Math.random();
-            if(random < dropRate)
+            if (random < dropRate)
                 entity.entityDropItem(itemStack, 0.0F);
         }
     }
@@ -69,11 +72,11 @@ public class EntityUtil {
      * @return true if player caused damage, else false
      */
     public static boolean wasEntityKilledByPlayer(DamageSource source) {
-        if(source.getDamageType().equals("player"))
+        if (source.getDamageType().equals("player"))
             return true;
-        if(source.getSourceOfDamage() instanceof EntityArrow) {
-            if(((EntityArrow) source.getSourceOfDamage()).shootingEntity != null) {
-                if(((EntityArrow) source.getSourceOfDamage()).shootingEntity instanceof EntityPlayer)
+        if (source.getSourceOfDamage() instanceof EntityArrow) {
+            if (((EntityArrow) source.getSourceOfDamage()).shootingEntity != null) {
+                if (((EntityArrow) source.getSourceOfDamage()).shootingEntity instanceof EntityPlayer)
                     return true;
             }
         }
@@ -91,30 +94,27 @@ public class EntityUtil {
     }
 
     @SuppressWarnings("rawtypes")
-    public static boolean transformEntityItem(World world, int x, int y, int z, EntityPlayer player, int initId,
-            ItemStack transformation, ItemStack requiredItem, boolean effect) {
+    public static boolean transformEntityItem(World world, int x, int y, int z, EntityPlayer player, int initId, ItemStack transformation, ItemStack requiredItem, boolean effect) {
         List entityList = world.getEntitiesWithinAABB(EntityItem.class, player.boundingBox.expand(15D, 15D, 15D));
-        for(int i = 0; i < entityList.size(); i++) {
+        for (int i = 0; i < entityList.size(); i++) {
             Entity ent = (Entity) entityList.get(i);
-            if(ent != null && ent instanceof EntityItem) {
+            if (ent != null && ent instanceof EntityItem) {
                 EntityItem item = (EntityItem) ent;
-                if(BlockUtil.isAboveBlock(item, x, y, z)) {
-                    if(item != null && item.getEntityItem().itemID == initId) {
-                        if(player.getCurrentEquippedItem() != null
-                                && player.getCurrentEquippedItem().itemID == requiredItem.itemID) {
+                if (BlockUtil.isAboveBlock(item, x, y, z)) {
+                    if (item != null && item.getEntityItem().itemID == initId) {
+                        if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().itemID == requiredItem.itemID) {
                             ItemStack manual = transformation;
                             manual.stackSize = item.getEntityItem().stackSize;
-                            if(manual != null) {
-                                if(!world.isRemote) {
+                            if (manual != null) {
+                                if (!world.isRemote) {
                                     item.setEntityItemStack(manual);
                                     player.getCurrentEquippedItem().damageItem(manual.stackSize, player);
                                 }
-                                if(effect) {
-                                    for(int k = 0; k < 2; ++k) {
-                                        world.spawnParticle("largesmoke", item.posX + (world.rand.nextDouble() - 0.5D)
-                                                * (double) item.width, (item.posY + 0.5D) + world.rand.nextDouble()
-                                                * (double) item.height, item.posZ + (world.rand.nextDouble() - 0.5D)
-                                                * (double) item.width, 0.0D, 0.0D, 0.0D);
+                                if (effect) {
+                                    for (int k = 0; k < 2; ++k) {
+                                        world.spawnParticle("largesmoke", item.posX + (world.rand.nextDouble() - 0.5D) * (double) item.width,
+                                                (item.posY + 0.5D) + world.rand.nextDouble() * (double) item.height, item.posZ + (world.rand.nextDouble() - 0.5D)
+                                                        * (double) item.width, 0.0D, 0.0D, 0.0D);
                                     }
                                 }
                                 return true;
@@ -125,5 +125,82 @@ public class EntityUtil {
             }
         }
         return false;
+    }
+
+    public static boolean teleportRandomly(EntityLivingBase entity) {
+        double var1 = entity.posX + (entity.worldObj.rand.nextDouble() - 0.5D) * 64.0D;
+        double var3 = entity.posY + (double) (entity.worldObj.rand.nextInt(64) - 32);
+        double var5 = entity.posZ + (entity.worldObj.rand.nextDouble() - 0.5D) * 64.0D;
+        return teleportTo(entity, var1, var3, var5);
+    }
+
+    public static boolean teleportToEntity(EntityLivingBase entity, Entity par1Entity) {
+        Vec3 var2 = entity.worldObj.getWorldVec3Pool().getVecFromPool(entity.posX - par1Entity.posX,
+                entity.boundingBox.minY + (double) (entity.height / 2.0F) - par1Entity.posY + (double) par1Entity.getEyeHeight(), entity.posZ - par1Entity.posZ);
+        var2 = var2.normalize();
+        double var3 = 16.0D;
+        double var5 = entity.posX + (entity.worldObj.rand.nextDouble() - 0.5D) * 8.0D - var2.xCoord * var3;
+        double var7 = entity.posY + (double) (entity.worldObj.rand.nextInt(16) - 8) - var2.yCoord * var3;
+        double var9 = entity.posZ + (entity.worldObj.rand.nextDouble() - 0.5D) * 8.0D - var2.zCoord * var3;
+        return teleportTo(entity, var5, var7, var9);
+    }
+
+    public static boolean teleportTo(EntityLivingBase entity, double par1, double par3, double par5) {
+        double var7 = entity.posX;
+        double var9 = entity.posY;
+        double var11 = entity.posZ;
+        entity.posX = par1;
+        entity.posY = par3;
+        entity.posZ = par5;
+        boolean var13 = false;
+        int var14 = MathHelper.floor_double(entity.posX);
+        int var15 = MathHelper.floor_double(entity.posY);
+        int var16 = MathHelper.floor_double(entity.posZ);
+        int var18;
+
+        if (entity.worldObj.blockExists(var14, var15, var16)) {
+            boolean var17 = false;
+
+            while (!var17 && var15 > 0) {
+                var18 = entity.worldObj.getBlockId(var14, var15 - 1, var16);
+
+                if (var18 != 0 && Block.blocksList[var18].blockMaterial.blocksMovement()) {
+                    var17 = true;
+                } else {
+                    --entity.posY;
+                    --var15;
+                }
+            }
+
+            if (var17) {
+                entity.setPositionAndUpdate(entity.posX, entity.posY, entity.posZ);
+
+                if (entity.worldObj.getCollidingBoundingBoxes(entity, entity.boundingBox).isEmpty() && !entity.worldObj.isAnyLiquid(entity.boundingBox)) {
+                    var13 = true;
+                }
+            }
+        }
+
+        if (!var13) {
+            entity.setPositionAndUpdate(var7, var9, var11);
+            return false;
+        } else {
+            short var30 = 128;
+
+            for (var18 = 0; var18 < var30; ++var18) {
+                double var19 = (double) var18 / ((double) var30 - 1.0D);
+                float var21 = (entity.worldObj.rand.nextFloat() - 0.5F) * 0.2F;
+                float var22 = (entity.worldObj.rand.nextFloat() - 0.5F) * 0.2F;
+                float var23 = (entity.worldObj.rand.nextFloat() - 0.5F) * 0.2F;
+                double var24 = var7 + (entity.posX - var7) * var19 + (entity.worldObj.rand.nextDouble() - 0.5D) * (double) entity.width * 2.0D;
+                double var26 = var9 + (entity.posY - var9) * var19 + entity.worldObj.rand.nextDouble() * (double) entity.height;
+                double var28 = var11 + (entity.posZ - var11) * var19 + (entity.worldObj.rand.nextDouble() - 0.5D) * (double) entity.width * 2.0D;
+                entity.worldObj.spawnParticle("portal", var24, var26, var28, (double) var21, (double) var22, (double) var23);
+            }
+
+            entity.worldObj.playSoundEffect(var7, var9, var11, "mob.endermen.portal", 1.0F, 1.0F);
+            entity.playSound("mob.endermen.portal", 1.0F, 1.0F);
+            return true;
+        }
     }
 }

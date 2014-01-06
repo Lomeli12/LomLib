@@ -99,6 +99,29 @@ public class XMLConfiguration {
             }
         }
     }
+    
+    public int[] getIntArray(String nodeName, int[] defaultValue, String comment, ConfigEnum type){
+        todo1.add(nodeName);
+        todo3.add(comment);
+        todo4.add(type);
+        if(praseLocalXMLFile(configurationFile, nodeName) == null) {
+            String value = "";
+            for(int i = 0; i < defaultValue.length; i++){
+                value.concat(defaultValue[i] + ";");
+            }
+            todo2.add(String.valueOf(value));
+            work = true;
+            return defaultValue;
+        }
+        todo2.add(String.valueOf(praseLocalXMLFile(configurationFile, nodeName)));
+        String value = String.valueOf(praseLocalXMLFile(configurationFile, nodeName));
+        String[] sArray = value.split(";");
+        int[] finalArray = new int[sArray.length];
+        for(int i = 0; i < sArray.length; i++){
+            finalArray[i] = Integer.parseInt(sArray[i]);
+        }
+        return finalArray;
+    }
 
     public int getInt(String nodeName, int defaultValue, String comment, ConfigEnum enumType) {
         todo1.add(nodeName);
@@ -185,6 +208,14 @@ public class XMLConfiguration {
         }catch(Exception e) {
         }
         return obj;
+    }
+    
+    public int getBlockID(String blockName, int defaultValue){
+        return getInt(blockName, defaultValue, ConfigEnum.BLOCK_ID);
+    }
+    
+    public int getItemID(String itemName, int defaultValue){
+        return getInt(itemName, defaultValue, ConfigEnum.ITEM_ID);
     }
 
     public static enum ConfigEnum {

@@ -70,7 +70,7 @@ public class ShapedFluidRecipeHandler extends ShapedRecipeHandler {
             if (irecipe instanceof ShapedFluidRecipe)
                 recipe = fluidShapedRecipe((ShapedFluidRecipe) irecipe);
 
-            if (recipe == null || !recipe.contains(recipe.ingredients, ingredient.itemID))
+            if (recipe == null || !recipe.contains(recipe.ingredients, ingredient))
                 continue;
 
             recipe.computeVisuals();

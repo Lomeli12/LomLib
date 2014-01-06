@@ -17,7 +17,6 @@ import net.lomeli.lomlib.capes.CapeUtil;
 import net.lomeli.lomlib.command.CommandLomLib;
 import net.lomeli.lomlib.libs.LibraryStrings;
 import net.lomeli.lomlib.nei.NEIAddon;
-import net.lomeli.lomlib.render.RenderUtil;
 import net.lomeli.lomlib.util.LogHelper;
 import net.lomeli.lomlib.util.ModLoaded;
 import net.lomeli.lomlib.util.ResourceUtil;
@@ -64,7 +63,6 @@ public class LomLib extends DummyModContainer {
     @Subscribe
     public void postInit(FMLPostInitializationEvent event) {
         if(event.getSide().isClient()){
-            MinecraftForge.EVENT_BUS.register(new RenderUtil());
             
             if(ModLoaded.isModInstalled("NotEnoughItems"))
                 NEIAddon.loadAddon();
