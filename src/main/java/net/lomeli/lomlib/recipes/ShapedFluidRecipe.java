@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.lomeli.lomlib.fluid.FluidUtil;
+import net.lomeli.lomlib.util.FluidUtil;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.crafting.IRecipe;

@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.nei;
+package net.lomeli.lomlib.client.nei;
 
 import java.util.ArrayList;
 import java.util.List;

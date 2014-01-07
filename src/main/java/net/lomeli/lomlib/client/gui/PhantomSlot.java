@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.gui;
+package net.lomeli.lomlib.client.gui;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -19,6 +19,7 @@ public class PhantomSlot extends Slot {
 
     @Override
     public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
+        
         return false;
     }
 

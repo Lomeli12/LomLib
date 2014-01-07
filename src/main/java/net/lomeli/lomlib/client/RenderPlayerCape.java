@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.capes;
+package net.lomeli.lomlib.client;
 
 import java.util.logging.Level;
 

@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.render;
+package net.lomeli.lomlib.client.render;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;

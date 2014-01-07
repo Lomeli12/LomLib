@@ -31,15 +31,11 @@ public class EntityUtil {
     }
 
     public static boolean isUndeadEntity(EntityLivingBase entity) {
-        if (isHostileEntity(entity))
-            return entity.getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD);
-        return false;
+        return isHostileEntity(entity) ? entity.getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) : false;
     }
 
     public static boolean isEntityMoving(Entity entity) {
-        if (entity != null && (entity.motionX != 0 || entity.motionY != 0 || entity.motionZ != 0))
-            return true;
-        return false;
+        return (entity != null && (entity.motionX != 0 || entity.motionY != 0 || entity.motionZ != 0));
     }
 
     /**

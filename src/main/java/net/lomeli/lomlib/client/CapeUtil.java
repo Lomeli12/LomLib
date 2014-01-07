@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.capes;
+package net.lomeli.lomlib.client;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -24,6 +24,8 @@ import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.texture.TextureObject;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
+
+import net.minecraftforge.common.MinecraftForge;
 
 @SideOnly(Side.CLIENT)
 public class CapeUtil {
@@ -65,7 +67,7 @@ public class CapeUtil {
         }catch(Exception e) {
         }
         TickRegistry.registerTickHandler(new CapesTickHandler(), Side.CLIENT);
-        //MinecraftForge.EVENT_BUS.register(new RenderPlayerCape());
+        MinecraftForge.EVENT_BUS.register(new RenderPlayerCape());
     }
 
     public void giveUserCape(String user, String cape) {

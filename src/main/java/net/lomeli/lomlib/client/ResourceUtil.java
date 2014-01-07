@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.util;
+package net.lomeli.lomlib.client;
 
 import java.io.File;
 
@@ -11,8 +11,8 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 
+import net.lomeli.lomlib.client.render.RenderEntityBlock;
 import net.lomeli.lomlib.entity.EntityBlock;
-import net.lomeli.lomlib.render.RenderEntityBlock;
 
 @SideOnly(Side.CLIENT)
 public class ResourceUtil {

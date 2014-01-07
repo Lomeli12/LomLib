@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.List;
 
-import net.lomeli.lomlib.fluid.FluidUtil;
+import net.lomeli.lomlib.util.FluidUtil;
 
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;

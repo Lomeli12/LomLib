@@ -1,11 +1,9 @@
-package net.lomeli.lomlib.fluid;
+package net.lomeli.lomlib.client.gui;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-import net.lomeli.lomlib.gui.GuiContainerPlus;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
