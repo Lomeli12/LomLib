@@ -1,13 +1,13 @@
 package net.lomeli.lomlib.util;
 
 import net.lomeli.lomlib.libs.Incomplete;
-
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ReportedException;
@@ -43,43 +43,37 @@ public class InventoryUtil {
     /**
      * Checks an entire inventory for the first instance of a certain item
      * 
-     * @param itemID
-     *            Id for the item or block you're looking for
+     * @param item
+     *            The item you're looking for
      * @param inventory
      *            Inventory you are searching
      * @author Lomeli12
+     * 
      */
-    public static int getSlotContainingItem(int itemID, int meta, ItemStack[] inventory) {
+    public static int getSlotContainingItem(ItemStack item, ItemStack[] inventory) {
         for(int j = 0; j < inventory.length; j++) {
-            if(inventory[j] != null && inventory[j].itemID == itemID && inventory[j].getItemDamage() == meta)
+            if(inventory[j] != null && inventory[j].getItem().equals(item.getItem())
+                    && inventory[j].getItemDamage() == item.getItemDamage())
                 return j;
         }
         return -1;
     }
 
-    public static int getSlotContainingItem(int itemID, ItemStack[] inventory) {
-        return getSlotContainingItem(itemID, 0, inventory);
+    public static int getSlotContainingItem(Item item, ItemStack[] inventory) {
+        return getSlotContainingItem(new ItemStack(item), inventory);
     }
 
-    public static int getSlotContainingStack(ItemStack stack, ItemStack[] inventory) {
-        return getSlotContainingItem(stack.itemID, stack.getItemDamage(), inventory);
-    }
-
-    public static int getPlayerInvSlotContainingItem(int itemID, int meta, InventoryPlayer inventory) {
+    public static int getPlayerInvSlotContainingItem(ItemStack item, InventoryPlayer inventory) {
         for(int j = 0; j < inventory.getSizeInventory(); j++) {
-            if(inventory.getStackInSlot(j) != null && inventory.getStackInSlot(j).itemID == itemID
-                    && inventory.getStackInSlot(j).getItemDamage() == meta)
+            if(inventory.getStackInSlot(j) != null && inventory.getStackInSlot(j).getItem().equals(item.getItem())
+                    && inventory.getStackInSlot(j).getItemDamage() == item.getItemDamage())
                 return j;
         }
         return -1;
     }
 
-    public static int getPlayerInvSlotContainingItem(int itemID, InventoryPlayer inventory) {
-        return getPlayerInvSlotContainingItem(itemID, 0, inventory);
-    }
-
-    public static int getPlayerInvSlotContainingStack(ItemStack stack, InventoryPlayer inventory) {
-        return getPlayerInvSlotContainingItem(stack.itemID, stack.getItemDamage(), inventory);
+    public static int getPlayerInvSlotContainingItem(Item item, InventoryPlayer inventory) {
+        return getPlayerInvSlotContainingItem(new ItemStack(item), inventory);
     }
 
     public static int getFirstEmptyStack(IInventory inventory) {
@@ -127,7 +121,7 @@ public class InventoryUtil {
             }catch(Throwable throwable) {
                 CrashReport crashreport = CrashReport.makeCrashReport(throwable, "[LomLib]: Failed to add item to inventory");
                 CrashReportCategory crashreportcategory = crashreport.makeCategory("Item being added");
-                crashreportcategory.addCrashSection("Item ID", Integer.valueOf(stack.itemID));
+                crashreportcategory.addCrashSection("Item Name", stack.getDisplayName());
                 crashreportcategory.addCrashSection("Item data", Integer.valueOf(stack.getItemDamage()));
                 throw new ReportedException(crashreport);
             }
@@ -136,7 +130,6 @@ public class InventoryUtil {
 
     @SuppressWarnings("unused")
     private static int storePartialItemStack(ItemStack par1ItemStack, IInventory inventory) {
-        int i = par1ItemStack.itemID;
         int j = par1ItemStack.stackSize;
         int k;
         if(par1ItemStack != null) {
@@ -164,7 +157,7 @@ public class InventoryUtil {
                     return j;
                 }else {
                     if(inventory.getStackInSlot(k) == null) {
-                        inventory.setInventorySlotContents(k, new ItemStack(i, 0, par1ItemStack.getItemDamage()));
+                        inventory.setInventorySlotContents(k, new ItemStack(par1ItemStack.getItem(), 0, par1ItemStack.getItemDamage()));
 
                         if(par1ItemStack.hasTagCompound()) {
                             inventory.getStackInSlot(k).setTagCompound((NBTTagCompound) par1ItemStack.getTagCompound().copy());
@@ -200,7 +193,7 @@ public class InventoryUtil {
     private static int storeItemStack(ItemStack par1ItemStack, IInventory inventory) {
         for(int i = 0; i < inventory.getSizeInventory(); ++i) {
             if(inventory.getStackInSlot(i) != null
-                    && inventory.getStackInSlot(i).itemID == par1ItemStack.itemID
+                    && inventory.getStackInSlot(i).getItem().equals(par1ItemStack.getItem())
                     && inventory.getStackInSlot(i).isStackable()
                     && inventory.getStackInSlot(i).stackSize < inventory.getStackInSlot(i).getMaxStackSize()
                     && inventory.getStackInSlot(i).stackSize < inventory.getInventoryStackLimit()

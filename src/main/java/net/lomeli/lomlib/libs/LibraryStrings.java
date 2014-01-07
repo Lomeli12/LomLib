@@ -11,6 +11,7 @@ public class LibraryStrings {
     public static final String CAPE_XML = "https://dl.dropboxusercontent.com/u/17430088/Minecraft%20Mods/Capes/lomlibcapes.xml";
     public static final String DEBUG_MODE = "Will display different types of information when set to true. Useful for those who are using LomLib to develop their mods.";
     public static final String CAPES = "Enable capes for approved users.(Client-side only)";
+    public static final String MC_VERSION = "1.6.4";
     public static String recommendedForgeVersion = "9.11.1.964";
     
     public static final String NEI_SHAPED = "recipe.lomlib:shapedFluid";

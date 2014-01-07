@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.nei;
+package net.lomeli.lomlib.client.nei;
 
 import java.util.List;
 
@@ -99,7 +99,7 @@ public class ShapedFluidRecipeHandler extends ShapedRecipeHandler {
                 return null;
         }
 
-        return new CachedShapedRecipe(width, height, items, recipe.getRecipeOutput());
+        return null;//new CachedShapedRecipe(width, height, items, recipe.);
     }
 
 }

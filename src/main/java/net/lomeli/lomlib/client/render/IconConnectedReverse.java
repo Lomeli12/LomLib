@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.render;
+package net.lomeli.lomlib.client.render;
 
 public class IconConnectedReverse extends IconConnected {
 

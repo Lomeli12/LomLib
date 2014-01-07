@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.nei;
+package net.lomeli.lomlib.client.nei;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,6 +93,6 @@ public class ShapelessFluidRecipeHandler extends ShapelessRecipeHandler {
                 return null;
         }
 
-        return new CachedShapelessRecipe(items, recipe.getRecipeOutput());
+        return null;//new CachedShapelessRecipe(items, recipe.getRecipeOutput());
     }
 }

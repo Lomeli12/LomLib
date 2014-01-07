@@ -8,7 +8,7 @@ import com.google.common.collect.BiMap;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class RotationHelper {
 
@@ -97,7 +97,7 @@ public class RotationHelper {
     }
     
     public static ForgeDirection getOrientationFromTile(TileEntity baseTile, TileEntity targetTile){
-        int x = (targetTile.xCoord - baseTile.xCoord), y = (targetTile.yCoord - baseTile.yCoord), z = (targetTile.zCoord - baseTile.zCoord);
+        int x = (targetTile.field_145851_c - baseTile.field_145851_c), y = (targetTile.field_145848_d - baseTile.field_145848_d), z = (targetTile.field_145849_e - baseTile.field_145849_e);
         if(x != 0){
             if(x == 1)
                 return ForgeDirection.EAST;

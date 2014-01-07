@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.List;
 
-import net.lomeli.lomlib.fluid.FluidUtil;
+import net.lomeli.lomlib.util.FluidUtil;
 
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryCrafting;
@@ -26,7 +26,7 @@ import net.minecraftforge.oredict.OreDictionary;
  * @author Lomeli12
  * 
  */
-public class ShapelessFluidRecipe implements IRecipe {
+public class ShapelessFluidRecipe {}/*implements IRecipe {
 
     private ItemStack output = null;
     @SuppressWarnings("rawtypes")
@@ -156,4 +156,4 @@ public class ShapelessFluidRecipe implements IRecipe {
     public ArrayList getInput() {
         return this.input;
     }
-}
+}*/

@@ -1,18 +1,18 @@
-package net.lomeli.lomlib.fluid;
+package net.lomeli.lomlib.util;
 
 import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 
+//Pretty much completely useless until king finishes the revamped fluid system.
 public class FluidUtil {
 
+    /*
     public static boolean isFluidWater(Fluid fluid) {
         return fluid.equals(FluidRegistry.WATER);
     }
@@ -42,28 +42,7 @@ public class FluidUtil {
             }
         }
     }
-
-    public static void writeFluidTankNBT(NBTTagCompound tag, FluidTank tank, String tagString) {
-        if (tag != null && tank != null && tagString != null) {
-            if (tank.getFluid() != null && tank.getFluid().getFluid() != null)
-                tag.setInteger(tank.getFluid().getFluid().getName().concat(tagString), tank.getFluidAmount());
-        }
-    }
-
-    public static void writeFluidTankNBT(NBTTagCompound tag, FluidTank tank) {
-        writeFluidTankNBT(tag, tank, "Tank");
-    }
-
-    public static void readFluidTankNBT(NBTTagCompound tag, FluidTank tank, Fluid type, String tagString) {
-        if (tag != null && tank != null && type != null && tagString != null) {
-            tank.setFluid(new FluidStack(type, tag.getInteger(type.getName().concat(tagString))));
-        }
-    }
-
-    public static void readFluidTankNBT(NBTTagCompound tag, FluidTank tank, Fluid type) {
-        readFluidTankNBT(tag, tank, type, "Tank");
-    }
-
+    
     public static Fluid getContainerFluid(ItemStack stack) {
         Fluid fluid = null;
         if(stack != null){
@@ -91,4 +70,5 @@ public class FluidUtil {
 
         return list;
     }
+    */
 }

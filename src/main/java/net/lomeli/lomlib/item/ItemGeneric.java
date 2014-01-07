@@ -1,6 +1,6 @@
 package net.lomeli.lomlib.item;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.Item;
 
 import cpw.mods.fml.relauncher.Side;
@@ -24,15 +24,15 @@ public class ItemGeneric extends Item {
      * @param Texture
      *            The item's texture file (without .png)
      */
-    public ItemGeneric(int id, String mod, String Texture) {
-        super(id);
+    public ItemGeneric(String mod, String Texture) {
+        super();
         this.modID = mod.toLowerCase();
         this.itemTexture = Texture;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister iconRegister) {
+    public void registerIcons(IIconRegister iconRegister) {
         itemIcon = iconRegister.registerIcon(this.modID + ":" + this.itemTexture);
     }
 }

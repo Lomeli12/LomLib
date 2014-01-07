@@ -1,17 +1,16 @@
-package net.lomeli.lomlib.fluid;
+package net.lomeli.lomlib.client.gui;
 
 import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import net.lomeli.lomlib.gui.GuiContainerPlus;
-
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 @SideOnly(Side.CLIENT)
@@ -27,14 +26,14 @@ public class GuiFluidTank extends GuiContainerPlus {
     protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
     }
 
-    public void drawFluid(int x, int y, FluidStack fluid, int width, int height) {
-        if(fluid == null || fluid.getFluid() == null)
+    public void drawFluid(int x, int y, Fluid fluid, int width, int height) {
+        if(fluid == null)
             return;
-        mc.renderEngine.bindTexture(MC_BLOCK_SHEET);
-        drawTiledTexture(x, y, fluid.getFluid().getIcon(fluid), width, height);
+        field_146297_k.renderEngine.bindTexture(MC_BLOCK_SHEET);
+        drawTiledTexture(x, y, fluid.getIcon(), width, height);
     }
 
-    public void drawTiledTexture(int x, int y, Icon icon, int width, int height) {
+    public void drawTiledTexture(int x, int y, IIcon icon, int width, int height) {
 
         int i = 0;
         int j = 0;
@@ -52,7 +51,7 @@ public class GuiFluidTank extends GuiContainerPlus {
         GL11.glColor4f(1f, 1f, 1f, 1F);
     }
 
-    public void drawScaledTexturedModelRectFromIcon(int x, int y, Icon icon, int width, int height) {
+    public void drawScaledTexturedModelRectFromIcon(int x, int y, IIcon icon, int width, int height) {
 
         if(icon == null) {
             return;

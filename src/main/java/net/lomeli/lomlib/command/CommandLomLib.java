@@ -98,7 +98,8 @@ public class CommandLomLib extends CommandBase {
     }
 
     private void sendCommanderMessage(ICommandSender sender, String message) {
-        sender.getEntityWorld().getPlayerEntityByName(sender.getCommandSenderName()).addChatMessage(message);
+        EntityPlayer player = sender.getEntityWorld().getPlayerEntityByName(sender.getCommandSenderName());
+        player.func_145747_a(player.func_145748_c_().func_150258_a(message));
     }
 
     @Override

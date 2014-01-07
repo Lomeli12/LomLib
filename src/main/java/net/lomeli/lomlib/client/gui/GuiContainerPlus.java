@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.gui;
+package net.lomeli.lomlib.client.gui;
 
 import java.util.List;
 
@@ -25,5 +25,11 @@ public class GuiContainerPlus extends GuiContainer {
             if((mouseX >= minX && mouseX <= maxX) && (mouseY >= minY && mouseY <= maxY))
                 this.drawHoveringText(list, mouseX, mouseY, font);
         }
+    }
+
+    @Override
+    protected void func_146976_a(float f, int mouseX, int mouseY) {
+        // TODO Auto-generated method stub
+        
     }
 }

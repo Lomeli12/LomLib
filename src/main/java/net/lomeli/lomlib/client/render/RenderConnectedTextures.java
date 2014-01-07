@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.render;
+package net.lomeli.lomlib.client.render;
 
 import org.lwjgl.opengl.GL11;
 
@@ -17,7 +17,8 @@ public class RenderConnectedTextures implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
-        Tessellator tessellator = Tessellator.instance;
+        // TODO fix up once fields have proper searge names
+        /*Tessellator tessellator = Tessellator.instance;
         block.setBlockBoundsForItemRender();
         renderer.setRenderBoundsFromBlock(block);
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
@@ -76,23 +77,19 @@ public class RenderConnectedTextures implements ISimpleBlockRenderingHandler {
             tessellator.draw();
             GL11.glTranslatef(0.5F, 0.0F, 0.5F);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        }
+        }*/
     }
 
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-        if (renderer.hasOverrideBlockTexture())
+        /*if (renderer.hasOverrideBlockTexture())
             return renderer.renderStandardBlock(block, x, y, z);
 
         fakeBlock.setWorld(renderer.blockAccess);
         fakeBlock.curBlock = (world.getBlockId(x, y, z) * 16 + world.getBlockMetadata(x, y, z));
         block.setBlockBoundsBasedOnState(fakeBlock.blockAccess, x, y, z);
         fakeBlock.setRenderBoundsFromBlock(block);
-        return fakeBlock.renderStandardBlock(block, x, y, z);
-    }
-
-    @Override
-    public boolean shouldRender3DInInventory() {
+        return fakeBlock.renderStandardBlock(block, x, y, z);*/
         return true;
     }
 
@@ -104,6 +101,11 @@ public class RenderConnectedTextures implements ISimpleBlockRenderingHandler {
     public RenderConnectedTextures setRenderID(int id) {
         this.renderID = id;
         return this;
+    }
+
+    @Override
+    public boolean shouldRender3DInInventory(int modelId) {
+        return true;
     }
 
 }

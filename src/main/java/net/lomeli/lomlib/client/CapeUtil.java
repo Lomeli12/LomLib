@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.capes;
+package net.lomeli.lomlib.client;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -11,7 +11,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -21,9 +20,11 @@ import net.lomeli.lomlib.util.XMLUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
-import net.minecraft.client.renderer.texture.TextureObject;
+import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
+
+import net.minecraftforge.common.MinecraftForge;
 
 @SideOnly(Side.CLIENT)
 public class CapeUtil {
@@ -64,8 +65,8 @@ public class CapeUtil {
             }
         }catch(Exception e) {
         }
-        TickRegistry.registerTickHandler(new CapesTickHandler(), Side.CLIENT);
-        //MinecraftForge.EVENT_BUS.register(new RenderPlayerCape());
+        //TickRegistry.registerTickHandler(new CapesTickHandler(), Side.CLIENT);
+        MinecraftForge.EVENT_BUS.register(new RenderPlayerCape());
     }
 
     public void giveUserCape(String user, String cape) {
@@ -107,7 +108,7 @@ public class CapeUtil {
             ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer) {
         TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
 
-        TextureObject object = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);
+        ITextureObject object = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);
         // Binds ResourceLocation to this.
         texturemanager.loadTexture(par0ResourceLocation, object);
 

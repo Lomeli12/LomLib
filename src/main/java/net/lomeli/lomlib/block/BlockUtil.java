@@ -14,9 +14,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class BlockUtil {
-    public static Block getBlock(World world, int x, int y, int z) {
-        return Block.blocksList[world.getBlockId(x, y, z)];
-    }
 
     /**
      * Allows you to get a block from practically any other mod.
@@ -86,7 +83,7 @@ public class BlockUtil {
      * @author Lomeli12
      */
     public static boolean isBlockAdjacentToWater(World world, int x, int y, int z) {
-        if (world.getBlockId(x, y + 1, z) == Block.waterStill.blockID || world.getBlockId(x, y - 1, z) == Block.waterStill.blockID
+        /*if (world.getBlockId(x, y + 1, z) == Block.waterStill.blockID || world.getBlockId(x, y - 1, z) == Block.waterStill.blockID
                 || world.getBlockId(x + 1, y, z) == Block.waterStill.blockID || world.getBlockId(x - 1, y, z) == Block.waterStill.blockID
                 || world.getBlockId(x, y, z + 1) == Block.waterStill.blockID || world.getBlockId(x, y, z - 1) == Block.waterStill.blockID
                 || world.getBlockId(x, y + 1, z) == Block.waterMoving.blockID || world.getBlockId(x, y - 1, z) == Block.waterMoving.blockID
@@ -94,7 +91,7 @@ public class BlockUtil {
                 || world.getBlockId(x, y, z + 1) == Block.waterMoving.blockID || world.getBlockId(x, y, z - 1) == Block.waterMoving.blockID)
             return true;
         else
-            return false;
+            */return false;
     }
 
     /**
@@ -109,12 +106,12 @@ public class BlockUtil {
      * @author Lomeli12
      */
     public static boolean isBlockAdjacentToWaterSource(World world, int x, int y, int z) {
-        if (world.getBlockId(x, y + 1, z) == Block.waterStill.blockID || world.getBlockId(x, y - 1, z) == Block.waterStill.blockID
+        /*if (world.getBlockId(x, y + 1, z) == Block.waterStill.blockID || world.getBlockId(x, y - 1, z) == Block.waterStill.blockID
                 || world.getBlockId(x + 1, y, z) == Block.waterStill.blockID || world.getBlockId(x - 1, y, z) == Block.waterStill.blockID
                 || world.getBlockId(x, y, z + 1) == Block.waterStill.blockID || world.getBlockId(x, y, z - 1) == Block.waterStill.blockID)
             return true;
         else
-            return false;
+            */return false;
     }
 
     public static boolean isAboveBlock(Entity entity, int x, int y, int z) {
@@ -132,7 +129,7 @@ public class BlockUtil {
      */
     public static boolean isThereANeighborChest(World world, int x, int y, int z) {
         boolean yesThereIs = false;
-        if (world.getBlockId(x, y, z) == Block.chest.blockID) {
+        /*if (world.getBlockId(x, y, z) == Block.chest.blockID) {
             if (world.getBlockId(x + 1, y, z) == Block.chest.blockID)
                 yesThereIs = true;
             if (world.getBlockId(x - 1, y, z) == Block.chest.blockID)
@@ -150,7 +147,7 @@ public class BlockUtil {
                 yesThereIs = true;
             if (world.getBlockId(x, y, z - 1) == Block.chestTrapped.blockID)
                 yesThereIs = true;
-        }
+        }*/
 
         return yesThereIs;
     }

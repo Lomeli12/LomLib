@@ -1,10 +1,10 @@
-package net.lomeli.lomlib.render;
+package net.lomeli.lomlib.client.render;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Facing;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 public class RenderFakeBlock extends RenderBlocks {
@@ -15,9 +15,10 @@ public class RenderFakeBlock extends RenderBlocks {
     public boolean isOpaque = false;
 
     public void setWorld(IBlockAccess blockAccess) {
-        this.blockAccess = blockAccess;
+        this.field_147845_a = blockAccess;
     }
-
+    //TODO Again, fix once there are proper searge names
+    /*
     public void setLightAndColor(double u2, double v2, int side) {
         if (this.enableAO) {
             Tessellator tessellator = Tessellator.instance;
@@ -92,7 +93,7 @@ public class RenderFakeBlock extends RenderBlocks {
     }
 
     public boolean matchBlock(int side2, int x2, int y2, int z2) {
-        return this.curBlock == this.blockAccess.getBlockId(x2, y2, z2) * 16 + this.blockAccess.getBlockMetadata(x2, y2, z2);
+        return this.curBlock == this.field_147845_a.getBlockId(x2, y2, z2) * 16 + this.field_147845_a.getBlockMetadata(x2, y2, z2);
     }
 
     public int getType(Block block, int side, int x, int y, int z, int ax, int ay, int az, int bx, int by, int bz, int cx, int cy, int cz) {
@@ -182,5 +183,5 @@ public class RenderFakeBlock extends RenderBlocks {
             renderSide(block, x, y, z, 0.5D, 0.5D, 1.0D, -1, 0, 0, 0, 1, 0, (IconConnected) icon, 3);
         else
             super.renderFaceZPos(block, x, y, z, icon);
-    }
+    }*/
 }

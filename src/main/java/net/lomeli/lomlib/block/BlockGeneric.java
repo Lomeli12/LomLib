@@ -4,7 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
@@ -19,8 +19,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockGeneric extends Block {
     protected String modID;
     protected String blockTexture;
-    protected int drop;
-    protected World worldObj;
 
     /**
      * 
@@ -33,18 +31,10 @@ public class BlockGeneric extends Block {
      * @param texture
      *            The block's texture file (without .png)
      */
-    public BlockGeneric(int id, Material material, String mod, String texture) {
-        super(id, material);
+    public BlockGeneric(Material material, String mod, String texture) {
+        super(material);
         this.modID = mod;
         this.blockTexture = texture;
-        this.drop = id;
-    }
-
-    public BlockGeneric(int id, Material material, String mod, String texture, int dropID) {
-        super(id, material);
-        this.modID = mod;
-        this.blockTexture = texture;
-        this.drop = dropID;
     }
 
     public String getBlockTexture() {
@@ -53,18 +43,7 @@ public class BlockGeneric extends Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister iconRegister) {
-        blockIcon = iconRegister.registerIcon(modID + ":" + blockTexture);
-    }
-
-    @Override
-    public int idDropped(int par1, Random par2Random, int par3) {
-        return drop;
-    }
-
-    @Override
-    public void onBlockAdded(World world, int x, int y, int z) {
-        this.worldObj = world;
-        this.worldObj.markBlockForUpdate(x, y, z);
+    public void func_149651_a(IIconRegister iconRegister) {
+        field_149761_L = iconRegister.registerIcon(modID + ":" + blockTexture);
     }
 }

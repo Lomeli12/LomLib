@@ -1,17 +1,18 @@
-package net.lomeli.lomlib.render;
+package net.lomeli.lomlib.client.render;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
-import net.lomeli.lomlib.render.RenderEntityBlock.BlockInterface;
+import net.lomeli.lomlib.client.render.RenderEntityBlock.BlockInterface;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.Icon;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -25,18 +26,11 @@ public class FluidRender {
     public static final int DISPLAY_STAGES = 100;
     private static final BlockInterface liquidBlock = new BlockInterface();
 
-    public static Icon getFluidTexture(FluidStack fluidStack, boolean flowing) {
-        if(fluidStack == null) {
-            return null;
-        }
-        return getFluidTexture(fluidStack.getFluid(), flowing);
-    }
-
-    public static Icon getFluidTexture(Fluid fluid, boolean flowing) {
+    public static IIcon getFluidTexture(Fluid fluid, boolean flowing) {
         if(fluid == null) {
             return null;
         }
-        Icon icon = flowing ? fluid.getFlowingIcon() : fluid.getStillIcon();
+        IIcon icon = flowing ? fluid.getFlowingIcon() : fluid.getStillIcon();
         if(icon == null) {
             icon = ((TextureMap) Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.locationBlocksTexture))
                     .getAtlasSprite("missingno");
@@ -44,32 +38,23 @@ public class FluidRender {
         return icon;
     }
 
-    public static ResourceLocation getFluidSheet(FluidStack liquid) {
-        if(liquid == null)
-            return BLOCK_TEXTURE;
-        return getFluidSheet(liquid.getFluid());
-    }
-
     public static ResourceLocation getFluidSheet(Fluid liquid) {
         return BLOCK_TEXTURE;
     }
 
-    public static void setColorForFluidStack(FluidStack fluidstack) {
+    public static void setColorForFluidStack(Fluid fluidstack) {
         if(fluidstack == null)
             return;
 
-        int color = fluidstack.getFluid().getColor(fluidstack);
+        int color = fluidstack.getColor();
         float red = (float) (color >> 16 & 255) / 255.0F;
         float green = (float) (color >> 8 & 255) / 255.0F;
         float blue = (float) (color & 255) / 255.0F;
         GL11.glColor4f(red, green, blue, 1);
     }
 
-    public static int[] getFluidDisplayLists(FluidStack fluidStack, World world, boolean flowing) {
-        if(fluidStack == null) {
-            return null;
-        }
-        Fluid fluid = fluidStack.getFluid();
+    public static int[] getFluidDisplayLists(Fluid fluid, World world, boolean flowing) {
+        
         if(fluid == null) {
             return null;
         }
@@ -81,12 +66,12 @@ public class FluidRender {
 
         diplayLists = new int[DISPLAY_STAGES];
 
-        if(fluid.getBlockID() > 0) {
-            liquidBlock.baseBlock = Block.blocksList[fluid.getBlockID()];
-            liquidBlock.texture = getFluidTexture(fluidStack, flowing);
+        if(fluid.getBlock() != null) {
+            liquidBlock.baseBlock = fluid.getBlock();
+            liquidBlock.texture = getFluidTexture(fluid, flowing);
         }else {
-            liquidBlock.baseBlock = Block.waterStill;
-            liquidBlock.texture = getFluidTexture(fluidStack, flowing);
+            liquidBlock.baseBlock = Blocks.water;
+            liquidBlock.texture = getFluidTexture(fluid, flowing);
         }
 
         cache.put(fluid, diplayLists);

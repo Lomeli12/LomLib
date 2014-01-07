@@ -31,15 +31,11 @@ public class EntityUtil {
     }
 
     public static boolean isUndeadEntity(EntityLivingBase entity) {
-        if (isHostileEntity(entity))
-            return entity.getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD);
-        return false;
+        return isHostileEntity(entity) ? entity.getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) : false;
     }
 
     public static boolean isEntityMoving(Entity entity) {
-        if (entity != null && (entity.motionX != 0 || entity.motionY != 0 || entity.motionZ != 0))
-            return true;
-        return false;
+        return (entity != null && (entity.motionX != 0 || entity.motionY != 0 || entity.motionZ != 0));
     }
 
     /**
@@ -94,15 +90,15 @@ public class EntityUtil {
     }
 
     @SuppressWarnings("rawtypes")
-    public static boolean transformEntityItem(World world, int x, int y, int z, EntityPlayer player, int initId, ItemStack transformation, ItemStack requiredItem, boolean effect) {
+    public static boolean transformEntityItem(World world, int x, int y, int z, EntityPlayer player, ItemStack initItem, ItemStack transformation, ItemStack requiredItem, boolean effect) {
         List entityList = world.getEntitiesWithinAABB(EntityItem.class, player.boundingBox.expand(15D, 15D, 15D));
         for (int i = 0; i < entityList.size(); i++) {
             Entity ent = (Entity) entityList.get(i);
             if (ent != null && ent instanceof EntityItem) {
                 EntityItem item = (EntityItem) ent;
                 if (BlockUtil.isAboveBlock(item, x, y, z)) {
-                    if (item != null && item.getEntityItem().itemID == initId) {
-                        if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().itemID == requiredItem.itemID) {
+                    if (item != null && item.getEntityItem().getItem().equals(initItem.getItem())) {
+                        if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem().equals(requiredItem.getItem())) {
                             ItemStack manual = transformation;
                             manual.stackSize = item.getEntityItem().stackSize;
                             if (manual != null) {
@@ -162,9 +158,9 @@ public class EntityUtil {
             boolean var17 = false;
 
             while (!var17 && var15 > 0) {
-                var18 = entity.worldObj.getBlockId(var14, var15 - 1, var16);
+                Block block = entity.worldObj.func_147439_a(var14, var15, var16);
 
-                if (var18 != 0 && Block.blocksList[var18].blockMaterial.blocksMovement()) {
+                if (block.func_149688_o().blocksMovement()) {
                     var17 = true;
                 } else {
                     --entity.posY;
