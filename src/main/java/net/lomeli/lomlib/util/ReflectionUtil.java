@@ -4,9 +4,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 
-import net.lomeli.lomlib.LomLib;
-
 import net.minecraft.client.renderer.ThreadDownloadImageData;
+
+import net.lomeli.lomlib.LomLib;
 
 public class ReflectionUtil {
 

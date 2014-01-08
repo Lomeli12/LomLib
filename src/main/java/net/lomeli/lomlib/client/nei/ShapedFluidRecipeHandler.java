@@ -2,17 +2,17 @@ package net.lomeli.lomlib.client.nei;
 
 import java.util.List;
 
-//import net.lomeli.lomlib.libs.LibraryStrings;
-import net.lomeli.lomlib.recipes.ShapedFluidRecipe;
+import codechicken.core.ReflectionManager;
+import codechicken.nei.NEIServerUtils;
+import codechicken.nei.recipe.ShapedRecipeHandler;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 //import net.minecraft.util.StatCollector;
 
-import codechicken.core.ReflectionManager;
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.recipe.ShapedRecipeHandler;
+//import net.lomeli.lomlib.libs.LibraryStrings;
+import net.lomeli.lomlib.recipes.ShapedFluidRecipe;
 
 public class ShapedFluidRecipeHandler extends ShapedRecipeHandler {
 

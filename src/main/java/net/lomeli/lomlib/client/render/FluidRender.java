@@ -5,9 +5,6 @@ import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 
-import net.lomeli.lomlib.client.render.RenderEntityBlock.BlockInterface;
-
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -17,7 +14,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
+
+import net.lomeli.lomlib.client.render.RenderEntityBlock.BlockInterface;
 
 public class FluidRender {
     private static final ResourceLocation BLOCK_TEXTURE = TextureMap.locationBlocksTexture;

@@ -8,8 +8,8 @@ import java.util.logging.Level;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
-import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.DummyModContainer;
+import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
@@ -18,7 +18,7 @@ import cpw.mods.fml.common.versioning.ArtifactVersion;
 import cpw.mods.fml.common.versioning.VersionParser;
 import cpw.mods.fml.common.versioning.VersionRange;
 
-import codechicken.packager.Packager;
+import net.minecraftforge.common.MinecraftForge;
 
 import net.lomeli.lomlib.client.ClientSetup;
 import net.lomeli.lomlib.command.CommandLomLib;
@@ -27,9 +27,6 @@ import net.lomeli.lomlib.util.LogHelper;
 import net.lomeli.lomlib.util.XMLConfiguration;
 import net.lomeli.lomlib.util.XMLConfiguration.ConfigEnum;
 
-import net.minecraftforge.common.MinecraftForge;
-
-@Packager(getBaseDirectories = {LibraryStrings.MOD_ID}, getName = LibraryStrings.MOD_NAME, getVersion = LibraryStrings.VERSION)
 public class LomLib extends DummyModContainer {
     
     public LomLib() {
@@ -62,6 +59,7 @@ public class LomLib extends DummyModContainer {
 
     @Subscribe
     public void preInit(FMLPreInitializationEvent event) {
+        System.out.println(event.getSuggestedConfigurationFile().toPath());
         logger = new LogHelper(LibraryStrings.MOD_NAME);
 
         configureMod(event.getSuggestedConfigurationFile());
@@ -84,7 +82,7 @@ public class LomLib extends DummyModContainer {
 
         config.loadXml();
 
-        debug = config.getBoolean("debugMode", false, LibraryStrings.DEBUG_MODE, ConfigEnum.GENERAL_CONFIG);
+        debug = config.getBoolean("debugMode", true, LibraryStrings.DEBUG_MODE, ConfigEnum.GENERAL_CONFIG);
         capes = config.getBoolean("capes", true, LibraryStrings.CAPES, ConfigEnum.GENERAL_CONFIG);
 
         config.saveXML();

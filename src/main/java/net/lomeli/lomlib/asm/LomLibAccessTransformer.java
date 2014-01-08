@@ -1,7 +1,5 @@
 package net.lomeli.lomlib.asm;
 
-import cpw.mods.fml.common.asm.transformers.AccessTransformer;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import cpw.mods.fml.common.asm.transformers.AccessTransformer;
 
 public class LomLibAccessTransformer extends AccessTransformer {
 

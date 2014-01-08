@@ -2,16 +2,16 @@ package net.lomeli.lomlib.block;
 
 import java.util.logging.Level;
 
-import cpw.mods.fml.common.FMLLog;
-
-import net.lomeli.lomlib.LomLib;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+
+import cpw.mods.fml.common.FMLLog;
+
+import net.lomeli.lomlib.LomLib;
 
 public class BlockUtil {
 

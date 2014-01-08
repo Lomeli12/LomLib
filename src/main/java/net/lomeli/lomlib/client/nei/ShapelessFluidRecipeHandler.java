@@ -7,13 +7,13 @@ import codechicken.core.ReflectionManager;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.recipe.ShapelessRecipeHandler;
 
-//import net.lomeli.lomlib.libs.LibraryStrings;
-import net.lomeli.lomlib.recipes.ShapelessFluidRecipe;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 //import net.minecraft.util.StatCollector;
+
+//import net.lomeli.lomlib.libs.LibraryStrings;
+import net.lomeli.lomlib.recipes.ShapelessFluidRecipe;
 
 public class ShapelessFluidRecipeHandler extends ShapelessRecipeHandler {
 

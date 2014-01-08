@@ -1,6 +1,5 @@
 package net.lomeli.lomlib.util;
 
-import net.lomeli.lomlib.libs.Incomplete;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.crash.CrashReportCategory;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -11,6 +10,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ReportedException;
+
+import net.lomeli.lomlib.libs.Incomplete;
 
 public class InventoryUtil {
     /**

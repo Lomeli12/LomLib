@@ -3,8 +3,6 @@ package net.lomeli.lomlib.entity;
 import java.util.List;
 import java.util.Random;
 
-import net.lomeli.lomlib.block.BlockUtil;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,6 +16,8 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+
+import net.lomeli.lomlib.block.BlockUtil;
 
 public class EntityUtil {
     /**

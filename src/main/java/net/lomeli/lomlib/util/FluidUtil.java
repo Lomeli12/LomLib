@@ -1,13 +1,5 @@
 package net.lomeli.lomlib.util;
 
-import java.util.ArrayList;
-
-import net.minecraft.item.ItemStack;
-
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 //Pretty much completely useless until king finishes the revamped fluid system.
 public class FluidUtil {
