@@ -18,8 +18,6 @@ import cpw.mods.fml.common.versioning.ArtifactVersion;
 import cpw.mods.fml.common.versioning.VersionParser;
 import cpw.mods.fml.common.versioning.VersionRange;
 
-import codechicken.packager.Packager;
-
 import net.lomeli.lomlib.client.ClientSetup;
 import net.lomeli.lomlib.command.CommandLomLib;
 import net.lomeli.lomlib.libs.LibraryStrings;
@@ -29,7 +27,6 @@ import net.lomeli.lomlib.util.XMLConfiguration.ConfigEnum;
 
 import net.minecraftforge.common.MinecraftForge;
 
-@Packager(getBaseDirectories = {LibraryStrings.MOD_ID}, getName = LibraryStrings.MOD_NAME, getVersion = LibraryStrings.VERSION)
 public class LomLib extends DummyModContainer {
     
     public LomLib() {
