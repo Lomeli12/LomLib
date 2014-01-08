@@ -1,84 +1,70 @@
 package net.lomeli.lomlib.worldgen;
 
 import java.util.Random;
-import java.util.logging.Level;
-
-import net.lomeli.lomlib.LomLib;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraft.world.chunk.IChunkProvider;
 
-/**
- * This worldgen is based off of that of Vanilla clay, allowing you to generate
- * blocks in the water, such in ocean biomes, swamps, and rivers
- * 
- * @author Lomeli12
- */
-public class WorldGenSubmergedOre extends WorldGenerator {
-    /** The block ID for whatever block you want to generate. */
-    private int blockID;
+public class WorldGenSubmergedOre {
 
-    /** The number of blocks to generate. */
-    private int numberOfBlocks;
-
-    /** The block's metadata. */
-    private int blockMetaData;
-
-    public WorldGenSubmergedOre(int itemID, int amount) {
-        blockID = itemID;
-        numberOfBlocks = amount;
-        blockMetaData = 0;
+    public WorldGenSubmergedOre(OreData data) {
+        this.data = data;
     }
 
-    public WorldGenSubmergedOre(int itemID, int metadata, int amount) {
-        blockID = itemID;
-        numberOfBlocks = amount;
-        blockMetaData = metadata;
+    private OreData data;
+
+    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+        int x, y, z;
+        int numOre;
+        int numCluster;
+        numCluster = random.nextInt(data.clusterPerChunk);
+        if (numCluster == 0 && data.clusterPerChunk != 0)
+            numCluster = 1;
+
+        for (int count = 0; count < numCluster; count++) {
+            x = random.nextInt(16);
+            z = random.nextInt(16);
+            y = random.nextInt(data.maxHeight - data.minHeight);
+            x = x + (16 * chunkX);
+            z = z + (16 * chunkZ);
+            y = y + data.minHeight;
+            numOre = MathHelper.clamp_int(random.nextInt(data.maxCluster), data.minCluster, data.maxCluster);
+
+            generateOre(world, random, x, y, z, data.oreType, data.meta, numOre);
+        }
     }
 
-    public WorldGenSubmergedOre(Block generatedBlock, int amount) {
-        blockID = generatedBlock.blockID;
-        numberOfBlocks = amount;
-        blockMetaData = 0;
-    }
+    private void generateOre(World world, Random rand, int x, int y, int z, int blockID, int meta, int ntg) {
+        int lx, ly, lz;
+        lx = x;
+        ly = y;
+        lz = z;
+        int id;
+        id = world.getBlockId(lx, ly, lz);
+        if (id != Block.sand.blockID || id != Block.dirt.blockID || id != Block.blockClay.blockID)
+            return;
 
-    public WorldGenSubmergedOre(Block generatedBlock, int meta, int amount) {
-        blockID = generatedBlock.blockID;
-        numberOfBlocks = amount;
-        blockMetaData = meta;
-    }
+        for (int i = 0; i < ntg; i++) {
 
-    @Override
-    public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5) {
-        if(par1World.getBlockMaterial(par3, par4, par5) != Material.water) {
-            return false;
-        }else {
-            int l = par2Random.nextInt(this.numberOfBlocks) + 2;
-            byte b0 = 1;
+            id = world.getBlockId(lx, ly, lz);
 
-            for(int i1 = par3 - l; i1 <= par3 + l; ++i1) {
-                for(int j1 = par5 - l; j1 <= par5 + l; ++j1) {
-                    int k1 = i1 - par3;
-                    int l1 = j1 - par5;
+            if (world.getBlockId(lx, ly + 1, lz) == Block.waterMoving.blockID || world.getBlockId(lx, ly + 1, lz) == Block.waterStill.blockID) {
 
-                    if(k1 * k1 + l1 * l1 <= l * l) {
-                        for(int i2 = par4 - b0; i2 <= par4 + b0; ++i2) {
-                            int j2 = par1World.getBlockId(i1, i2, j1);
-
-                            if(j2 == Block.dirt.blockID || j2 == Block.sand.blockID || j2 == Block.blockClay.blockID
-                                    || j2 == Block.stone.blockID) {
-                                if(LomLib.debug)
-                                    LomLib.logger.log(Level.INFO, "Generating block " + blockID + "at " + i1 + "," + i2 + ","
-                                            + j1);
-                                par1World.setBlock(i1, i2, j1, blockID, blockMetaData, 1);
-                            }
-                        }
-                    }
+                world.setBlock(lx, ly, lz, blockID, meta, 2);
+                switch (rand.nextInt(3)) {
+                case 0:
+                    lx = lx + (rand.nextInt(4) - 2);
+                    break;
+                case 1:
+                    ly = ly + (rand.nextInt(4) - 2);
+                    break;
+                case 2:
+                    lz = lz + (rand.nextInt(4) - 2);
+                    break;
                 }
             }
-            return true;
         }
     }
 }

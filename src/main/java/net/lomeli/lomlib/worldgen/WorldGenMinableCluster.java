@@ -7,19 +7,13 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 
-/**
- * Allows for the generating of ores in the nether
- * 
- * @author Lomeli12
- * 
- */
-public class WorldGenNether {
-
-    public WorldGenNether(OreData data) {
-        this.data = data;
-    }
+public class WorldGenMinableCluster {
 
     private OreData data;
+
+    public WorldGenMinableCluster(OreData data) {
+        this.data = data;
+    }
 
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
         int x, y, z;
@@ -49,7 +43,7 @@ public class WorldGenNether {
         lz = z;
         int id;
         id = world.getBlockId(lx, ly, lz);
-        if (id != Block.netherrack.blockID || id != Block.slowSand.blockID)
+        if (id != Block.stone.blockID && id != Block.dirt.blockID)
             return;
 
         for (int i = 0; i < ntg; i++) {
@@ -70,5 +64,4 @@ public class WorldGenNether {
             }
         }
     }
-
 }
