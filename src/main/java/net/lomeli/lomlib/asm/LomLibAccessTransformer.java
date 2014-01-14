@@ -41,7 +41,7 @@ public class LomLibAccessTransformer extends AccessTransformer {
         try {
             ZipFile zip = new ZipFile(location);
             ZipEntry entry = null;
-            if(obfNames.contains(name))
+            if (obfNames.contains(name))
                 entry = zip.getEntry("net/minecraft/src/" + name + ".class");
             else
                 entry = zip.getEntry(name.replace('.', '/') + ".class");

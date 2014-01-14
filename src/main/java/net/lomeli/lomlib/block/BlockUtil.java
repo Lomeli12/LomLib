@@ -4,7 +4,7 @@ import java.util.logging.Level;
 
 import cpw.mods.fml.common.FMLLog;
 
-import net.lomeli.lomlib.LomLib;
+import net.lomeli.lomlib.LomLibCore;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -38,8 +38,8 @@ public class BlockUtil {
                 item = new ItemStack((Block) obj, 1, meta);
             else if (obj instanceof ItemStack)
                 item = (ItemStack) obj;
-            if (LomLib.debug)
-                LomLib.logger.log(Level.INFO, obj.toString());
+            if (LomLibCore.debug)
+                LomLibCore.logger.log(Level.INFO, obj.toString());
 
         } catch (Exception ex) {
             FMLLog.warning("Could not retrieve block identified by: " + itemString);
@@ -66,8 +66,8 @@ public class BlockUtil {
             else if (obj instanceof ItemStack)
                 item = (ItemStack) obj;
 
-            if (LomLib.debug)
-                LomLib.logger.log(Level.INFO, obj.toString());
+            if (LomLibCore.debug)
+                LomLibCore.logger.log(Level.INFO, obj.toString());
 
         } catch (Exception ex) {
             FMLLog.warning("Could not retrieve block identified by: " + itemString);
@@ -156,17 +156,17 @@ public class BlockUtil {
     }
 
     public static int determineOrientation(World world, int x, int y, int z, EntityLivingBase entity) {
-        if (MathHelper.abs((float) entity.posX - (float) x) < 2.0F && MathHelper.abs((float) entity.posZ - (float) z) < 2.0F) {
-            double d0 = entity.posY + 1.82D - (double) entity.yOffset;
+        if (MathHelper.abs((float) entity.posX - x) < 2.0F && MathHelper.abs((float) entity.posZ - z) < 2.0F) {
+            double d0 = entity.posY + 1.82D - entity.yOffset;
 
-            if (d0 - (double) y > 2.0D)
+            if (d0 - y > 2.0D)
                 return 1;
 
-            if ((double) y - d0 > 0.0D)
+            if (y - d0 > 0.0D)
                 return 0;
         }
 
-        int l = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+        int l = MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
         return l == 0 ? 2 : (l == 1 ? 5 : (l == 2 ? 3 : (l == 3 ? 4 : 0)));
     }
 }

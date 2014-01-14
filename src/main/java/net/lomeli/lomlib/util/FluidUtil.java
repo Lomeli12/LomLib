@@ -40,13 +40,13 @@ public class FluidUtil {
             }
         }
     }
-    
+
     public static Fluid getContainerFluid(ItemStack stack) {
         Fluid fluid = null;
-        if(stack != null){
-            if(FluidContainerRegistry.isFilledContainer(stack)){
+        if (stack != null) {
+            if (FluidContainerRegistry.isFilledContainer(stack)) {
                 FluidStack temp = FluidContainerRegistry.getFluidForFilledItem(stack);
-                if(temp != null && temp.getFluid() != null)
+                if (temp != null && temp.getFluid() != null)
                     fluid = temp.getFluid();
             }
         }

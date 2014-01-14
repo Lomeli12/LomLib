@@ -19,6 +19,11 @@ public class ResourceUtil {
     private static File mods;
     private static File assets;
 
+    public static final ResourceLocation MC_BLOCK_SHEET = new ResourceLocation("textures/atlas/blocks.png");
+    public static final ResourceLocation MC_ITEM_SHEET = new ResourceLocation("textures/atlas/items.png");
+    public static final ResourceLocation MC_FONT_DEFAULT = new ResourceLocation("textures/font/ascii.png");
+    public static final ResourceLocation MC_FONT_ALTERNATE = new ResourceLocation("textures/font/ascii_sga.png");
+
     @SideOnly(Side.CLIENT)
     public static void initResourceUtil() {
         RenderingRegistry.registerEntityRenderingHandler(EntityBlock.class, RenderEntityBlock.INSTANCE);
@@ -41,7 +46,7 @@ public class ResourceUtil {
     public static ResourceLocation getIcon(String modid, String icon) {
         return getResourceUtil(modid, "textures/icons/" + icon);
     }
-    
+
     public static ResourceLocation getModelTexture(String modid, String texture) {
         return getResourceUtil(modid, "textures/model/" + texture);
     }
@@ -51,19 +56,30 @@ public class ResourceUtil {
     }
 
     public static Icon getIconfromRegistry(String modid, String folder, String icon) {
-        return ((TextureMap) Minecraft.getMinecraft().getTextureManager()
-                .getTexture(ResourceUtil.getResource(modid, folder, icon))).getAtlasSprite("missingno");
+        return ((TextureMap) Minecraft.getMinecraft().getTextureManager().getTexture(ResourceUtil.getResource(modid, folder, icon))).getAtlasSprite("missingno");
     }
 
     public static File getModsFolder() {
-        if(mods == null)
+        if (mods == null)
             initResourceUtil();
         return mods;
     }
 
     public static File getAssetsFolder() {
-        if(assets == null)
+        if (assets == null)
             initResourceUtil();
         return assets;
+    }
+
+    public static void bindTexture(ResourceLocation texture) {
+        Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+    }
+
+    public static final void setBlockTextureSheet() {
+        bindTexture(MC_BLOCK_SHEET);
+    }
+
+    public static final void setItemTextureSheet() {
+        bindTexture(MC_ITEM_SHEET);
     }
 }

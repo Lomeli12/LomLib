@@ -31,7 +31,6 @@ public class WorldGenMinableCluster {
             z = z + (16 * chunkZ);
             y = y + data.minHeight;
             numOre = MathHelper.clamp_int(random.nextInt(data.maxCluster), data.minCluster, data.maxCluster);
-
             generateOre(world, random, x, y, z, data.oreType, data.meta, numOre);
         }
     }

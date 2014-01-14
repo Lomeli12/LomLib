@@ -108,9 +108,9 @@ public class EntityUtil {
                                 }
                                 if (effect) {
                                     for (int k = 0; k < 2; ++k) {
-                                        world.spawnParticle("largesmoke", item.posX + (world.rand.nextDouble() - 0.5D) * (double) item.width,
-                                                (item.posY + 0.5D) + world.rand.nextDouble() * (double) item.height, item.posZ + (world.rand.nextDouble() - 0.5D)
-                                                        * (double) item.width, 0.0D, 0.0D, 0.0D);
+                                        world.spawnParticle("largesmoke", item.posX + (world.rand.nextDouble() - 0.5D) * item.width,
+                                                (item.posY + 0.5D) + world.rand.nextDouble() * item.height, item.posZ + (world.rand.nextDouble() - 0.5D)
+                                                        * item.width, 0.0D, 0.0D, 0.0D);
                                     }
                                 }
                                 return true;
@@ -125,18 +125,18 @@ public class EntityUtil {
 
     public static boolean teleportRandomly(EntityLivingBase entity) {
         double var1 = entity.posX + (entity.worldObj.rand.nextDouble() - 0.5D) * 64.0D;
-        double var3 = entity.posY + (double) (entity.worldObj.rand.nextInt(64) - 32);
+        double var3 = entity.posY + (entity.worldObj.rand.nextInt(64) - 32);
         double var5 = entity.posZ + (entity.worldObj.rand.nextDouble() - 0.5D) * 64.0D;
         return teleportTo(entity, var1, var3, var5);
     }
 
     public static boolean teleportToEntity(EntityLivingBase entity, Entity par1Entity) {
         Vec3 var2 = entity.worldObj.getWorldVec3Pool().getVecFromPool(entity.posX - par1Entity.posX,
-                entity.boundingBox.minY + (double) (entity.height / 2.0F) - par1Entity.posY + (double) par1Entity.getEyeHeight(), entity.posZ - par1Entity.posZ);
+                entity.boundingBox.minY + entity.height / 2.0F - par1Entity.posY + par1Entity.getEyeHeight(), entity.posZ - par1Entity.posZ);
         var2 = var2.normalize();
         double var3 = 16.0D;
         double var5 = entity.posX + (entity.worldObj.rand.nextDouble() - 0.5D) * 8.0D - var2.xCoord * var3;
-        double var7 = entity.posY + (double) (entity.worldObj.rand.nextInt(16) - 8) - var2.yCoord * var3;
+        double var7 = entity.posY + (entity.worldObj.rand.nextInt(16) - 8) - var2.yCoord * var3;
         double var9 = entity.posZ + (entity.worldObj.rand.nextDouble() - 0.5D) * 8.0D - var2.zCoord * var3;
         return teleportTo(entity, var5, var7, var9);
     }
@@ -184,14 +184,14 @@ public class EntityUtil {
             short var30 = 128;
 
             for (var18 = 0; var18 < var30; ++var18) {
-                double var19 = (double) var18 / ((double) var30 - 1.0D);
+                double var19 = var18 / (var30 - 1.0D);
                 float var21 = (entity.worldObj.rand.nextFloat() - 0.5F) * 0.2F;
                 float var22 = (entity.worldObj.rand.nextFloat() - 0.5F) * 0.2F;
                 float var23 = (entity.worldObj.rand.nextFloat() - 0.5F) * 0.2F;
-                double var24 = var7 + (entity.posX - var7) * var19 + (entity.worldObj.rand.nextDouble() - 0.5D) * (double) entity.width * 2.0D;
-                double var26 = var9 + (entity.posY - var9) * var19 + entity.worldObj.rand.nextDouble() * (double) entity.height;
-                double var28 = var11 + (entity.posZ - var11) * var19 + (entity.worldObj.rand.nextDouble() - 0.5D) * (double) entity.width * 2.0D;
-                entity.worldObj.spawnParticle("portal", var24, var26, var28, (double) var21, (double) var22, (double) var23);
+                double var24 = var7 + (entity.posX - var7) * var19 + (entity.worldObj.rand.nextDouble() - 0.5D) * entity.width * 2.0D;
+                double var26 = var9 + (entity.posY - var9) * var19 + entity.worldObj.rand.nextDouble() * entity.height;
+                double var28 = var11 + (entity.posZ - var11) * var19 + (entity.worldObj.rand.nextDouble() - 0.5D) * entity.width * 2.0D;
+                entity.worldObj.spawnParticle("portal", var24, var26, var28, var21, var22, var23);
             }
 
             entity.worldObj.playSoundEffect(var7, var9, var11, "mob.endermen.portal", 1.0F, 1.0F);

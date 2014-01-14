@@ -15,7 +15,7 @@ import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import net.lomeli.lomlib.libs.LibraryStrings;
+import net.lomeli.lomlib.libs.Strings;
 import net.lomeli.lomlib.util.XMLUtil;
 
 import net.minecraft.client.Minecraft;
@@ -24,8 +24,6 @@ import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.texture.TextureObject;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
-
-import net.minecraftforge.common.MinecraftForge;
 
 @SideOnly(Side.CLIENT)
 public class CapeUtil {
@@ -40,16 +38,16 @@ public class CapeUtil {
     }
 
     public static CapeUtil getInstance() {
-        if(instance == null)
+        if (instance == null)
             instance = new CapeUtil();
         return instance;
     }
 
     public void readXML() {
-        if(FMLCommonHandler.instance().getSide() != Side.CLIENT)
+        if (FMLCommonHandler.instance().getSide() != Side.CLIENT)
             return;
         try {
-            URL xmlURL = new URL(LibraryStrings.CAPE_XML);
+            URL xmlURL = new URL(Strings.CAPE_XML);
             InputStream xml = xmlURL.openStream();
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -58,22 +56,22 @@ public class CapeUtil {
             doc.getDocumentElement().normalize();
 
             NodeList list = doc.getChildNodes().item(0).getChildNodes();
-            for(int i = 1; i <= list.getLength(); i++) {
+            for (int i = 1; i <= list.getLength(); i++) {
                 String nodeName = list.item(i).getNodeName();
                 String capeURL = list.item(i).getTextContent();
-                if(nodeName != "#text" && capeURL != "")
+                if (nodeName != "#text" && capeURL != "")
                     giveUserCape(nodeName, capeURL);
             }
-        }catch(Exception e) {
+        } catch (Exception e) {
         }
         TickRegistry.registerTickHandler(new CapesTickHandler(), Side.CLIENT);
-        MinecraftForge.EVENT_BUS.register(new RenderPlayerCape());
+        // MinecraftForge.EVENT_BUS.register(new RenderPlayerCape());
     }
 
     public void giveUserCape(String user, String cape) {
-        if(capeResources.get(user) == null)
+        if (capeResources.get(user) == null)
             capeResources.put(user, new ResourceLocation("LomLib/" + user));
-        if(capes.get(user) == null)
+        if (capes.get(user) == null)
             capes.put(user, makeDownloadThread(capeResources.get(user), cape, null, new CapeBuffer()));
     }
 
@@ -85,7 +83,7 @@ public class CapeUtil {
         ResourceLocation resource = null;
         try {
             resource = capeResources.get(user);
-        }catch(Exception e) {
+        } catch (Exception e) {
         }
         return resource;
     }
@@ -94,19 +92,19 @@ public class CapeUtil {
         ThreadDownloadImageData image = null;
         try {
             image = capes.get(user);
-        }catch(Exception e) {
+        } catch (Exception e) {
         }
         return image;
     }
 
     public static String capeURL(String user) {
         String url;
-        url = XMLUtil.getString(LibraryStrings.CAPE_XML, user);
+        url = XMLUtil.getString(Strings.CAPE_XML, user);
         return url;
     }
 
-    public static ThreadDownloadImageData makeDownloadThread(ResourceLocation par0ResourceLocation, String par1Str,
-            ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer) {
+    public static ThreadDownloadImageData makeDownloadThread(ResourceLocation par0ResourceLocation, String par1Str, ResourceLocation par2ResourceLocation,
+            IImageBuffer par3IImageBuffer) {
         TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
 
         TextureObject object = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);

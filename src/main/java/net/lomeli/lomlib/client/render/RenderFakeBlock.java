@@ -124,6 +124,7 @@ public class RenderFakeBlock extends RenderBlocks {
         return 0;
     }
 
+    @Override
     public void renderFaceYNeg(Block block, double x, double y, double z, Icon icon) {
         if (this.hasOverrideBlockTexture())
             icon = this.overrideBlockTexture;
@@ -134,6 +135,7 @@ public class RenderFakeBlock extends RenderBlocks {
             super.renderFaceYNeg(block, x, y, z, icon);
     }
 
+    @Override
     public void renderFaceYPos(Block block, double x, double y, double z, Icon icon) {
         if (this.hasOverrideBlockTexture())
             icon = this.overrideBlockTexture;
@@ -144,6 +146,7 @@ public class RenderFakeBlock extends RenderBlocks {
             super.renderFaceYPos(block, x, y, z, icon);
     }
 
+    @Override
     public void renderFaceXNeg(Block block, double x, double y, double z, Icon icon) {
         if (this.hasOverrideBlockTexture())
             icon = this.overrideBlockTexture;
@@ -154,6 +157,7 @@ public class RenderFakeBlock extends RenderBlocks {
             super.renderFaceXNeg(block, x, y, z, icon);
     }
 
+    @Override
     public void renderFaceXPos(Block block, double x, double y, double z, Icon icon) {
         if (this.hasOverrideBlockTexture())
             icon = this.overrideBlockTexture;
@@ -164,6 +168,7 @@ public class RenderFakeBlock extends RenderBlocks {
             super.renderFaceXPos(block, x, y, z, icon);
     }
 
+    @Override
     public void renderFaceZNeg(Block block, double x, double y, double z, Icon icon) {
         if (this.hasOverrideBlockTexture())
             icon = this.overrideBlockTexture;
@@ -174,6 +179,7 @@ public class RenderFakeBlock extends RenderBlocks {
             super.renderFaceZNeg(block, x, y, z, icon);
     }
 
+    @Override
     public void renderFaceZPos(Block block, double x, double y, double z, Icon icon) {
         if (this.hasOverrideBlockTexture())
             icon = this.overrideBlockTexture;

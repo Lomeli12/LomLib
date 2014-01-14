@@ -10,7 +10,7 @@ import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import net.lomeli.lomlib.LomLib;
+import net.lomeli.lomlib.LomLibCore;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -43,16 +43,16 @@ public class CapesTickHandler implements ITickHandler {
                     if (p.getTextureCape() != null) {
                         if (!p.getTextureCape().isTextureUploaded()) {
                             if (CapeUtil.getInstance().getUserCape(lowerUsername) != null && CapeUtil.getInstance().getUserResource(lowerUsername) != null) {
-                                if (LomLib.debug)
-                                    LomLib.logger.log(Level.INFO, "Changing cape of: " + p.username);
+                                if (LomLibCore.debug)
+                                    LomLibCore.logger.log(Level.INFO, "Changing cape of: " + p.username);
                                 downloadImageCapeField.set(p, CapeUtil.getInstance().getUserCape(lowerUsername));
                                 locationCapeField.set(p, CapeUtil.getInstance().getUserResource(lowerUsername));
                             }
                         }
                     } else {
                         if (CapeUtil.getInstance().getUserCape(lowerUsername) != null && CapeUtil.getInstance().getUserResource(lowerUsername) != null) {
-                            if (LomLib.debug)
-                                LomLib.logger.log(Level.INFO, "Changing cape of: " + p.username);
+                            if (LomLibCore.debug)
+                                LomLibCore.logger.log(Level.INFO, "Changing cape of: " + p.username);
                             downloadImageCapeField.set(p, CapeUtil.getInstance().getUserCape(lowerUsername));
                             locationCapeField.set(p, CapeUtil.getInstance().getUserResource(lowerUsername));
                         }
@@ -62,20 +62,6 @@ public class CapesTickHandler implements ITickHandler {
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-        }
-    }
-
-    private void setPlayerCape(AbstractClientPlayer player, String username) {
-        try {
-            player.getClass().getDeclaredField("downloadImageCape").set(player, CapeUtil.getInstance().getUserCape(username));
-            player.getClass().getDeclaredField("locationCape").set(player, CapeUtil.getInstance().getUserResource(username));
-            // AbstractClientPlayer.class.getDeclaredField("downloadImageCape").set(player,
-            // CapeUtil.getInstance().getUserCape(username));
-            // AbstractClientPlayer.class.getDeclaredField("locationCape").set(player,
-            // CapeUtil.getInstance().getUserResource(username));
-        } catch (Exception e) {
-            if (LomLib.debug)
-                LomLib.logger.log(Level.INFO, "Could not apply cape to " + username);
         }
     }
 

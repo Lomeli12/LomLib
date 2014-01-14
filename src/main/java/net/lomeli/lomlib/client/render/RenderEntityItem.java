@@ -12,9 +12,8 @@ import net.minecraftforge.common.ForgeDirection;
 
 public class RenderEntityItem {
 
-    public static void renderEntityGhostItem(World world, ItemStack stack, RenderItem customRender, int x, int y, int z,
-            ForgeDirection forgeDirection) {
-        if(stack != null) {
+    public static void renderEntityGhostItem(World world, ItemStack stack, RenderItem customRender, int x, int y, int z, ForgeDirection forgeDirection) {
+        if (stack != null) {
             float scaleFactor = getGhostItemScaleFactor(stack, customRender);
             float rotationAngle = (float) (720.0 * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL);
 
@@ -31,12 +30,11 @@ public class RenderEntityItem {
         }
     }
 
-    private static void translateGhostItemByOrientation(ItemStack ghostItemStack, double x, double y, double z,
-            ForgeDirection forgeDirection) {
+    private static void translateGhostItemByOrientation(ItemStack ghostItemStack, double x, double y, double z, ForgeDirection forgeDirection) {
 
-        if(ghostItemStack != null) {
-            if(ghostItemStack.getItem() instanceof ItemBlock) {
-                switch(forgeDirection) {
+        if (ghostItemStack != null) {
+            if (ghostItemStack.getItem() instanceof ItemBlock) {
+                switch (forgeDirection) {
                 case DOWN: {
                     GL11.glTranslatef((float) x + 0.5F, (float) y + 0.7F, (float) z + 0.5F);
                     return;
@@ -68,8 +66,8 @@ public class RenderEntityItem {
                     return;
                 }
                 }
-            }else {
-                switch(forgeDirection) {
+            } else {
+                switch (forgeDirection) {
                 case DOWN: {
                     GL11.glTranslatef((float) x + 0.5F, (float) y + 0.6F, (float) z + 0.5F);
                     return;
@@ -109,9 +107,9 @@ public class RenderEntityItem {
 
         float scaleFactor = 1.0F;
 
-        if(itemStack != null) {
-            if(itemStack.getItem() instanceof ItemBlock) {
-                switch(customRenderItem.getMiniBlockCount(itemStack)) {
+        if (itemStack != null) {
+            if (itemStack.getItem() instanceof ItemBlock) {
+                switch (customRenderItem.getMiniBlockCount(itemStack)) {
                 case 1:
                     return 0.90F;
                 case 2:
@@ -125,8 +123,8 @@ public class RenderEntityItem {
                 default:
                     return 0.90F;
                 }
-            }else {
-                switch(customRenderItem.getMiniItemCount(itemStack)) {
+            } else {
+                switch (customRenderItem.getMiniItemCount(itemStack)) {
                 case 1:
                     return 0.65F;
                 case 2:

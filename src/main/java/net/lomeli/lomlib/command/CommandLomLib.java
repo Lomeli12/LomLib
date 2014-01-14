@@ -9,19 +9,19 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.lomeli.lomlib.libs.LibraryStrings;
+import net.lomeli.lomlib.libs.Strings;
 import net.lomeli.lomlib.util.ToolTipUtil;
 
 public class CommandLomLib extends CommandBase {
 
     @Override
     public String getCommandName() {
-        return LibraryStrings.MOD_ID.toLowerCase();
+        return Strings.MOD_ID.toLowerCase();
     }
 
     @Override
     public String getCommandUsage(ICommandSender icommandsender) {
-        return "/" + this.getCommandName() + " help";
+        return "/" + this.getCommandName();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class CommandLomLib extends CommandBase {
             } else if (argument1.equalsIgnoreCase("clearLivingEntities")) {
                 for (Entity entity : entityList) {
                     if (entity instanceof EntityLivingBase) {
-                        ((EntityLivingBase)entity).setDead();
+                        ((EntityLivingBase) entity).setDead();
                     }
                 }
                 sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All Living mobs have been removed.");

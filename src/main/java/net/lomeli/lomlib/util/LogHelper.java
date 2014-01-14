@@ -14,7 +14,7 @@ public class LogHelper {
     }
 
     public void init() {
-        modLogger.setParent((Logger) FMLLog.getLogger());
+        modLogger.setParent(FMLLog.getLogger());
     }
 
     public void log(Level logLevel, String message) {

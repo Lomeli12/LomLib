@@ -1,2 +1,6 @@
 recipe.lomlib:shapedFluid=Shaped Fluid Recipe
 recipe.lomlib:shapelessFluid=Shapeless Fluid Recipe
+
+tab.lomlib.info=Information
+
+element.lomlib.tankEmpty=Empty

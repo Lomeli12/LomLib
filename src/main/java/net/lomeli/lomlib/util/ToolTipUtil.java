@@ -1,6 +1,10 @@
 package net.lomeli.lomlib.util;
 
+import java.util.List;
+
 import org.lwjgl.input.Keyboard;
+
+import net.minecraft.client.gui.FontRenderer;
 
 public class ToolTipUtil {
     public static boolean doAdditionalInfo() {
@@ -17,6 +21,16 @@ public class ToolTipUtil {
     public static String additionalInfoInstructions(String color) {
         String message = "<SHIFT for info>";
         return color + ITALIC + message;
+    }
+
+    public static String toolTipInfo(String color, String message) {
+        return doAdditionalInfo() ? message : additionalInfoInstructions(color);
+    }
+
+    public static int getSplitStringHeight(FontRenderer renderer, String input, int width) {
+        @SuppressWarnings("rawtypes")
+        List stringRows = renderer.listFormattedStringToWidth(input, width);
+        return stringRows.size() * renderer.FONT_HEIGHT;
     }
 
     public static final String BLACK = "\u00a70";

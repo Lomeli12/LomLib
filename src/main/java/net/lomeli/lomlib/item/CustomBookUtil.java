@@ -12,7 +12,7 @@ public class CustomBookUtil {
         NBTUtil.setString(newBook, "author", author);
         NBTUtil.setString(newBook, "title", title);
         NBTTagList pages = new NBTTagList();
-        for(int i = 0; i < pageText.length; i++) {
+        for (int i = 0; i < pageText.length; i++) {
             pages.appendTag(new NBTTagString("" + (i + 1), pageText[i]));
         }
         newBook.setTagInfo("pages", pages);

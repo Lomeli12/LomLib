@@ -19,13 +19,13 @@ public class PhantomSlot extends Slot {
 
     @Override
     public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
-        
+
         return false;
     }
 
     @Override
     public void putStack(ItemStack par1ItemStack) {
-        if(par1ItemStack != null) {
+        if (par1ItemStack != null) {
             int id = par1ItemStack.itemID, meta = par1ItemStack.getItemDamage();
             this.inventory.setInventorySlotContents(this.slotNumber, new ItemStack(id, 1, meta));
             this.inventory.onInventoryChanged();
