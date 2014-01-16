@@ -49,7 +49,7 @@ public class ElementTank extends ElementBase {
         ResourceUtil.bindTexture(this.texture);
         drawTexturedModalRect(posX, posY, 0, 0, sizeX + 2, sizeY + 2);
         int amount = ((tank.getFluidAmount() * this.sizeY) / tank.getCapacity());
-        this.gui.drawFluid(gui.getGuiLeft() + ((this.posX / 2) - 5), (this.posY + 1) + this.sizeY - amount, this.tank.getFluid(), this.sizeX, amount);
+        this.gui.drawFluid(this.posX + 1, this.posY + 1 + this.sizeY - amount, this.tank.getFluid(), this.sizeX, amount);
         ResourceUtil.bindTexture(this.texture);
         drawTexturedModalRect(posX, posY, 32 + gaugeType * 16, 1, sizeX, sizeY);
     }
