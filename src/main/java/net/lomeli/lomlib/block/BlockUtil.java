@@ -105,16 +105,24 @@ public class BlockUtil {
      * @param x
      * @param y
      * @param z
-     * @return True if next to water block, otherwise false
+     * @return number of water source blocks the block is next to
      * @author Lomeli12
      */
-    public static boolean isBlockAdjacentToWaterSource(World world, int x, int y, int z) {
-        if (world.getBlockId(x, y + 1, z) == Block.waterStill.blockID || world.getBlockId(x, y - 1, z) == Block.waterStill.blockID
-                || world.getBlockId(x + 1, y, z) == Block.waterStill.blockID || world.getBlockId(x - 1, y, z) == Block.waterStill.blockID
-                || world.getBlockId(x, y, z + 1) == Block.waterStill.blockID || world.getBlockId(x, y, z - 1) == Block.waterStill.blockID)
-            return true;
-        else
-            return false;
+    public static int isBlockAdjacentToWaterSource(World world, int x, int y, int z) {
+        int j = 0;
+        if(world.getBlockMetadata(x - 1, y, z) == 0 && isBlockWater(world, x - 1, y, z))
+            j++;
+        if(world.getBlockMetadata(x + 1, y, z) == 0 && isBlockWater(world, x + 1, y, z))
+            j++;
+        if(world.getBlockMetadata(x, y, z - 1) == 0 && isBlockWater(world, x, y, z - 1))
+            j++;
+        if(world.getBlockMetadata(x, y, z + 1) == 0 && isBlockWater(world, x, y, z + 1))
+            j++;
+        return j;
+    }
+    
+    public static boolean isBlockWater(World world, int x, int y, int z){
+        return (world.getBlockId(x, y, z) == Block.waterStill.blockID) || (world.getBlockId(x, y, z) == Block.waterMoving.blockID);
     }
 
     public static boolean isAboveBlock(Entity entity, int x, int y, int z) {
