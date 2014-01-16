@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL11;
 import net.lomeli.lomlib.client.gui.GuiContainerPlus;
 import net.lomeli.lomlib.client.gui.element.ElementBase;
 
-import codechicken.lib.vec.Rectangle4i;
+import net.lomeli.lomlib.codechicken.lib.vec.Rectangle4i;
 
 public class TabBase extends ElementBase {
 

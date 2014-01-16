@@ -1,4 +1,4 @@
-package codechicken.lib.vec;
+package net.lomeli.lomlib.codechicken.lib.vec;
 
 public class Rectangle4i
 {
