@@ -28,12 +28,14 @@ public class LomLibAccessTransformer extends AccessTransformer {
     @Override
     public byte[] transform(String name, String transformedName, byte[] bytes) {
         super.transform(name, transformedName, bytes);
-        for (int i = 0; i < obfNames.size(); i++) {
+        /*
+       for (int i = 0; i < obfNames.size(); i++) {
             if (name.equals(obfNames.get(i)) || name.equals(deobfName[i])) {
                 System.out.println("[LomLib]: Patching " + name);
                 patchClassInJar(name, bytes, name, LomLibPlugin.location);
             }
         }
+        */
         return bytes;
     }
 

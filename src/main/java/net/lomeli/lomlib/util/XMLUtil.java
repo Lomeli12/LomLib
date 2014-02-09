@@ -90,7 +90,6 @@ public class XMLUtil {
         return new Byte(getString(URLLoc, nodeName));
     }
 
-    @SuppressWarnings("unused")
     private static boolean isValidXMLFile(String filename) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
@@ -102,12 +101,11 @@ public class XMLUtil {
                 return true;
             }
         } catch (Exception e) {
-            LomLibCore.logger.log(Level.WARNING, "Invalid XML file!");
+            LomLibCore.logger.logWarning("Invalid XML file!");
         }
         return true;
     }
 
-    @SuppressWarnings("unused")
     public static boolean isValidXMLFile(File config) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
@@ -117,11 +115,11 @@ public class XMLUtil {
                 return true;
             }
         } catch (Exception e) {
-            LomLibCore.logger.log(Level.WARNING, "Invalid configuration file!");
+            LomLibCore.logger.logWarning("Invalid configuration file!");
             if (config.exists()) {
-                LomLibCore.logger.log(Level.WARNING, "Removing invalid file...");
+                LomLibCore.logger.logWarning("Removing invalid file...");
                 config.delete();
-                LomLibCore.logger.log(Level.INFO, "Done!");
+                LomLibCore.logger.logBasic("Done!");
             }
             return false;
         }

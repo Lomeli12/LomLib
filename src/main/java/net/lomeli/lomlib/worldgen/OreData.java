@@ -4,37 +4,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
 public class OreData {
-    public int maxHeight, minHeight, maxCluster, minCluster, clusterPerChunk, oreType, meta;
-
-    public OreData(int maxHeight, int minHeight, int maxCluster, int minCluster, int clusterPerChunk, int oreType, int meta) {
-        this.maxHeight = maxHeight;
-        this.minHeight = minHeight;
-        this.maxCluster = maxCluster;
-        this.minCluster = minCluster;
-        this.clusterPerChunk = clusterPerChunk;
-        this.oreType = oreType;
-        this.meta = meta;
-    }
-
-    public OreData(int maxHeight, int minHeight, int maxCluster, int minCluster, int clusterPerChunk, int oreType) {
-        this.maxHeight = maxHeight;
-        this.minHeight = minHeight;
-        this.maxCluster = maxCluster;
-        this.minCluster = minCluster;
-        this.clusterPerChunk = clusterPerChunk;
-        this.oreType = oreType;
-        this.meta = 0;
-    }
-
-    public OreData(int maxHeight, int minHeight, int maxCluster, int minCluster, int clusterPerChunk, ItemStack block) {
-        this.maxHeight = maxHeight;
-        this.minHeight = minHeight;
-        this.maxCluster = maxCluster;
-        this.minCluster = minCluster;
-        this.clusterPerChunk = clusterPerChunk;
-        this.oreType = block.itemID;
-        this.meta = block.getItemDamage();
-    }
+    public int maxHeight, minHeight, maxCluster, minCluster, clusterPerChunk, meta;
+    public Block oreType;
 
     public OreData(int maxHeight, int minHeight, int maxCluster, int minCluster, int clusterPerChunk, Block block) {
         this.maxHeight = maxHeight;
@@ -42,7 +13,17 @@ public class OreData {
         this.maxCluster = maxCluster;
         this.minCluster = minCluster;
         this.clusterPerChunk = clusterPerChunk;
-        this.oreType = block.blockID;
+        this.oreType = block;
         this.meta = 0;
+    }
+    
+    public OreData(int maxHeight, int minHeight, int maxCluster, int minCluster, int clusterPerChunk, Block block, int meta) {
+        this.maxHeight = maxHeight;
+        this.minHeight = minHeight;
+        this.maxCluster = maxCluster;
+        this.minCluster = minCluster;
+        this.clusterPerChunk = clusterPerChunk;
+        this.oreType = block;
+        this.meta = meta;
     }
 }

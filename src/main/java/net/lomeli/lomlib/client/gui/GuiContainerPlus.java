@@ -22,7 +22,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 import net.minecraftforge.fluids.FluidStack;
@@ -74,7 +74,7 @@ public class GuiContainerPlus extends GuiContainer {
         }
     }
 
-    public void drawTiledTexture(int x, int y, Icon icon, int width, int height) {
+    public void drawTiledTexture(int x, int y, IIcon icon, int width, int height) {
         int i = 0;
         int j = 0;
 
@@ -103,7 +103,7 @@ public class GuiContainerPlus extends GuiContainer {
         tessellator.draw();
     }
 
-    public void drawIcon(Icon icon, int x, int y, int spriteSheet) {
+    public void drawIcon(IIcon icon, int x, int y, int spriteSheet) {
         if (spriteSheet == 0)
             ResourceUtil.setBlockTextureSheet();
         else
@@ -158,7 +158,7 @@ public class GuiContainerPlus extends GuiContainer {
     }
 
     public void drawTooltip(List<String> list) {
-        drawTooltipHoveringText(list, mouseX, mouseY, fontRenderer);
+        drawTooltipHoveringText(list, mouseX, mouseY, fontRendererObj);
         tooltip.clear();
     }
 
@@ -195,7 +195,7 @@ public class GuiContainerPlus extends GuiContainer {
             j1 = this.height - k1 - 6;
 
         this.zLevel = 300.0F;
-        itemRenderer.zLevel = 300.0F;
+        itemRender.zLevel = 300.0F;
         int l1 = -267386864;
         this.drawGradientRect(i1 - 3, j1 - 4, i1 + k + 3, j1 - 3, l1, l1);
         this.drawGradientRect(i1 - 3, j1 + k1 + 3, i1 + k + 3, j1 + k1 + 4, l1, l1);
@@ -219,13 +219,13 @@ public class GuiContainerPlus extends GuiContainer {
             j1 += 10;
         }
         this.zLevel = 0.0F;
-        itemRenderer.zLevel = 0.0F;
+        itemRender.zLevel = 0.0F;
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
     }
 
-    public void drawScaledTexturedModelRectFromIcon(int x, int y, Icon icon, int width, int height) {
+    public void drawScaledTexturedModelRectFromIcon(int x, int y, IIcon icon, int width, int height) {
         if (icon == null)
             return;
 

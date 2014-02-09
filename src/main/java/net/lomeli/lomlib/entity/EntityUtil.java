@@ -90,15 +90,15 @@ public class EntityUtil {
     }
 
     @SuppressWarnings("rawtypes")
-    public static boolean transformEntityItem(World world, int x, int y, int z, EntityPlayer player, int initId, ItemStack transformation, ItemStack requiredItem, boolean effect) {
+    public static boolean transformEntityItem(World world, int x, int y, int z, EntityPlayer player, ItemStack init, ItemStack transformation, ItemStack requiredItem, boolean effect) {
         List entityList = world.getEntitiesWithinAABB(EntityItem.class, player.boundingBox.expand(15D, 15D, 15D));
         for (int i = 0; i < entityList.size(); i++) {
             Entity ent = (Entity) entityList.get(i);
             if (ent != null && ent instanceof EntityItem) {
                 EntityItem item = (EntityItem) ent;
                 if (BlockUtil.isAboveBlock(item, x, y, z)) {
-                    if (item != null && item.getEntityItem().itemID == initId) {
-                        if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().itemID == requiredItem.itemID) {
+                    if (item != null && item.getEntityItem().getUnlocalizedName().equals(init.getUnlocalizedName())) {
+                        if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getUnlocalizedName().equals(requiredItem.getUnlocalizedName()) && player.getCurrentEquippedItem().getItemDamage() == requiredItem.getItemDamage()) {
                             ItemStack manual = transformation;
                             manual.stackSize = item.getEntityItem().stackSize;
                             if (manual != null) {
@@ -152,15 +152,15 @@ public class EntityUtil {
         int var14 = MathHelper.floor_double(entity.posX);
         int var15 = MathHelper.floor_double(entity.posY);
         int var16 = MathHelper.floor_double(entity.posZ);
-        int var18;
+        Block var18;
 
         if (entity.worldObj.blockExists(var14, var15, var16)) {
             boolean var17 = false;
 
             while (!var17 && var15 > 0) {
-                var18 = entity.worldObj.getBlockId(var14, var15 - 1, var16);
+                var18 = entity.worldObj.getBlock(var14, var15 - 1, var16);
 
-                if (var18 != 0 && Block.blocksList[var18].blockMaterial.blocksMovement()) {
+                if (var18 != null && var18.getMaterial().blocksMovement()) {
                     var17 = true;
                 } else {
                     --entity.posY;
@@ -183,8 +183,8 @@ public class EntityUtil {
         } else {
             short var30 = 128;
 
-            for (var18 = 0; var18 < var30; ++var18) {
-                double var19 = var18 / (var30 - 1.0D);
+            for (int j = 0; j < var30; ++j) {
+                double var19 = j / (var30 - 1.0D);
                 float var21 = (entity.worldObj.rand.nextFloat() - 0.5F) * 0.2F;
                 float var22 = (entity.worldObj.rand.nextFloat() - 0.5F) * 0.2F;
                 float var23 = (entity.worldObj.rand.nextFloat() - 0.5F) * 0.2F;

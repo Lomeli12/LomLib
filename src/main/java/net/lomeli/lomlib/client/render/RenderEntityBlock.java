@@ -12,7 +12,8 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.Icon;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -35,10 +36,10 @@ public class RenderEntityBlock extends Render {
         public double maxX;
         public double maxY;
         public double maxZ;
-        public Block baseBlock = Block.sand;
-        public Icon texture = null;
+        public Block baseBlock = Blocks.sand;
+        public IIcon texture = null;
 
-        public Icon getBlockTextureFromSide(int i) {
+        public IIcon getBlockTextureFromSide(int i) {
             if (texture == null)
                 return baseBlock.getBlockTextureFromSide(i);
             else
@@ -46,7 +47,7 @@ public class RenderEntityBlock extends Render {
         }
 
         public float getBlockBrightness(IBlockAccess iblockaccess, int i, int j, int k) {
-            return baseBlock.getBlockBrightness(iblockaccess, i, j, k);
+            return baseBlock.getLightValue(iblockaccess, i, j, k);
         }
     }
 
@@ -113,13 +114,13 @@ public class RenderEntityBlock extends Render {
         float f2 = 0.8F;
         float f3 = 0.6F;
 
-        renderBlocks.renderMaxX = block.maxX;
-        renderBlocks.renderMinX = block.minX;
-        renderBlocks.renderMaxY = block.maxY;
-        renderBlocks.renderMinY = block.minY;
-        renderBlocks.renderMaxZ = block.maxZ;
-        renderBlocks.renderMinZ = block.minZ;
-        renderBlocks.enableAO = false;
+        field_147909_c.renderMaxX = block.maxX;
+        field_147909_c.renderMinX = block.minX;
+        field_147909_c.renderMaxY = block.maxY;
+        field_147909_c.renderMinY = block.minY;
+        field_147909_c.renderMaxZ = block.maxZ;
+        field_147909_c.renderMinZ = block.minZ;
+        field_147909_c.enableAO = false;
 
         Tessellator tessellator = Tessellator.instance;
 
@@ -137,7 +138,7 @@ public class RenderEntityBlock extends Render {
             tessellator.setColorOpaque_F(f * f5, f * f5, f * f5);
         }
 
-        renderBlocks.renderFaceYNeg(null, 0, 0, 0, block.getBlockTextureFromSide(0));
+        field_147909_c.renderFaceYNeg(null, 0, 0, 0, block.getBlockTextureFromSide(0));
 
         if (doLight) {
             f5 = block.getBlockBrightness(blockAccess, i, j, k);
@@ -146,7 +147,7 @@ public class RenderEntityBlock extends Render {
             tessellator.setColorOpaque_F(f1 * f5, f1 * f5, f1 * f5);
         }
 
-        renderBlocks.renderFaceYPos(null, 0, 0, 0, block.getBlockTextureFromSide(1));
+        field_147909_c.renderFaceYPos(null, 0, 0, 0, block.getBlockTextureFromSide(1));
 
         if (doLight) {
             f5 = block.getBlockBrightness(blockAccess, i, j, k);
@@ -155,7 +156,7 @@ public class RenderEntityBlock extends Render {
             tessellator.setColorOpaque_F(f2 * f5, f2 * f5, f2 * f5);
         }
 
-        renderBlocks.renderFaceZNeg(null, 0, 0, 0, block.getBlockTextureFromSide(2));
+        field_147909_c.renderFaceZNeg(null, 0, 0, 0, block.getBlockTextureFromSide(2));
 
         if (doLight) {
             f5 = block.getBlockBrightness(blockAccess, i, j, k);
@@ -164,7 +165,7 @@ public class RenderEntityBlock extends Render {
             tessellator.setColorOpaque_F(f2 * f5, f2 * f5, f2 * f5);
         }
 
-        renderBlocks.renderFaceZPos(null, 0, 0, 0, block.getBlockTextureFromSide(3));
+        field_147909_c.renderFaceZPos(null, 0, 0, 0, block.getBlockTextureFromSide(3));
 
         if (doLight) {
             f5 = block.getBlockBrightness(blockAccess, i, j, k);
@@ -173,7 +174,7 @@ public class RenderEntityBlock extends Render {
             tessellator.setColorOpaque_F(f3 * f5, f3 * f5, f3 * f5);
         }
 
-        renderBlocks.renderFaceXNeg(null, 0, 0, 0, block.getBlockTextureFromSide(4));
+        field_147909_c.renderFaceXNeg(null, 0, 0, 0, block.getBlockTextureFromSide(4));
 
         if (doLight) {
             f5 = block.getBlockBrightness(blockAccess, i, j, k);
@@ -182,7 +183,7 @@ public class RenderEntityBlock extends Render {
             tessellator.setColorOpaque_F(f3 * f5, f3 * f5, f3 * f5);
         }
 
-        renderBlocks.renderFaceXPos(null, 0, 0, 0, block.getBlockTextureFromSide(5));
+        field_147909_c.renderFaceXPos(null, 0, 0, 0, block.getBlockTextureFromSide(5));
 
         if (doTessellating)
             tessellator.draw();

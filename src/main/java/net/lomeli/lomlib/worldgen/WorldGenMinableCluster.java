@@ -3,6 +3,7 @@ package net.lomeli.lomlib.worldgen;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -35,21 +36,20 @@ public class WorldGenMinableCluster {
         }
     }
 
-    private void generateOre(World world, Random rand, int x, int y, int z, int blockID, int meta, int ntg) {
+    private void generateOre(World world, Random rand, int x, int y, int z, Block block, int meta, int ntg) {
         int lx, ly, lz;
         lx = x;
         ly = y;
         lz = z;
-        int id;
-        id = world.getBlockId(lx, ly, lz);
-        if (id != Block.stone.blockID && id != Block.dirt.blockID)
+        Block id = world.getBlock(lx, ly, lz);
+        if (!id.getUnlocalizedName().equals(Blocks.stone.getUnlocalizedName()) && !id.getUnlocalizedName().equals(Blocks.dirt.getUnlocalizedName()))
             return;
 
         for (int i = 0; i < ntg; i++) {
 
-            id = world.getBlockId(lx, ly, lz);
+            id = world.getBlock(lx, ly, lz);
 
-            world.setBlock(lx, ly, lz, blockID, meta, 2);
+            world.setBlock(lx, ly, lz, block, meta, 2);
             switch (rand.nextInt(3)) {
             case 0:
                 lx = lx + (rand.nextInt(4) - 2);

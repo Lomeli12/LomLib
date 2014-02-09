@@ -4,7 +4,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.relauncher.Side;
@@ -33,15 +33,14 @@ public class BlockGeneric extends Block {
      * @param texture
      *            The block's texture file (without .png)
      */
-    public BlockGeneric(int id, Material material, String mod, String texture) {
-        super(id, material);
+    public BlockGeneric(Material material, String mod, String texture) {
+        super(material);
         this.modID = mod;
         this.blockTexture = texture;
-        this.drop = id;
     }
 
-    public BlockGeneric(int id, Material material, String mod, String texture, int dropID) {
-        super(id, material);
+    public BlockGeneric(Material material, String mod, String texture, int dropID) {
+        super(material);
         this.modID = mod;
         this.blockTexture = texture;
         this.drop = dropID;
@@ -53,13 +52,8 @@ public class BlockGeneric extends Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister iconRegister) {
+    public void registerBlockIcons(IIconRegister iconRegister) {
         blockIcon = iconRegister.registerIcon(modID + ":" + blockTexture);
-    }
-
-    @Override
-    public int idDropped(int par1, Random par2Random, int par3) {
-        return drop;
     }
 
     @Override

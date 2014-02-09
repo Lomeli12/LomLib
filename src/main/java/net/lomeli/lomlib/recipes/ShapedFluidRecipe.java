@@ -224,7 +224,7 @@ public class ShapedFluidRecipe implements IRecipe {
     private boolean checkItemEquals(ItemStack target, ItemStack input) {
         if (input == null && target != null || input != null && target == null)
             return false;
-        return (target.itemID == input.itemID && (target.getItemDamage() == OreDictionary.WILDCARD_VALUE || target.getItemDamage() == input.getItemDamage()));
+        return (target.getUnlocalizedName().equals(input.getUnlocalizedName()) && (target.getItemDamage() == OreDictionary.WILDCARD_VALUE || target.getItemDamage() == input.getItemDamage()));
     }
 
     public ShapedFluidRecipe setMirrored(boolean mirror) {

@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.Facing;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 public class RenderFakeBlock extends RenderBlocks {
@@ -92,7 +92,7 @@ public class RenderFakeBlock extends RenderBlocks {
     }
 
     public boolean matchBlock(int side2, int x2, int y2, int z2) {
-        return this.curBlock == this.blockAccess.getBlockId(x2, y2, z2) * 16 + this.blockAccess.getBlockMetadata(x2, y2, z2);
+        return this.curBlock == this.blockAccess.getBlock(x2, y2, z2).hashCode() * 16 + this.blockAccess.getBlockMetadata(x2, y2, z2);
     }
 
     public int getType(Block block, int side, int x, int y, int z, int ax, int ay, int az, int bx, int by, int bz, int cx, int cy, int cz) {
@@ -125,7 +125,7 @@ public class RenderFakeBlock extends RenderBlocks {
     }
 
     @Override
-    public void renderFaceYNeg(Block block, double x, double y, double z, Icon icon) {
+    public void renderFaceYNeg(Block block, double x, double y, double z, IIcon icon) {
         if (this.hasOverrideBlockTexture())
             icon = this.overrideBlockTexture;
 
@@ -136,7 +136,7 @@ public class RenderFakeBlock extends RenderBlocks {
     }
 
     @Override
-    public void renderFaceYPos(Block block, double x, double y, double z, Icon icon) {
+    public void renderFaceYPos(Block block, double x, double y, double z, IIcon icon) {
         if (this.hasOverrideBlockTexture())
             icon = this.overrideBlockTexture;
 
@@ -147,7 +147,7 @@ public class RenderFakeBlock extends RenderBlocks {
     }
 
     @Override
-    public void renderFaceXNeg(Block block, double x, double y, double z, Icon icon) {
+    public void renderFaceXNeg(Block block, double x, double y, double z, IIcon icon) {
         if (this.hasOverrideBlockTexture())
             icon = this.overrideBlockTexture;
 
@@ -158,7 +158,7 @@ public class RenderFakeBlock extends RenderBlocks {
     }
 
     @Override
-    public void renderFaceXPos(Block block, double x, double y, double z, Icon icon) {
+    public void renderFaceXPos(Block block, double x, double y, double z, IIcon icon) {
         if (this.hasOverrideBlockTexture())
             icon = this.overrideBlockTexture;
 
@@ -169,7 +169,7 @@ public class RenderFakeBlock extends RenderBlocks {
     }
 
     @Override
-    public void renderFaceZNeg(Block block, double x, double y, double z, Icon icon) {
+    public void renderFaceZNeg(Block block, double x, double y, double z, IIcon icon) {
         if (this.hasOverrideBlockTexture())
             icon = this.overrideBlockTexture;
 
@@ -180,7 +180,7 @@ public class RenderFakeBlock extends RenderBlocks {
     }
 
     @Override
-    public void renderFaceZPos(Block block, double x, double y, double z, Icon icon) {
+    public void renderFaceZPos(Block block, double x, double y, double z, IIcon icon) {
         if (this.hasOverrideBlockTexture())
             icon = this.overrideBlockTexture;
 

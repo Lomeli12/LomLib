@@ -14,7 +14,8 @@ public class PhantomSlot extends Slot {
     @Override
     public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
         this.inventory.setInventorySlotContents(this.slotNumber, null);
-        this.inventory.onInventoryChanged();
+        this.inventory.closeInventory();
+        ;
     }
 
     @Override
@@ -25,10 +26,10 @@ public class PhantomSlot extends Slot {
 
     @Override
     public void putStack(ItemStack par1ItemStack) {
-        if (par1ItemStack != null) {
-            int id = par1ItemStack.itemID, meta = par1ItemStack.getItemDamage();
-            this.inventory.setInventorySlotContents(this.slotNumber, new ItemStack(id, 1, meta));
-            this.inventory.onInventoryChanged();
+        if(par1ItemStack != null) {
+            int meta = par1ItemStack.getItemDamage();
+            this.inventory.setInventorySlotContents(this.slotNumber, new ItemStack(par1ItemStack.getItem(), 1, meta));
+            this.inventory.closeInventory();
         }
     }
 

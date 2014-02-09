@@ -9,6 +9,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChatComponentText;
+
 import net.lomeli.lomlib.libs.Strings;
 import net.lomeli.lomlib.util.ToolTipUtil;
 
@@ -98,7 +100,7 @@ public class CommandLomLib extends CommandBase {
     }
 
     private void sendCommanderMessage(ICommandSender sender, String message) {
-        sender.getEntityWorld().getPlayerEntityByName(sender.getCommandSenderName()).addChatMessage(message);
+        sender.getEntityWorld().getPlayerEntityByName(sender.getCommandSenderName()).addChatMessage(new ChatComponentText(message));
     }
 
     @Override

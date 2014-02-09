@@ -9,15 +9,12 @@ import net.lomeli.lomlib.LomLibCore;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class BlockUtil {
-    public static Block getBlock(World world, int x, int y, int z) {
-        return Block.blocksList[world.getBlockId(x, y, z)];
-    }
-
     /**
      * Allows you to get a block from practically any other mod.
      * 
@@ -34,14 +31,14 @@ public class BlockUtil {
         try {
             String itemClass = BlockClass;
             Object obj = Class.forName(itemClass).getField(itemString).get(null);
-            if (obj instanceof Block)
+            if(obj instanceof Block)
                 item = new ItemStack((Block) obj, 1, meta);
-            else if (obj instanceof ItemStack)
+            else if(obj instanceof ItemStack)
                 item = (ItemStack) obj;
-            if (LomLibCore.debug)
-                LomLibCore.logger.log(Level.INFO, obj.toString());
+            if(LomLibCore.debug)
+                LomLibCore.logger.logBasic(obj.toString());
 
-        } catch (Exception ex) {
+        }catch(Exception ex) {
             FMLLog.warning("Could not retrieve block identified by: " + itemString);
         }
         return item;
@@ -61,15 +58,15 @@ public class BlockUtil {
         try {
             String itemClass = BlockClass;
             Object obj = Class.forName(itemClass).getField(itemString).get(null);
-            if (obj instanceof Block)
+            if(obj instanceof Block)
                 item = new ItemStack((Block) obj);
-            else if (obj instanceof ItemStack)
+            else if(obj instanceof ItemStack)
                 item = (ItemStack) obj;
 
-            if (LomLibCore.debug)
-                LomLibCore.logger.log(Level.INFO, obj.toString());
+            if(LomLibCore.debug)
+                LomLibCore.logger.logBasic(obj.toString());
 
-        } catch (Exception ex) {
+        }catch(Exception ex) {
             FMLLog.warning("Could not retrieve block identified by: " + itemString);
         }
         return item;
@@ -86,12 +83,19 @@ public class BlockUtil {
      * @author Lomeli12
      */
     public static boolean isBlockAdjacentToWater(World world, int x, int y, int z) {
-        if (world.getBlockId(x, y + 1, z) == Block.waterStill.blockID || world.getBlockId(x, y - 1, z) == Block.waterStill.blockID
-                || world.getBlockId(x + 1, y, z) == Block.waterStill.blockID || world.getBlockId(x - 1, y, z) == Block.waterStill.blockID
-                || world.getBlockId(x, y, z + 1) == Block.waterStill.blockID || world.getBlockId(x, y, z - 1) == Block.waterStill.blockID
-                || world.getBlockId(x, y + 1, z) == Block.waterMoving.blockID || world.getBlockId(x, y - 1, z) == Block.waterMoving.blockID
-                || world.getBlockId(x + 1, y, z) == Block.waterMoving.blockID || world.getBlockId(x - 1, y, z) == Block.waterMoving.blockID
-                || world.getBlockId(x, y, z + 1) == Block.waterMoving.blockID || world.getBlockId(x, y, z - 1) == Block.waterMoving.blockID)
+        String water = Blocks.water.getUnlocalizedName(), flowing = Blocks.flowing_water.getUnlocalizedName();
+        if(world.getBlock(x, y + 1, z).getUnlocalizedName().equals(water)
+                || world.getBlock(x, y - 1, z).getUnlocalizedName().equals(water)
+                || world.getBlock(x + 1, y, z).getUnlocalizedName().equals(water)
+                || world.getBlock(x - 1, y, z).getUnlocalizedName().equals(water)
+                || world.getBlock(x, y, z + 1).getUnlocalizedName().equals(water)
+                || world.getBlock(x, y, z - 1).getUnlocalizedName().equals(water)
+                || world.getBlock(x, y + 1, z).getUnlocalizedName().equals(flowing)
+                || world.getBlock(x, y - 1, z).getUnlocalizedName().equals(flowing)
+                || world.getBlock(x + 1, y, z).getUnlocalizedName().equals(flowing)
+                || world.getBlock(x - 1, y, z).getUnlocalizedName().equals(flowing)
+                || world.getBlock(x, y, z + 1).getUnlocalizedName().equals(flowing)
+                || world.getBlock(x, y, z - 1).getUnlocalizedName().equals(flowing))
             return true;
         else
             return false;
@@ -120,9 +124,9 @@ public class BlockUtil {
             j++;
         return j;
     }
-    
-    public static boolean isBlockWater(World world, int x, int y, int z){
-        return (world.getBlockId(x, y, z) == Block.waterStill.blockID) || (world.getBlockId(x, y, z) == Block.waterMoving.blockID);
+
+    public static boolean isBlockWater(World world, int x, int y, int z) {
+        return (world.getBlock(x, y, z).getUnlocalizedName().equals(Blocks.water.getUnlocalizedName())) || (world.getBlock(x, y, z).getUnlocalizedName().equals(Blocks.flowing_water.getUnlocalizedName()));
     }
 
     public static boolean isAboveBlock(Entity entity, int x, int y, int z) {
@@ -139,24 +143,25 @@ public class BlockUtil {
      * @return
      */
     public static boolean isThereANeighborChest(World world, int x, int y, int z) {
+        String chest = Blocks.chest.getUnlocalizedName(), trap = Blocks.trapped_chest.getUnlocalizedName();
         boolean yesThereIs = false;
-        if (world.getBlockId(x, y, z) == Block.chest.blockID) {
-            if (world.getBlockId(x + 1, y, z) == Block.chest.blockID)
+        if(world.getBlock(x, y, z).getUnlocalizedName().equals(chest)) {
+            if(world.getBlock(x + 1, y, z).getUnlocalizedName().equals(chest))
                 yesThereIs = true;
-            if (world.getBlockId(x - 1, y, z) == Block.chest.blockID)
+            if(world.getBlock(x - 1, y, z).getUnlocalizedName().equals(chest))
                 yesThereIs = true;
-            if (world.getBlockId(x, y, z + 1) == Block.chest.blockID)
+            if(world.getBlock(x, y, z + 1).getUnlocalizedName().equals(chest))
                 yesThereIs = true;
-            if (world.getBlockId(x, y, z - 1) == Block.chest.blockID)
+            if(world.getBlock(x, y, z - 1).getUnlocalizedName().equals(chest))
                 yesThereIs = true;
-        } else if (world.getBlockId(x, y, z) == Block.chestTrapped.blockID) {
-            if (world.getBlockId(x + 1, y, z) == Block.chestTrapped.blockID)
+        }else if(world.getBlock(x, y, z).getUnlocalizedName().equals(trap)) {
+            if(world.getBlock(x + 1, y, z).getUnlocalizedName().equals(trap))
                 yesThereIs = true;
-            if (world.getBlockId(x - 1, y, z) == Block.chestTrapped.blockID)
+            if(world.getBlock(x - 1, y, z).getUnlocalizedName().equals(trap))
                 yesThereIs = true;
-            if (world.getBlockId(x, y, z + 1) == Block.chestTrapped.blockID)
+            if(world.getBlock(x, y, z + 1).getUnlocalizedName().equals(trap))
                 yesThereIs = true;
-            if (world.getBlockId(x, y, z - 1) == Block.chestTrapped.blockID)
+            if(world.getBlock(x, y, z - 1).getUnlocalizedName().equals(trap))
                 yesThereIs = true;
         }
 
@@ -164,13 +169,13 @@ public class BlockUtil {
     }
 
     public static int determineOrientation(World world, int x, int y, int z, EntityLivingBase entity) {
-        if (MathHelper.abs((float) entity.posX - x) < 2.0F && MathHelper.abs((float) entity.posZ - z) < 2.0F) {
+        if(MathHelper.abs((float) entity.posX - x) < 2.0F && MathHelper.abs((float) entity.posZ - z) < 2.0F) {
             double d0 = entity.posY + 1.82D - entity.yOffset;
 
-            if (d0 - y > 2.0D)
+            if(d0 - y > 2.0D)
                 return 1;
 
-            if (y - d0 > 0.0D)
+            if(y - d0 > 0.0D)
                 return 0;
         }
 

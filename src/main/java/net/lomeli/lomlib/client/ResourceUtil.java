@@ -8,7 +8,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 import net.lomeli.lomlib.client.render.RenderEntityBlock;
@@ -55,7 +55,7 @@ public class ResourceUtil {
         return getResourceUtil(modid, "textures/" + folder + "/" + icon);
     }
 
-    public static Icon getIconfromRegistry(String modid, String folder, String icon) {
+    public static IIcon getIconfromRegistry(String modid, String folder, String icon) {
         return ((TextureMap) Minecraft.getMinecraft().getTextureManager().getTexture(ResourceUtil.getResource(modid, folder, icon))).getAtlasSprite("missingno");
     }
 

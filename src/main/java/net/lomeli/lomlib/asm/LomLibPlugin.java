@@ -27,4 +27,9 @@ public class LomLibPlugin implements IFMLLoadingPlugin {
     public void injectData(Map<String, Object> data) {
         location = (File) data.get("coremodLocation");
     }
+
+    @Override
+    public String getAccessTransformerClass() {
+        return "net.lomeli.lomlib.asm.LomLibAccessTransformer";
+    }
 }

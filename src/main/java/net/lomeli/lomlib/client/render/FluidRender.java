@@ -11,7 +11,8 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.Icon;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -25,18 +26,18 @@ public class FluidRender {
     public static final int DISPLAY_STAGES = 100;
     private static final BlockInterface liquidBlock = new BlockInterface();
 
-    public static Icon getFluidTexture(FluidStack fluidStack, boolean flowing) {
+    public static IIcon getFluidTexture(FluidStack fluidStack, boolean flowing) {
         if (fluidStack == null) {
             return null;
         }
         return getFluidTexture(fluidStack.getFluid(), flowing);
     }
 
-    public static Icon getFluidTexture(Fluid fluid, boolean flowing) {
+    public static IIcon getFluidTexture(Fluid fluid, boolean flowing) {
         if (fluid == null) {
             return null;
         }
-        Icon icon = flowing ? fluid.getFlowingIcon() : fluid.getStillIcon();
+        IIcon icon = flowing ? fluid.getFlowingIcon() : fluid.getStillIcon();
         if (icon == null) {
             icon = ((TextureMap) Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missingno");
         }
@@ -80,11 +81,11 @@ public class FluidRender {
 
         diplayLists = new int[DISPLAY_STAGES];
 
-        if (fluid.getBlockID() > 0) {
-            liquidBlock.baseBlock = Block.blocksList[fluid.getBlockID()];
+        if (fluid.getBlock() != null) {
+            liquidBlock.baseBlock = fluid.getBlock();
             liquidBlock.texture = getFluidTexture(fluidStack, flowing);
         } else {
-            liquidBlock.baseBlock = Block.waterStill;
+            liquidBlock.baseBlock = Blocks.water;
             liquidBlock.texture = getFluidTexture(fluidStack, flowing);
         }
 

@@ -149,7 +149,7 @@ public class ShapelessFluidRecipe implements IRecipe {
     }
 
     private boolean checkItemEquals(ItemStack target, ItemStack input) {
-        return (target.itemID == input.itemID && (target.getItemDamage() == OreDictionary.WILDCARD_VALUE || target.getItemDamage() == input.getItemDamage()));
+        return (target.getUnlocalizedName().equals(input.getUnlocalizedName()) && (target.getItemDamage() == OreDictionary.WILDCARD_VALUE || target.getItemDamage() == input.getItemDamage()));
     }
 
     @SuppressWarnings("rawtypes")

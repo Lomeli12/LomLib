@@ -7,6 +7,7 @@ import java.util.List;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.DummyModContainer;
 import cpw.mods.fml.common.ModMetadata;
@@ -35,7 +36,7 @@ public class LomLibCore extends DummyModContainer {
         meta.version = Strings.VERSION;
         meta.authorList.add("Lomeli12");
         meta.url = "http://www.anthony-lomeli.net/";
-        meta.description = "Shared library mod required by several of Lomeli's Mods.";
+        meta.description = "Shared library mod required by several of Lomeli's Mods. LomLib:Core handles ASM and server commands";
     }
 
     public static LogHelper logger;
@@ -61,8 +62,11 @@ public class LomLibCore extends DummyModContainer {
 
         configureMod(event.getSuggestedConfigurationFile());
 
-        if (event.getSide().isClient())
-            MinecraftForge.EVENT_BUS.register(new IconRegisterEvent());
+        if (event.getSide().isClient()) { 
+            IconRegisterEvent iconR = new IconRegisterEvent();
+            MinecraftForge.EVENT_BUS.register(iconR);
+            FMLCommonHandler.instance().bus().register(iconR);
+        }
     }
 
     public void configureMod(File configFile) {

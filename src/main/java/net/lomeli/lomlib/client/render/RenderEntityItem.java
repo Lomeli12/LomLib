@@ -8,7 +8,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class RenderEntityItem {
 
@@ -26,7 +26,7 @@ public class RenderEntityItem {
             GL11.glScalef(scaleFactor, scaleFactor, scaleFactor);
             GL11.glRotatef(rotationAngle, 0.0F, 1.0F, 0.0F);
 
-            customRender.doRenderItem(ghostEntityItem, 0, 0, 0, 0, 0);
+            customRender.doRender(ghostEntityItem, 0, 0, 0, 0, 0);
         }
     }
 
@@ -109,7 +109,7 @@ public class RenderEntityItem {
 
         if (itemStack != null) {
             if (itemStack.getItem() instanceof ItemBlock) {
-                switch (customRenderItem.getMiniBlockCount(itemStack)) {
+                switch (customRenderItem.getMiniBlockCount(itemStack, (byte) 0)) {
                 case 1:
                     return 0.90F;
                 case 2:
@@ -124,7 +124,7 @@ public class RenderEntityItem {
                     return 0.90F;
                 }
             } else {
-                switch (customRenderItem.getMiniItemCount(itemStack)) {
+                switch (customRenderItem.getMiniItemCount(itemStack, (byte) 0)) {
                 case 1:
                     return 0.65F;
                 case 2:
