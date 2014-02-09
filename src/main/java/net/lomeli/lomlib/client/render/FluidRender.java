@@ -27,25 +27,26 @@ public class FluidRender {
     private static final BlockInterface liquidBlock = new BlockInterface();
 
     public static IIcon getFluidTexture(FluidStack fluidStack, boolean flowing) {
-        if (fluidStack == null) {
+        if(fluidStack == null) {
             return null;
         }
         return getFluidTexture(fluidStack.getFluid(), flowing);
     }
 
     public static IIcon getFluidTexture(Fluid fluid, boolean flowing) {
-        if (fluid == null) {
+        if(fluid == null) {
             return null;
         }
         IIcon icon = flowing ? fluid.getFlowingIcon() : fluid.getStillIcon();
-        if (icon == null) {
-            icon = ((TextureMap) Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missingno");
+        if(icon == null) {
+            icon = ((TextureMap) Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.locationBlocksTexture))
+                    .getAtlasSprite("missingno");
         }
         return icon;
     }
 
     public static ResourceLocation getFluidSheet(FluidStack liquid) {
-        if (liquid == null)
+        if(liquid == null)
             return BLOCK_TEXTURE;
         return getFluidSheet(liquid.getFluid());
     }
@@ -55,7 +56,7 @@ public class FluidRender {
     }
 
     public static void setColorForFluidStack(FluidStack fluidstack) {
-        if (fluidstack == null)
+        if(fluidstack == null)
             return;
 
         int color = fluidstack.getFluid().getColor(fluidstack);
@@ -66,25 +67,25 @@ public class FluidRender {
     }
 
     public static int[] getFluidDisplayLists(FluidStack fluidStack, World world, boolean flowing) {
-        if (fluidStack == null) {
+        if(fluidStack == null) {
             return null;
         }
         Fluid fluid = fluidStack.getFluid();
-        if (fluid == null) {
+        if(fluid == null) {
             return null;
         }
         Map<Fluid, int[]> cache = flowing ? flowingRenderCache : stillRenderCache;
         int[] diplayLists = cache.get(fluid);
-        if (diplayLists != null) {
+        if(diplayLists != null) {
             return diplayLists;
         }
 
         diplayLists = new int[DISPLAY_STAGES];
 
-        if (fluid.getBlock() != null) {
+        if(fluid.getBlock() != null) {
             liquidBlock.baseBlock = fluid.getBlock();
             liquidBlock.texture = getFluidTexture(fluidStack, flowing);
-        } else {
+        }else {
             liquidBlock.baseBlock = Blocks.water;
             liquidBlock.texture = getFluidTexture(fluidStack, flowing);
         }
@@ -95,7 +96,7 @@ public class FluidRender {
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glDisable(GL11.GL_CULL_FACE);
 
-        for (int s = 0; s < DISPLAY_STAGES; ++s) {
+        for(int s = 0; s < DISPLAY_STAGES; ++s) {
             diplayLists[s] = GLAllocation.generateDisplayLists(1);
             GL11.glNewList(diplayLists[s], 4864 /* GL_COMPILE */);
 

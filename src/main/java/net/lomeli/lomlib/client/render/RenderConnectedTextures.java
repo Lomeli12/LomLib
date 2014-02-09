@@ -23,7 +23,7 @@ public class RenderConnectedTextures implements ISimpleBlockRenderingHandler {
         float f1 = 1.0F;
         float f2 = 1.0F;
 
-        if (EntityRenderer.anaglyphEnable) {
+        if(EntityRenderer.anaglyphEnable) {
             float f3 = (f * 30.0F + f1 * 59.0F + f2 * 11.0F) / 100.0F;
             float f4 = (f * 30.0F + f1 * 70.0F) / 100.0F;
             float f5 = (f * 30.0F + f2 * 70.0F) / 100.0F;
@@ -46,13 +46,13 @@ public class RenderConnectedTextures implements ISimpleBlockRenderingHandler {
         renderer.colorBlueBottomLeft *= f2;
         renderer.colorBlueBottomRight *= f2;
 
-        RenderUtils.drawBlockFaces(renderer, block, block.getIcon(0, metadata), block.getIcon(1, metadata), block.getIcon(2, metadata), block.getIcon(3, metadata), block.getIcon(4, metadata),
-                block.getIcon(5, metadata));
+        RenderUtils.drawBlockFaces(renderer, block, block.getIcon(0, metadata), block.getIcon(1, metadata),
+                block.getIcon(2, metadata), block.getIcon(3, metadata), block.getIcon(4, metadata), block.getIcon(5, metadata));
     }
 
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-        if (renderer.hasOverrideBlockTexture())
+        if(renderer.hasOverrideBlockTexture())
             return renderer.renderStandardBlock(block, x, y, z);
 
         fakeBlock.setWorld(renderer.blockAccess);

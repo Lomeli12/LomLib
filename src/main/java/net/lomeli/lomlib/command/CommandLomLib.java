@@ -34,7 +34,7 @@ public class CommandLomLib extends CommandBase {
     @Override
     @SuppressWarnings("rawtypes")
     public List addTabCompletionOptions(ICommandSender commandSender, String[] args) {
-        switch (args.length) {
+        switch(args.length) {
         case 1:
             return getListOfStringsMatchingLastWord(args, new String[] { "calmPigmen" });
         default:
@@ -44,63 +44,69 @@ public class CommandLomLib extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender icommandsender, String[] args) {
-        if (args.length != 0) {
+        if(args.length != 0) {
             String argument1 = args[0];
 
             @SuppressWarnings("unchecked")
             List<Entity> entityList = icommandsender.getEntityWorld().loadedEntityList;
 
-            if (argument1.equalsIgnoreCase("calmPigmen")) {
-                for (Entity entity : entityList) {
-                    if (entity instanceof EntityPigZombie) {
+            if(argument1.equalsIgnoreCase("calmPigmen")) {
+                for(Entity entity : entityList) {
+                    if(entity instanceof EntityPigZombie) {
                         ((EntityPigZombie) entity).setTarget(null);
                         try {
                             EntityPigZombie.class.getDeclaredField("angerLevel").setInt(entity, 0);
-                        } catch (Exception e) {
+                        }catch(Exception e) {
                         }
                     }
                 }
-            } else if (argument1.equalsIgnoreCase("clearAllEntities")) {
-                for (Entity entity : entityList) {
-                    if (!(entity instanceof EntityPlayer)) {
+            }else if(argument1.equalsIgnoreCase("clearAllEntities")) {
+                for(Entity entity : entityList) {
+                    if(!(entity instanceof EntityPlayer)) {
                         entity.setDead();
                     }
                 }
                 sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All non-player entities have been removed.");
-            } else if (argument1.equalsIgnoreCase("clearEntities")) {
-                for (Entity entity : entityList) {
-                    if (!(entity instanceof EntityLivingBase)) {
+            }else if(argument1.equalsIgnoreCase("clearEntities")) {
+                for(Entity entity : entityList) {
+                    if(!(entity instanceof EntityLivingBase)) {
                         entity.setDead();
                     }
                 }
                 sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All non-living entities have been removed.");
-            } else if (argument1.equalsIgnoreCase("clearLivingEntities")) {
-                for (Entity entity : entityList) {
-                    if (entity instanceof EntityLivingBase) {
+            }else if(argument1.equalsIgnoreCase("clearLivingEntities")) {
+                for(Entity entity : entityList) {
+                    if(entity instanceof EntityLivingBase) {
                         ((EntityLivingBase) entity).setDead();
                     }
                 }
                 sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All Living mobs have been removed.");
-            } else if (argument1.equalsIgnoreCase("clearHostiles")) {
-                for (Entity entity : entityList) {
-                    if (entity instanceof IMob) {
+            }else if(argument1.equalsIgnoreCase("clearHostiles")) {
+                for(Entity entity : entityList) {
+                    if(entity instanceof IMob) {
                         entity.setDead();
                     }
                 }
                 sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All Hostile mobs have been removed.");
-            } else if (argument1.equalsIgnoreCase("help") || argument1.equalsIgnoreCase("?")) {
-                sendCommanderMessage(icommandsender, "/lomlib calmPigmen " + ToolTipUtil.GREEN + "-Calms down all pigmen in loaded chunks.");
-                sendCommanderMessage(icommandsender, "/lomlib clearAllEntities " + ToolTipUtil.GREEN + "-Clears all non-player entities in loaded chunks.");
-                sendCommanderMessage(icommandsender, "/lomlib clearEntities " + ToolTipUtil.GREEN + "-Clears all non-living entities in loaded chunks.");
-                sendCommanderMessage(icommandsender, "/lomlib clearLivingEntities " + ToolTipUtil.GREEN + "-Clears all living entities in loaded chunks.");
-                sendCommanderMessage(icommandsender, "/lomlib clearHostiles  " + ToolTipUtil.GREEN + "-Clears all hostile entities in loaded chunks.");
+            }else if(argument1.equalsIgnoreCase("help") || argument1.equalsIgnoreCase("?")) {
+                sendCommanderMessage(icommandsender, "/lomlib calmPigmen " + ToolTipUtil.GREEN
+                        + "-Calms down all pigmen in loaded chunks.");
+                sendCommanderMessage(icommandsender, "/lomlib clearAllEntities " + ToolTipUtil.GREEN
+                        + "-Clears all non-player entities in loaded chunks.");
+                sendCommanderMessage(icommandsender, "/lomlib clearEntities " + ToolTipUtil.GREEN
+                        + "-Clears all non-living entities in loaded chunks.");
+                sendCommanderMessage(icommandsender, "/lomlib clearLivingEntities " + ToolTipUtil.GREEN
+                        + "-Clears all living entities in loaded chunks.");
+                sendCommanderMessage(icommandsender, "/lomlib clearHostiles  " + ToolTipUtil.GREEN
+                        + "-Clears all hostile entities in loaded chunks.");
             }
-        } else
+        }else
             sendCommanderMessage(icommandsender, ToolTipUtil.GREEN + "Type /lomlib help or /lomlib ? for more info");
     }
 
     private void sendCommanderMessage(ICommandSender sender, String message) {
-        sender.getEntityWorld().getPlayerEntityByName(sender.getCommandSenderName()).addChatMessage(new ChatComponentText(message));
+        sender.getEntityWorld().getPlayerEntityByName(sender.getCommandSenderName())
+                .addChatMessage(new ChatComponentText(message));
     }
 
     @Override

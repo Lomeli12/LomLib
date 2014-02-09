@@ -39,13 +39,13 @@ public class CapeUtil {
     }
 
     public static CapeUtil getInstance() {
-        if (instance == null)
+        if(instance == null)
             instance = new CapeUtil();
         return instance;
     }
 
     public void readXML() {
-        if (FMLCommonHandler.instance().getSide() != Side.CLIENT)
+        if(FMLCommonHandler.instance().getSide() != Side.CLIENT)
             return;
         try {
             URL xmlURL = new URL(Strings.CAPE_XML);
@@ -57,13 +57,13 @@ public class CapeUtil {
             doc.getDocumentElement().normalize();
 
             NodeList list = doc.getChildNodes().item(0).getChildNodes();
-            for (int i = 1; i <= list.getLength(); i++) {
+            for(int i = 1; i <= list.getLength(); i++) {
                 String nodeName = list.item(i).getNodeName();
                 String capeURL = list.item(i).getTextContent();
-                if (nodeName != "#text" && capeURL != "")
+                if(nodeName != "#text" && capeURL != "")
                     giveUserCape(nodeName, capeURL);
             }
-        } catch (Exception e) {
+        }catch(Exception e) {
         }
         RenderPlayerCape renderCape = new RenderPlayerCape();
         MinecraftForge.EVENT_BUS.register(renderCape);
@@ -71,9 +71,9 @@ public class CapeUtil {
     }
 
     public void giveUserCape(String user, String cape) {
-        if (capeResources.get(user) == null)
+        if(capeResources.get(user) == null)
             capeResources.put(user, new ResourceLocation("LomLib", "capes/" + user));
-        if (capes.get(user) == null)
+        if(capes.get(user) == null)
             capes.put(user, makeDownloadThread(capeResources.get(user), cape, null, new CapeBuffer()));
     }
 
@@ -85,7 +85,7 @@ public class CapeUtil {
         ResourceLocation resource = null;
         try {
             resource = capeResources.get(user);
-        } catch (Exception e) {
+        }catch(Exception e) {
         }
         return resource;
     }
@@ -94,7 +94,7 @@ public class CapeUtil {
         ThreadDownloadImageData image = null;
         try {
             image = capes.get(user);
-        } catch (Exception e) {
+        }catch(Exception e) {
         }
         return image;
     }
@@ -105,8 +105,8 @@ public class CapeUtil {
         return url;
     }
 
-    public static ThreadDownloadImageData makeDownloadThread(ResourceLocation par0ResourceLocation, String par1Str, ResourceLocation par2ResourceLocation,
-            IImageBuffer par3IImageBuffer) {
+    public static ThreadDownloadImageData makeDownloadThread(ResourceLocation par0ResourceLocation, String par1Str,
+            ResourceLocation par2ResourceLocation, IImageBuffer par3IImageBuffer) {
         TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
 
         SimpleTexture object = new ThreadDownloadImageData(par1Str, par2ResourceLocation, par3IImageBuffer);

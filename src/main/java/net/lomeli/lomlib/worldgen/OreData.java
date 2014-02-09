@@ -16,7 +16,7 @@ public class OreData {
         this.oreType = block;
         this.meta = 0;
     }
-    
+
     public OreData(int maxHeight, int minHeight, int maxCluster, int minCluster, int clusterPerChunk, Block block, int meta) {
         this.maxHeight = maxHeight;
         this.minHeight = minHeight;

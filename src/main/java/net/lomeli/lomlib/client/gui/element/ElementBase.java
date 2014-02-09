@@ -87,7 +87,7 @@ public abstract class ElementBase {
         mouseX += gui.getGuiLeft();
         mouseY += gui.getGuiTop();
 
-        if (mouseX >= this.posX && mouseX <= this.posX + this.sizeX && mouseY >= this.posY && mouseY <= this.posY + this.sizeY)
+        if(mouseX >= this.posX && mouseX <= this.posX + this.sizeX && mouseY >= this.posY && mouseY <= this.posY + this.sizeY)
             return true;
 
         return false;

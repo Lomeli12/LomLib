@@ -17,11 +17,12 @@ public class RenderUtils {
         drawBlockFaces(renderer, block, icon, icon, icon, icon, icon, icon);
     }
 
-    public static void drawBlockFaces(RenderBlocks renderer, Block block, IIcon i0, IIcon i1, IIcon i2, IIcon i3, IIcon i4, IIcon i5) {
+    public static void drawBlockFaces(RenderBlocks renderer, Block block, IIcon i0, IIcon i1, IIcon i2, IIcon i3, IIcon i4,
+            IIcon i5) {
         Tessellator tessellator = Tessellator.instance;
         GL11.glTranslatef(-0.5F, 0.0F, -0.5F);
 
-        if (block != null) {
+        if(block != null) {
             tessellator.startDrawingQuads();
             tessellator.setNormal(0F, -1F, 0F);
             renderer.renderFaceYNeg(block, 0D, -0.5D, 0D, i0);
@@ -52,17 +53,17 @@ public class RenderUtils {
     }
 
     public static void renderBlock(IBlockAccess world, int x, int y, int z, Block block, RenderBlocks renderer, IIcon icon) {
-        if (block.shouldSideBeRendered(world, x + 1, y, z, 6))
+        if(block.shouldSideBeRendered(world, x + 1, y, z, 6))
             renderer.renderFaceXPos(block, x, y, z, icon);
-        if (block.shouldSideBeRendered(world, x - 1, y, z, 6))
+        if(block.shouldSideBeRendered(world, x - 1, y, z, 6))
             renderer.renderFaceXNeg(block, x, y, z, icon);
-        if (block.shouldSideBeRendered(world, x, y, z + 1, 6))
+        if(block.shouldSideBeRendered(world, x, y, z + 1, 6))
             renderer.renderFaceZPos(block, x, y, z, icon);
-        if (block.shouldSideBeRendered(world, x, y, z - 1, 6))
+        if(block.shouldSideBeRendered(world, x, y, z - 1, 6))
             renderer.renderFaceZNeg(block, x, y, z, icon);
-        if (block.shouldSideBeRendered(world, x, y + 1, z, 6))
+        if(block.shouldSideBeRendered(world, x, y + 1, z, 6))
             renderer.renderFaceYPos(block, x, y, z, icon);
-        if (block.shouldSideBeRendered(world, x, y - 1, z, 6))
+        if(block.shouldSideBeRendered(world, x, y - 1, z, 6))
             renderer.renderFaceYNeg(block, x, y, z, icon);
     }
 }

@@ -14,12 +14,13 @@ public class IconConnected implements IIcon {
     public final IIcon[] icons = new IIcon[5];
 
     public IconConnected(IIconRegister register, String iconName, String modid) {
-        this(register.registerIcon(modid + ":" + iconName + "_corners"), register.registerIcon(modid + ":" + iconName + "_vertical"), register.registerIcon(modid + ":" + iconName
-                + "_horizontal"), register.registerIcon(modid + ":" + iconName), register.registerIcon(modid + ":" + iconName + "_anticorners"));
+        this(register.registerIcon(modid + ":" + iconName + "_corners"), register.registerIcon(modid + ":" + iconName
+                + "_vertical"), register.registerIcon(modid + ":" + iconName + "_horizontal"), register.registerIcon(modid + ":"
+                + iconName), register.registerIcon(modid + ":" + iconName + "_anticorners"));
     }
 
     public IconConnected(IIcon... icon) {
-        for (int i = 0; i < icon.length; i++) {
+        for(int i = 0; i < icon.length; i++) {
             this.icons[i] = icon[i];
         }
     }

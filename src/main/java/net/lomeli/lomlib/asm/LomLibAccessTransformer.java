@@ -13,8 +13,9 @@ import java.util.zip.ZipFile;
 public class LomLibAccessTransformer extends AccessTransformer {
 
     private List<String> obfNames = new ArrayList<String>();
-    private String[] deobfName = { "net.minecraft.util.MathHelper", "net.minecraft.client.gui.GuiMainMenu", "net.minecraft.client.renderer.entity.RenderPlayer",
-            "net.minecraft.client.renderer.entity.RendererLivingEntity", "net.minecraft.client.renderer.ItemRenderer" };
+    private String[] deobfName = { "net.minecraft.util.MathHelper", "net.minecraft.client.gui.GuiMainMenu",
+            "net.minecraft.client.renderer.entity.RenderPlayer", "net.minecraft.client.renderer.entity.RendererLivingEntity",
+            "net.minecraft.client.renderer.ItemRenderer" };
 
     public LomLibAccessTransformer() throws IOException {
         super("lomlib_at.cfg");
@@ -29,13 +30,11 @@ public class LomLibAccessTransformer extends AccessTransformer {
     public byte[] transform(String name, String transformedName, byte[] bytes) {
         super.transform(name, transformedName, bytes);
         /*
-       for (int i = 0; i < obfNames.size(); i++) {
-            if (name.equals(obfNames.get(i)) || name.equals(deobfName[i])) {
-                System.out.println("[LomLib]: Patching " + name);
-                patchClassInJar(name, bytes, name, LomLibPlugin.location);
-            }
-        }
-        */
+         * for (int i = 0; i < obfNames.size(); i++) { if
+         * (name.equals(obfNames.get(i)) || name.equals(deobfName[i])) {
+         * System.out.println("[LomLib]: Patching " + name);
+         * patchClassInJar(name, bytes, name, LomLibPlugin.location); } }
+         */
         return bytes;
     }
 
@@ -43,12 +42,12 @@ public class LomLibAccessTransformer extends AccessTransformer {
         try {
             ZipFile zip = new ZipFile(location);
             ZipEntry entry = null;
-            if (obfNames.contains(name))
+            if(obfNames.contains(name))
                 entry = zip.getEntry("net/minecraft/src/" + name + ".class");
             else
                 entry = zip.getEntry(name.replace('.', '/') + ".class");
 
-            if (entry == null)
+            if(entry == null)
                 System.out.println("[LomLib]: " + name + " not found in " + location.getName());
             else {
                 InputStream zin = zip.getInputStream(entry);
@@ -58,7 +57,7 @@ public class LomLibAccessTransformer extends AccessTransformer {
             }
             zip.close();
             System.out.println("[LomLib]: Succesfully patched " + name);
-        } catch (Exception e) {
+        }catch(Exception e) {
             throw new RuntimeException("[LomLib]: Error overriding " + name + " from " + location.getName(), e);
         }
         return bytes;

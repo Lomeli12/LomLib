@@ -12,9 +12,9 @@ public class LogHelper {
     }
 
     public void log(Level logLevel, String message) {
-        FMLLog.log(modName, logLevel, message, new Object[] { });
+        FMLLog.log(modName, logLevel, message, new Object[] {});
     }
-    
+
     public void logBasic(String message) {
         log(Level.INFO, message);
     }

@@ -47,16 +47,16 @@ public class EntityUtil {
      * @param hostile
      */
     public static void entityDropItem(EntityLivingBase entity, ItemStack itemStack, double dropRate, boolean hostile) {
-        if (hostile) {
-            if (isHostileEntity(entity)) {
+        if(hostile) {
+            if(isHostileEntity(entity)) {
                 double random = Math.random();
 
-                if (random < dropRate)
+                if(random < dropRate)
                     entity.entityDropItem(itemStack, 0.0F);
             }
-        } else {
+        }else {
             double random = Math.random();
-            if (random < dropRate)
+            if(random < dropRate)
                 entity.entityDropItem(itemStack, 0.0F);
         }
     }
@@ -68,11 +68,11 @@ public class EntityUtil {
      * @return true if player caused damage, else false
      */
     public static boolean wasEntityKilledByPlayer(DamageSource source) {
-        if (source.getDamageType().equals("player"))
+        if(source.getDamageType().equals("player"))
             return true;
-        if (source.getSourceOfDamage() instanceof EntityArrow) {
-            if (((EntityArrow) source.getSourceOfDamage()).shootingEntity != null) {
-                if (((EntityArrow) source.getSourceOfDamage()).shootingEntity instanceof EntityPlayer)
+        if(source.getSourceOfDamage() instanceof EntityArrow) {
+            if(((EntityArrow) source.getSourceOfDamage()).shootingEntity != null) {
+                if(((EntityArrow) source.getSourceOfDamage()).shootingEntity instanceof EntityPlayer)
                     return true;
             }
         }
@@ -90,27 +90,30 @@ public class EntityUtil {
     }
 
     @SuppressWarnings("rawtypes")
-    public static boolean transformEntityItem(World world, int x, int y, int z, EntityPlayer player, ItemStack init, ItemStack transformation, ItemStack requiredItem, boolean effect) {
+    public static boolean transformEntityItem(World world, int x, int y, int z, EntityPlayer player, ItemStack init,
+            ItemStack transformation, ItemStack requiredItem, boolean effect) {
         List entityList = world.getEntitiesWithinAABB(EntityItem.class, player.boundingBox.expand(15D, 15D, 15D));
-        for (int i = 0; i < entityList.size(); i++) {
+        for(int i = 0; i < entityList.size(); i++) {
             Entity ent = (Entity) entityList.get(i);
-            if (ent != null && ent instanceof EntityItem) {
+            if(ent != null && ent instanceof EntityItem) {
                 EntityItem item = (EntityItem) ent;
-                if (BlockUtil.isAboveBlock(item, x, y, z)) {
-                    if (item != null && item.getEntityItem().getUnlocalizedName().equals(init.getUnlocalizedName())) {
-                        if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getUnlocalizedName().equals(requiredItem.getUnlocalizedName()) && player.getCurrentEquippedItem().getItemDamage() == requiredItem.getItemDamage()) {
+                if(BlockUtil.isAboveBlock(item, x, y, z)) {
+                    if(item != null && item.getEntityItem().getUnlocalizedName().equals(init.getUnlocalizedName())) {
+                        if(player.getCurrentEquippedItem() != null
+                                && player.getCurrentEquippedItem().getUnlocalizedName().equals(requiredItem.getUnlocalizedName())
+                                && player.getCurrentEquippedItem().getItemDamage() == requiredItem.getItemDamage()) {
                             ItemStack manual = transformation;
                             manual.stackSize = item.getEntityItem().stackSize;
-                            if (manual != null) {
-                                if (!world.isRemote) {
+                            if(manual != null) {
+                                if(!world.isRemote) {
                                     item.setEntityItemStack(manual);
                                     player.getCurrentEquippedItem().damageItem(manual.stackSize, player);
                                 }
-                                if (effect) {
-                                    for (int k = 0; k < 2; ++k) {
-                                        world.spawnParticle("largesmoke", item.posX + (world.rand.nextDouble() - 0.5D) * item.width,
-                                                (item.posY + 0.5D) + world.rand.nextDouble() * item.height, item.posZ + (world.rand.nextDouble() - 0.5D)
-                                                        * item.width, 0.0D, 0.0D, 0.0D);
+                                if(effect) {
+                                    for(int k = 0; k < 2; ++k) {
+                                        world.spawnParticle("largesmoke", item.posX + (world.rand.nextDouble() - 0.5D)
+                                                * item.width, (item.posY + 0.5D) + world.rand.nextDouble() * item.height,
+                                                item.posZ + (world.rand.nextDouble() - 0.5D) * item.width, 0.0D, 0.0D, 0.0D);
                                     }
                                 }
                                 return true;
@@ -132,7 +135,8 @@ public class EntityUtil {
 
     public static boolean teleportToEntity(EntityLivingBase entity, Entity par1Entity) {
         Vec3 var2 = entity.worldObj.getWorldVec3Pool().getVecFromPool(entity.posX - par1Entity.posX,
-                entity.boundingBox.minY + entity.height / 2.0F - par1Entity.posY + par1Entity.getEyeHeight(), entity.posZ - par1Entity.posZ);
+                entity.boundingBox.minY + entity.height / 2.0F - par1Entity.posY + par1Entity.getEyeHeight(),
+                entity.posZ - par1Entity.posZ);
         var2 = var2.normalize();
         double var3 = 16.0D;
         double var5 = entity.posX + (entity.worldObj.rand.nextDouble() - 0.5D) * 8.0D - var2.xCoord * var3;
@@ -154,43 +158,46 @@ public class EntityUtil {
         int var16 = MathHelper.floor_double(entity.posZ);
         Block var18;
 
-        if (entity.worldObj.blockExists(var14, var15, var16)) {
+        if(entity.worldObj.blockExists(var14, var15, var16)) {
             boolean var17 = false;
 
-            while (!var17 && var15 > 0) {
+            while(!var17 && var15 > 0) {
                 var18 = entity.worldObj.getBlock(var14, var15 - 1, var16);
 
-                if (var18 != null && var18.getMaterial().blocksMovement()) {
+                if(var18 != null && var18.getMaterial().blocksMovement()) {
                     var17 = true;
-                } else {
+                }else {
                     --entity.posY;
                     --var15;
                 }
             }
 
-            if (var17) {
+            if(var17) {
                 entity.setPositionAndUpdate(entity.posX, entity.posY, entity.posZ);
 
-                if (entity.worldObj.getCollidingBoundingBoxes(entity, entity.boundingBox).isEmpty() && !entity.worldObj.isAnyLiquid(entity.boundingBox)) {
+                if(entity.worldObj.getCollidingBoundingBoxes(entity, entity.boundingBox).isEmpty()
+                        && !entity.worldObj.isAnyLiquid(entity.boundingBox)) {
                     var13 = true;
                 }
             }
         }
 
-        if (!var13) {
+        if(!var13) {
             entity.setPositionAndUpdate(var7, var9, var11);
             return false;
-        } else {
+        }else {
             short var30 = 128;
 
-            for (int j = 0; j < var30; ++j) {
+            for(int j = 0; j < var30; ++j) {
                 double var19 = j / (var30 - 1.0D);
                 float var21 = (entity.worldObj.rand.nextFloat() - 0.5F) * 0.2F;
                 float var22 = (entity.worldObj.rand.nextFloat() - 0.5F) * 0.2F;
                 float var23 = (entity.worldObj.rand.nextFloat() - 0.5F) * 0.2F;
-                double var24 = var7 + (entity.posX - var7) * var19 + (entity.worldObj.rand.nextDouble() - 0.5D) * entity.width * 2.0D;
+                double var24 = var7 + (entity.posX - var7) * var19 + (entity.worldObj.rand.nextDouble() - 0.5D) * entity.width
+                        * 2.0D;
                 double var26 = var9 + (entity.posY - var9) * var19 + entity.worldObj.rand.nextDouble() * entity.height;
-                double var28 = var11 + (entity.posZ - var11) * var19 + (entity.worldObj.rand.nextDouble() - 0.5D) * entity.width * 2.0D;
+                double var28 = var11 + (entity.posZ - var11) * var19 + (entity.worldObj.rand.nextDouble() - 0.5D) * entity.width
+                        * 2.0D;
                 entity.worldObj.spawnParticle("portal", var24, var26, var28, var21, var22, var23);
             }
 

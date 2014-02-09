@@ -16,15 +16,16 @@ public class WorldGenSubmergedOre {
 
     private OreData data;
 
-    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
+    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator,
+            IChunkProvider chunkProvider) {
         int x, y, z;
         int numOre;
         int numCluster;
         numCluster = random.nextInt(data.clusterPerChunk);
-        if (numCluster == 0 && data.clusterPerChunk != 0)
+        if(numCluster == 0 && data.clusterPerChunk != 0)
             numCluster = 1;
 
-        for (int count = 0; count < numCluster; count++) {
+        for(int count = 0; count < numCluster; count++) {
             x = random.nextInt(16);
             z = random.nextInt(16);
             y = random.nextInt(data.maxHeight - data.minHeight);
@@ -43,7 +44,9 @@ public class WorldGenSubmergedOre {
         ly = y;
         lz = z;
         Block id = world.getBlock(lx, ly, lz);
-        if (!id.getUnlocalizedName().equals(Blocks.sand.getUnlocalizedName()) || !id.getUnlocalizedName().equals(Blocks.dirt.getUnlocalizedName()) || !id.getUnlocalizedName().equals(Blocks.clay.getUnlocalizedName()))
+        if(!id.getUnlocalizedName().equals(Blocks.sand.getUnlocalizedName())
+                || !id.getUnlocalizedName().equals(Blocks.dirt.getUnlocalizedName())
+                || !id.getUnlocalizedName().equals(Blocks.clay.getUnlocalizedName()))
             return;
 
         for(int i = 0; i < ntg; i++) {
@@ -54,7 +57,7 @@ public class WorldGenSubmergedOre {
                     || world.getBlock(lx, ly + 1, lz).getUnlocalizedName().equals(Blocks.flowing_water.getUnlocalizedName())) {
 
                 world.setBlock(lx, ly, lz, block, meta, 2);
-                switch (rand.nextInt(3)) {
+                switch(rand.nextInt(3)) {
                 case 0:
                     lx = lx + (rand.nextInt(4) - 2);
                     break;

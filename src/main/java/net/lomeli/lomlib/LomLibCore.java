@@ -62,7 +62,7 @@ public class LomLibCore extends DummyModContainer {
 
         configureMod(event.getSuggestedConfigurationFile());
 
-        if (event.getSide().isClient()) { 
+        if(event.getSide().isClient()) {
             IconRegisterEvent iconR = new IconRegisterEvent();
             MinecraftForge.EVENT_BUS.register(iconR);
             FMLCommonHandler.instance().bus().register(iconR);

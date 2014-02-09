@@ -37,7 +37,8 @@ public class FakePlayer extends EntityPlayerMP {
     public String myName = "[" + Strings.MOD_ID + "]";
 
     public FakePlayer(World world) {
-        super(FMLCommonHandler.instance().getMinecraftServerInstance(), (WorldServer) world, new GameProfile("[" + Strings.MOD_ID + "]", "[" + Strings.MOD_ID + "] FakePlayer"), new ItemInWorldManager(world));
+        super(FMLCommonHandler.instance().getMinecraftServerInstance(), (WorldServer) world, new GameProfile("[" + Strings.MOD_ID
+                + "]", "[" + Strings.MOD_ID + "] FakePlayer"), new ItemInWorldManager(world));
         new NetHandlerPlayServer(FMLCommonHandler.instance().getMinecraftServerInstance(), new NetworkManagerFake(false), this);
         this.addedToChunk = false;
     }

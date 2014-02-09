@@ -20,19 +20,19 @@ public class NBTUtil {
      *            for initialization
      */
     private static void initNBTTagCompound(ItemStack itemStack) {
-        if (itemStack.stackTagCompound == null)
+        if(itemStack.stackTagCompound == null)
             itemStack.setTagCompound(new NBTTagCompound());
     }
 
     public static boolean hasTag(ItemStack itemStack, String keyName) {
-        if (itemStack.stackTagCompound != null)
+        if(itemStack.stackTagCompound != null)
             return itemStack.stackTagCompound.hasKey(keyName);
 
         return false;
     }
 
     public static void removeTag(ItemStack itemStack, String keyName) {
-        if (itemStack.stackTagCompound != null)
+        if(itemStack.stackTagCompound != null)
             itemStack.stackTagCompound.removeTag(keyName);
     }
 
@@ -40,7 +40,7 @@ public class NBTUtil {
     public static String getString(ItemStack itemStack, String keyName) {
         initNBTTagCompound(itemStack);
 
-        if (!itemStack.stackTagCompound.hasKey(keyName))
+        if(!itemStack.stackTagCompound.hasKey(keyName))
             setString(itemStack, keyName, "");
 
         return itemStack.stackTagCompound.getString(keyName);
@@ -56,7 +56,7 @@ public class NBTUtil {
     public static boolean getBoolean(ItemStack itemStack, String keyName) {
         initNBTTagCompound(itemStack);
 
-        if (!itemStack.stackTagCompound.hasKey(keyName))
+        if(!itemStack.stackTagCompound.hasKey(keyName))
             setBoolean(itemStack, keyName, false);
 
         return itemStack.stackTagCompound.getBoolean(keyName);
@@ -72,7 +72,7 @@ public class NBTUtil {
     public static byte getByte(ItemStack itemStack, String keyName) {
         initNBTTagCompound(itemStack);
 
-        if (!itemStack.stackTagCompound.hasKey(keyName))
+        if(!itemStack.stackTagCompound.hasKey(keyName))
             setByte(itemStack, keyName, (byte) 0);
 
         return itemStack.stackTagCompound.getByte(keyName);
@@ -88,7 +88,7 @@ public class NBTUtil {
     public static short getShort(ItemStack itemStack, String keyName) {
         initNBTTagCompound(itemStack);
 
-        if (!itemStack.stackTagCompound.hasKey(keyName))
+        if(!itemStack.stackTagCompound.hasKey(keyName))
             setShort(itemStack, keyName, (short) 0);
 
         return itemStack.stackTagCompound.getShort(keyName);
@@ -104,7 +104,7 @@ public class NBTUtil {
     public static int getInt(ItemStack itemStack, String keyName) {
         initNBTTagCompound(itemStack);
 
-        if (!itemStack.stackTagCompound.hasKey(keyName))
+        if(!itemStack.stackTagCompound.hasKey(keyName))
             setInteger(itemStack, keyName, 0);
 
         return itemStack.stackTagCompound.getInteger(keyName);
@@ -120,7 +120,7 @@ public class NBTUtil {
     public static long getLong(ItemStack itemStack, String keyName) {
         initNBTTagCompound(itemStack);
 
-        if (!itemStack.stackTagCompound.hasKey(keyName))
+        if(!itemStack.stackTagCompound.hasKey(keyName))
             setLong(itemStack, keyName, 0);
 
         return itemStack.stackTagCompound.getLong(keyName);
@@ -136,7 +136,7 @@ public class NBTUtil {
     public static float getFloat(ItemStack itemStack, String keyName) {
         initNBTTagCompound(itemStack);
 
-        if (!itemStack.stackTagCompound.hasKey(keyName))
+        if(!itemStack.stackTagCompound.hasKey(keyName))
             setFloat(itemStack, keyName, 0);
 
         return itemStack.stackTagCompound.getFloat(keyName);
@@ -152,7 +152,7 @@ public class NBTUtil {
     public static double getDouble(ItemStack itemStack, String keyName) {
         initNBTTagCompound(itemStack);
 
-        if (!itemStack.stackTagCompound.hasKey(keyName))
+        if(!itemStack.stackTagCompound.hasKey(keyName))
             setDouble(itemStack, keyName, 0);
 
         return itemStack.stackTagCompound.getDouble(keyName);

@@ -28,13 +28,13 @@ public class FluidUtil {
     }
 
     public static boolean areFluidsEqual(FluidStack baseFluid, FluidStack secondFluid) {
-        return (baseFluid != null && baseFluid.getFluid() != null && secondFluid != null && secondFluid.getFluid() != null) ? baseFluid.getFluid().equals(secondFluid.getFluid())
-                : false;
+        return (baseFluid != null && baseFluid.getFluid() != null && secondFluid != null && secondFluid.getFluid() != null) ? baseFluid
+                .getFluid().equals(secondFluid.getFluid()) : false;
     }
 
     public static void combineFluidStacks(FluidStack baseFluid, FluidStack secondFluid) {
-        if (baseFluid != null && secondFluid != null) {
-            if (areFluidsEqual(baseFluid, secondFluid)) {
+        if(baseFluid != null && secondFluid != null) {
+            if(areFluidsEqual(baseFluid, secondFluid)) {
                 baseFluid.amount += secondFluid.amount;
                 secondFluid = null;
             }
@@ -43,10 +43,10 @@ public class FluidUtil {
 
     public static Fluid getContainerFluid(ItemStack stack) {
         Fluid fluid = null;
-        if (stack != null) {
-            if (FluidContainerRegistry.isFilledContainer(stack)) {
+        if(stack != null) {
+            if(FluidContainerRegistry.isFilledContainer(stack)) {
                 FluidStack temp = FluidContainerRegistry.getFluidForFilledItem(stack);
-                if (temp != null && temp.getFluid() != null)
+                if(temp != null && temp.getFluid() != null)
                     fluid = temp.getFluid();
             }
         }
@@ -56,11 +56,11 @@ public class FluidUtil {
     public static ArrayList<ItemStack> getContainersForFluid(Fluid targetFluid) {
         ArrayList<ItemStack> list = new ArrayList<ItemStack>();
 
-        if (targetFluid != null) {
-            for (FluidContainerRegistry.FluidContainerData data : FluidContainerRegistry.getRegisteredFluidContainerData()) {
+        if(targetFluid != null) {
+            for(FluidContainerRegistry.FluidContainerData data : FluidContainerRegistry.getRegisteredFluidContainerData()) {
                 Fluid fluid = data.fluid.getFluid();
-                if (fluid != null) {
-                    if (fluid.equals(targetFluid) || fluid.getID() == targetFluid.getID())
+                if(fluid != null) {
+                    if(fluid.equals(targetFluid) || fluid.getID() == targetFluid.getID())
                         list.add(data.filledContainer);
                 }
             }

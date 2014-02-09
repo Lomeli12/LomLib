@@ -27,7 +27,7 @@ public class RenderPlayerCape {
 
     @SubscribeEvent
     public void renderPlayer(ClientTickEvent event) {
-        if(LomLibCore.capes && event.type == Type.CLIENT) {
+        if(LomLibCore.capes) {
             try {
                 if((mc.theWorld != null) && (mc.theWorld.playerEntities.size() > 0)) {
 
@@ -44,8 +44,7 @@ public class RenderPlayerCape {
                             if(!p.getTextureCape().isTextureUploaded()) {
                                 if(CapeUtil.getInstance().getUserCape(lowerUsername) != null
                                         && CapeUtil.getInstance().getUserResource(lowerUsername) != null) {
-                                    System.out.println("Changing cape of: " + p.getDisplayName());
-                                    if(!LomLibCore.debug)
+                                    if(LomLibCore.debug)
                                         LomLibCore.logger.logBasic("Changing cape of: " + p.getDisplayName());
                                     downloadImageCapeField.set(p, CapeUtil.getInstance().getUserCape(lowerUsername));
                                     locationCapeField.set(p, CapeUtil.getInstance().getUserResource(lowerUsername));
@@ -54,8 +53,7 @@ public class RenderPlayerCape {
                         }else {
                             if(CapeUtil.getInstance().getUserCape(lowerUsername) != null
                                     && CapeUtil.getInstance().getUserResource(lowerUsername) != null) {
-                                System.out.println("Changing cape of: " + p.getDisplayName());
-                                if(!LomLibCore.debug)
+                                if(LomLibCore.debug)
                                     LomLibCore.logger.logBasic("Changing cape of: " + p.getDisplayName());
                                 downloadImageCapeField.set(p, CapeUtil.getInstance().getUserCape(lowerUsername));
                                 locationCapeField.set(p, CapeUtil.getInstance().getUserResource(lowerUsername));

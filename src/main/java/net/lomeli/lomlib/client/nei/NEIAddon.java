@@ -11,7 +11,7 @@ public class NEIAddon {
 
     @SideOnly(Side.CLIENT)
     public static void loadAddon() {
-        if (ModLoaded.isModInstalled("NotEnoughItems")) {
+        if(ModLoaded.isModInstalled("NotEnoughItems")) {
             API.registerRecipeHandler(new ShapedFluidRecipeHandler());
             API.registerUsageHandler(new ShapedFluidRecipeHandler());
             API.registerRecipeHandler(new ShapelessFluidRecipeHandler());

@@ -28,10 +28,11 @@ public class InventoryUtil {
      */
     @SuppressWarnings("unchecked")
     @Incomplete
-    public static void createCraftMatrix(Container container, IInventory inventory, int craftWidth, int craftHeight, int firstSlot, int x, int y) {
+    public static void createCraftMatrix(Container container, IInventory inventory, int craftWidth, int craftHeight,
+            int firstSlot, int x, int y) {
         int slotNum = firstSlot;
-        for (int i = 0; i < craftWidth; i++) {
-            for (int j = 0; j < craftHeight; j++) {
+        for(int i = 0; i < craftWidth; i++) {
+            for(int j = 0; j < craftHeight; j++) {
                 container.inventorySlots.add(new Slot(inventory, slotNum, x + i * 18, y + j * 18));
                 container.inventoryItemStacks.add((Object) null);
                 slotNum++;
@@ -40,8 +41,8 @@ public class InventoryUtil {
     }
 
     public static int getFirstEmptyStack(IInventory inventory) {
-        for (int i = 0; i < inventory.getSizeInventory(); ++i) {
-            if (inventory.getStackInSlot(i) == null) {
+        for(int i = 0; i < inventory.getSizeInventory(); ++i) {
+            if(inventory.getStackInSlot(i) == null) {
                 return i;
             }
         }

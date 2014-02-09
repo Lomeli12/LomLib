@@ -30,7 +30,7 @@ public class XMLConfiguration {
     }
 
     public XMLConfiguration(File configFile, boolean useCfgExt) {
-        if (useCfgExt)
+        if(useCfgExt)
             configurationFile = configFile;
         else {
             String filePath = configFile.getAbsolutePath().replace("cfg", "xml");
@@ -47,7 +47,7 @@ public class XMLConfiguration {
     }
 
     public void saveXML() {
-        if (!todo1.isEmpty() && work) {
+        if(!todo1.isEmpty() && work) {
             configurationFile.delete();
             try {
                 DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -64,15 +64,15 @@ public class XMLConfiguration {
 
                 Element[] elements = { block, item, general, other };
 
-                for (Element j : elements) {
+                for(Element j : elements) {
                     rootElement.appendChild(j);
                 }
 
-                for (int i = 0; i < todo1.size(); i++) {
+                for(int i = 0; i < todo1.size(); i++) {
                     Element root = elements[todo4.get(i).loc];
-                    if (root == null)
+                    if(root == null)
                         root = rootElement;
-                    if (!todo3.get(i).isEmpty()) {
+                    if(!todo3.get(i).isEmpty()) {
                         Comment newComment = document.createComment(todo3.get(i).toString());
                         root.appendChild(newComment);
                     }
@@ -94,7 +94,7 @@ public class XMLConfiguration {
 
                 StreamResult result = new StreamResult(configurationFile.getAbsolutePath());
                 transformer.transform(source, result);
-            } catch (Exception e) {
+            }catch(Exception e) {
                 e.printStackTrace();
             }
         }
@@ -104,9 +104,9 @@ public class XMLConfiguration {
         todo1.add(nodeName);
         todo3.add(comment);
         todo4.add(type);
-        if (praseLocalXMLFile(configurationFile, nodeName) == null) {
+        if(praseLocalXMLFile(configurationFile, nodeName) == null) {
             String value = "";
-            for (int i = 0; i < defaultValue.length; i++) {
+            for(int i = 0; i < defaultValue.length; i++) {
                 value.concat(defaultValue[i] + ";");
             }
             todo2.add(String.valueOf(value));
@@ -117,7 +117,7 @@ public class XMLConfiguration {
         String value = String.valueOf(praseLocalXMLFile(configurationFile, nodeName));
         String[] sArray = value.split(";");
         int[] finalArray = new int[sArray.length];
-        for (int i = 0; i < sArray.length; i++) {
+        for(int i = 0; i < sArray.length; i++) {
             finalArray[i] = Integer.parseInt(sArray[i]);
         }
         return finalArray;
@@ -127,7 +127,7 @@ public class XMLConfiguration {
         todo1.add(nodeName);
         todo3.add(comment);
         todo4.add(enumType);
-        if (praseLocalXMLFile(configurationFile, nodeName) == null) {
+        if(praseLocalXMLFile(configurationFile, nodeName) == null) {
             todo2.add(String.valueOf(defaultValue));
             work = true;
             return defaultValue;
@@ -144,7 +144,7 @@ public class XMLConfiguration {
         todo1.add(nodeName);
         todo3.add(comment);
         todo4.add(enumType);
-        if (praseLocalXMLFile(configurationFile, nodeName) == null) {
+        if(praseLocalXMLFile(configurationFile, nodeName) == null) {
             todo2.add(String.valueOf(defaultValue));
             work = true;
             return defaultValue;
@@ -161,7 +161,7 @@ public class XMLConfiguration {
         todo1.add(nodeName);
         todo3.add(comment);
         todo4.add(enumType);
-        if (praseLocalXMLFile(configurationFile, nodeName) == null) {
+        if(praseLocalXMLFile(configurationFile, nodeName) == null) {
             todo2.add(String.valueOf(defaultValue));
             work = true;
             return defaultValue;
@@ -178,7 +178,7 @@ public class XMLConfiguration {
         todo1.add(nodeName);
         todo3.add(comment);
         todo4.add(enumType);
-        if (praseLocalXMLFile(configurationFile, nodeName) == null) {
+        if(praseLocalXMLFile(configurationFile, nodeName) == null) {
             todo2.add(String.valueOf(defaultValue));
             work = true;
             return defaultValue;
@@ -203,9 +203,9 @@ public class XMLConfiguration {
             NodeList node = doc.getElementsByTagName(nodeName);
             try {
                 obj = node.item(0).getTextContent();
-            } catch (NullPointerException b) {
+            }catch(NullPointerException b) {
             }
-        } catch (Exception e) {
+        }catch(Exception e) {
         }
         return obj;
     }

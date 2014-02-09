@@ -126,7 +126,8 @@ public class BlockUtil {
     }
 
     public static boolean isBlockWater(World world, int x, int y, int z) {
-        return (world.getBlock(x, y, z).getUnlocalizedName().equals(Blocks.water.getUnlocalizedName())) || (world.getBlock(x, y, z).getUnlocalizedName().equals(Blocks.flowing_water.getUnlocalizedName()));
+        return (world.getBlock(x, y, z).getUnlocalizedName().equals(Blocks.water.getUnlocalizedName()))
+                || (world.getBlock(x, y, z).getUnlocalizedName().equals(Blocks.flowing_water.getUnlocalizedName()));
     }
 
     public static boolean isAboveBlock(Entity entity, int x, int y, int z) {
