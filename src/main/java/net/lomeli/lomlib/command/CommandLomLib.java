@@ -55,8 +55,11 @@ public class CommandLomLib extends CommandBase {
                     if(entity instanceof EntityPigZombie) {
                         ((EntityPigZombie) entity).setTarget(null);
                         try {
+                            EntityPigZombie.class.getDeclaredField("angerLevel").setAccessible(true);
                             EntityPigZombie.class.getDeclaredField("angerLevel").setInt(entity, 0);
+                            sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: Pig Zombies should now be calm");
                         }catch(Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 }
@@ -105,8 +108,12 @@ public class CommandLomLib extends CommandBase {
     }
 
     private void sendCommanderMessage(ICommandSender sender, String message) {
-        sender.getEntityWorld().getPlayerEntityByName(sender.getCommandSenderName())
-                .addChatMessage(new ChatComponentText(message));
+        if(sender != null) {
+            sender.getEntityWorld().getPlayerEntityByName(sender.getCommandSenderName())
+                    .addChatMessage(new ChatComponentText(message));
+        } else {
+            //sender.addChatMessage(new ChatComponentText(message));
+        }
     }
 
     @Override

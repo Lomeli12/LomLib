@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.lomeli.lomlib.client.gui.GuiContainerPlus;
 
-import net.minecraft.client.audio.SoundManager;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 

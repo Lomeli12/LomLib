@@ -4,10 +4,11 @@ import net.lomeli.lomlib.libs.Strings;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = Strings.MOD_ID, name = Strings.MOD_NAME, version = Strings.VERSION)
+@Mod(modid = Strings.MOD_ID, name = Strings.MOD_NAME, version = Strings.VERSION, dependencies = "required-after:LomLibCore")
 public class LomLib {
 
     @SidedProxy(clientSide = Strings.CLIENT, serverSide = Strings.COMMON)
@@ -16,6 +17,11 @@ public class LomLib {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         proxy.doStuffPre();
+    }
+
+    @Mod.EventHandler
+    public void init(FMLInitializationEvent event) {
+        proxy.doStuffInit();
     }
 
     @Mod.EventHandler

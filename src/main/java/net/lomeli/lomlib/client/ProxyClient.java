@@ -2,13 +2,17 @@ package net.lomeli.lomlib.client;
 
 import net.lomeli.lomlib.LomLibCore;
 import net.lomeli.lomlib.Proxy;
+import net.lomeli.lomlib.client.capes.DevCapes;
 import net.lomeli.lomlib.client.gui.element.IconRegistry;
 import net.lomeli.lomlib.client.nei.NEIAddon;
+import net.lomeli.lomlib.client.render.SmallFontRenderer;
+import net.lomeli.lomlib.libs.Strings;
 import net.lomeli.lomlib.util.ModLoaded;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import net.minecraftforge.client.event.TextureStitchEvent;
 
@@ -18,17 +22,26 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ProxyClient extends Proxy {
 
+    public static SmallFontRenderer smallFontRenderer;
+
     @Override
     public void doStuffPre() {
         super.doStuffPre();
         ResourceUtil.initResourceUtil();
-
+        
         if(LomLibCore.capes)
-            CapeUtil.getInstance().readXML();
-
+            DevCapes.getInstance().registerConfig(Strings.CAPE_URL, Strings.MOD_ID + "Capes");
+        
         if(isOptifineInstalled())
             LomLibCore.logger
                     .logWarning("Optifine detected! If you run into any bugs, please test without optifine first before reporting, otherwise it WILL BE IGNORED! (Applies to both my mods and most others)");
+    }
+
+    @Override
+    public void doStuffInit() {
+        Minecraft mc = Minecraft.getMinecraft();
+        smallFontRenderer = new SmallFontRenderer(mc.gameSettings, new ResourceLocation("minecraft:textures/font/ascii.png"),
+                mc.renderEngine, false);
     }
 
     @Override

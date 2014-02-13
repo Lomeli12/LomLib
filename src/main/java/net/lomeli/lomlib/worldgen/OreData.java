@@ -1,7 +1,6 @@
 package net.lomeli.lomlib.worldgen;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 
 public class OreData {
     public int maxHeight, minHeight, maxCluster, minCluster, clusterPerChunk, meta;

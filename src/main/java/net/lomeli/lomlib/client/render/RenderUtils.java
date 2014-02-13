@@ -2,14 +2,16 @@ package net.lomeli.lomlib.client.render;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderUtils {
@@ -65,5 +67,24 @@ public class RenderUtils {
             renderer.renderFaceYPos(block, x, y, z, icon);
         if(block.shouldSideBeRendered(world, x, y - 1, z, 6))
             renderer.renderFaceYNeg(block, x, y, z, icon);
+    }
+
+    public static void bindTexture(String modid, String texture) {
+        ResourceLocation rl = new ResourceLocation(modid + ":" + texture);
+        bindTexture(rl);
+    }
+
+    public static void bindTexture(ResourceLocation rl) {
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(rl);
+    }
+
+    public static void setTransparency(float red, float green, float blue, float alpha) {
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glColor4f(red, green, blue, alpha);
+    }
+
+    public static void resetTransparency() {
+        GL11.glDisable(GL11.GL_BLEND);
     }
 }

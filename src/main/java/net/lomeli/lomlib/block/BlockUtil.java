@@ -1,7 +1,5 @@
 package net.lomeli.lomlib.block;
 
-import java.util.logging.Level;
-
 import cpw.mods.fml.common.FMLLog;
 
 import net.lomeli.lomlib.LomLibCore;

@@ -8,19 +8,16 @@ import net.lomeli.lomlib.item.ItemUtil;
 import net.lomeli.lomlib.libs.Strings;
 import net.lomeli.lomlib.util.ReflectionUtil;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
 import net.minecraft.server.management.ItemInWorldManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.play.client.C16PacketClientStatus;
-import net.minecraft.network.Packet;
 import net.minecraft.stats.StatBase;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChunkCoordinates;
@@ -52,10 +49,12 @@ public class FakePlayer extends EntityPlayerMP {
     public void sendChatToPlayer(ChatComponentText chatmessagecomponent) {
     }
 
+    @Override
     public boolean canCommandSenderUseCommand(int var1, String var2) {
         return false;
     }
 
+    @Override
     public ChunkCoordinates getPlayerCoordinates() {
         return null;
     }
@@ -69,21 +68,26 @@ public class FakePlayer extends EntityPlayerMP {
         this.inventory.currentItem = slot;
     }
 
+    @Override
     public void openGui(Object mod, int modGuiId, World world, int x, int y, int z) {
     }
 
+    @Override
     public double getDistanceSq(double x, double y, double z) {
         return 0.0D;
     }
 
+    @Override
     public double getDistance(double x, double y, double z) {
         return 0.0D;
     }
 
+    @Override
     public boolean isSneaking() {
         return this.isSneaking;
     }
 
+    @Override
     public void onUpdate() {
         ItemStack itemstack = this.previousItem;
         ItemStack itemstack1 = getHeldItem();
@@ -120,6 +124,7 @@ public class FakePlayer extends EntityPlayerMP {
         }
     }
 
+    @Override
     protected void updateItemUse(ItemStack par1ItemStack, int par2) {
         if(par1ItemStack.getItemUseAction() == EnumAction.drink) {
             playSound("random.drink", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
@@ -138,20 +143,25 @@ public class FakePlayer extends EntityPlayerMP {
         return getEntityName();
     }
 
+    @Override
     public float getEyeHeight() {
         return 1.1F;
     }
 
+    @Override
     public ItemStack getCurrentArmor(int par1) {
         return new ItemStack(Items.diamond_chestplate);
     }
 
+    @Override
     public void addStat(StatBase par1StatBase, int par2) {
     }
 
+    @Override
     public void onDeath(DamageSource source) {
     }
 
+    @Override
     public void travelToDimension(int dim) {
     }
 

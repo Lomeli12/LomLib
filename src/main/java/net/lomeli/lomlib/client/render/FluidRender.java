@@ -7,7 +7,6 @@ import org.lwjgl.opengl.GL11;
 
 import net.lomeli.lomlib.client.render.RenderEntityBlock.BlockInterface;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.texture.TextureMap;
