@@ -2,10 +2,6 @@ package net.lomeli.lomlib.client;
 
 import java.io.File;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
@@ -13,6 +9,10 @@ import net.minecraft.util.ResourceLocation;
 
 import net.lomeli.lomlib.client.render.RenderEntityBlock;
 import net.lomeli.lomlib.entity.EntityBlock;
+
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class ResourceUtil {
@@ -61,13 +61,13 @@ public class ResourceUtil {
     }
 
     public static File getModsFolder() {
-        if(mods == null)
+        if (mods == null)
             initResourceUtil();
         return mods;
     }
 
     public static File getAssetsFolder() {
-        if(assets == null)
+        if (assets == null)
             initResourceUtil();
         return assets;
     }

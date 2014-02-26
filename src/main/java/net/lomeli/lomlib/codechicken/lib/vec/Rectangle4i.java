@@ -23,13 +23,13 @@ public class Rectangle4i {
     }
 
     public Rectangle4i with(int px, int py) {
-        if(x > px)
+        if (x > px)
             x = px;
-        if(y > py)
+        if (y > py)
             y = py;
-        if(x + w <= px)
+        if (x + w <= px)
             w = px - x + 1;
-        if(y + h <= py)
+        if (y + h <= py)
             h = py - y + 1;
         return this;
     }

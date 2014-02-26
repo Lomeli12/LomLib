@@ -25,12 +25,12 @@ public class PageImage extends PageBase {
     @Override
     public void draw() {
         super.draw();
-        if(image != null) {
+        if (image != null) {
             bindTexture(image);
             gui.drawTexturedModalRect(x, y, imageX, imageY, imaageWidth, imageHeight);
             int textHeight = y + imageHeight;
-            if(pageText != null) {
-                for(int i = 0; i < pageText.length; i++) {
+            if (pageText != null) {
+                for (int i = 0; i < pageText.length; i++) {
                     smallFontRenderer.drawSplitString(StatCollector.translateToLocal(pageText[i]), x, textHeight, width,
                             Color.BLACK.getRGB());
                     textHeight += smallFontRenderer.getStringHeight(StatCollector.translateToLocal(pageText[i]), width) + 20;

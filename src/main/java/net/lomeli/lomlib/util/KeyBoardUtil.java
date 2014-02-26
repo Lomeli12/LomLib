@@ -13,7 +13,7 @@ public class KeyBoardUtil {
      * @return true if key is pressed.
      */
     public static boolean isKeyDown(int key) {
-        if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+        if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
             return Keyboard.isKeyDown(key);
         return false;
     }

@@ -9,15 +9,6 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import net.lomeli.lomlib.client.ResourceUtil;
-import net.lomeli.lomlib.client.gui.element.ElementBase;
-import net.lomeli.lomlib.client.gui.element.IconRegistry;
-import net.lomeli.lomlib.client.gui.tab.TabBase;
-import net.lomeli.lomlib.client.gui.tab.TabTracker;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
@@ -26,6 +17,15 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 import net.minecraftforge.fluids.FluidStack;
+
+import net.lomeli.lomlib.client.ResourceUtil;
+import net.lomeli.lomlib.client.gui.element.ElementBase;
+import net.lomeli.lomlib.client.gui.element.IconRegistry;
+import net.lomeli.lomlib.client.gui.tab.TabBase;
+import net.lomeli.lomlib.client.gui.tab.TabTracker;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiContainerPlus extends GuiContainer {
@@ -68,8 +68,8 @@ public class GuiContainerPlus extends GuiContainer {
 
     @SuppressWarnings("rawtypes")
     public void drawToolTipOverArea(int mouseX, int mouseY, int minX, int minY, int maxX, int maxY, List list, FontRenderer font) {
-        if(list != null && font != null) {
-            if((mouseX >= minX && mouseX <= maxX) && (mouseY >= minY && mouseY <= maxY))
+        if (list != null && font != null) {
+            if ((mouseX >= minX && mouseX <= maxX) && (mouseY >= minY && mouseY <= maxY))
                 this.drawHoveringText(list, mouseX, mouseY, font);
         }
     }
@@ -81,8 +81,8 @@ public class GuiContainerPlus extends GuiContainer {
         int drawHeight = 0;
         int drawWidth = 0;
 
-        for(i = 0; i < width; i += 16) {
-            for(j = 0; j < height; j += 16) {
+        for (i = 0; i < width; i += 16) {
+            for (j = 0; j < height; j += 16) {
                 drawWidth = (width - i) < 16 ? (width - i) : 16;
                 drawHeight = (height - j) < 16 ? (height - j) : 16;
                 drawScaledTexturedModelRectFromIcon(x + i, y + j, icon, drawWidth, drawHeight);
@@ -104,7 +104,7 @@ public class GuiContainerPlus extends GuiContainer {
     }
 
     public void drawIcon(IIcon icon, int x, int y, int spriteSheet) {
-        if(spriteSheet == 0)
+        if (spriteSheet == 0)
             ResourceUtil.setBlockTextureSheet();
         else
             ResourceUtil.setItemTextureSheet();
@@ -119,9 +119,9 @@ public class GuiContainerPlus extends GuiContainer {
 
         TabBase tab = getTabAtPosition(mouseX, mouseY);
 
-        if(tab != null && !tab.handleMouseClicked(mouseX, mouseY, mouseButton)) {
-            for(TabBase other : tabs) {
-                if(other != tab && other.open && other.side == tab.side) {
+        if (tab != null && !tab.handleMouseClicked(mouseX, mouseY, mouseButton)) {
+            for (TabBase other : tabs) {
+                if (other != tab && other.open && other.side == tab.side) {
                     other.toggleOpen();
                 }
             }
@@ -129,7 +129,7 @@ public class GuiContainerPlus extends GuiContainer {
         }
         ElementBase element = getElementAtPosition(mouseX, mouseY);
 
-        if(element != null) {
+        if (element != null) {
             element.handleMouseClicked(mouseX, mouseY, mouseButton);
         }
     }
@@ -150,7 +150,7 @@ public class GuiContainerPlus extends GuiContainer {
     }
 
     public void drawFluid(int x, int y, FluidStack fluid, int width, int height) {
-        if(fluid == null || fluid.getFluid() == null)
+        if (fluid == null || fluid.getFluid() == null)
             return;
         ResourceUtil.bindTexture(ResourceUtil.MC_BLOCK_SHEET);
         GL11.glColor3ub((byte) (fluid.getFluid().getColor() >> 16 & 0xFF), (byte) (fluid.getFluid().getColor() >> 8 & 0xFF),
@@ -165,7 +165,7 @@ public class GuiContainerPlus extends GuiContainer {
 
     @SuppressWarnings("rawtypes")
     protected void drawTooltipHoveringText(List list, int x, int y, FontRenderer font) {
-        if(list == null || list.isEmpty())
+        if (list == null || list.isEmpty())
             return;
 
         GL11.glDisable(GL12.GL_RESCALE_NORMAL);
@@ -174,11 +174,11 @@ public class GuiContainerPlus extends GuiContainer {
         int k = 0;
         Iterator iterator = list.iterator();
 
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             String s = (String) iterator.next();
             int l = font.getStringWidth(s);
 
-            if(l > k) {
+            if (l > k) {
                 k = l;
             }
         }
@@ -186,13 +186,13 @@ public class GuiContainerPlus extends GuiContainer {
         int j1 = y - 12;
         int k1 = 8;
 
-        if(list.size() > 1)
+        if (list.size() > 1)
             k1 += 2 + (list.size() - 1) * 10;
 
-        if(i1 + k > this.width)
+        if (i1 + k > this.width)
             i1 -= 28 + k;
 
-        if(j1 + k1 + 6 > this.height)
+        if (j1 + k1 + 6 > this.height)
             j1 = this.height - k1 - 6;
 
         this.zLevel = 300.0F;
@@ -210,11 +210,11 @@ public class GuiContainerPlus extends GuiContainer {
         this.drawGradientRect(i1 - 3, j1 - 3, i1 + k + 3, j1 - 3 + 1, i2, i2);
         this.drawGradientRect(i1 - 3, j1 + k1 + 2, i1 + k + 3, j1 + k1 + 3, j2, j2);
 
-        for(int k2 = 0; k2 < list.size(); ++k2) {
+        for (int k2 = 0; k2 < list.size(); ++k2) {
             String s1 = (String) list.get(k2);
             font.drawStringWithShadow(s1, i1, j1, -1);
 
-            if(k2 == 0)
+            if (k2 == 0)
                 j1 += 2;
 
             j1 += 10;
@@ -227,7 +227,7 @@ public class GuiContainerPlus extends GuiContainer {
     }
 
     public void drawScaledTexturedModelRectFromIcon(int x, int y, IIcon icon, int width, int height) {
-        if(icon == null)
+        if (icon == null)
             return;
 
         double minU = icon.getMinU();
@@ -246,7 +246,7 @@ public class GuiContainerPlus extends GuiContainer {
     }
 
     protected void drawElements() {
-        for(ElementBase element : elements) {
+        for (ElementBase element : elements) {
             element.draw();
         }
     }
@@ -255,12 +255,12 @@ public class GuiContainerPlus extends GuiContainer {
         int yPosRight = 4;
         int yPosLeft = 4;
 
-        for(TabBase tab : tabs) {
+        for (TabBase tab : tabs) {
             tab.update();
-            if(!tab.isVisible())
+            if (!tab.isVisible())
                 continue;
 
-            if(tab.side == 0) {
+            if (tab.side == 0) {
                 tab.draw(guiLeft, guiTop + yPosLeft);
                 yPosLeft += tab.currentHeight;
             }else {
@@ -273,9 +273,9 @@ public class GuiContainerPlus extends GuiContainer {
 
     public TabBase addTab(TabBase tab) {
         tabs.add(tab);
-        if(TabTracker.getOpenedLeftTab() != null && tab.getClass().equals(TabTracker.getOpenedLeftTab()))
+        if (TabTracker.getOpenedLeftTab() != null && tab.getClass().equals(TabTracker.getOpenedLeftTab()))
             tab.setFullyOpen();
-        else if(TabTracker.getOpenedRightTab() != null && tab.getClass().equals(TabTracker.getOpenedRightTab()))
+        else if (TabTracker.getOpenedRightTab() != null && tab.getClass().equals(TabTracker.getOpenedRightTab()))
             tab.setFullyOpen();
 
         return tab;
@@ -289,18 +289,18 @@ public class GuiContainerPlus extends GuiContainer {
     public void addTooltips(List<String> tooltip) {
         TabBase tab = getTabAtPosition(mouseX, mouseY);
 
-        if(tab != null)
+        if (tab != null)
             tab.addTooltip(tooltip);
 
         ElementBase element = getElementAtPosition(mouseX, mouseY);
 
-        if(element != null)
+        if (element != null)
             element.addTooltip(tooltip);
     }
 
     protected ElementBase getElementAtPosition(int mX, int mY) {
-        for(ElementBase element : elements) {
-            if(element.intersectsWith(mX, mY)) {
+        for (ElementBase element : elements) {
+            if (element.intersectsWith(mX, mY)) {
                 return element;
             }
         }
@@ -311,13 +311,13 @@ public class GuiContainerPlus extends GuiContainer {
         int xShift = 0;
         int yShift = 4;
 
-        for(TabBase tab : tabs) {
-            if(!tab.isVisible() || tab.side == 1)
+        for (TabBase tab : tabs) {
+            if (!tab.isVisible() || tab.side == 1)
                 continue;
 
             tab.currentShiftX = xShift;
             tab.currentShiftY = yShift;
-            if(tab.intersectsWith(mX, mY, xShift, yShift))
+            if (tab.intersectsWith(mX, mY, xShift, yShift))
                 return tab;
 
             yShift += tab.currentHeight;
@@ -326,13 +326,13 @@ public class GuiContainerPlus extends GuiContainer {
         xShift = xSize;
         yShift = 4;
 
-        for(TabBase tab : tabs) {
-            if(!tab.isVisible() || tab.side == 0)
+        for (TabBase tab : tabs) {
+            if (!tab.isVisible() || tab.side == 0)
                 continue;
 
             tab.currentShiftX = xShift;
             tab.currentShiftY = yShift;
-            if(tab.intersectsWith(mX, mY, xShift, yShift))
+            if (tab.intersectsWith(mX, mY, xShift, yShift))
                 return tab;
 
             yShift += tab.currentHeight;

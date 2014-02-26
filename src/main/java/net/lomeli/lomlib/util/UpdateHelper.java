@@ -38,8 +38,8 @@ public class UpdateHelper {
                 XMLUtil.getInteger(updateURL, "minorBuildNumber"), XMLUtil.getInteger(updateURL, "revisionBuildNumber") };
         int[] currentVersion = { major, minor, revision };
 
-        for(int i = 0; i < 3; i++) {
-            if(latestVersion[i] > currentVersion[i]) {
+        for (int i = 0; i < 3; i++) {
+            if (latestVersion[i] > currentVersion[i]) {
                 isUpdated = false;
                 downloadURL = XMLUtil.getStringValue(updateURL, "modURL");
                 System.out.println("A new version of " + modname + " can be downloaded at " + downloadURL);

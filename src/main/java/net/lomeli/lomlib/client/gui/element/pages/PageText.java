@@ -24,7 +24,7 @@ public class PageText extends PageBase {
         super.draw();
         int textHeight = y + 5;
 
-        for(int i = 0; i < pageText.length; i++) {
+        for (int i = 0; i < pageText.length; i++) {
             smallFontRenderer.drawSplitString(StatCollector.translateToLocal(pageText[i]), x, textHeight, width,
                     Color.BLACK.getRGB());
             textHeight += smallFontRenderer.getStringHeight(StatCollector.translateToLocal(pageText[i]), width) + 20;

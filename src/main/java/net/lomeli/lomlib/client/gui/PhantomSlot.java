@@ -24,7 +24,7 @@ public class PhantomSlot extends Slot {
 
     @Override
     public void putStack(ItemStack par1ItemStack) {
-        if(par1ItemStack != null) {
+        if (par1ItemStack != null) {
             this.inventory.setInventorySlotContents(this.slotNumber,
                     new ItemStack(par1ItemStack.getItem(), 1, par1ItemStack.getItemDamage()));
             this.inventory.markDirty();

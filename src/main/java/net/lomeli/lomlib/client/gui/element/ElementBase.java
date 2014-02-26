@@ -2,10 +2,10 @@ package net.lomeli.lomlib.client.gui.element;
 
 import java.util.List;
 
-import net.lomeli.lomlib.client.gui.GuiContainerPlus;
-
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
+
+import net.lomeli.lomlib.client.gui.GuiContainerPlus;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
@@ -86,7 +86,7 @@ public abstract class ElementBase {
         mouseX += gui.getGuiLeft();
         mouseY += gui.getGuiTop();
 
-        if(mouseX >= this.posX && mouseX <= this.posX + this.sizeX && mouseY >= this.posY && mouseY <= this.posY + this.sizeY)
+        if (mouseX >= this.posX && mouseX <= this.posX + this.sizeX && mouseY >= this.posY && mouseY <= this.posY + this.sizeY)
             return true;
 
         return false;

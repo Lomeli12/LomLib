@@ -20,7 +20,7 @@ public class IconConnected implements IIcon {
     }
 
     public IconConnected(IIcon... icon) {
-        for(int i = 0; i < icon.length; i++) {
+        for (int i = 0; i < icon.length; i++) {
             this.icons[i] = icon[i];
         }
     }

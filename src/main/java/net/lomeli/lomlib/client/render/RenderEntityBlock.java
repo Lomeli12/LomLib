@@ -2,11 +2,6 @@ package net.lomeli.lomlib.client.render;
 
 import org.lwjgl.opengl.GL11;
 
-import net.lomeli.lomlib.entity.EntityBlock;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
@@ -17,6 +12,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import net.lomeli.lomlib.entity.EntityBlock;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderEntityBlock extends Render {
@@ -40,7 +40,7 @@ public class RenderEntityBlock extends Render {
         public IIcon texture = null;
 
         public IIcon getBlockTextureFromSide(int i) {
-            if(texture == null)
+            if (texture == null)
                 return baseBlock.getBlockTextureFromSide(i);
             else
                 return texture;
@@ -60,7 +60,7 @@ public class RenderEntityBlock extends Render {
     }
 
     public void doRenderBlock(EntityBlock entity, double i, double j, double k) {
-        if(entity.isDead)
+        if (entity.isDead)
             return;
 
         shadowSize = entity.shadowSize;
@@ -69,9 +69,9 @@ public class RenderEntityBlock extends Render {
         util.texture = entity.texture;
         bindTexture(TextureMap.locationBlocksTexture);
 
-        for(int iBase = 0; iBase < entity.iSize; ++iBase) {
-            for(int jBase = 0; jBase < entity.jSize; ++jBase) {
-                for(int kBase = 0; kBase < entity.kSize; ++kBase) {
+        for (int iBase = 0; iBase < entity.iSize; ++iBase) {
+            for (int jBase = 0; jBase < entity.jSize; ++jBase) {
+                for (int kBase = 0; kBase < entity.kSize; ++kBase) {
 
                     util.minX = 0;
                     util.minY = 0;
@@ -125,68 +125,68 @@ public class RenderEntityBlock extends Render {
 
         Tessellator tessellator = Tessellator.instance;
 
-        if(doTessellating) {
+        if (doTessellating) {
             tessellator.startDrawingQuads();
         }
 
         float f4 = 0, f5 = 0;
 
-        if(doLight) {
+        if (doLight) {
             f4 = block.getBlockBrightness(blockAccess, i, j, k);
             f5 = block.getBlockBrightness(blockAccess, i, j, k);
-            if(f5 < f4)
+            if (f5 < f4)
                 f5 = f4;
             tessellator.setColorOpaque_F(f * f5, f * f5, f * f5);
         }
 
         field_147909_c.renderFaceYNeg(null, 0, 0, 0, block.getBlockTextureFromSide(0));
 
-        if(doLight) {
+        if (doLight) {
             f5 = block.getBlockBrightness(blockAccess, i, j, k);
-            if(f5 < f4)
+            if (f5 < f4)
                 f5 = f4;
             tessellator.setColorOpaque_F(f1 * f5, f1 * f5, f1 * f5);
         }
 
         field_147909_c.renderFaceYPos(null, 0, 0, 0, block.getBlockTextureFromSide(1));
 
-        if(doLight) {
+        if (doLight) {
             f5 = block.getBlockBrightness(blockAccess, i, j, k);
-            if(f5 < f4)
+            if (f5 < f4)
                 f5 = f4;
             tessellator.setColorOpaque_F(f2 * f5, f2 * f5, f2 * f5);
         }
 
         field_147909_c.renderFaceZNeg(null, 0, 0, 0, block.getBlockTextureFromSide(2));
 
-        if(doLight) {
+        if (doLight) {
             f5 = block.getBlockBrightness(blockAccess, i, j, k);
-            if(f5 < f4)
+            if (f5 < f4)
                 f5 = f4;
             tessellator.setColorOpaque_F(f2 * f5, f2 * f5, f2 * f5);
         }
 
         field_147909_c.renderFaceZPos(null, 0, 0, 0, block.getBlockTextureFromSide(3));
 
-        if(doLight) {
+        if (doLight) {
             f5 = block.getBlockBrightness(blockAccess, i, j, k);
-            if(f5 < f4)
+            if (f5 < f4)
                 f5 = f4;
             tessellator.setColorOpaque_F(f3 * f5, f3 * f5, f3 * f5);
         }
 
         field_147909_c.renderFaceXNeg(null, 0, 0, 0, block.getBlockTextureFromSide(4));
 
-        if(doLight) {
+        if (doLight) {
             f5 = block.getBlockBrightness(blockAccess, i, j, k);
-            if(f5 < f4)
+            if (f5 < f4)
                 f5 = f4;
             tessellator.setColorOpaque_F(f3 * f5, f3 * f5, f3 * f5);
         }
 
         field_147909_c.renderFaceXPos(null, 0, 0, 0, block.getBlockTextureFromSide(5));
 
-        if(doTessellating)
+        if (doTessellating)
             tessellator.draw();
     }
 }

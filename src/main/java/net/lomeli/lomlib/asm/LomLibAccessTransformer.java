@@ -18,14 +18,14 @@ public class LomLibAccessTransformer extends AccessTransformer {
         instance = this;
         mapFiles.add("lomlib_at.cfg");
         Iterator it = mapFiles.iterator();
-        while(it.hasNext()) {
+        while (it.hasNext()) {
             String file = (String) it.next();
             instance.readCfg(file);
         }
     }
 
     public static void addTransformerMap(String mapFileName) {
-        if(instance == null)
+        if (instance == null)
             mapFiles.add(mapFileName);
         else
             instance.readCfg(mapFileName);
@@ -36,7 +36,7 @@ public class LomLibAccessTransformer extends AccessTransformer {
             Method e = AccessTransformer.class.getDeclaredMethod("readMapFile", new Class[] { String.class });
             e.setAccessible(true);
             e.invoke(this, new Object[] { name });
-        }catch(Exception ex) {
+        }catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }

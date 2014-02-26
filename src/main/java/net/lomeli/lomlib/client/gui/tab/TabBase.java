@@ -1,13 +1,12 @@
 package net.lomeli.lomlib.client.gui.tab;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
-import org.lwjgl.opengl.GL11;
-
 import net.lomeli.lomlib.client.gui.GuiContainerPlus;
 import net.lomeli.lomlib.client.gui.element.ElementBase;
-
 import net.lomeli.lomlib.codechicken.lib.vec.Rectangle4i;
 
 public class TabBase extends ElementBase {
@@ -42,7 +41,7 @@ public class TabBase extends ElementBase {
         super(gui, 0, 0);
         this.side = side;
 
-        if(side == 0)
+        if (side == 0)
             texture = DEFAULT_TEXTURE_LEFT;
         else
             texture = DEFAULT_TEXTURE_RIGHT;
@@ -51,7 +50,7 @@ public class TabBase extends ElementBase {
     public TabBase setSide(int side) {
         this.side = side;
 
-        if(side == 0)
+        if (side == 0)
             texture = DEFAULT_TEXTURE_LEFT;
         else
             texture = DEFAULT_TEXTURE_RIGHT;
@@ -60,35 +59,35 @@ public class TabBase extends ElementBase {
 
     @Override
     public void update() {
-        if(open && currentWidth < maxWidth)
+        if (open && currentWidth < maxWidth)
             currentWidth += tabExpandSpeed;
-        else if(!open && currentWidth > minWidth)
+        else if (!open && currentWidth > minWidth)
             currentWidth -= tabExpandSpeed;
 
-        if(currentWidth > maxWidth)
+        if (currentWidth > maxWidth)
             currentWidth = maxWidth;
-        else if(currentWidth < minWidth)
+        else if (currentWidth < minWidth)
             currentWidth = minWidth;
 
-        if(open && currentHeight < maxHeight)
+        if (open && currentHeight < maxHeight)
             currentHeight += tabExpandSpeed;
-        else if(!open && currentHeight > minHeight)
+        else if (!open && currentHeight > minHeight)
             currentHeight -= tabExpandSpeed;
 
-        if(currentHeight > maxHeight)
+        if (currentHeight > maxHeight)
             currentHeight = maxHeight;
-        else if(currentHeight < minHeight)
+        else if (currentHeight < minHeight)
             currentHeight = minHeight;
 
-        if(open && currentWidth == maxWidth && currentHeight == maxHeight)
+        if (open && currentWidth == maxWidth && currentHeight == maxHeight)
             setFullyOpen();
     }
 
     public boolean intersectsWith(int mouseX, int mouseY, int shiftX, int shiftY) {
-        if(side == 0) {
-            if(mouseX <= shiftX && mouseX >= shiftX - currentWidth && mouseY >= shiftY && mouseY <= shiftY + currentHeight)
+        if (side == 0) {
+            if (mouseX <= shiftX && mouseX >= shiftX - currentWidth && mouseY >= shiftY && mouseY <= shiftY + currentHeight)
                 return true;
-        }else if(mouseX >= shiftX && mouseX <= shiftX + currentWidth && mouseY >= shiftY && mouseY <= shiftY + currentHeight)
+        }else if (mouseX >= shiftX && mouseX <= shiftX + currentWidth && mouseY >= shiftY && mouseY <= shiftY + currentHeight)
             return true;
 
         return false;
@@ -103,7 +102,7 @@ public class TabBase extends ElementBase {
 
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
 
-        if(side == 0) {
+        if (side == 0) {
             gui.drawTexturedModalRect(posX - currentWidth, posY + 4, 0, 256 - currentHeight + 4, 4, currentHeight - 4);
             gui.drawTexturedModalRect(posX - currentWidth + 4, posY, 256 - currentWidth + 4, 0, currentWidth - 4, 4);
             gui.drawTexturedModalRect(posX - currentWidth, posY, 0, 0, 4, 4);
@@ -121,7 +120,7 @@ public class TabBase extends ElementBase {
 
     protected void drawTabIcon(String iconName) {
         int offsetX = 2;
-        if(side == 0)
+        if (side == 0)
             offsetX = 4 - currentWidth;
 
         gui.drawIcon(iconName, posX + offsetX, posY + 3, 1);
@@ -142,15 +141,15 @@ public class TabBase extends ElementBase {
     }
 
     public void toggleOpen() {
-        if(open) {
+        if (open) {
             open = false;
-            if(side == 0)
+            if (side == 0)
                 TabTracker.setOpenedLeftTab(null);
             else
                 TabTracker.setOpenedRightTab(null);
         }else {
             open = true;
-            if(side == 0)
+            if (side == 0)
                 TabTracker.setOpenedLeftTab(this.getClass());
             else
                 TabTracker.setOpenedRightTab(this.getClass());
@@ -158,7 +157,7 @@ public class TabBase extends ElementBase {
     }
 
     public Rectangle4i getBounds() {
-        if(side == 0)
+        if (side == 0)
             return new Rectangle4i(posX - currentWidth, posY, currentWidth, currentHeight);
         else
             return new Rectangle4i(posX, posY, currentWidth, currentHeight);

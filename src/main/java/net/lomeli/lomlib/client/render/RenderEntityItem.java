@@ -14,7 +14,7 @@ public class RenderEntityItem {
 
     public static void renderEntityGhostItem(World world, ItemStack stack, RenderItem customRender, int x, int y, int z,
             ForgeDirection forgeDirection) {
-        if(stack != null) {
+        if (stack != null) {
             float scaleFactor = getGhostItemScaleFactor(stack, customRender);
             float rotationAngle = (float) (720.0 * (System.currentTimeMillis() & 0x3FFFL) / 0x3FFFL);
 
@@ -34,34 +34,34 @@ public class RenderEntityItem {
     private static void translateGhostItemByOrientation(ItemStack ghostItemStack, double x, double y, double z,
             ForgeDirection forgeDirection) {
 
-        if(ghostItemStack != null) {
-            if(ghostItemStack.getItem() instanceof ItemBlock) {
+        if (ghostItemStack != null) {
+            if (ghostItemStack.getItem() instanceof ItemBlock) {
                 switch(forgeDirection) {
-                case DOWN: {
+                case DOWN : {
                     GL11.glTranslatef((float) x + 0.5F, (float) y + 0.7F, (float) z + 0.5F);
                     return;
                 }
-                case UP: {
+                case UP : {
                     GL11.glTranslatef((float) x + 0.5F, (float) y + 0.25F, (float) z + 0.5F);
                     return;
                 }
-                case NORTH: {
+                case NORTH : {
                     GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.7F);
                     return;
                 }
-                case SOUTH: {
+                case SOUTH : {
                     GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.3F);
                     return;
                 }
-                case EAST: {
+                case EAST : {
                     GL11.glTranslatef((float) x + 0.3F, (float) y + 0.5F, (float) z + 0.5F);
                     return;
                 }
-                case WEST: {
+                case WEST : {
                     GL11.glTranslatef((float) x + 0.70F, (float) y + 0.5F, (float) z + 0.5F);
                     return;
                 }
-                case UNKNOWN: {
+                case UNKNOWN : {
                     return;
                 }
                 default: {
@@ -70,31 +70,31 @@ public class RenderEntityItem {
                 }
             }else {
                 switch(forgeDirection) {
-                case DOWN: {
+                case DOWN : {
                     GL11.glTranslatef((float) x + 0.5F, (float) y + 0.6F, (float) z + 0.5F);
                     return;
                 }
-                case UP: {
+                case UP : {
                     GL11.glTranslatef((float) x + 0.5F, (float) y + 0.20F, (float) z + 0.5F);
                     return;
                 }
-                case NORTH: {
+                case NORTH : {
                     GL11.glTranslatef((float) x + 0.5F, (float) y + 0.4F, (float) z + 0.7F);
                     return;
                 }
-                case SOUTH: {
+                case SOUTH : {
                     GL11.glTranslatef((float) x + 0.5F, (float) y + 0.4F, (float) z + 0.3F);
                     return;
                 }
-                case EAST: {
+                case EAST : {
                     GL11.glTranslatef((float) x + 0.3F, (float) y + 0.4F, (float) z + 0.5F);
                     return;
                 }
-                case WEST: {
+                case WEST : {
                     GL11.glTranslatef((float) x + 0.70F, (float) y + 0.4F, (float) z + 0.5F);
                     return;
                 }
-                case UNKNOWN: {
+                case UNKNOWN : {
                     return;
                 }
                 default: {
@@ -109,31 +109,31 @@ public class RenderEntityItem {
 
         float scaleFactor = 1.0F;
 
-        if(itemStack != null) {
-            if(itemStack.getItem() instanceof ItemBlock) {
+        if (itemStack != null) {
+            if (itemStack.getItem() instanceof ItemBlock) {
                 switch(customRenderItem.getMiniBlockCount(itemStack, (byte) 0)) {
-                case 1:
+                case 1 :
                     return 0.90F;
-                case 2:
+                case 2 :
                     return 0.90F;
-                case 3:
+                case 3 :
                     return 0.90F;
-                case 4:
+                case 4 :
                     return 0.90F;
-                case 5:
+                case 5 :
                     return 0.80F;
                 default:
                     return 0.90F;
                 }
             }else {
                 switch(customRenderItem.getMiniItemCount(itemStack, (byte) 0)) {
-                case 1:
+                case 1 :
                     return 0.65F;
-                case 2:
+                case 2 :
                     return 0.65F;
-                case 3:
+                case 3 :
                     return 0.65F;
-                case 4:
+                case 4 :
                     return 0.65F;
                 default:
                     return 0.65F;

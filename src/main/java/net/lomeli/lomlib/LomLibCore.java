@@ -7,15 +7,7 @@ import java.util.List;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.LoadController;
-import cpw.mods.fml.common.DummyModContainer;
-import cpw.mods.fml.common.ModMetadata;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.versioning.ArtifactVersion;
-import cpw.mods.fml.common.versioning.VersionParser;
-import cpw.mods.fml.common.versioning.VersionRange;
+import net.minecraftforge.common.MinecraftForge;
 
 import net.lomeli.lomlib.client.ProxyClient.IconRegisterEvent;
 import net.lomeli.lomlib.command.CommandLomLib;
@@ -24,7 +16,15 @@ import net.lomeli.lomlib.util.LogHelper;
 import net.lomeli.lomlib.util.XMLConfiguration;
 import net.lomeli.lomlib.util.XMLConfiguration.ConfigEnum;
 
-import net.minecraftforge.common.MinecraftForge;
+import cpw.mods.fml.common.DummyModContainer;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.LoadController;
+import cpw.mods.fml.common.ModMetadata;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.versioning.ArtifactVersion;
+import cpw.mods.fml.common.versioning.VersionParser;
+import cpw.mods.fml.common.versioning.VersionRange;
 
 public class LomLibCore extends DummyModContainer {
 
@@ -62,7 +62,7 @@ public class LomLibCore extends DummyModContainer {
 
         configureMod(event.getSuggestedConfigurationFile());
 
-        if(event.getSide().isClient()) {
+        if (event.getSide().isClient()) {
             IconRegisterEvent iconR = new IconRegisterEvent();
             MinecraftForge.EVENT_BUS.register(iconR);
             FMLCommonHandler.instance().bus().register(iconR);

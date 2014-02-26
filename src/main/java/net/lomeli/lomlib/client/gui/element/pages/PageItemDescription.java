@@ -35,7 +35,7 @@ public class PageItemDescription extends PageBase {
         smallFontRenderer.drawStringWithShadow(stack.getDisplayName(), x + 20, y + 2, Color.YELLOW.getRGB());
         int textHeight = y + 20;
 
-        for(int i = 0; i < pageText.length; i++) {
+        for (int i = 0; i < pageText.length; i++) {
             smallFontRenderer.drawSplitString(StatCollector.translateToLocal(pageText[i]), x, textHeight, width,
                     Color.BLACK.getRGB());
             textHeight += smallFontRenderer.getStringHeight(StatCollector.translateToLocal(pageText[i]), width) + 20;

@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
+import net.minecraft.util.StatCollector;
+
 import net.lomeli.lomlib.client.gui.GuiContainerPlus;
 import net.lomeli.lomlib.util.ToolTipUtil;
-
-import net.minecraft.util.StatCollector;
 
 public class TabInfo extends TabBase {
 
@@ -35,12 +35,12 @@ public class TabInfo extends TabBase {
     public void draw() {
         drawBackground();
         drawTabIcon("Icon_Info");
-        if(!isFullyOpened())
+        if (!isFullyOpened())
             return;
 
         int xPos1 = 0, xPos2;
 
-        if(side == 0) {
+        if (side == 0) {
             xPos1 = this.posX - this.currentWidth + 22;
             xPos2 = this.posX + 8 - this.currentWidth;
         }else {
@@ -56,7 +56,7 @@ public class TabInfo extends TabBase {
 
     @Override
     public void addTooltip(List<String> list) {
-        if(!isFullyOpened())
+        if (!isFullyOpened())
             list.add(StatCollector.translateToLocal("tab.lomlib.info"));
     }
 }

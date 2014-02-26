@@ -2,13 +2,13 @@ package net.lomeli.lomlib.client.gui.element;
 
 import java.util.List;
 
-import net.lomeli.lomlib.client.ResourceUtil;
-import net.lomeli.lomlib.client.gui.GuiContainerPlus;
-
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import net.minecraftforge.fluids.FluidTank;
+
+import net.lomeli.lomlib.client.ResourceUtil;
+import net.lomeli.lomlib.client.gui.GuiContainerPlus;
 
 public class ElementTank extends ElementBase {
 
@@ -56,7 +56,7 @@ public class ElementTank extends ElementBase {
 
     @Override
     public void addTooltip(List<String> list) {
-        if(tank.getFluid() != null && tank.getFluidAmount() > 0) {
+        if (tank.getFluid() != null && tank.getFluidAmount() > 0) {
             list.add(tank.getFluid().getFluid().getLocalizedName());
             list.add("" + tank.getFluidAmount() + " / " + tank.getCapacity() + " mB");
         }else

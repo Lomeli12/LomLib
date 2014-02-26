@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.URL;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -32,13 +33,13 @@ public class XMLUtil {
             NodeList node = doc.getElementsByTagName(nodeName);
             try {
                 var1 = node.item(0).getTextContent();
-            }catch(NullPointerException b) {
+            }catch (NullPointerException b) {
             }
-        }catch(SocketException e) {
-        }catch(MalformedURLException e) {
-        }catch(IOException e) {
-        }catch(ParserConfigurationException e) {
-        }catch(SAXException e) {
+        }catch (SocketException e) {
+        }catch (MalformedURLException e) {
+        }catch (IOException e) {
+        }catch (ParserConfigurationException e) {
+        }catch (SAXException e) {
         }
         return var1;
     }
@@ -55,7 +56,7 @@ public class XMLUtil {
         URL ur = null;
         try {
             ur = new URL(getString(URLLoc, nodeName));
-        }catch(Exception e) {
+        }catch (Exception e) {
         }
         return ur != null ? ur : null;
     }
@@ -93,12 +94,12 @@ public class XMLUtil {
 
         try {
             File f = new File(filename);
-            if(f.exists()) {
+            if (f.exists()) {
                 DocumentBuilder builder = factory.newDocumentBuilder();
                 Document document = builder.parse(f);
                 return true;
             }
-        }catch(Exception e) {
+        }catch (Exception e) {
             LomLibCore.logger.logWarning("Invalid XML file!");
         }
         return true;
@@ -107,14 +108,14 @@ public class XMLUtil {
     public static boolean isValidXMLFile(File config) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
-            if(config != null && config.exists()) {
+            if (config != null && config.exists()) {
                 DocumentBuilder builder = factory.newDocumentBuilder();
                 Document document = builder.parse(config);
                 return true;
             }
-        }catch(Exception e) {
+        }catch (Exception e) {
             LomLibCore.logger.logWarning("Invalid configuration file!");
-            if(config.exists()) {
+            if (config.exists()) {
                 LomLibCore.logger.logWarning("Removing invalid file...");
                 config.delete();
                 LomLibCore.logger.logBasic("Done!");

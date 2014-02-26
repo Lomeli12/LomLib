@@ -19,24 +19,24 @@ public class RenderFakeBlock extends RenderBlocks {
     }
 
     public void setLightAndColor(double u2, double v2, int side) {
-        if(this.enableAO) {
+        if (this.enableAO) {
             Tessellator tessellator = Tessellator.instance;
             double u = 0.0D;
             double v = 0.0D;
 
-            if((side == 0) || (side == 1)) {
+            if ((side == 0) || (side == 1)) {
                 u = 1.0D - u2;
                 v = 1.0D - v2;
-            }else if(side == 2) {
+            }else if (side == 2) {
                 u = v2;
                 v = 1.0D - u2;
-            }else if(side == 3) {
+            }else if (side == 3) {
                 u = u2;
                 v = v2;
-            }else if(side == 4) {
+            }else if (side == 4) {
                 u = v2;
                 v = 1.0D - u2;
-            }else if(side == 5) {
+            }else if (side == 5) {
                 u = 1.0D - v2;
                 v = u2;
             }
@@ -58,7 +58,7 @@ public class RenderFakeBlock extends RenderBlocks {
 
         this.isOpaque = block.isOpaqueCube();
 
-        for(int j = 0; j < 4; j++) {
+        for (int j = 0; j < 4; j++) {
             int i = getType(block, side, (int) x, (int) y, (int) z, ax * (int) u[j], ay * (int) u[j], az * (int) u[j], bx
                     * (int) v[j], by * (int) v[j], bz * (int) v[j], (int) (ox * 2.0D - 1.0D), (int) (oy * 2.0D - 1.0D),
                     (int) (oz * 2.0D - 1.0D));
@@ -67,7 +67,7 @@ public class RenderFakeBlock extends RenderBlocks {
             double cy = y + oy + ay * u[j] / 4.0D + by * v[j] / 4.0D;
             double cz = z + oz + az * u[j] / 4.0D + bz * v[j] / 4.0D;
 
-            for(int k = 0; k < 4; k++) {
+            for (int k = 0; k < 4; k++) {
                 setLightAndColor(0.5D + u[j] * 0.25D + u[k] * 0.25D, 0.5D + v[j] * 0.25D + v[k] * 0.25D, side);
                 tessellator.addVertexWithUV(cx + u[k] * ax * 0.25D + v[k] * bx * 0.25D, cy + u[k] * ay * 0.25D + v[k] * by
                         * 0.25D, cz + u[k] * az * 0.25D + v[k] * bz * 0.25D,
@@ -80,17 +80,17 @@ public class RenderFakeBlock extends RenderBlocks {
     }
 
     public int getSideFromDir(int dx, int dy, int dz) {
-        if(dy < 0)
+        if (dy < 0)
             return 0;
-        if(dy > 0)
+        if (dy > 0)
             return 1;
-        if(dz < 0)
+        if (dz < 0)
             return 2;
-        if(dz > 0)
+        if (dz > 0)
             return 3;
-        if(dx < 0)
+        if (dx < 0)
             return 4;
-        if(dx > 0)
+        if (dx > 0)
             return 5;
 
         return 0;
@@ -110,10 +110,10 @@ public class RenderFakeBlock extends RenderBlocks {
                 && (!matchBlock(Facing.oppositeSide[sidea], x + ax + cx, y + ay + cy, z + az + cz));
         boolean b = (matchBlock(side, x + bx, y + by, z + bz)) && (!matchBlock(sideb, x + cx, y + cy, z + cz))
                 && (!matchBlock(Facing.oppositeSide[sideb], x + bx + cx, y + by + cy, z + bz + cz));
-        if(a) {
-            if(b) {
-                if(matchBlock(side, x + ax + bx, y + ay + by, z + az + bz)) {
-                    if((matchBlock(Facing.oppositeSide[sidea], x + ax + bx + cx, y + ay + by + cy, z + az + bz + cz))
+        if (a) {
+            if (b) {
+                if (matchBlock(side, x + ax + bx, y + ay + by, z + az + bz)) {
+                    if ((matchBlock(Facing.oppositeSide[sidea], x + ax + bx + cx, y + ay + by + cy, z + az + bz + cz))
                             || (matchBlock(Facing.oppositeSide[sideb], x + ax + bx + cx, y + ay + by + cy, z + az + bz + cz))
                             || (matchBlock(sidea, x + bx + cx, y + by + cy, z + bz + cz))
                             || (matchBlock(sideb, x + ax + cx, y + ay + cy, z + az + cz)))
@@ -126,7 +126,7 @@ public class RenderFakeBlock extends RenderBlocks {
 
             return 2;
         }
-        if(b)
+        if (b)
             return 1;
 
         return 0;
@@ -134,10 +134,10 @@ public class RenderFakeBlock extends RenderBlocks {
 
     @Override
     public void renderFaceYNeg(Block block, double x, double y, double z, IIcon icon) {
-        if(this.hasOverrideBlockTexture())
+        if (this.hasOverrideBlockTexture())
             icon = this.overrideBlockTexture;
 
-        if((icon instanceof IconConnected))
+        if ((icon instanceof IconConnected))
             renderSide(block, x, y, z, 0.5D, 0.0D, 0.5D, 1, 0, 0, 0, 0, -1, (IconConnected) icon, 0);
         else
             super.renderFaceYNeg(block, x, y, z, icon);
@@ -145,10 +145,10 @@ public class RenderFakeBlock extends RenderBlocks {
 
     @Override
     public void renderFaceYPos(Block block, double x, double y, double z, IIcon icon) {
-        if(this.hasOverrideBlockTexture())
+        if (this.hasOverrideBlockTexture())
             icon = this.overrideBlockTexture;
 
-        if((icon instanceof IconConnected))
+        if ((icon instanceof IconConnected))
             renderSide(block, x, y, z, 0.5D, 1.0D, 0.5D, -1, 0, 0, 0, 0, -1, (IconConnected) icon, 1);
         else
             super.renderFaceYPos(block, x, y, z, icon);
@@ -156,10 +156,10 @@ public class RenderFakeBlock extends RenderBlocks {
 
     @Override
     public void renderFaceXNeg(Block block, double x, double y, double z, IIcon icon) {
-        if(this.hasOverrideBlockTexture())
+        if (this.hasOverrideBlockTexture())
             icon = this.overrideBlockTexture;
 
-        if((icon instanceof IconConnected))
+        if ((icon instanceof IconConnected))
             renderSide(block, x, y, z, 0.0D, 0.5D, 0.5D, 0, 0, -1, 0, 1, 0, (IconConnected) icon, 4);
         else
             super.renderFaceXNeg(block, x, y, z, icon);
@@ -167,10 +167,10 @@ public class RenderFakeBlock extends RenderBlocks {
 
     @Override
     public void renderFaceXPos(Block block, double x, double y, double z, IIcon icon) {
-        if(this.hasOverrideBlockTexture())
+        if (this.hasOverrideBlockTexture())
             icon = this.overrideBlockTexture;
 
-        if((icon instanceof IconConnected))
+        if ((icon instanceof IconConnected))
             renderSide(block, x, y, z, 1.0D, 0.5D, 0.5D, 0, 0, 1, 0, 1, 0, (IconConnected) icon, 5);
         else
             super.renderFaceXPos(block, x, y, z, icon);
@@ -178,10 +178,10 @@ public class RenderFakeBlock extends RenderBlocks {
 
     @Override
     public void renderFaceZNeg(Block block, double x, double y, double z, IIcon icon) {
-        if(this.hasOverrideBlockTexture())
+        if (this.hasOverrideBlockTexture())
             icon = this.overrideBlockTexture;
 
-        if((icon instanceof IconConnected))
+        if ((icon instanceof IconConnected))
             renderSide(block, x, y, z, 0.5D, 0.5D, 0.0D, 1, 0, 0, 0, 1, 0, (IconConnected) icon, 2);
         else
             super.renderFaceZNeg(block, x, y, z, icon);
@@ -189,10 +189,10 @@ public class RenderFakeBlock extends RenderBlocks {
 
     @Override
     public void renderFaceZPos(Block block, double x, double y, double z, IIcon icon) {
-        if(this.hasOverrideBlockTexture())
+        if (this.hasOverrideBlockTexture())
             icon = this.overrideBlockTexture;
 
-        if((icon instanceof IconConnected))
+        if ((icon instanceof IconConnected))
             renderSide(block, x, y, z, 0.5D, 0.5D, 1.0D, -1, 0, 0, 0, 1, 0, (IconConnected) icon, 3);
         else
             super.renderFaceZPos(block, x, y, z, icon);

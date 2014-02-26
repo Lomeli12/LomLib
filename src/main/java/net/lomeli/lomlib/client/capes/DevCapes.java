@@ -1,270 +1,146 @@
 package net.lomeli.lomlib.client.capes;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import javax.swing.ImageIcon;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
-import com.google.common.io.ByteStreams;
-import com.google.gson.Gson;
-import com.google.gson.stream.MalformedJsonException;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 
-import net.lomeli.lomlib.client.capes.user.DefaultUser;
-import net.lomeli.lomlib.client.capes.user.GroupUser;
-import net.lomeli.lomlib.client.capes.user.IUser;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.renderer.ThreadDownloadImageData;
 
+import net.minecraftforge.client.event.RenderPlayerEvent;
+
+import net.lomeli.lomlib.LomLibCore;
+import net.lomeli.lomlib.libs.Strings;
+import net.lomeli.lomlib.util.ModLoaded;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.ThreadDownloadImageData;
-import net.minecraft.client.renderer.texture.ITextureObject;
-
-/**
- * This library adds capes for people you specify
- * 
- * @author Jadar
- */
 @SideOnly(Side.CLIENT)
 public class DevCapes {
+    private static final Graphics TEST_GRAPHICS = new BufferedImage(128, 128, BufferedImage.TYPE_INT_RGB).getGraphics();
+    private HashMap<String, String> capes = new HashMap<String, String>();
+    private ArrayList<AbstractClientPlayer> capePlayers = new ArrayList<AbstractClientPlayer>();
 
     private static DevCapes instance;
 
-    public static final Logger logger = LogManager.getLogger("DevCapes");
+    public DevCapes() {
+        buildCapeDatabase();
+    }
 
-    /**
-     * Gets the DevCapes instance
-     */
     public static DevCapes getInstance() {
-        if(instance == null)
+        if (instance == null)
             instance = new DevCapes();
         return instance;
     }
 
-    // name->group
-    private HashMap<String, IUser> users;
-    // group->cape
-    private HashMap<String, ITextureObject> groups;
+    @SubscribeEvent
+    @SideOnly(Side.CLIENT)
+    public void onPreRenderSpecials(RenderPlayerEvent.Specials.Pre event) {
+        if (!ModLoaded.isModInstalled("shadersmod") && (event.entityPlayer instanceof AbstractClientPlayer)) {
+            AbstractClientPlayer abstractClientPlayer = (AbstractClientPlayer) event.entityPlayer;
 
-    /**
-     * Object constructor.
-     */
-    private DevCapes() {
-        this.groups = new HashMap<String, ITextureObject>();
-        this.users = new HashMap<String, IUser>();
-    }
+            if (!capePlayers.contains(abstractClientPlayer)) {
+                String cloakURL = capes.get(event.entityPlayer.getDisplayName().toLowerCase());
+                if (cloakURL != null) {
+                    capePlayers.add(abstractClientPlayer);
 
-    /**
-     * @param groupName
-     *            The name of the group that you wish to add
-     * @param texture
-     *            The {@link ITextureObject} that contains the texture of the
-     *            group's cape
-     */
-    public void addGroup(final String groupName, final ITextureObject texture) {
-        this.groups.put(groupName, texture);
-    }
+                    ReflectionHelper.setPrivateValue(ThreadDownloadImageData.class, abstractClientPlayer.getTextureCape(), false,
+                            new String[] { "textureUploaded", "field_110559_g" });
 
-    /**
-     * @param groupName
-     *            The name of the group that you wish to add
-     * @param capeUrl
-     *            The URL as a String of the cape that you wish to assign to the
-     *            group
-     */
-    public void addGroup(final String groupName, final String capeUrl) {
-        this.addGroup(groupName, new ThreadDownloadImageData(capeUrl, null, new HDImageBuffer()));
-    }
-
-    /**
-     * @param username
-     *            The user name of the player that you wish to add to the group
-     * @param group
-     *            The group that you wish to add the user to
-     */
-    public void addGroupUser(final String username, final String group) {
-        IUser user = this.users.get(username);
-        if(user == null) {
-            user = new GroupUser(username, group);
-            this.users.put(username, user);
-
-            // make sure to call this last
-            this.loadCape(username);
-        }
-    }
-
-    /**
-     * @param username
-     *            The name of the user that you want to give a cape to
-     * @param capeUrl
-     *            The URL as a String of the cape that you wish to assign to the
-     *            user
-     */
-    public void addSingleUser(final String username, final String capeUrl) {
-        IUser user = this.users.get(username);
-        if(user == null) {
-            user = new DefaultUser(username, capeUrl);
-            this.users.put(username, user);
-            this.loadCape(username);
-        }
-    }
-
-    /**
-     * @param group
-     *            The name of the group whose cape you want to get
-     * @return The {@link ITextureObject} that contains the group's cape
-     */
-    public ITextureObject getGroupTexture(final String group) {
-        return this.groups.get(group);
-    }
-
-    /**
-     * 
-     * @param username
-     *            The name of the user that you wish to get
-     * @return The {@link IUser} containing the information of the specified
-     *         user
-     */
-    public IUser getUser(final String username) {
-        return this.users.get(username);
-    }
-
-    /**
-     * @param username
-     *            The name of the user that you wish to get the group that they
-     *            belong in
-     * @return The group that the user is in. Null if the user is not in a group
-     */
-    public String getUserGroup(final String username) {
-        return this.isPlayerInGroup(username) ? ((GroupUser) this.users.get(username)).group : null;
-    }
-
-    /**
-     * 
-     * @param username
-     *            The name of the user that you wish to get the cape that is
-     *            assigned to them
-     * @return The {@link ITextureObject} that contains the user's cape
-     */
-    protected ITextureObject getUserTexture(final String username) {
-        return this.getUser(username).getTexture();
-    }
-
-    /**
-     * 
-     * @param username
-     *            The name of the user that you wish to see if they are in a
-     *            group
-     * @return true if the user is in a group
-     */
-    public boolean isPlayerInGroup(final String username) {
-        return this.users.containsKey(username) && this.users.get(username) instanceof GroupUser;
-    }
-
-    /**
-     * @param username
-     *            The name of the user whose cape you wish to load
-     * @return true of the cape was loaded properly
-     */
-    public boolean loadCape(final String username) {
-        try {
-            IUser user = this.users.get(username);
-            return Minecraft.getMinecraft().renderEngine.loadTexture(user.getResource(), user.getTexture());
-        }catch(Exception e) {
-            return false;
-        }
-    }
-
-    /**
-     * @param jsonFile
-     *            The {@link File} in Json format that you wish to add
-     * @param identifier
-     *            A unique Identifier, normally your mod id
-     */
-    public void registerConfig(final File jsonFile, final String identifier) {
-        try {
-            this.registerConfig(new FileInputStream(jsonFile), identifier);
-        }catch(FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * @param input
-     *            An {@link InputStream} containing the Json data that you wish
-     *            to add
-     * @param identifier
-     *            A unique Identifier, normally your mod id
-     */
-    @SuppressWarnings("unchecked")
-    public void registerConfig(final InputStream input, final String identifier) {
-        try {
-            String data = new String(ByteStreams.toByteArray(input));
-            input.close();
-
-            Map<String, Object> groups = new Gson().fromJson(data, Map.class);
-            for(Entry<String, Object> e : groups.entrySet()) {
-                final String nodeName = e.getKey();
-                final Object obj = e.getValue();
-                if(obj instanceof Map) {
-                    String groupName = nodeName + identifier;
-                    Map<String, Object> group = (Map<String, Object>) obj;
-
-                    String capeUrl = (String) group.get("capeUrl");
-
-                    this.addGroup(groupName, capeUrl);
-
-                    ArrayList<String> users = (ArrayList<String>) group.get("users");
-                    if(users != null)
-                        for(String username : users)
-                            this.addGroupUser(username, groupName);
-                }else if(obj instanceof String)
-                    this.addSingleUser(nodeName, (String) obj);
+                    new Thread(new CloakThread(abstractClientPlayer, cloakURL)).start();
+                    event.renderCape = true;
+                }else
+                    return;
             }
-
-        }catch(MalformedJsonException e) {
-            e.printStackTrace();
-        }catch(IOException e) {
-            e.printStackTrace();
         }
     }
 
-    /**
-     * @param jsonUrl
-     *            A {@link URL} that links to the Json file that you want to add
-     * @param identifier
-     *            A unique Identifier, normally your mod id
-     */
-    public void registerConfig(final URL jsonUrl, final String identifier) {
+    public void buildCapeDatabase() {
+        if (FMLCommonHandler.instance().getSide() != Side.CLIENT)
+            return;
         try {
-            this.registerConfig(jsonUrl.openStream(), identifier);
-        }catch(IOException e) {
-            e.printStackTrace();
+            URL xmlURL = new URL(Strings.CAPE_URL);
+            InputStream xml = xmlURL.openStream();
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document doc = db.parse(xml);
+
+            doc.getDocumentElement().normalize();
+
+            NodeList list = doc.getChildNodes().item(0).getChildNodes();
+            for (int i = 1; i <= list.getLength(); i++) {
+                String nodeName = list.item(i).getNodeName();
+                String capeURL = list.item(i).getTextContent();
+                if (nodeName != "#text" && capeURL != "") {
+                    new Thread(new CloakPreload(capeURL)).start();
+                    capes.put(nodeName, capeURL);
+                }
+            }
+            xml.close();
+        }catch (Exception e) {
         }
     }
 
-    /**
-     * @param jsonUrl
-     *            The URL as a String that links to the Json file that you want
-     *            to add
-     * @param identifier
-     *            A unique Identifier, normally your mod id
-     */
-    public void registerConfig(final String jsonUrl, final String identifier) {
-        try {
-            this.registerConfig(new URL(jsonUrl), identifier);
-        }catch(MalformedURLException e) {
-            e.printStackTrace();
+    public void refreshCapes() {
+        capes.clear();
+        capePlayers.clear();
+        buildCapeDatabase();
+    }
+
+    private class CloakThread implements Runnable {
+        AbstractClientPlayer abstractClientPlayer;
+        String cloakURL;
+
+        public CloakThread(AbstractClientPlayer player, String cloak) {
+            abstractClientPlayer = player;
+            cloakURL = cloak;
+        }
+
+        @Override
+        public void run() {
+            try {
+                Image cape = new ImageIcon(new URL(cloakURL)).getImage();
+                BufferedImage bo = new BufferedImage(cape.getWidth(null), cape.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+                bo.getGraphics().drawImage(cape, 0, 0, null);
+
+                ReflectionHelper.setPrivateValue(ThreadDownloadImageData.class, abstractClientPlayer.getTextureCape(), bo,
+                        new String[] { "bufferedImage", "field_110560_d" });
+            }catch (Exception e) {
+                LomLibCore.logger.logError("Failed to load cape!");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class CloakPreload implements Runnable {
+        String cloakURL;
+
+        public CloakPreload(String link) {
+            cloakURL = link;
+        }
+
+        @Override
+        public void run() {
+            try {
+                TEST_GRAPHICS.drawImage(new ImageIcon(new URL(cloakURL)).getImage(), 0, 0, null);
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }
