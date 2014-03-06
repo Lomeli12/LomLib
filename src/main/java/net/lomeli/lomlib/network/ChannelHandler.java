@@ -11,6 +11,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 
+import net.lomeli.lomlib.LomLibCore;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -61,17 +63,17 @@ public class ChannelHandler extends MessageToMessageCodec<FMLProxyPacket, Abstra
      */
     public boolean registerPacket(Class<? extends AbstractPacket> clazz) {
         if (this.packets.size() > 256) {
-            // You should log here!!
+            LomLibCore.logger.logError("Too many registered packets!");
             return false;
         }
 
         if (this.packets.contains(clazz)) {
-            // You should log here!!
+            LomLibCore.logger.logInfo("Packet class is already registered!");
             return false;
         }
 
         if (this.isPostInitialised) {
-            // You should log here!!
+            LomLibCore.logger.logInfo("It's too late to register packet");
             return false;
         }
 
@@ -79,7 +81,7 @@ public class ChannelHandler extends MessageToMessageCodec<FMLProxyPacket, Abstra
         return true;
     }
 
-    // In line encoding of the packet, including discriminator setting
+    /** In line encoding of the packet, including discriminator setting */
     @Override
     protected void encode(ChannelHandlerContext ctx, AbstractPacket msg, List<Object> out) throws Exception {
         ByteBuf buffer = Unpooled.buffer();
@@ -95,7 +97,7 @@ public class ChannelHandler extends MessageToMessageCodec<FMLProxyPacket, Abstra
         out.add(proxyPacket);
     }
 
-    // In line decoding and handling of the packet
+    /** In line decoding and handling of the packet */
     @Override
     protected void decode(ChannelHandlerContext ctx, FMLProxyPacket msg, List<Object> out) throws Exception {
         ByteBuf payload = msg.payload();
@@ -127,9 +129,12 @@ public class ChannelHandler extends MessageToMessageCodec<FMLProxyPacket, Abstra
         out.add(pkt);
     }
 
-    // Method to call from FMLPostInitializationEvent
-    // Ensures that packet discriminators are common between server and client
-    // by using logical sorting
+    /**
+     * Method to call from FMLPostInitializationEvent.
+     * 
+     * Ensures that packet discriminators are common between server and client
+     * by using logical sorting
+     */
     public void postInitialise() {
         if (this.isPostInitialised) {
             return;

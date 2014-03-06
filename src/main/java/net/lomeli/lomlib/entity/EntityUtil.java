@@ -12,6 +12,7 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
@@ -20,6 +21,11 @@ import net.minecraft.world.World;
 import net.lomeli.lomlib.block.BlockUtil;
 
 public class EntityUtil {
+    
+    public static void sendToChat(EntityPlayer player, String message) {
+        player.addChatComponentMessage(new ChatComponentText(message));
+    }
+    
     /**
      * Check if entity is hostile
      * 

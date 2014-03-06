@@ -21,8 +21,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.lomeli.lomlib.client.ResourceUtil;
 import net.lomeli.lomlib.client.gui.element.ElementBase;
 import net.lomeli.lomlib.client.gui.element.IconRegistry;
-import net.lomeli.lomlib.client.gui.tab.TabBase;
-import net.lomeli.lomlib.client.gui.tab.TabTracker;
+import net.lomeli.lomlib.client.gui.element.TabBase;
+import net.lomeli.lomlib.client.gui.element.TabTracker;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

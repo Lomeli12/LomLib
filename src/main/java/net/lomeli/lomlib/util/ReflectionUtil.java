@@ -9,6 +9,19 @@ import net.lomeli.lomlib.LomLibCore;
 
 public class ReflectionUtil {
 
+    public static boolean isObf() {
+        try {
+            Field[] fields = Class.forName("net.minecraft.world.World").getDeclaredFields();
+            for (Field f : fields) {
+                f.setAccessible(true);
+                if (f.getName().equalsIgnoreCase("loadedEntityList"))
+                    return false;
+            }
+        }catch (Exception e) {
+        }
+        return true;
+    }
+
     public static void setFieldAccess(String className, String fieldName, boolean access, boolean debug) {
         try {
             if (debug)

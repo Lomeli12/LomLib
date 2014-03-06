@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.client.gui.tab;
+package net.lomeli.lomlib.client.gui.element;
 
 import org.lwjgl.opengl.GL11;
 
@@ -6,7 +6,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 
 import net.lomeli.lomlib.client.gui.GuiContainerPlus;
-import net.lomeli.lomlib.client.gui.element.ElementBase;
 import net.lomeli.lomlib.codechicken.lib.vec.Rectangle4i;
 
 public class TabBase extends ElementBase {

@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.client.nei;
+package net.lomeli.lomlib.client;
 
 import net.lomeli.lomlib.util.ModLoaded;
 

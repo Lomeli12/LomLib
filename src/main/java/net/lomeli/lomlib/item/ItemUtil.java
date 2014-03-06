@@ -140,4 +140,8 @@ public class ItemUtil {
     public static boolean itemsEqualWithMetadata(ItemStack stackA, ItemStack stackB) {
         return stackB == null;
     }
+    
+    public static boolean areItemsTheSame(ItemStack a, ItemStack b) {
+        return a.hashCode() == b.hashCode() && a.getItemDamage() == b.getItemDamage();
+    }
 }

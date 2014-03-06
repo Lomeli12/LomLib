@@ -25,7 +25,7 @@ public class PacketHandler {
      * @param message
      *            The message to send
      */
-    public void sendToAll(EnumMap<Side, FMLEmbeddedChannel> channel, AbstractPacket message) {
+    public static void sendToAll(EnumMap<Side, FMLEmbeddedChannel> channel, AbstractPacket message) {
         channel.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALL);
         channel.get(Side.SERVER).writeAndFlush(message);
     }
@@ -41,7 +41,7 @@ public class PacketHandler {
      * @param player
      *            The player to send it to
      */
-    public void sendTo(EnumMap<Side, FMLEmbeddedChannel> channel, AbstractPacket message, EntityPlayerMP player) {
+    public static void sendTo(EnumMap<Side, FMLEmbeddedChannel> channel, AbstractPacket message, EntityPlayerMP player) {
         channel.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
         channel.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(player);
         channel.get(Side.SERVER).writeAndFlush(message);

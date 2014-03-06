@@ -17,7 +17,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockGeneric extends Block {
     protected String modID;
     protected String blockTexture;
-    protected int drop;
     protected World worldObj;
 
     /**
@@ -35,13 +34,6 @@ public class BlockGeneric extends Block {
         super(material);
         this.modID = mod;
         this.blockTexture = texture;
-    }
-
-    public BlockGeneric(Material material, String mod, String texture, int dropID) {
-        super(material);
-        this.modID = mod;
-        this.blockTexture = texture;
-        this.drop = dropID;
     }
 
     public String getBlockTexture() {

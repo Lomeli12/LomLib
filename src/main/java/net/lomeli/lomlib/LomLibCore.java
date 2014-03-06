@@ -9,8 +9,8 @@ import com.google.common.eventbus.Subscribe;
 
 import net.minecraftforge.common.MinecraftForge;
 
+import net.lomeli.lomlib.client.CommandLomLib;
 import net.lomeli.lomlib.client.ProxyClient.IconRegisterEvent;
-import net.lomeli.lomlib.command.CommandLomLib;
 import net.lomeli.lomlib.libs.Strings;
 import net.lomeli.lomlib.util.LogHelper;
 import net.lomeli.lomlib.util.XMLConfiguration;
@@ -48,6 +48,7 @@ public class LomLibCore extends DummyModContainer {
         LinkedList<ArtifactVersion> deps = new LinkedList<ArtifactVersion>();
         deps.add(VersionParser.parseVersionReference("Equivalency"));
         deps.add(VersionParser.parseVersionReference("MagicThings"));
+        deps.add(VersionParser.parseVersionReference("ElementalCreepers"));
         return deps;
     }
 

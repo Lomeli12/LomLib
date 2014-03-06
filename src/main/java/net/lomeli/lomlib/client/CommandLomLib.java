@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.command;
+package net.lomeli.lomlib.client;
 
 import java.util.List;
 

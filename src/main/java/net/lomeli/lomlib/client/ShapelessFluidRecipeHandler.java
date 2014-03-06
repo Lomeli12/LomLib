@@ -1,5 +1,6 @@
-package net.lomeli.lomlib.client.nei;
+package net.lomeli.lomlib.client;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -8,33 +9,32 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.StatCollector;
 
 import net.lomeli.lomlib.libs.Strings;
-import net.lomeli.lomlib.recipes.ShapedFluidRecipe;
+import net.lomeli.lomlib.recipes.ShapelessFluidRecipe;
 
 import codechicken.core.ReflectionManager;
 import codechicken.nei.NEIServerUtils;
-import codechicken.nei.recipe.ShapedRecipeHandler;
+import codechicken.nei.recipe.ShapelessRecipeHandler;
 
-public class ShapedFluidRecipeHandler extends ShapedRecipeHandler {
+public class ShapelessFluidRecipeHandler extends ShapelessRecipeHandler {
 
     @Override
     public String getRecipeName() {
-        return StatCollector.translateToLocal(Strings.NEI_SHAPED);
+        return StatCollector.translateToLocal(Strings.NEI_SHAPELESS);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public void loadCraftingRecipes(String outputId, Object... results) {
-        if (outputId.equals("crafting") && getClass() == ShapedFluidRecipeHandler.class) {
+        if (outputId.equals("crafting") && getClass() == ShapelessFluidRecipeHandler.class) {
             List<IRecipe> allrecipes = CraftingManager.getInstance().getRecipeList();
             for (IRecipe irecipe : allrecipes) {
-                CachedShapedRecipe recipe = null;
-                if (irecipe instanceof ShapedFluidRecipe)
-                    recipe = fluidShapedRecipe((ShapedFluidRecipe) irecipe);
+                CachedShapelessRecipe recipe = null;
+                if (irecipe instanceof ShapelessFluidRecipe)
+                    recipe = fluidShapelessRecipe((ShapelessFluidRecipe) irecipe);
 
                 if (recipe == null)
                     continue;
 
-                recipe.computeVisuals();
                 arecipes.add(recipe);
             }
         }else {
@@ -48,14 +48,13 @@ public class ShapedFluidRecipeHandler extends ShapedRecipeHandler {
         List<IRecipe> allrecipes = CraftingManager.getInstance().getRecipeList();
         for (IRecipe irecipe : allrecipes) {
             if (NEIServerUtils.areStacksSameTypeCrafting(irecipe.getRecipeOutput(), result)) {
-                CachedShapedRecipe recipe = null;
-                if (irecipe instanceof ShapedFluidRecipe)
-                    recipe = fluidShapedRecipe((ShapedFluidRecipe) irecipe);
+                CachedShapelessRecipe recipe = null;
+                if (irecipe instanceof ShapelessFluidRecipe)
+                    recipe = fluidShapelessRecipe((ShapelessFluidRecipe) irecipe);
 
                 if (recipe == null)
                     continue;
 
-                recipe.computeVisuals();
                 arecipes.add(recipe);
             }
         }
@@ -66,14 +65,13 @@ public class ShapedFluidRecipeHandler extends ShapedRecipeHandler {
     public void loadUsageRecipes(ItemStack ingredient) {
         List<IRecipe> allrecipes = CraftingManager.getInstance().getRecipeList();
         for (IRecipe irecipe : allrecipes) {
-            CachedShapedRecipe recipe = null;
-            if (irecipe instanceof ShapedFluidRecipe)
-                recipe = fluidShapedRecipe((ShapedFluidRecipe) irecipe);
+            CachedShapelessRecipe recipe = null;
+            if (irecipe instanceof ShapelessFluidRecipe)
+                recipe = fluidShapelessRecipe((ShapelessFluidRecipe) irecipe);
 
-            if (recipe == null || !recipe.contains(recipe.ingredients, ingredient))
+            if (recipe == null)
                 continue;
 
-            recipe.computeVisuals();
             if (recipe.contains(recipe.ingredients, ingredient)) {
                 recipe.setIngredientPermutation(recipe.ingredients, ingredient);
                 arecipes.add(recipe);
@@ -81,25 +79,20 @@ public class ShapedFluidRecipeHandler extends ShapedRecipeHandler {
         }
     }
 
-    public CachedShapedRecipe fluidShapedRecipe(ShapedFluidRecipe recipe) {
-        int width;
-        int height;
-        Object[] items;
+    public CachedShapelessRecipe fluidShapelessRecipe(ShapelessFluidRecipe recipe) {
+        ArrayList<?> items;
         try {
-            width = ReflectionManager.getField(ShapedFluidRecipe.class, Integer.class, recipe, 4);
-            height = ReflectionManager.getField(ShapedFluidRecipe.class, Integer.class, recipe, 5);
-            items = ReflectionManager.getField(ShapedFluidRecipe.class, Object[].class, recipe, 3);
+            items = ReflectionManager.getField(ShapelessFluidRecipe.class, ArrayList.class, recipe, 1);
         }catch (Exception e) {
             e.printStackTrace();
             return null;
         }
 
-        for (int i = 0; i < items.length; i++) {
-            if (items[i] instanceof List && ((List<?>) items[i]).isEmpty())
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i) instanceof List && ((List<?>) items.get(i)).isEmpty())
                 return null;
         }
 
-        return new CachedShapedRecipe(width, height, items, recipe.getRecipeOutput());
+        return new CachedShapelessRecipe(items, recipe.getRecipeOutput());
     }
-
 }

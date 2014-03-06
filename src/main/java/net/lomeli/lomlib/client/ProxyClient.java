@@ -10,9 +10,7 @@ import net.minecraftforge.common.MinecraftForge;
 
 import net.lomeli.lomlib.LomLibCore;
 import net.lomeli.lomlib.Proxy;
-import net.lomeli.lomlib.client.capes.DevCapes;
 import net.lomeli.lomlib.client.gui.element.IconRegistry;
-import net.lomeli.lomlib.client.nei.NEIAddon;
 import net.lomeli.lomlib.client.render.SmallFontRenderer;
 import net.lomeli.lomlib.util.ModLoaded;
 
