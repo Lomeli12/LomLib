@@ -8,10 +8,14 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.RecipeSorter;
+import net.minecraftforge.oredict.RecipeSorter.Category;
 
 import net.lomeli.lomlib.client.CommandLomLib;
 import net.lomeli.lomlib.client.ProxyClient.IconRegisterEvent;
 import net.lomeli.lomlib.libs.Strings;
+import net.lomeli.lomlib.recipes.ShapedFluidRecipe;
+import net.lomeli.lomlib.recipes.ShapelessFluidRecipe;
 import net.lomeli.lomlib.util.LogHelper;
 import net.lomeli.lomlib.util.XMLConfiguration;
 import net.lomeli.lomlib.util.XMLConfiguration.ConfigEnum;
@@ -68,6 +72,9 @@ public class LomLibCore extends DummyModContainer {
             MinecraftForge.EVENT_BUS.register(iconR);
             FMLCommonHandler.instance().bus().register(iconR);
         }
+        
+        RecipeSorter.register(Strings.NEI_SHAPED, ShapedFluidRecipe.class, Category.SHAPED, "after:minecraft:shaped before:minecraft:shapeless");
+        RecipeSorter.register(Strings.NEI_SHAPELESS, ShapelessFluidRecipe.class, Category.SHAPELESS,"after:minecraft:shapeless");
     }
 
     public void configureMod(File configFile) {
