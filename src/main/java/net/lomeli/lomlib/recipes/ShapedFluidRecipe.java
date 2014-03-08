@@ -96,10 +96,10 @@ public class ShapedFluidRecipe implements IRecipe {
             else if (in instanceof Block)
                 itemMap.put(chr, new ItemStack((Block) in, 1, OreDictionary.WILDCARD_VALUE));
             else if (in instanceof String) {
-                if (((String) in).startsWith("liquid$")) {
-                    String liquidName = ((String) in).substring(7);
-                    if (FluidRegistry.isFluidRegistered(liquidName))
-                        itemMap.put(chr, FluidUtil.getContainersForFluid(FluidRegistry.getFluid(liquidName)));
+                if (((String) in).startsWith("fluid$")) {
+                    String fluidName = ((String) in).substring(6);
+                    if (FluidRegistry.isFluidRegistered(fluidName))
+                        itemMap.put(chr, FluidUtil.getContainersForFluid(FluidRegistry.getFluid(fluidName)));
                 }else
                     itemMap.put(chr, OreDictionary.getOres((String) in));
             }else {

@@ -49,10 +49,10 @@ public class ShapelessFluidRecipe implements IRecipe {
             }else if (in instanceof Block)
                 input.add(new ItemStack((Block) in));
             else if (in instanceof String) {
-                if (((String) in).startsWith("liquid$")) {
-                    String liquidName = ((String) in).substring(7);
-                    if (FluidRegistry.isFluidRegistered(liquidName))
-                        input.add(FluidUtil.getContainersForFluid(FluidRegistry.getFluid(liquidName)));
+                if (((String) in).startsWith("fluid$")) {
+                    String fluidName = ((String) in).substring(6);
+                    if (FluidRegistry.isFluidRegistered(fluidName))
+                        input.add(FluidUtil.getContainersForFluid(FluidRegistry.getFluid(fluidName)));
                 }else
                     input.add(OreDictionary.getOres((String) in));
             }else {
