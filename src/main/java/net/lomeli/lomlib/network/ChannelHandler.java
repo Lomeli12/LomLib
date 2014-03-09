@@ -34,7 +34,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @ChannelHandler.Sharable
 public class ChannelHandler extends MessageToMessageCodec<FMLProxyPacket, AbstractPacket> {
 
-    private EnumMap<Side, FMLEmbeddedChannel> channels;
+    protected EnumMap<Side, FMLEmbeddedChannel> channels;
     private LinkedList<Class<? extends AbstractPacket>> packets = new LinkedList<Class<? extends AbstractPacket>>();
     private boolean isPostInitialised = false;
     private String modID;
@@ -103,7 +103,7 @@ public class ChannelHandler extends MessageToMessageCodec<FMLProxyPacket, Abstra
         ByteBuf payload = msg.payload();
         byte discriminator = payload.readByte();
         Class<? extends AbstractPacket> clazz = this.packets.get(discriminator);
-        if (clazz == null) {
+        if(clazz == null) {
             throw new NullPointerException("No packet registered for discriminator: " + discriminator);
         }
 
@@ -112,20 +112,18 @@ public class ChannelHandler extends MessageToMessageCodec<FMLProxyPacket, Abstra
 
         EntityPlayer player;
         switch(FMLCommonHandler.instance().getEffectiveSide()) {
-        case CLIENT :
+        case CLIENT:
+            System.out.println(pkt.toString());
             player = this.getClientPlayer();
             pkt.handleClientSide(player);
             break;
-
-        case SERVER :
+        case SERVER:
             INetHandler netHandler = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get();
             player = ((NetHandlerPlayServer) netHandler).playerEntity;
             pkt.handleServerSide(player);
             break;
-
         default:
         }
-
         out.add(pkt);
     }
 
