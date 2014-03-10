@@ -39,11 +39,11 @@ public class CommandLomLib extends CommandBase {
     @Override
     @SuppressWarnings("rawtypes")
     public List addTabCompletionOptions(ICommandSender commandSender, String[] args) {
-        switch(args.length) {
-        case 1 :
-            return getListOfStringsMatchingLastWord(args, new String[] { "calmPigmen" });
-        default:
-            return null;
+        switch (args.length) {
+            case 1:
+                return getListOfStringsMatchingLastWord(args, new String[]{"calmPigmen"});
+            default:
+                return null;
         }
     }
 
@@ -53,59 +53,65 @@ public class CommandLomLib extends CommandBase {
             String argument1 = args[0];
 
             @SuppressWarnings("unchecked")
-            List<Entity> entityList = icommandsender.getEntityWorld().loadedEntityList;
+            List<?> entityList = icommandsender.getEntityWorld().loadedEntityList;
 
             if (argument1.equalsIgnoreCase("calmPigmen")) {
-                for (Entity entity : entityList) {
+                for (Object entity : entityList) {
                     if (entity instanceof EntityPigZombie) {
                         ((EntityPigZombie) entity).setTarget(null);
                         try {
-                            ReflectionUtil.setFieldsAccess(EntityPigZombie.class.getName(), new String[] { "angerLevel",
-                                    "field_70837_d" }, new boolean[] { true, true });
+                            ReflectionUtil.setFieldsAccess(EntityPigZombie.class.getName(), new String[]{"angerLevel",
+                                    "field_70837_d"}, new boolean[]{true, true});
                             ReflectionHelper.setPrivateValue(Integer.class, EntityPigZombie.class.getDeclaredField("angerLevel")
-                                    .getInt(entity), 0, new String[] { "angerLevel" });
+                                    .getInt(entity), 0, new String[]{"angerLevel"});
                             ReflectionHelper.setPrivateValue(Integer.class,
                                     EntityPigZombie.class.getDeclaredField("field_70837_d").getInt(entity), 0,
-                                    new String[] { "field_70837_d" });
+                                    new String[]{"field_70837_d"});
                             if (FMLCommonHandler.instance().getSide() != Side.CLIENT)
                                 sendCommanderMessage(icommandsender, ToolTipUtil.BLUE
                                         + "[LomLib]: Pig Zombies should now be calm");
-                        }catch (Exception e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                 }
-            }else if (argument1.equalsIgnoreCase("clearAllEntities")) {
-                for (Entity entity : entityList) {
-                    if (!(entity instanceof EntityPlayer))
-                        entity.setDead();
+            } else if (argument1.equalsIgnoreCase("clearAllEntities")) {
+                for (Object entity : entityList) {
+                    if (entity instanceof Entity) {
+                        if (!(entity instanceof EntityPlayer))
+                            ((Entity) entity).setDead();
+                    }
                 }
                 if (FMLCommonHandler.instance().getSide() != Side.CLIENT)
                     sendCommanderMessage(icommandsender, ToolTipUtil.BLUE
                             + "[LomLib]: All non-player entities have been removed.");
-            }else if (argument1.equalsIgnoreCase("clearEntities")) {
-                for (Entity entity : entityList) {
-                    if (!(entity instanceof EntityLivingBase))
-                        entity.setDead();
+            } else if (argument1.equalsIgnoreCase("clearEntities")) {
+                for (Object entity : entityList) {
+                    if (entity instanceof Entity) {
+                        if (!(entity instanceof EntityLivingBase))
+                            ((Entity) entity).setDead();
+                    }
                 }
                 if (FMLCommonHandler.instance().getSide() != Side.CLIENT)
                     sendCommanderMessage(icommandsender, ToolTipUtil.BLUE
                             + "[LomLib]: All non-living entities have been removed.");
-            }else if (argument1.equalsIgnoreCase("clearLivingEntities")) {
-                for (Entity entity : entityList) {
+            } else if (argument1.equalsIgnoreCase("clearLivingEntities")) {
+                for (Object entity : entityList) {
                     if (entity instanceof EntityLivingBase)
                         ((EntityLivingBase) entity).setDead();
                 }
                 if (FMLCommonHandler.instance().getSide() != Side.CLIENT)
                     sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All Living mobs have been removed.");
-            }else if (argument1.equalsIgnoreCase("clearHostiles")) {
-                for (Entity entity : entityList) {
-                    if (entity instanceof IMob)
-                        entity.setDead();
+            } else if (argument1.equalsIgnoreCase("clearHostiles")) {
+                for (Object entity : entityList) {
+                    if (entity instanceof Entity) {
+                        if (entity instanceof IMob)
+                            ((Entity) entity).setDead();
+                    }
                 }
                 if (FMLCommonHandler.instance().getSide() != Side.CLIENT)
                     sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All Hostile mobs have been removed.");
-            }else if (argument1.equalsIgnoreCase("help") || argument1.equalsIgnoreCase("?")) {
+            } else if (argument1.equalsIgnoreCase("help") || argument1.equalsIgnoreCase("?")) {
                 if (FMLCommonHandler.instance().getSide() != Side.CLIENT) {
                     sendCommanderMessage(icommandsender, "/lomlib calmPigmen " + ToolTipUtil.GREEN
                             + "-Calms down all pigmen in loaded chunks.");
@@ -119,7 +125,7 @@ public class CommandLomLib extends CommandBase {
                             + "-Clears all hostile entities in loaded chunks.");
                 }
             }
-        }else {
+        } else {
             if (FMLCommonHandler.instance().getSide() != Side.CLIENT)
                 sendCommanderMessage(icommandsender, ToolTipUtil.GREEN + "Type /lomlib help or /lomlib ? for more info");
         }
@@ -129,7 +135,7 @@ public class CommandLomLib extends CommandBase {
         if (sender != null) {
             sender.getEntityWorld().getPlayerEntityByName(sender.getCommandSenderName())
                     .addChatMessage(new ChatComponentText(message));
-        }else {
+        } else {
             // sender.addChatMessage(new ChatComponentText(message));
         }
     }

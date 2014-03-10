@@ -5,4 +5,4 @@ ftp.properties
 
 # Package Files #
 *.war
-*.ear
+*.ear *.iml
