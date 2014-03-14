@@ -1,8 +1,15 @@
 build
+
 .gradle
+
 *.class
-ftp.properties
+ftp
+.properties
+
 
 # Package Files #
+
 *.war
-*.ear *.iml
+
+*.ear
+*.iml
