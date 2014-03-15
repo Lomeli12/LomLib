@@ -116,8 +116,8 @@ public class ItemUtil {
             int k1 = Block.blocksList[blockID].onBlockPlaced(world, x, y, z, side, hitX, hitY, hitZ, j1);
 
             if (placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, blockID, k1)) {
-                world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, Block.soundClothFootstep.getPlaceSound(),
-                        (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+                world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, Block.soundClothFootstep.getPlaceSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F,
+                        block.stepSound.getPitch() * 0.8F);
                 --stack.stackSize;
             }
         }
@@ -134,5 +134,9 @@ public class ItemUtil {
         }
 
         return true;
+    }
+
+    public static boolean itemsEqualWithMetadata(ItemStack stackA, ItemStack stackB) {
+        return stackB == null;
     }
 }

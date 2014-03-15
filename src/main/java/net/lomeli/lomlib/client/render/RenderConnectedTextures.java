@@ -5,7 +5,6 @@ import org.lwjgl.opengl.GL11;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
@@ -17,11 +16,9 @@ public class RenderConnectedTextures implements ISimpleBlockRenderingHandler {
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
-        Tessellator tessellator = Tessellator.instance;
         block.setBlockBoundsForItemRender();
         renderer.setRenderBoundsFromBlock(block);
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
-        GL11.glTranslatef(-0.5F, -0.0F, -0.5F);
         float f = 1.0F;
         float f1 = 1.0F;
         float f2 = 1.0F;
@@ -49,34 +46,8 @@ public class RenderConnectedTextures implements ISimpleBlockRenderingHandler {
         renderer.colorBlueBottomLeft *= f2;
         renderer.colorBlueBottomRight *= f2;
 
-        if (block.getIcon(0, metadata) != null) {
-            tessellator.startDrawingQuads();
-            tessellator.setNormal(0F, -1F, 0F);
-            renderer.renderFaceYNeg(block, 0D, -0.5D, 0D, block.getIcon(0, metadata));
-            tessellator.draw();
-            tessellator.startDrawingQuads();
-            tessellator.setNormal(0F, 1F, 0F);
-            renderer.renderFaceYPos(block, 0D, -0.5D, 0D, block.getIcon(1, metadata));
-            tessellator.draw();
-            tessellator.startDrawingQuads();
-            tessellator.setNormal(0F, 0F, -1F);
-            renderer.renderFaceZNeg(block, 0D, -0.5D, 0D, block.getIcon(2, metadata));
-            tessellator.draw();
-            tessellator.startDrawingQuads();
-            tessellator.setNormal(0F, 0F, 1F);
-            renderer.renderFaceZPos(block, 0D, -0.5D, 0D, block.getIcon(3, metadata));
-            tessellator.draw();
-            tessellator.startDrawingQuads();
-            tessellator.setNormal(-1F, 0F, 0F);
-            renderer.renderFaceXNeg(block, 0D, -0.5D, 0D, block.getIcon(4, metadata));
-            tessellator.draw();
-            tessellator.startDrawingQuads();
-            tessellator.setNormal(1F, 0F, 0F);
-            renderer.renderFaceXPos(block, 0D, -0.5D, 0D, block.getIcon(5, metadata));
-            tessellator.draw();
-            GL11.glTranslatef(0.5F, 0.0F, 0.5F);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        }
+        RenderUtils.drawBlockFaces(renderer, block, block.getIcon(0, metadata), block.getIcon(1, metadata), block.getIcon(2, metadata), block.getIcon(3, metadata), block.getIcon(4, metadata),
+                block.getIcon(5, metadata));
     }
 
     @Override

@@ -2,19 +2,21 @@ package net.lomeli.lomlib.client;
 
 import java.util.logging.Level;
 
-import net.lomeli.lomlib.LomLibCore;
-import net.lomeli.lomlib.Proxy;
-import net.lomeli.lomlib.client.gui.element.IconRegistry;
-import net.lomeli.lomlib.client.nei.NEIAddon;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.lomeli.lomlib.LomLib;
+import net.lomeli.lomlib.Proxy;
+import net.lomeli.lomlib.client.gui.element.IconRegistry;
+import net.lomeli.lomlib.client.nei.NEIAddon;
+import net.lomeli.lomlib.util.ModLoaded;
 
 public class ProxyClient extends Proxy {
 
@@ -22,12 +24,13 @@ public class ProxyClient extends Proxy {
     public void doStuffPre() {
         super.doStuffPre();
         ResourceUtil.initResourceUtil();
+        MinecraftForge.EVENT_BUS.register(new IconRegisterEvent());
 
-        if (LomLibCore.capes)
-            CapeUtil.getInstance().readXML();
+        if (LomLib.capes)
+            MinecraftForge.EVENT_BUS.register(DevCapes.getInstance());
 
         if (isOptifineInstalled())
-            LomLibCore.logger
+            LomLib.logger
                     .log(Level.WARNING,
                             "Optifine detected! If you run into any bugs, please test without optifine first before reporting, otherwise it WILL BE IGNORED! (Applies to both my mods and most others)");
     }
@@ -35,13 +38,14 @@ public class ProxyClient extends Proxy {
     @Override
     public void doStuffPost() {
         super.doStuffPost();
-        NEIAddon.loadAddon();
+        if (ModLoaded.isModInstalled("NotEnoughItems"))
+            NEIAddon.loadAddon();
     }
 
     private boolean isOptifineInstalled() {
         try {
             return Class.forName("optifine.OptiFineForgeTweaker") != null;
-        } catch (ClassNotFoundException e) {
+        }catch (ClassNotFoundException e) {
             return false;
         }
     }

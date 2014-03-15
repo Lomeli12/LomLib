@@ -16,7 +16,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import net.lomeli.lomlib.LomLibCore;
+import net.lomeli.lomlib.LomLib;
 
 public class XMLUtil {
 
@@ -90,7 +90,6 @@ public class XMLUtil {
         return new Byte(getString(URLLoc, nodeName));
     }
 
-    @SuppressWarnings("unused")
     private static boolean isValidXMLFile(String filename) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
@@ -102,12 +101,11 @@ public class XMLUtil {
                 return true;
             }
         } catch (Exception e) {
-            LomLibCore.logger.log(Level.WARNING, "Invalid XML file!");
+            LomLib.logger.log(Level.WARNING, "Invalid XML file!");
         }
         return true;
     }
 
-    @SuppressWarnings("unused")
     public static boolean isValidXMLFile(File config) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
@@ -117,11 +115,11 @@ public class XMLUtil {
                 return true;
             }
         } catch (Exception e) {
-            LomLibCore.logger.log(Level.WARNING, "Invalid configuration file!");
+            LomLib.logger.log(Level.WARNING, "Invalid configuration file!");
             if (config.exists()) {
-                LomLibCore.logger.log(Level.WARNING, "Removing invalid file...");
+                LomLib.logger.log(Level.WARNING, "Removing invalid file...");
                 config.delete();
-                LomLibCore.logger.log(Level.INFO, "Done!");
+                LomLib.logger.log(Level.INFO, "Done!");
             }
             return false;
         }

@@ -13,6 +13,10 @@ buildscript {
 
 repositories {
     ivy {
+        name 'com.pahimar.ee3'
+        artifactPattern "https://github.com/lluixhi/EE3-Builds/raw/master/1.6.4/[module]-1.6.4-[revision].[ext]"
+    }
+    ivy {
         name 'Forge FS legacy'
         artifactPattern "http://files.minecraftforge.net/[module]/[module]-dev-[revision].[ext]"
     }
@@ -52,6 +56,7 @@ task Buildnumber {
 }
 
 dependencies {
+    compile name: 'EquivalentExchange3', version: 'pre2a.56', ext: 'jar'
     compile name: 'CodeChickenLib', version: '1.6.4-1.0.0.44', ext: 'jar'
     compile name: 'CodeChickenCore', version: '0.9.0.7', ext: 'jar'
     compile name: 'NotEnoughItems', version: '1.6.1.5_d1', ext: 'jar'
@@ -80,9 +85,6 @@ processResources {
 
 jar {
 	appendix = "universal-$buildNumber"
-    manifest {
-        attributes 'FMLCorePlugin':'net.lomeli.lomlib.asm.LomLibPlugin'
-    }
 }
 
 task deobfJar(type: Jar) {

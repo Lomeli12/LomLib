@@ -4,7 +4,7 @@ import java.util.logging.Level;
 
 import cpw.mods.fml.common.Loader;
 
-import net.lomeli.lomlib.LomLibCore;
+import net.lomeli.lomlib.LomLib;
 
 public class ModLoaded {
 
@@ -17,18 +17,18 @@ public class ModLoaded {
         if (Loader.isModLoaded(modID)) {
             try {
                 if (display)
-                    LomLibCore.logger.log(Level.FINE, (modName + " is installed!"));
+                    LomLib.logger.log(Level.FINE, (modName + " is installed!"));
 
                 isInstalled = true;
             } catch (Exception ex) {
                 if (display)
-                    LomLibCore.logger.log(Level.WARNING, (modName + " is not installed!"));
+                    LomLib.logger.log(Level.WARNING, (modName + " is not installed!"));
 
                 isInstalled = false;
             }
         } else {
             if (display)
-                LomLibCore.logger.log(Level.WARNING, (modName + " is not installed!"));
+                LomLib.logger.log(Level.WARNING, (modName + " is not installed!"));
 
             isInstalled = false;
         }
@@ -45,18 +45,18 @@ public class ModLoaded {
         if (Loader.isModLoaded(modID)) {
             try {
                 if (display)
-                    LomLibCore.logger.log(Level.FINE, (modID + " is installed!"));
+                    LomLib.logger.log(Level.FINE, (modID + " is installed!"));
 
                 isInstalled = true;
             } catch (Exception ex) {
                 if (display)
-                    LomLibCore.logger.log(Level.WARNING, (modID + " is not installed!"));
+                    LomLib.logger.log(Level.WARNING, (modID + " is not installed!"));
 
                 isInstalled = false;
             }
         } else {
             if (display)
-                LomLibCore.logger.log(Level.WARNING, (modID + " is not installed!"));
+                LomLib.logger.log(Level.WARNING, (modID + " is not installed!"));
 
             isInstalled = false;
         }

@@ -21,4 +21,15 @@ public class LogHelper {
         modLogger.log(logLevel, message);
     }
 
+    public void logWarning(String message) {
+        log(Level.WARNING, message);
+    }
+
+    public void logInfo(String message) {
+        log(Level.INFO, message);
+    }
+
+    public void logError(String message) {
+        log(Level.SEVERE, message);
+    }
 }

@@ -4,14 +4,14 @@ import java.util.logging.Level;
 
 import cpw.mods.fml.common.FMLLog;
 
-import net.lomeli.lomlib.LomLibCore;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+
+import net.lomeli.lomlib.LomLib;
 
 public class BlockUtil {
     public static Block getBlock(World world, int x, int y, int z) {
@@ -38,8 +38,8 @@ public class BlockUtil {
                 item = new ItemStack((Block) obj, 1, meta);
             else if (obj instanceof ItemStack)
                 item = (ItemStack) obj;
-            if (LomLibCore.debug)
-                LomLibCore.logger.log(Level.INFO, obj.toString());
+            if (LomLib.debug)
+                LomLib.logger.log(Level.INFO, obj.toString());
 
         } catch (Exception ex) {
             FMLLog.warning("Could not retrieve block identified by: " + itemString);
@@ -66,8 +66,8 @@ public class BlockUtil {
             else if (obj instanceof ItemStack)
                 item = (ItemStack) obj;
 
-            if (LomLibCore.debug)
-                LomLibCore.logger.log(Level.INFO, obj.toString());
+            if (LomLib.debug)
+                LomLib.logger.log(Level.INFO, obj.toString());
 
         } catch (Exception ex) {
             FMLLog.warning("Could not retrieve block identified by: " + itemString);
