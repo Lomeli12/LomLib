@@ -8,9 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-import net.lomeli.lomlib.LomLibCore;
-
 import cpw.mods.fml.common.FMLLog;
+
+import net.lomeli.lomlib.LomLib;
 
 public class BlockUtil {
     /**
@@ -33,8 +33,8 @@ public class BlockUtil {
                 item = new ItemStack((Block) obj, 1, meta);
             else if (obj instanceof ItemStack)
                 item = (ItemStack) obj;
-            if (LomLibCore.debug)
-                LomLibCore.logger.logBasic(obj.toString());
+            if (LomLib.debug)
+                LomLib.logger.logBasic(obj.toString());
 
         }catch (Exception ex) {
             FMLLog.warning("Could not retrieve block identified by: " + itemString);
@@ -61,8 +61,8 @@ public class BlockUtil {
             else if (obj instanceof ItemStack)
                 item = (ItemStack) obj;
 
-            if (LomLibCore.debug)
-                LomLibCore.logger.logBasic(obj.toString());
+            if (LomLib.debug)
+                LomLib.logger.logBasic(obj.toString());
 
         }catch (Exception ex) {
             FMLLog.warning("Could not retrieve block identified by: " + itemString);

@@ -1,8 +1,8 @@
 package net.lomeli.lomlib.util;
 
-import net.lomeli.lomlib.LomLibCore;
-
 import cpw.mods.fml.common.Loader;
+
+import net.lomeli.lomlib.LomLib;
 
 public class ModLoaded {
 
@@ -15,18 +15,18 @@ public class ModLoaded {
         if (Loader.isModLoaded(modID)) {
             try {
                 if (display)
-                    LomLibCore.logger.logBasic(modName + " is installed!");
+                    LomLib.logger.logBasic(modName + " is installed!");
 
                 isInstalled = true;
             }catch (Exception ex) {
                 if (display)
-                    LomLibCore.logger.logWarning(modName + " is not installed!");
+                    LomLib.logger.logWarning(modName + " is not installed!");
 
                 isInstalled = false;
             }
         }else {
             if (display)
-                LomLibCore.logger.logWarning(modName + " is not installed!");
+                LomLib.logger.logWarning(modName + " is not installed!");
 
             isInstalled = false;
         }
@@ -43,18 +43,18 @@ public class ModLoaded {
         if (Loader.isModLoaded(modID)) {
             try {
                 if (display)
-                    LomLibCore.logger.logBasic(modID + " is installed!");
+                    LomLib.logger.logBasic(modID + " is installed!");
 
                 isInstalled = true;
             }catch (Exception ex) {
                 if (display)
-                    LomLibCore.logger.logWarning(modID + " is not installed!");
+                    LomLib.logger.logWarning(modID + " is not installed!");
 
                 isInstalled = false;
             }
         }else {
             if (display)
-                LomLibCore.logger.logWarning(modID + " is not installed!");
+                LomLib.logger.logWarning(modID + " is not installed!");
 
             isInstalled = false;
         }

@@ -8,7 +8,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 
-import net.lomeli.lomlib.LomLibCore;
+import net.lomeli.lomlib.LomLib;
 import net.lomeli.lomlib.Proxy;
 import net.lomeli.lomlib.client.gui.element.IconRegistry;
 import net.lomeli.lomlib.client.render.SmallFontRenderer;
@@ -27,11 +27,11 @@ public class ProxyClient extends Proxy {
         super.doStuffPre();
         ResourceUtil.initResourceUtil();
 
-        if (LomLibCore.capes)
+        if (LomLib.capes)
             MinecraftForge.EVENT_BUS.register(DevCapes.getInstance());
 
         if (isOptifineInstalled())
-            LomLibCore.logger
+            LomLib.logger
                     .logWarning("Optifine detected! If you run into any bugs, please test without optifine first before reporting, otherwise it WILL BE IGNORED! (Applies to both my mods and most others)");
     }
 

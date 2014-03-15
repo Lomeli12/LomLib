@@ -15,9 +15,8 @@ import net.lomeli.lomlib.libs.Strings;
 /**
  * Allows you to add a page with a crafting recipe. ATM only works with Vanilla,
  * IC2, and Forge OreDictionary Recipes, more to come.
- * 
+ *
  * @author Anthony
- * 
  */
 public class PageCrafting extends PageBase {
     private Object[] items;
@@ -83,20 +82,14 @@ public class PageCrafting extends PageBase {
                 renderSlot(x + 63, y + 88);
                 renderItem(items[8], x + 65, y + 90);
             }
-        }else
+        } else
             smallFontRenderer.drawSplitString(StatCollector.translateToLocal(Strings.INVALID_RECIPE), x + 5, y + 25, width,
                     Color.BLACK.getRGB());
     }
 
     private void renderItem(Object obj, int x, int y) {
         if (obj != null) {
-            if (obj instanceof ItemStack)
-                itemRenderer.renderItemAndEffectIntoGUI(largeFontRenderer, mc.renderEngine, (ItemStack) obj, x, y);
-            else if (obj instanceof Item)
-                itemRenderer.renderItemAndEffectIntoGUI(largeFontRenderer, mc.renderEngine, new ItemStack((Item) obj), x, y);
-            else if (obj instanceof Block)
-                itemRenderer.renderItemAndEffectIntoGUI(largeFontRenderer, mc.renderEngine, new ItemStack((Block) obj), x, y);
-            else if (obj instanceof ArrayList<?>) {
+            if (obj instanceof ArrayList<?>) {
                 if (((ArrayList<?>) obj).size() > 0) {
                     Random rand = new Random();
                     Object j = ((ArrayList<?>) obj).get(rand.nextInt(((ArrayList<?>) obj).size()));
@@ -111,7 +104,12 @@ public class PageCrafting extends PageBase {
                                     x, y);
                     }
                 }
-            }
+            } else if (obj instanceof Item)
+                itemRenderer.renderItemAndEffectIntoGUI(largeFontRenderer, mc.renderEngine, new ItemStack((Item) obj), x, y);
+            else if (obj instanceof Block)
+                itemRenderer.renderItemAndEffectIntoGUI(largeFontRenderer, mc.renderEngine, new ItemStack((Block) obj), x, y);
+            else if (obj instanceof ItemStack)
+                itemRenderer.renderItemAndEffectIntoGUI(largeFontRenderer, mc.renderEngine, (ItemStack) obj, x, y);
         }
     }
 

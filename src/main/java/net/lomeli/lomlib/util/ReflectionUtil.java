@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 
-import net.lomeli.lomlib.LomLibCore;
+import net.lomeli.lomlib.LomLib;
 
 public class ReflectionUtil {
 
@@ -25,13 +25,13 @@ public class ReflectionUtil {
     public static void setFieldAccess(String className, String fieldName, boolean access, boolean debug) {
         try {
             if (debug)
-                LomLibCore.logger.logBasic("Getting class " + className);
+                LomLib.logger.logBasic("Getting class " + className);
             Field[] fields = Class.forName(className).getDeclaredFields();
             for (Field field : fields) {
                 if (field.getName().equalsIgnoreCase(fieldName)) {
                     field.setAccessible(access);
                     if (debug)
-                        LomLibCore.logger.logBasic("Setting access for " + fieldName + " to " + access);
+                        LomLib.logger.logBasic("Setting access for " + fieldName + " to " + access);
                     break;
                 }
             }
@@ -46,14 +46,14 @@ public class ReflectionUtil {
     public static void setFieldsAccess(String className, String[] fieldNames, boolean[] access, boolean debug) {
         try {
             if (debug)
-                LomLibCore.logger.logBasic("Getting class " + className);
+                LomLib.logger.logBasic("Getting class " + className);
             Field[] fields = Class.forName(className).getDeclaredFields();
             for (Field field : fields) {
                 for (int i = 0; i < fieldNames.length; i++) {
                     if (field.getName().equalsIgnoreCase(fieldNames[i])) {
                         field.setAccessible(access[i]);
                         if (debug)
-                            LomLibCore.logger.logBasic("Setting access for " + fieldNames[i] + " to " + access[i]);
+                            LomLib.logger.logBasic("Setting access for " + fieldNames[i] + " to " + access[i]);
                     }
                 }
             }
@@ -111,8 +111,8 @@ public class ReflectionUtil {
         try {
             return baseClass.getDeclaredField(field).get(obj);
         }catch (Exception e) {
-            if (LomLibCore.debug)
-                LomLibCore.logger.logWarning("Could not modify field " + field + " in " + obj.toString());
+            if (LomLib.debug)
+                LomLib.logger.logWarning("Could not modify field " + field + " in " + obj.toString());
             return null;
         }
     }
@@ -121,8 +121,8 @@ public class ReflectionUtil {
         try {
             obj.getClass().getDeclaredField(field).set(obj, set);
         }catch (Exception e) {
-            if (LomLibCore.debug)
-                LomLibCore.logger.logWarning("Could not modify field " + field + " in " + obj.toString());
+            if (LomLib.debug)
+                LomLib.logger.logWarning("Could not modify field " + field + " in " + obj.toString());
         }
     }
 
@@ -130,8 +130,8 @@ public class ReflectionUtil {
         try {
             obj.getClass().getDeclaredMethod(method, arguments.getClass()).invoke(obj, arguments);
         }catch (Exception e) {
-            if (LomLibCore.debug)
-                LomLibCore.logger.logWarning("Could not use method " + method + " within " + obj.toString());
+            if (LomLib.debug)
+                LomLib.logger.logWarning("Could not use method " + method + " within " + obj.toString());
         }
     }
 }

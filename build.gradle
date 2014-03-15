@@ -84,9 +84,6 @@ processResources {
 
 jar {
 	appendix = "universal-$buildNumber"
-    manifest {
-        attributes 'FMLCorePlugin':'net.lomeli.lomlib.asm.LomLibPlugin'
-    }
 }
 
 task deobfJar(type: Jar) {

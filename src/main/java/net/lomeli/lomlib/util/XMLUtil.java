@@ -15,7 +15,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import net.lomeli.lomlib.LomLibCore;
+import net.lomeli.lomlib.LomLib;
 
 public class XMLUtil {
 
@@ -100,7 +100,7 @@ public class XMLUtil {
                 return true;
             }
         }catch (Exception e) {
-            LomLibCore.logger.logWarning("Invalid XML file!");
+            LomLib.logger.logWarning("Invalid XML file!");
         }
         return true;
     }
@@ -114,11 +114,11 @@ public class XMLUtil {
                 return true;
             }
         }catch (Exception e) {
-            LomLibCore.logger.logWarning("Invalid configuration file!");
+            LomLib.logger.logWarning("Invalid configuration file!");
             if (config.exists()) {
-                LomLibCore.logger.logWarning("Removing invalid file...");
+                LomLib.logger.logWarning("Removing invalid file...");
                 config.delete();
-                LomLibCore.logger.logBasic("Done!");
+                LomLib.logger.logBasic("Done!");
             }
             return false;
         }

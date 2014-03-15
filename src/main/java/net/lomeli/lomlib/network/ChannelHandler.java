@@ -11,8 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.NetHandlerPlayServer;
 
-import net.lomeli.lomlib.LomLibCore;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -24,6 +22,8 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import net.lomeli.lomlib.LomLib;
 
 /**
  * Packet pipeline class. Directs all registered packet data to be handled by
@@ -63,17 +63,17 @@ public class ChannelHandler extends MessageToMessageCodec<FMLProxyPacket, Abstra
      */
     public boolean registerPacket(Class<? extends AbstractPacket> clazz) {
         if (this.packets.size() > 256) {
-            LomLibCore.logger.logError("Too many registered packets!");
+            LomLib.logger.logError("Too many registered packets!");
             return false;
         }
 
         if (this.packets.contains(clazz)) {
-            LomLibCore.logger.logInfo("Packet class is already registered!");
+            LomLib.logger.logInfo("Packet class is already registered!");
             return false;
         }
 
         if (this.isPostInitialised) {
-            LomLibCore.logger.logInfo("It's too late to register packet");
+            LomLib.logger.logInfo("It's too late to register packet");
             return false;
         }
 
