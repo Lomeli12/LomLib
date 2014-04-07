@@ -5,9 +5,9 @@ import java.util.List;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 
-import net.lomeli.lomlib.client.gui.GuiContainerPlus;
-
 import cpw.mods.fml.client.FMLClientHandler;
+
+import net.lomeli.lomlib.client.gui.GuiContainerPlus;
 
 public abstract class ElementBase {
     public static final FontRenderer elementFontRenderer = FMLClientHandler.instance().getClient().fontRenderer;

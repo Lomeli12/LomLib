@@ -21,14 +21,14 @@ import net.minecraft.world.World;
 import net.lomeli.lomlib.block.BlockUtil;
 
 public class EntityUtil {
-    
+
     public static void sendToChat(EntityPlayer player, String message) {
         player.addChatComponentMessage(new ChatComponentText(message));
     }
-    
+
     /**
      * Check if entity is hostile
-     * 
+     *
      * @param entity
      * @return true if entity is instance of IMob
      */
@@ -46,7 +46,7 @@ public class EntityUtil {
 
     /**
      * Makes entity drop an itemStack.
-     * 
+     *
      * @param entity
      * @param itemStack
      * @param dropRate
@@ -60,7 +60,7 @@ public class EntityUtil {
                 if (random < dropRate)
                     entity.entityDropItem(itemStack, 0.0F);
             }
-        }else {
+        } else {
             double random = Math.random();
             if (random < dropRate)
                 entity.entityDropItem(itemStack, 0.0F);
@@ -69,7 +69,7 @@ public class EntityUtil {
 
     /**
      * Checks if damage source was from player.
-     * 
+     *
      * @param source
      * @return true if player caused damage, else false
      */
@@ -97,7 +97,7 @@ public class EntityUtil {
 
     @SuppressWarnings("rawtypes")
     public static boolean transformEntityItem(World world, int x, int y, int z, EntityPlayer player, ItemStack init,
-            ItemStack transformation, ItemStack requiredItem, boolean effect) {
+                                              ItemStack transformation, ItemStack requiredItem, boolean effect) {
         List entityList = world.getEntitiesWithinAABB(EntityItem.class, player.boundingBox.expand(15D, 15D, 15D));
         for (int i = 0; i < entityList.size(); i++) {
             Entity ent = (Entity) entityList.get(i);
@@ -172,7 +172,7 @@ public class EntityUtil {
 
                 if (var18 != null && var18.getMaterial().blocksMovement()) {
                     var17 = true;
-                }else {
+                } else {
                     --entity.posY;
                     --var15;
                 }
@@ -191,7 +191,7 @@ public class EntityUtil {
         if (!var13) {
             entity.setPositionAndUpdate(var7, var9, var11);
             return false;
-        }else {
+        } else {
             short var30 = 128;
 
             for (int j = 0; j < var30; ++j) {

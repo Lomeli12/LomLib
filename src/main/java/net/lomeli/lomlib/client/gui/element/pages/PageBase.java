@@ -8,13 +8,13 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.util.ResourceLocation;
 
-import net.lomeli.lomlib.client.ProxyClient;
-import net.lomeli.lomlib.client.render.SmallFontRenderer;
-import net.lomeli.lomlib.libs.Strings;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import net.lomeli.lomlib.client.ProxyClient;
+import net.lomeli.lomlib.client.render.SmallFontRenderer;
+import net.lomeli.lomlib.libs.Strings;
 
 @SideOnly(Side.CLIENT)
 public class PageBase {

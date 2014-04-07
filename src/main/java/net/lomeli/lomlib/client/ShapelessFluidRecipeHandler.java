@@ -1,5 +1,9 @@
 package net.lomeli.lomlib.client;
 
+import codechicken.core.ReflectionManager;
+import codechicken.nei.NEIServerUtils;
+import codechicken.nei.recipe.ShapelessRecipeHandler;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,10 +14,6 @@ import net.minecraft.util.StatCollector;
 
 import net.lomeli.lomlib.libs.Strings;
 import net.lomeli.lomlib.recipes.ShapelessFluidRecipe;
-
-import codechicken.core.ReflectionManager;
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.recipe.ShapelessRecipeHandler;
 
 public class ShapelessFluidRecipeHandler extends ShapelessRecipeHandler {
 
@@ -37,7 +37,7 @@ public class ShapelessFluidRecipeHandler extends ShapelessRecipeHandler {
 
                 arecipes.add(recipe);
             }
-        }else {
+        } else {
             super.loadCraftingRecipes(outputId, results);
         }
     }
@@ -83,7 +83,7 @@ public class ShapelessFluidRecipeHandler extends ShapelessRecipeHandler {
         ArrayList<?> items;
         try {
             items = ReflectionManager.getField(ShapelessFluidRecipe.class, ArrayList.class, recipe, 1);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }

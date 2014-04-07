@@ -1,8 +1,8 @@
 package net.lomeli.lomlib.entity;
 
-import java.net.SocketAddress;
-
 import com.mojang.authlib.GameProfile;
+
+import java.net.SocketAddress;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -21,11 +21,11 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+
 import net.lomeli.lomlib.item.ItemUtil;
 import net.lomeli.lomlib.libs.Strings;
 import net.lomeli.lomlib.util.ReflectionUtil;
-
-import cpw.mods.fml.common.FMLCommonHandler;
 
 public class FakePlayer extends EntityPlayerMP {
 
@@ -119,7 +119,7 @@ public class FakePlayer extends EntityPlayerMP {
             ReflectionUtil.setField(this, "itemInUseCount", count - 1);
             if ((count == 0) && (!this.worldObj.isRemote))
                 onItemUseFinish();
-        }else {
+        } else {
             clearItemInUse();
         }
     }

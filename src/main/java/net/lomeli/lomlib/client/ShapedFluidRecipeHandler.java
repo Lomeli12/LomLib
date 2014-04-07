@@ -1,5 +1,9 @@
 package net.lomeli.lomlib.client;
 
+import codechicken.core.ReflectionManager;
+import codechicken.nei.NEIServerUtils;
+import codechicken.nei.recipe.ShapedRecipeHandler;
+
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -9,10 +13,6 @@ import net.minecraft.util.StatCollector;
 
 import net.lomeli.lomlib.libs.Strings;
 import net.lomeli.lomlib.recipes.ShapedFluidRecipe;
-
-import codechicken.core.ReflectionManager;
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.recipe.ShapedRecipeHandler;
 
 public class ShapedFluidRecipeHandler extends ShapedRecipeHandler {
 
@@ -37,7 +37,7 @@ public class ShapedFluidRecipeHandler extends ShapedRecipeHandler {
                 recipe.computeVisuals();
                 arecipes.add(recipe);
             }
-        }else {
+        } else {
             super.loadCraftingRecipes(outputId, results);
         }
     }
@@ -89,7 +89,7 @@ public class ShapedFluidRecipeHandler extends ShapedRecipeHandler {
             width = ReflectionManager.getField(ShapedFluidRecipe.class, Integer.class, recipe, 4);
             height = ReflectionManager.getField(ShapedFluidRecipe.class, Integer.class, recipe, 5);
             items = ReflectionManager.getField(ShapedFluidRecipe.class, Object[].class, recipe, 3);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }

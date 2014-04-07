@@ -7,12 +7,12 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
-import net.lomeli.lomlib.client.render.RenderEntityBlock;
-import net.lomeli.lomlib.entity.EntityBlock;
-
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import net.lomeli.lomlib.client.render.RenderEntityBlock;
+import net.lomeli.lomlib.entity.EntityBlock;
 
 @SideOnly(Side.CLIENT)
 public class ResourceUtil {

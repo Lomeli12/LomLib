@@ -1,13 +1,13 @@
 package net.lomeli.lomlib.client.gui;
 
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -18,14 +18,14 @@ import net.minecraft.util.ResourceLocation;
 
 import net.minecraftforge.fluids.FluidStack;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.lomeli.lomlib.client.ResourceUtil;
 import net.lomeli.lomlib.client.gui.element.ElementBase;
 import net.lomeli.lomlib.client.gui.element.IconRegistry;
 import net.lomeli.lomlib.client.gui.element.TabBase;
 import net.lomeli.lomlib.client.gui.element.TabTracker;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class GuiContainerPlus extends GuiContainer {
@@ -263,7 +263,7 @@ public class GuiContainerPlus extends GuiContainer {
             if (tab.side == 0) {
                 tab.draw(guiLeft, guiTop + yPosLeft);
                 yPosLeft += tab.currentHeight;
-            }else {
+            } else {
                 tab.draw(guiLeft + xSize, guiTop + yPosRight);
                 yPosRight += tab.currentHeight;
             }

@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 
 public class IconRegistry {
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public static Map<String, IIcon> icons = new HashMap();
 
     public static void addIcon(String iconName, String iconLocation, IIconRegister ir) {

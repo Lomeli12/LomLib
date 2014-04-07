@@ -1,27 +1,22 @@
 package net.lomeli.lomlib;
 
-import com.google.common.eventbus.Subscribe;
-
 import java.io.File;
 
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.RecipeSorter;
 
-import net.lomeli.lomlib.client.CommandLomLib;
-import net.lomeli.lomlib.client.ProxyClient;
-import net.lomeli.lomlib.libs.Strings;
-import net.lomeli.lomlib.recipes.ShapedFluidRecipe;
-import net.lomeli.lomlib.recipes.ShapelessFluidRecipe;
-import net.lomeli.lomlib.util.LogHelper;
-import net.lomeli.lomlib.util.XMLConfiguration;
-
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+
+import net.lomeli.lomlib.client.CommandLomLib;
+import net.lomeli.lomlib.libs.Strings;
+import net.lomeli.lomlib.recipes.ShapedFluidRecipe;
+import net.lomeli.lomlib.recipes.ShapelessFluidRecipe;
+import net.lomeli.lomlib.util.LogHelper;
+import net.lomeli.lomlib.util.XMLConfiguration;
 
 @Mod(modid = Strings.MOD_ID, name = Strings.MOD_NAME, version = Strings.VERSION)
 public class LomLib {
@@ -31,9 +26,9 @@ public class LomLib {
 
     public static LogHelper logger;
 
-    public static boolean debug, capes, optiFailSafe;
+    public static boolean debug, capes;
 
-    @Subscribe
+    @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
         event.registerServerCommand(new CommandLomLib());
     }
@@ -44,14 +39,8 @@ public class LomLib {
 
         configureMod(event.getSuggestedConfigurationFile());
 
-        if (event.getSide().isClient()) {
-            ProxyClient.IconRegisterEvent iconR = new ProxyClient.IconRegisterEvent();
-            MinecraftForge.EVENT_BUS.register(iconR);
-            FMLCommonHandler.instance().bus().register(iconR);
-        }
-
         RecipeSorter.register(Strings.NEI_SHAPED, ShapedFluidRecipe.class, RecipeSorter.Category.SHAPED, "after:minecraft:shaped before:minecraft:shapeless");
-        RecipeSorter.register(Strings.NEI_SHAPELESS, ShapelessFluidRecipe.class, RecipeSorter.Category.SHAPELESS,"after:minecraft:shapeless");
+        RecipeSorter.register(Strings.NEI_SHAPELESS, ShapelessFluidRecipe.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
         proxy.doStuffPre();
     }
 

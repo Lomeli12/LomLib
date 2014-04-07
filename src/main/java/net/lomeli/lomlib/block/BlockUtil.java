@@ -15,13 +15,10 @@ import net.lomeli.lomlib.LomLib;
 public class BlockUtil {
     /**
      * Allows you to get a block from practically any other mod.
-     * 
-     * @param itemString
-     *            name of block instance
-     * @param meta
-     *            Metadata number for the block
-     * @param BlockClass
-     *            Class where the blocks are declared
+     *
+     * @param itemString name of block instance
+     * @param meta       Metadata number for the block
+     * @param BlockClass Class where the blocks are declared
      * @author Lomeli12
      */
     public static ItemStack getBlockFromModWithMeta(String itemString, int meta, String BlockClass) {
@@ -36,7 +33,7 @@ public class BlockUtil {
             if (LomLib.debug)
                 LomLib.logger.logBasic(obj.toString());
 
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             FMLLog.warning("Could not retrieve block identified by: " + itemString);
         }
         return item;
@@ -44,11 +41,9 @@ public class BlockUtil {
 
     /**
      * Allows you to get a block from practically any other mod.
-     * 
-     * @param itemString
-     *            name of block instance
-     * @param BlockClass
-     *            Class where the blocks are declared
+     *
+     * @param itemString name of block instance
+     * @param BlockClass Class where the blocks are declared
      * @author Lomeli12
      */
     public static ItemStack getBlockFromMod(String itemString, String BlockClass) {
@@ -64,7 +59,7 @@ public class BlockUtil {
             if (LomLib.debug)
                 LomLib.logger.logBasic(obj.toString());
 
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             FMLLog.warning("Could not retrieve block identified by: " + itemString);
         }
         return item;
@@ -72,7 +67,7 @@ public class BlockUtil {
 
     /**
      * Checks if the block is adjacent to a water block.
-     * 
+     *
      * @param world
      * @param x
      * @param y
@@ -102,7 +97,7 @@ public class BlockUtil {
     /**
      * Similar to isBlockAdjacentToWater(), but restricted to water source
      * blocks
-     * 
+     *
      * @param world
      * @param x
      * @param y
@@ -134,7 +129,7 @@ public class BlockUtil {
 
     /**
      * Use to check if double chest or not.
-     * 
+     *
      * @param world
      * @param x
      * @param y
@@ -153,7 +148,7 @@ public class BlockUtil {
                 yesThereIs = true;
             if (world.getBlock(x, y, z - 1).getUnlocalizedName().equals(chest))
                 yesThereIs = true;
-        }else if (world.getBlock(x, y, z).getUnlocalizedName().equals(trap)) {
+        } else if (world.getBlock(x, y, z).getUnlocalizedName().equals(trap)) {
             if (world.getBlock(x + 1, y, z).getUnlocalizedName().equals(trap))
                 yesThereIs = true;
             if (world.getBlock(x - 1, y, z).getUnlocalizedName().equals(trap))

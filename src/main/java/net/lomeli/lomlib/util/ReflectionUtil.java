@@ -17,7 +17,7 @@ public class ReflectionUtil {
                 if (f.getName().equalsIgnoreCase("loadedEntityList"))
                     return false;
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
         }
         return true;
     }
@@ -35,7 +35,7 @@ public class ReflectionUtil {
                     break;
                 }
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
         }
     }
 
@@ -57,7 +57,7 @@ public class ReflectionUtil {
                     }
                 }
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
         }
     }
 
@@ -73,7 +73,7 @@ public class ReflectionUtil {
                     method.setAccessible(access);
                 }
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
         }
     }
 
@@ -98,7 +98,7 @@ public class ReflectionUtil {
     public static int getIntField(Object obj, String fieldName) {
         try {
             return obj.getClass().getDeclaredField(fieldName).getInt(obj);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return 0;
         }
     }
@@ -110,7 +110,7 @@ public class ReflectionUtil {
     public static Object getField(Object obj, String field, Class<?> baseClass) {
         try {
             return baseClass.getDeclaredField(field).get(obj);
-        }catch (Exception e) {
+        } catch (Exception e) {
             if (LomLib.debug)
                 LomLib.logger.logWarning("Could not modify field " + field + " in " + obj.toString());
             return null;
@@ -120,7 +120,7 @@ public class ReflectionUtil {
     public static void setField(Object obj, String field, Object set) {
         try {
             obj.getClass().getDeclaredField(field).set(obj, set);
-        }catch (Exception e) {
+        } catch (Exception e) {
             if (LomLib.debug)
                 LomLib.logger.logWarning("Could not modify field " + field + " in " + obj.toString());
         }
@@ -129,7 +129,7 @@ public class ReflectionUtil {
     public static void useMethod(Object obj, String method, Object... arguments) {
         try {
             obj.getClass().getDeclaredMethod(method, arguments.getClass()).invoke(obj, arguments);
-        }catch (Exception e) {
+        } catch (Exception e) {
             if (LomLib.debug)
                 LomLib.logger.logWarning("Could not use method " + method + " within " + obj.toString());
         }

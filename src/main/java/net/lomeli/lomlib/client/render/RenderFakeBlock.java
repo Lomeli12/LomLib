@@ -8,8 +8,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 public class RenderFakeBlock extends RenderBlocks {
-    public static final double[] u = { -1.0D, 1.0D, 1.0D, -1.0D };
-    public static final double[] v = { 1.0D, 1.0D, -1.0D, -1.0D };
+    public static final double[] u = {-1.0D, 1.0D, 1.0D, -1.0D};
+    public static final double[] v = {1.0D, 1.0D, -1.0D, -1.0D};
 
     public int curBlock = 0;
     public boolean isOpaque = false;
@@ -27,23 +27,23 @@ public class RenderFakeBlock extends RenderBlocks {
             if ((side == 0) || (side == 1)) {
                 u = 1.0D - u2;
                 v = 1.0D - v2;
-            }else if (side == 2) {
+            } else if (side == 2) {
                 u = v2;
                 v = 1.0D - u2;
-            }else if (side == 3) {
+            } else if (side == 3) {
                 u = u2;
                 v = v2;
-            }else if (side == 4) {
+            } else if (side == 4) {
                 u = v2;
                 v = 1.0D - u2;
-            }else if (side == 5) {
+            } else if (side == 5) {
                 u = 1.0D - v2;
                 v = u2;
             }
 
             tessellator.setBrightness(this.mixAoBrightness(this.brightnessTopLeft, this.brightnessTopRight,
                     this.brightnessBottomLeft, this.brightnessBottomRight, u * v, v * (1.0D - u), (1.0D - v) * u, (1.0D - u)
-                            * (1.0D - v)));
+                    * (1.0D - v)));
 
         }
     }
@@ -53,7 +53,7 @@ public class RenderFakeBlock extends RenderBlocks {
     }
 
     public void renderSide(Block block, double x, double y, double z, double ox, double oy, double oz, int ax, int ay, int az,
-            int bx, int by, int bz, IconConnected icon, int side) {
+                           int bx, int by, int bz, IconConnected icon, int side) {
         Tessellator tessellator = Tessellator.instance;
 
         this.isOpaque = block.isOpaqueCube();
@@ -102,7 +102,7 @@ public class RenderFakeBlock extends RenderBlocks {
     }
 
     public int getType(Block block, int side, int x, int y, int z, int ax, int ay, int az, int bx, int by, int bz, int cx,
-            int cy, int cz) {
+                       int cy, int cz) {
         int sidea = getSideFromDir(ax, ay, az);
         int sideb = getSideFromDir(bx, by, bz);
 

@@ -11,7 +11,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 /**
  * Meant to be a very generic block that is already ready for custom mod
  * textures and not require a generic block class
- * 
+ *
  * @author Lomeli12
  */
 public class BlockGeneric extends Block {
@@ -20,15 +20,10 @@ public class BlockGeneric extends Block {
     protected World worldObj;
 
     /**
-     * 
-     * @param id
-     *            Block Id
-     * @param material
-     *            Block material
-     * @param mod
-     *            The mod id
-     * @param texture
-     *            The block's texture file (without .png)
+     * @param id       Block Id
+     * @param material Block material
+     * @param mod      The mod id
+     * @param texture  The block's texture file (without .png)
      */
     public BlockGeneric(Material material, String mod, String texture) {
         super(material);

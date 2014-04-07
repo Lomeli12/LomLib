@@ -3,21 +3,21 @@ package net.lomeli.lomlib.item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import net.minecraftforge.oredict.OreDictionary;
+
 /**
  * NBTHelper Using the NBT helper from pahimar's Equivalent Exchange 3 mod.
- * 
+ *
  * @author pahimar
  * @license Lesser GNU Public License v3 (http://www.gnu.org/licenses/lgpl.html)
- * 
  */
 public class NBTUtil {
 
     /**
      * Initializes the NBT Tag Compound for the given ItemStack if it is null
-     * 
-     * @param itemStack
-     *            The ItemStack for which its NBT Tag Compound is being checked
-     *            for initialization
+     *
+     * @param itemStack The ItemStack for which its NBT Tag Compound is being checked
+     *                  for initialization
      */
     private static void initNBTTagCompound(ItemStack itemStack) {
         if (itemStack.stackTagCompound == null)
@@ -162,6 +162,19 @@ public class NBTUtil {
         initNBTTagCompound(itemStack);
 
         itemStack.stackTagCompound.setDouble(keyName, keyValue);
+    }
+
+    public static boolean areItemStacksEqualNoNBT(ItemStack stackA, ItemStack stackB) {
+        if (stackB == null)
+            return false;
+
+        return ItemUtil.areItemsTheSame(stackA, stackB)
+                && (stackA.getItemDamage() == OreDictionary.WILDCARD_VALUE ? true : stackB.getItemDamage() == OreDictionary.WILDCARD_VALUE ? true : stackA
+                .getHasSubtypes() == false ? true : stackB.getItemDamage() == stackA.getItemDamage());
+    }
+
+    public static boolean doNBTsMatch(NBTTagCompound nbtA, NBTTagCompound nbtB) {
+        return nbtA == null ? nbtB == null ? true : false : nbtB == null ? false : nbtA.equals(nbtB);
     }
 
 }

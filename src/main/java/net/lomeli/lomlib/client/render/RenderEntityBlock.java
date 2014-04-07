@@ -13,10 +13,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import net.lomeli.lomlib.entity.EntityBlock;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import net.lomeli.lomlib.entity.EntityBlock;
 
 @SideOnly(Side.CLIENT)
 public class RenderEntityBlock extends Render {
@@ -109,7 +109,7 @@ public class RenderEntityBlock extends Render {
     }
 
     public void renderBlock(BlockInterface block, IBlockAccess blockAccess, int i, int j, int k, boolean doLight,
-            boolean doTessellating) {
+                            boolean doTessellating) {
         float f = 0.5F;
         float f1 = 1.0F;
         float f2 = 0.8F;

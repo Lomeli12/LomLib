@@ -12,7 +12,7 @@ public class PageImage extends PageBase {
     private int imaageWidth, imageHeight, imageX, imageY;
 
     public PageImage(GuiScreen gui, ResourceLocation image, int imageX, int imageY, int imageWidth, int imageHeight,
-            String... imageDescription) {
+                     String... imageDescription) {
         super(gui);
         this.image = image;
         pageText = imageDescription;
@@ -31,9 +31,11 @@ public class PageImage extends PageBase {
             int textHeight = y + imageHeight;
             if (pageText != null) {
                 for (int i = 0; i < pageText.length; i++) {
-                    smallFontRenderer.drawSplitString(StatCollector.translateToLocal(pageText[i]), x, textHeight, width,
-                            Color.BLACK.getRGB());
-                    textHeight += smallFontRenderer.getStringHeight(StatCollector.translateToLocal(pageText[i]), width) + 20;
+                    if (pageText[i] != "") {
+                        smallFontRenderer.drawSplitString(StatCollector.translateToLocal(pageText[i]), x, textHeight, width,
+                                Color.BLACK.getRGB());
+                        textHeight += smallFontRenderer.getStringHeight(StatCollector.translateToLocal(pageText[i]), width) + 20;
+                    }
                 }
             }
         }

@@ -1,8 +1,8 @@
 package net.lomeli.lomlib.client.gui.element.pages;
 
-import java.awt.Color;
-
 import org.lwjgl.opengl.GL11;
+
+import java.awt.Color;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;

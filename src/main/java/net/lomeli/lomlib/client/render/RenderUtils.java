@@ -1,10 +1,10 @@
 package net.lomeli.lomlib.client.render;
 
+import org.lwjgl.opengl.GL11;
+
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.lwjgl.opengl.GL11;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -26,17 +26,16 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import net.lomeli.lomlib.client.render.RenderEntityBlock.BlockInterface;
-
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import net.lomeli.lomlib.client.render.RenderEntityBlock.BlockInterface;
+
 /**
  * Rendering stuff I can't be asked to rewrite!
- * 
+ *
  * @author Anthony
- * 
  */
 @SideOnly(Side.CLIENT)
 public class RenderUtils {
@@ -52,7 +51,7 @@ public class RenderUtils {
     }
 
     public static void drawBlockFaces(RenderBlocks renderer, Block block, IIcon i0, IIcon i1, IIcon i2, IIcon i3, IIcon i4,
-            IIcon i5) {
+                                      IIcon i5) {
         Tessellator tessellator = Tessellator.instance;
         GL11.glTranslatef(-0.5F, 0.0F, -0.5F);
 
@@ -199,7 +198,7 @@ public class RenderUtils {
         if (fluid.getBlock() != null) {
             liquidBlock.baseBlock = fluid.getBlock();
             liquidBlock.texture = getFluidTexture(fluidStack, flowing);
-        }else {
+        } else {
             liquidBlock.baseBlock = Blocks.water;
             liquidBlock.texture = getFluidTexture(fluidStack, flowing);
         }
@@ -236,7 +235,7 @@ public class RenderUtils {
     }
 
     public static void renderEntityGhostItem(World world, ItemStack stack, RenderItem customRender, int x, int y, int z,
-            ForgeDirection forgeDirection) {
+                                             ForgeDirection forgeDirection) {
         GL11.glPushMatrix();
         if (stack != null) {
             float scaleFactor = getGhostItemScaleFactor(stack, customRender);
@@ -257,74 +256,74 @@ public class RenderUtils {
     }
 
     private static void translateGhostItemByOrientation(ItemStack ghostItemStack, double x, double y, double z,
-            ForgeDirection forgeDirection) {
+                                                        ForgeDirection forgeDirection) {
 
         if (ghostItemStack != null) {
             if (ghostItemStack.getItem() instanceof ItemBlock) {
-                switch(forgeDirection) {
-                case DOWN : {
-                    GL11.glTranslatef((float) x + 0.5F, (float) y + 0.7F, (float) z + 0.5F);
-                    return;
+                switch (forgeDirection) {
+                    case DOWN: {
+                        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.7F, (float) z + 0.5F);
+                        return;
+                    }
+                    case UP: {
+                        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.25F, (float) z + 0.5F);
+                        return;
+                    }
+                    case NORTH: {
+                        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.7F);
+                        return;
+                    }
+                    case SOUTH: {
+                        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.3F);
+                        return;
+                    }
+                    case EAST: {
+                        GL11.glTranslatef((float) x + 0.3F, (float) y + 0.5F, (float) z + 0.5F);
+                        return;
+                    }
+                    case WEST: {
+                        GL11.glTranslatef((float) x + 0.70F, (float) y + 0.5F, (float) z + 0.5F);
+                        return;
+                    }
+                    case UNKNOWN: {
+                        return;
+                    }
+                    default: {
+                        return;
+                    }
                 }
-                case UP : {
-                    GL11.glTranslatef((float) x + 0.5F, (float) y + 0.25F, (float) z + 0.5F);
-                    return;
-                }
-                case NORTH : {
-                    GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.7F);
-                    return;
-                }
-                case SOUTH : {
-                    GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.3F);
-                    return;
-                }
-                case EAST : {
-                    GL11.glTranslatef((float) x + 0.3F, (float) y + 0.5F, (float) z + 0.5F);
-                    return;
-                }
-                case WEST : {
-                    GL11.glTranslatef((float) x + 0.70F, (float) y + 0.5F, (float) z + 0.5F);
-                    return;
-                }
-                case UNKNOWN : {
-                    return;
-                }
-                default: {
-                    return;
-                }
-                }
-            }else {
-                switch(forgeDirection) {
-                case DOWN : {
-                    GL11.glTranslatef((float) x + 0.5F, (float) y + 0.6F, (float) z + 0.5F);
-                    return;
-                }
-                case UP : {
-                    GL11.glTranslatef((float) x + 0.5F, (float) y + 0.20F, (float) z + 0.5F);
-                    return;
-                }
-                case NORTH : {
-                    GL11.glTranslatef((float) x + 0.5F, (float) y + 0.4F, (float) z + 0.7F);
-                    return;
-                }
-                case SOUTH : {
-                    GL11.glTranslatef((float) x + 0.5F, (float) y + 0.4F, (float) z + 0.3F);
-                    return;
-                }
-                case EAST : {
-                    GL11.glTranslatef((float) x + 0.3F, (float) y + 0.4F, (float) z + 0.5F);
-                    return;
-                }
-                case WEST : {
-                    GL11.glTranslatef((float) x + 0.70F, (float) y + 0.4F, (float) z + 0.5F);
-                    return;
-                }
-                case UNKNOWN : {
-                    return;
-                }
-                default: {
-                    return;
-                }
+            } else {
+                switch (forgeDirection) {
+                    case DOWN: {
+                        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.6F, (float) z + 0.5F);
+                        return;
+                    }
+                    case UP: {
+                        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.20F, (float) z + 0.5F);
+                        return;
+                    }
+                    case NORTH: {
+                        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.4F, (float) z + 0.7F);
+                        return;
+                    }
+                    case SOUTH: {
+                        GL11.glTranslatef((float) x + 0.5F, (float) y + 0.4F, (float) z + 0.3F);
+                        return;
+                    }
+                    case EAST: {
+                        GL11.glTranslatef((float) x + 0.3F, (float) y + 0.4F, (float) z + 0.5F);
+                        return;
+                    }
+                    case WEST: {
+                        GL11.glTranslatef((float) x + 0.70F, (float) y + 0.4F, (float) z + 0.5F);
+                        return;
+                    }
+                    case UNKNOWN: {
+                        return;
+                    }
+                    default: {
+                        return;
+                    }
                 }
             }
         }
@@ -336,32 +335,32 @@ public class RenderUtils {
 
         if (itemStack != null) {
             if (itemStack.getItem() instanceof ItemBlock) {
-                switch(customRenderItem.getMiniBlockCount(itemStack, (byte) 0)) {
-                case 1 :
-                    return 0.90F;
-                case 2 :
-                    return 0.90F;
-                case 3 :
-                    return 0.90F;
-                case 4 :
-                    return 0.90F;
-                case 5 :
-                    return 0.80F;
-                default:
-                    return 0.90F;
+                switch (customRenderItem.getMiniBlockCount(itemStack, (byte) 0)) {
+                    case 1:
+                        return 0.90F;
+                    case 2:
+                        return 0.90F;
+                    case 3:
+                        return 0.90F;
+                    case 4:
+                        return 0.90F;
+                    case 5:
+                        return 0.80F;
+                    default:
+                        return 0.90F;
                 }
-            }else {
-                switch(customRenderItem.getMiniItemCount(itemStack, (byte) 0)) {
-                case 1 :
-                    return 0.65F;
-                case 2 :
-                    return 0.65F;
-                case 3 :
-                    return 0.65F;
-                case 4 :
-                    return 0.65F;
-                default:
-                    return 0.65F;
+            } else {
+                switch (customRenderItem.getMiniItemCount(itemStack, (byte) 0)) {
+                    case 1:
+                        return 0.65F;
+                    case 2:
+                        return 0.65F;
+                    case 3:
+                        return 0.65F;
+                    case 4:
+                        return 0.65F;
+                    default:
+                        return 0.65F;
                 }
             }
         }

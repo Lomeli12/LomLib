@@ -60,19 +60,16 @@ public class DevCapes {
                     capePlayers.add(abstractClientPlayer);
 
                     ReflectionHelper.setPrivateValue(ThreadDownloadImageData.class, abstractClientPlayer.getTextureCape(), false,
-                            new String[] { "textureUploaded", "field_110559_g" });
+                            new String[]{"textureUploaded", "field_110559_g"});
 
                     new Thread(new CloakThread(abstractClientPlayer, cloakURL)).start();
                     event.renderCape = true;
-                }else
-                    return;
+                }
             }
         }
     }
 
     public void buildCapeDatabase() {
-        if (FMLCommonHandler.instance().getSide() != Side.CLIENT)
-            return;
         try {
             URL xmlURL = new URL(Strings.CAPE_URL);
             InputStream xml = xmlURL.openStream();
@@ -92,7 +89,7 @@ public class DevCapes {
                 }
             }
             xml.close();
-        }catch (Exception e) {
+        } catch (Exception e) {
         }
     }
 
@@ -119,8 +116,8 @@ public class DevCapes {
                 bo.getGraphics().drawImage(cape, 0, 0, null);
 
                 ReflectionHelper.setPrivateValue(ThreadDownloadImageData.class, abstractClientPlayer.getTextureCape(), bo,
-                        new String[] { "bufferedImage", "field_110560_d" });
-            }catch (Exception e) {
+                        new String[]{"bufferedImage", "field_110560_d"});
+            } catch (Exception e) {
                 LomLib.logger.logError("Failed to load cape!");
                 e.printStackTrace();
             }
@@ -138,7 +135,7 @@ public class DevCapes {
         public void run() {
             try {
                 TEST_GRAPHICS.drawImage(new ImageIcon(new URL(cloakURL)).getImage(), 0, 0, null);
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

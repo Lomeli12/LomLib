@@ -1,11 +1,11 @@
 package net.lomeli.lomlib.client;
 
-import net.lomeli.lomlib.util.ModLoaded;
+import codechicken.nei.api.API;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import codechicken.nei.api.API;
+import net.lomeli.lomlib.util.ModLoaded;
 
 public class NEIAddon {
 

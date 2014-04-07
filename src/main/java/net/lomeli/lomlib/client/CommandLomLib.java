@@ -11,13 +11,13 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 
-import net.lomeli.lomlib.libs.Strings;
-import net.lomeli.lomlib.util.ReflectionUtil;
-import net.lomeli.lomlib.util.ToolTipUtil;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
+
+import net.lomeli.lomlib.libs.Strings;
+import net.lomeli.lomlib.util.ReflectionUtil;
+import net.lomeli.lomlib.util.ToolTipUtil;
 
 public class CommandLomLib extends CommandBase {
 
@@ -124,6 +124,15 @@ public class CommandLomLib extends CommandBase {
                     sendCommanderMessage(icommandsender, "/lomlib clearHostiles  " + ToolTipUtil.GREEN
                             + "-Clears all hostile entities in loaded chunks.");
                 }
+            } else if(argument1.equalsIgnoreCase("cape")) {
+                if (FMLCommonHandler.instance().getSide() != Side.CLIENT) {
+                    if (args.length == 3) {
+                        String user = args[1], url = args[2];
+                        if (user != "" && url != "") {
+
+                        }
+                    }
+                }
             }
         } else {
             if (FMLCommonHandler.instance().getSide() != Side.CLIENT)
@@ -136,6 +145,7 @@ public class CommandLomLib extends CommandBase {
             sender.getEntityWorld().getPlayerEntityByName(sender.getCommandSenderName())
                     .addChatMessage(new ChatComponentText(message));
         } else {
+
             // sender.addChatMessage(new ChatComponentText(message));
         }
     }

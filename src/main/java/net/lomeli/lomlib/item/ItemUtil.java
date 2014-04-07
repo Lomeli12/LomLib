@@ -12,13 +12,10 @@ import cpw.mods.fml.common.FMLLog;
 public class ItemUtil {
     /**
      * Allows you to get a item from practically any other mod.
-     * 
-     * @param itemString
-     *            name of item instance
-     * @param meta
-     *            Metadata number for the item
-     * @param ItemCassLoc
-     *            Class where the items are declared
+     *
+     * @param itemString  name of item instance
+     * @param meta        Metadata number for the item
+     * @param itemClassLoc Class where the items are declared
      * @author Lomeli12
      */
 
@@ -33,7 +30,7 @@ public class ItemUtil {
             else if (obj instanceof ItemStack)
                 item = (ItemStack) obj;
 
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             FMLLog.warning("Could not retrieve item identified by: " + itemString);
         }
         return item;
@@ -41,11 +38,9 @@ public class ItemUtil {
 
     /**
      * Allows you to get a item from practically any other mod.
-     * 
-     * @param itemString
-     *            name of item instance
-     * @param ItemCassLoc
-     *            Class where the items are declared
+     *
+     * @param itemString  name of item instance
+     * @param itemClassLoc Class where the items are declared
      * @author Lomeli12
      */
     public static ItemStack getItem(String itemString, String itemClassLoc) {
@@ -59,7 +54,7 @@ public class ItemUtil {
             else if (obj instanceof ItemStack)
                 item = (ItemStack) obj;
 
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             FMLLog.warning("Could not retrieve item identified by: " + itemString);
         }
         return item;
@@ -69,10 +64,10 @@ public class ItemUtil {
         if (stack.stackSize == 1) {
             if (stack.getItem().hasContainerItem(stack)) {
                 return stack.getItem().getContainerItem(stack);
-            }else {
+            } else {
                 return null;
             }
-        }else {
+        } else {
             stack.splitStack(1);
 
             return stack;
@@ -80,12 +75,12 @@ public class ItemUtil {
     }
 
     public static void setBlock(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX,
-            float hitY, float hitZ, Block block, int metaData) {
+                                float hitY, float hitZ, Block block, int metaData) {
         Block i1 = world.getBlock(x, y, z);
 
         if (i1.getUnlocalizedName().equals(Blocks.snow.getUnlocalizedName()) && (world.getBlockMetadata(x, y, z) & 7) < 1) {
             side = 1;
-        }else if (i1 != Blocks.vine && i1 != Blocks.tallgrass && i1 != Blocks.deadbush
+        } else if (i1 != Blocks.vine && i1 != Blocks.tallgrass && i1 != Blocks.deadbush
                 && (i1 == null || !i1.isReplaceable(world, x, y, z))) {
             if (side == 0)
                 --y;
@@ -125,7 +120,7 @@ public class ItemUtil {
     }
 
     public static boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
-            float hitX, float hitY, float hitZ, Block block, int metadata) {
+                                       float hitX, float hitY, float hitZ, Block block, int metadata) {
         if (!world.setBlock(x, y, z, block, metadata, 3))
             return false;
 
@@ -138,10 +133,35 @@ public class ItemUtil {
     }
 
     public static boolean itemsEqualWithMetadata(ItemStack stackA, ItemStack stackB) {
-        return stackB == null;
+        return stackA == null ? stackB == null ? true : false : stackB != null && areItemsTheSame(stackA, stackB)
+                && (stackA.getHasSubtypes() == false || stackA.getItemDamage() == stackB.getItemDamage());
     }
-    
+
+    public static boolean itemsEqualWithMetadata(ItemStack stackA, ItemStack stackB, boolean checkNBT) {
+        return stackA == null ? stackB == null ? true : false : stackB != null && areItemsTheSame(stackA, stackB)
+                && stackA.getItemDamage() == stackB.getItemDamage() && (!checkNBT || NBTUtil.doNBTsMatch(stackA.stackTagCompound, stackB.stackTagCompound));
+    }
+
     public static boolean areItemsTheSame(ItemStack a, ItemStack b) {
         return a.hashCode() == b.hashCode() && a.getItemDamage() == b.getItemDamage();
+    }
+
+    public static ItemStack cloneStack(Item item, int stackSize) {
+        if (item == null)
+            return null;
+
+        ItemStack stack = new ItemStack(item, stackSize);
+
+        return stack;
+    }
+
+    public static ItemStack cloneStack(ItemStack stack, int stackSize) {
+        if (stack == null)
+            return null;
+
+        ItemStack retStack = stack.copy();
+        retStack.stackSize = stackSize;
+
+        return retStack;
     }
 }
