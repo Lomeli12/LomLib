@@ -50,8 +50,8 @@ public class ProxyClient extends Proxy {
     @Override
     public void doStuffPost() {
         super.doStuffPost();
-        //if (ModLoaded.isModInstalled("NotEnoughItems"))
-        //    NEIAddon.loadAddon();
+        if (ModLoaded.isModInstalled("NotEnoughItems"))
+            NEIAddon.loadAddon();
     }
 
     private boolean isOptifineInstalled() {

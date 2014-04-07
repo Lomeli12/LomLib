@@ -11,14 +11,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.1-SNAPSHOT'
-    }
-}
-
-repositories {
-    ivy {
-        name 'CB FS'
-        artifactPattern "http://www.chickenbones.craftsaddle.org/Files/New_Versions/1.6.4/[module]-dev%20[revision].[ext]"
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
     }
 }
 
@@ -37,16 +30,22 @@ def loadProperties(String sourceFileName) {
 
 loadProperties 'build.properties'
 
-task Buildnumber {
-    ant.propertyfile(file: "build.properties") {
-        entry(key: 'buildNumber', type: 'int', operation: '+', value: 1)
+repositories {
+    ivy {
+        name 'CB FS'
+        artifactPattern "http://anthony-lomeli.net/ProjectFiles/libs/[module]-[revision].[ext]"
     }
 }
 
 dependencies {
-    compile name: 'CodeChickenLib', version: '1.6.4-1.0.0.44', ext: 'jar'
-    compile name: 'CodeChickenCore', version: '0.9.0.7', ext: 'jar'
-    compile name: 'NotEnoughItems', version: '1.6.1.5_d1', ext: 'jar'
+    compile name: 'NotEnoughItems', version: '1.7.2-rc2', ext: 'jar'
+    compile name: 'CodeChickenCore', version: '1.7.2-rc1', ext: 'jar'
+}
+
+task Buildnumber {
+    ant.propertyfile(file: "build.properties") {
+        entry(key: 'buildNumber', type: 'int', operation: '+', value: 1)
+    }
 }
 
 group = 'net.lomeli.lomlib'
