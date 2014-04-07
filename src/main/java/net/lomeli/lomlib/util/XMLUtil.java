@@ -1,20 +1,19 @@
 package net.lomeli.lomlib.util;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.net.URL;
-import java.util.logging.Level;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import net.lomeli.lomlib.LomLib;
 
@@ -101,7 +100,7 @@ public class XMLUtil {
                 return true;
             }
         } catch (Exception e) {
-            LomLib.logger.log(Level.WARNING, "Invalid XML file!");
+            LomLib.logger.logWarning("Invalid XML file!");
         }
         return true;
     }
@@ -115,11 +114,11 @@ public class XMLUtil {
                 return true;
             }
         } catch (Exception e) {
-            LomLib.logger.log(Level.WARNING, "Invalid configuration file!");
+            LomLib.logger.logWarning("Invalid configuration file!");
             if (config.exists()) {
-                LomLib.logger.log(Level.WARNING, "Removing invalid file...");
+                LomLib.logger.logWarning("Removing invalid file...");
                 config.delete();
-                LomLib.logger.log(Level.INFO, "Done!");
+                LomLib.logger.logBasic("Done!");
             }
             return false;
         }

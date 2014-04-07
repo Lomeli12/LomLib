@@ -2,13 +2,13 @@ package net.lomeli.lomlib.client.gui.element;
 
 import java.util.List;
 
-import net.lomeli.lomlib.client.ResourceUtil;
-import net.lomeli.lomlib.client.gui.GuiContainerPlus;
-
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
 import net.minecraftforge.fluids.FluidTank;
+
+import net.lomeli.lomlib.client.ResourceUtil;
+import net.lomeli.lomlib.client.gui.GuiContainerPlus;
 
 public class ElementTank extends ElementBase {
 

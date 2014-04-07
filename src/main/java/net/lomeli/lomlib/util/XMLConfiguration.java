@@ -1,8 +1,9 @@
 package net.lomeli.lomlib.util;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import org.w3c.dom.Comment;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -12,10 +13,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.Comment;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Element;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class XMLConfiguration {
     private File configurationFile;
@@ -62,7 +62,7 @@ public class XMLConfiguration {
                 Element general = document.createElement(ConfigEnum.GENERAL_CONFIG.getName());
                 Element other = document.createElement(ConfigEnum.OTHER.getName());
 
-                Element[] elements = { block, item, general, other };
+                Element[] elements = {block, item, general, other};
 
                 for (Element j : elements) {
                     rootElement.appendChild(j);

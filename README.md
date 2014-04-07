@@ -5,13 +5,13 @@ Just a set of utilities that I use often. A prerequisite for most my mods.
 
 ## Website and Download
 
-http://anthony-lomeli.net/?page_id=24
+[http://anthony-lomeli.net/projects/minecraft-mods/lomlib](http://anthony-lomeli.net/projects/minecraft-mods/lomlib)
 
 ## Version
 
-**Current Stable Version:** 1.0.7
+**Current Stable Version:** 1.1.0
 
-**Dev Version:** 1.0.8
+**Dev Version:** 2.0.0
 
 ## How to develop with LomLib
 
@@ -60,5 +60,3 @@ Open up your *build.gradle* file with your favorite text editor and add this to 
 	}
 
 Remember to modify the version number to match the version of LomLib you're using. Then just run `gradlew build` like usual and your mod should compile like normal.
-
-

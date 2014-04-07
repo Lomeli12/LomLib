@@ -28,8 +28,8 @@ public class FluidUtil {
     }
 
     public static boolean areFluidsEqual(FluidStack baseFluid, FluidStack secondFluid) {
-        return (baseFluid != null && baseFluid.getFluid() != null && secondFluid != null && secondFluid.getFluid() != null) ? baseFluid.getFluid().equals(secondFluid.getFluid())
-                : false;
+        return (baseFluid != null && baseFluid.getFluid() != null && secondFluid != null && secondFluid.getFluid() != null) ? baseFluid
+                .getFluid().equals(secondFluid.getFluid()) : false;
     }
 
     public static void combineFluidStacks(FluidStack baseFluid, FluidStack secondFluid) {

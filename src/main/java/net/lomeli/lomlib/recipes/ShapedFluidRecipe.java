@@ -5,13 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.lomeli.lomlib.util.FluidUtil;
-
 import net.minecraft.block.Block;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.world.World;
 
@@ -19,11 +17,12 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
+import net.lomeli.lomlib.util.FluidUtil;
+
 /**
  * Based off of OreDict's ShapedOreRecipe
- * 
+ *
  * @author Lomeli12
- * 
  */
 public class ShapedFluidRecipe implements IRecipe {
 
@@ -96,10 +95,10 @@ public class ShapedFluidRecipe implements IRecipe {
             else if (in instanceof Block)
                 itemMap.put(chr, new ItemStack((Block) in, 1, OreDictionary.WILDCARD_VALUE));
             else if (in instanceof String) {
-                if (((String) in).startsWith("liquid$")) {
-                    String liquidName = ((String) in).substring(7);
-                    if (FluidRegistry.isFluidRegistered(liquidName))
-                        itemMap.put(chr, FluidUtil.getContainersForFluid(FluidRegistry.getFluid(liquidName)));
+                if (((String) in).startsWith("fluid$")) {
+                    String fluidName = ((String) in).substring(6);
+                    if (FluidRegistry.isFluidRegistered(fluidName))
+                        itemMap.put(chr, FluidUtil.getContainersForFluid(FluidRegistry.getFluid(fluidName)));
                 } else
                     itemMap.put(chr, OreDictionary.getOres((String) in));
             } else {
@@ -147,7 +146,8 @@ public class ShapedFluidRecipe implements IRecipe {
                     input[i] = OreDictionary.getOres(replace.getValue());
                     break;
                 } else if (FluidContainerRegistry.isFilledContainer(replace.getKey())) {
-                    input[i] = FluidUtil.getContainersForFluid(FluidContainerRegistry.getFluidForFilledItem(replace.getKey()).getFluid());
+                    input[i] = FluidUtil.getContainersForFluid(FluidContainerRegistry.getFluidForFilledItem(replace.getKey())
+                            .getFluid());
                     break;
                 }
             }
@@ -224,7 +224,8 @@ public class ShapedFluidRecipe implements IRecipe {
     private boolean checkItemEquals(ItemStack target, ItemStack input) {
         if (input == null && target != null || input != null && target == null)
             return false;
-        return (target.itemID == input.itemID && (target.getItemDamage() == OreDictionary.WILDCARD_VALUE || target.getItemDamage() == input.getItemDamage()));
+        return (target.getUnlocalizedName().equals(input.getUnlocalizedName()) && (target.getItemDamage() == OreDictionary.WILDCARD_VALUE || target
+                .getItemDamage() == input.getItemDamage()));
     }
 
     public ShapedFluidRecipe setMirrored(boolean mirror) {

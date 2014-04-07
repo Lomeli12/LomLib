@@ -1,8 +1,8 @@
 package net.lomeli.lomlib.util;
 
-import java.util.List;
-
 import org.lwjgl.input.Keyboard;
+
+import java.util.List;
 
 import net.minecraft.client.gui.FontRenderer;
 
@@ -13,9 +13,8 @@ public class ToolTipUtil {
 
     /**
      * Search up the color codes on the minecraft wiki page for sign colors
-     * 
-     * @param color
-     *            Single character that will adds in color and simple formatting
+     *
+     * @param color Single character that will adds in color and simple formatting
      * @author Lomeli12
      */
     public static String additionalInfoInstructions(String color) {

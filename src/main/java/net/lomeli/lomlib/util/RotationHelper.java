@@ -1,20 +1,22 @@
 package net.lomeli.lomlib.util;
 
+import com.google.common.collect.BiMap;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import com.google.common.collect.BiMap;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class RotationHelper {
 
     public static enum BlockType {
         LOG, DISPENSER, BED, RAIL, RAIL_POWERED, RAIL_ASCENDING, RAIL_CORNER, TORCH, STAIR, CHEST, SIGNPOST, DOOR, LEVER, BUTTON, REDSTONE_REPEATER, TRAPDOOR, MUSHROOM_CAP, MUSHROOM_CAP_CORNER, MUSHROOM_CAP_SIDE, VINE, SKULL, ANVIL
     }
+
+    public static final byte[] SIDE_OPPOSITE = { 1, 0, 3, 2, 5, 4 };
 
     private static final Map<BlockType, BiMap<Integer, ForgeDirection>> MAPPINGS = new HashMap<BlockType, BiMap<Integer, ForgeDirection>>();
 
@@ -67,7 +69,8 @@ public class RotationHelper {
     }
 
     public static int directionToMetadata(BlockType blockType, ForgeDirection direction) {
-        if ((blockType == BlockType.LOG || blockType == BlockType.ANVIL) && (direction.offsetX + direction.offsetY + direction.offsetZ) < 0)
+        if ((blockType == BlockType.LOG || blockType == BlockType.ANVIL)
+                && (direction.offsetX + direction.offsetY + direction.offsetZ) < 0)
             direction = direction.getOpposite();
 
         if (MAPPINGS.containsKey(blockType)) {

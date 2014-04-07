@@ -1,23 +1,21 @@
 package net.lomeli.lomlib.item;
 
-import cpw.mods.fml.common.FMLLog;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
+import cpw.mods.fml.common.FMLLog;
+
 public class ItemUtil {
     /**
      * Allows you to get a item from practically any other mod.
-     * 
-     * @param itemString
-     *            name of item instance
-     * @param meta
-     *            Metadata number for the item
-     * @param ItemCassLoc
-     *            Class where the items are declared
+     *
+     * @param itemString  name of item instance
+     * @param meta        Metadata number for the item
+     * @param itemClassLoc Class where the items are declared
      * @author Lomeli12
      */
 
@@ -40,11 +38,9 @@ public class ItemUtil {
 
     /**
      * Allows you to get a item from practically any other mod.
-     * 
-     * @param itemString
-     *            name of item instance
-     * @param ItemCassLoc
-     *            Class where the items are declared
+     *
+     * @param itemString  name of item instance
+     * @param itemClassLoc Class where the items are declared
      * @author Lomeli12
      */
     public static ItemStack getItem(String itemString, String itemClassLoc) {
@@ -66,8 +62,8 @@ public class ItemUtil {
 
     public static ItemStack consumeItem(ItemStack stack) {
         if (stack.stackSize == 1) {
-            if (stack.getItem().hasContainerItem()) {
-                return stack.getItem().getContainerItemStack(stack);
+            if (stack.getItem().hasContainerItem(stack)) {
+                return stack.getItem().getContainerItem(stack);
             } else {
                 return null;
             }
@@ -78,13 +74,14 @@ public class ItemUtil {
         }
     }
 
-    public static void setBlock(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int blockID, int metaData) {
-        int i1 = world.getBlockId(x, y, z);
+    public static void setBlock(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX,
+                                float hitY, float hitZ, Block block, int metaData) {
+        Block i1 = world.getBlock(x, y, z);
 
-        if (i1 == Block.snow.blockID && (world.getBlockMetadata(x, y, z) & 7) < 1) {
+        if (i1.getUnlocalizedName().equals(Blocks.snow.getUnlocalizedName()) && (world.getBlockMetadata(x, y, z) & 7) < 1) {
             side = 1;
-        } else if (i1 != Block.vine.blockID && i1 != Block.tallGrass.blockID && i1 != Block.deadBush.blockID
-                && (Block.blocksList[i1] == null || !Block.blocksList[i1].isBlockReplaceable(world, x, y, z))) {
+        } else if (i1 != Blocks.vine && i1 != Blocks.tallgrass && i1 != Blocks.deadbush
+                && (i1 == null || !i1.isReplaceable(world, x, y, z))) {
             if (side == 0)
                 --y;
 
@@ -108,35 +105,63 @@ public class ItemUtil {
             return;
         else if (!player.canPlayerEdit(x, y, z, side, stack))
             return;
-        else if (y == 255 && Block.blocksList[blockID].blockMaterial.isSolid())
+        else if (y == 255 && block.getMaterial().isSolid())
             return;
-        else if (world.canPlaceEntityOnSide(blockID, x, y, z, false, side, player, stack)) {
-            Block block = Block.blocksList[blockID];
+        else if (world.canPlaceEntityOnSide(block, x, y, z, false, side, player, stack)) {
             int j1 = metaData;
-            int k1 = Block.blocksList[blockID].onBlockPlaced(world, x, y, z, side, hitX, hitY, hitZ, j1);
+            int k1 = block.onBlockPlaced(world, x, y, z, side, hitX, hitY, hitZ, j1);
 
-            if (placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, blockID, k1)) {
-                world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, Block.soundClothFootstep.getPlaceSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F,
-                        block.stepSound.getPitch() * 0.8F);
+            if (placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, block, k1)) {
+                world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, Block.soundTypeCloth.getBreakSound(),
+                        (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
                 --stack.stackSize;
             }
         }
     }
 
-    public static boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int blockID,
-            int metadata) {
-        if (!world.setBlock(x, y, z, blockID, metadata, 3))
+    public static boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side,
+                                       float hitX, float hitY, float hitZ, Block block, int metadata) {
+        if (!world.setBlock(x, y, z, block, metadata, 3))
             return false;
 
-        if (world.getBlockId(x, y, z) == blockID) {
-            Block.blocksList[blockID].onBlockPlacedBy(world, x, y, z, player, stack);
-            Block.blocksList[blockID].onPostBlockPlaced(world, x, y, z, metadata);
+        if (world.getBlock(x, y, z).getUnlocalizedName().equals(block)) {
+            block.onBlockPlacedBy(world, x, y, z, player, stack);
+            block.onPostBlockPlaced(world, x, y, z, metadata);
         }
 
         return true;
     }
 
     public static boolean itemsEqualWithMetadata(ItemStack stackA, ItemStack stackB) {
-        return stackB == null;
+        return stackA == null ? stackB == null ? true : false : stackB != null && areItemsTheSame(stackA, stackB)
+                && (stackA.getHasSubtypes() == false || stackA.getItemDamage() == stackB.getItemDamage());
+    }
+
+    public static boolean itemsEqualWithMetadata(ItemStack stackA, ItemStack stackB, boolean checkNBT) {
+        return stackA == null ? stackB == null ? true : false : stackB != null && areItemsTheSame(stackA, stackB)
+                && stackA.getItemDamage() == stackB.getItemDamage() && (!checkNBT || NBTUtil.doNBTsMatch(stackA.stackTagCompound, stackB.stackTagCompound));
+    }
+
+    public static boolean areItemsTheSame(ItemStack a, ItemStack b) {
+        return a.hashCode() == b.hashCode() && a.getItemDamage() == b.getItemDamage();
+    }
+
+    public static ItemStack cloneStack(Item item, int stackSize) {
+        if (item == null)
+            return null;
+
+        ItemStack stack = new ItemStack(item, stackSize);
+
+        return stack;
+    }
+
+    public static ItemStack cloneStack(ItemStack stack, int stackSize) {
+        if (stack == null)
+            return null;
+
+        ItemStack retStack = stack.copy();
+        retStack.stackSize = stackSize;
+
+        return retStack;
     }
 }

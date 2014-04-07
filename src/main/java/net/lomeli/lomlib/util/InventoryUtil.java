@@ -1,22 +1,23 @@
 package net.lomeli.lomlib.util;
 
-import net.lomeli.lomlib.libs.Incomplete;
-
-import net.minecraft.crash.CrashReport;
-import net.minecraft.crash.CrashReportCategory;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ReportedException;
+import net.minecraft.tileentity.TileEntity;
+
+import net.minecraftforge.common.util.ForgeDirection;
+
+import net.lomeli.lomlib.item.ItemUtil;
+import net.lomeli.lomlib.item.NBTUtil;
+import net.lomeli.lomlib.libs.Incomplete;
 
 public class InventoryUtil {
     /**
      * Meant to allow you to make a custom crafting grid on the fly. A bit
      * bugged at the moment (DO NOT USE).
-     * 
+     *
      * @param container
      * @param inventory
      * @param craftWidth
@@ -28,7 +29,8 @@ public class InventoryUtil {
      */
     @SuppressWarnings("unchecked")
     @Incomplete
-    public static void createCraftMatrix(Container container, IInventory inventory, int craftWidth, int craftHeight, int firstSlot, int x, int y) {
+    public static void createCraftMatrix(Container container, IInventory inventory, int craftWidth, int craftHeight,
+                                         int firstSlot, int x, int y) {
         int slotNum = firstSlot;
         for (int i = 0; i < craftWidth; i++) {
             for (int j = 0; j < craftHeight; j++) {
@@ -40,168 +42,241 @@ public class InventoryUtil {
     }
 
     /**
-     * Checks an entire inventory for the first instance of a certain item
-     * 
-     * @param itemID
-     *            Id for the item or block you're looking for
-     * @param inventory
-     *            Inventory you are searching
-     * @author Lomeli12
+     * Copy an entire inventory. Best to avoid doing this often.
      */
-    public static int getSlotContainingItem(int itemID, int meta, ItemStack[] inventory) {
-        for (int j = 0; j < inventory.length; j++) {
-            if (inventory[j] != null && inventory[j].itemID == itemID && inventory[j].getItemDamage() == meta)
-                return j;
+    public static ItemStack[] cloneInventory(ItemStack[] inventory) {
+
+        ItemStack[] inventoryCopy = new ItemStack[inventory.length];
+        for (int i = 0; i < inventory.length; i++) {
+            inventoryCopy[i] = inventory[i] == null ? null : inventory[i].copy();
         }
-        return -1;
+        return inventoryCopy;
     }
 
-    public static int getSlotContainingItem(int itemID, ItemStack[] inventory) {
-        return getSlotContainingItem(itemID, 0, inventory);
-    }
+    /**
+     * Add an ItemStack to an inventory. Return true if the entire stack was added.
+     *
+     * @param inventory
+     *            The inventory.
+     * @param stack
+     *            ItemStack to add.
+     * @param startIndex
+     *            First slot to attempt to add into. Does not loop around fully.
+     */
+    public static boolean addItemStackToInventory(ItemStack[] inventory, ItemStack stack, int startIndex) {
 
-    public static int getSlotContainingStack(ItemStack stack, ItemStack[] inventory) {
-        return getSlotContainingItem(stack.itemID, stack.getItemDamage(), inventory);
-    }
-
-    public static int getPlayerInvSlotContainingItem(int itemID, int meta, InventoryPlayer inventory) {
-        for (int j = 0; j < inventory.getSizeInventory(); j++) {
-            if (inventory.getStackInSlot(j) != null && inventory.getStackInSlot(j).itemID == itemID && inventory.getStackInSlot(j).getItemDamage() == meta)
-                return j;
+        if (stack == null) {
+            return true;
         }
-        return -1;
+        int openSlot = -1;
+        for (int i = startIndex; i < inventory.length; i++) {
+            if (NBTUtil.areItemStacksEqualNoNBT(stack, inventory[i]) && inventory[i].getMaxStackSize() > inventory[i].stackSize) {
+                int hold = inventory[i].getMaxStackSize() - inventory[i].stackSize;
+                if (hold >= stack.stackSize) {
+                    inventory[i].stackSize += stack.stackSize;
+                    stack = null;
+                    return true;
+                } else {
+                    stack.stackSize -= hold;
+                    inventory[i].stackSize += hold;
+                }
+            } else if (inventory[i] == null && openSlot == -1) {
+                openSlot = i;
+            }
+        }
+        if (stack != null) {
+            if (openSlot > -1) {
+                inventory[openSlot] = stack;
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
-    public static int getPlayerInvSlotContainingItem(int itemID, InventoryPlayer inventory) {
-        return getPlayerInvSlotContainingItem(itemID, 0, inventory);
+    /**
+     * Shortcut method for above, assumes starting slot is 0.
+     */
+    public static boolean addItemStackToInventory(ItemStack[] inventory, ItemStack stack) {
+
+        return addItemStackToInventory(inventory, stack, 0);
     }
 
-    public static int getPlayerInvSlotContainingStack(ItemStack stack, InventoryPlayer inventory) {
-        return getPlayerInvSlotContainingItem(stack.itemID, stack.getItemDamage(), inventory);
+	/* IInventoryHandler Interaction */
+
+    /* IIInventory Interaction */
+    public static ItemStack extractItemStackFromInventory(IInventory theInventory, int side) {
+
+        ItemStack retStack = null;
+
+        if (theInventory instanceof ISidedInventory) {
+            ISidedInventory sidedInv = (ISidedInventory) theInventory;
+            int slots[] = sidedInv.getAccessibleSlotsFromSide(side);
+            for (int i = 0; i < slots.length && retStack == null; i++) {
+                if (sidedInv.getStackInSlot(i) != null && sidedInv.canExtractItem(i, sidedInv.getStackInSlot(i), side)) {
+                    retStack = sidedInv.getStackInSlot(i).copy();
+                    sidedInv.setInventorySlotContents(i, null);
+                }
+            }
+        } else {
+            for (int i = 0; i < theInventory.getSizeInventory() && retStack == null; i++) {
+                if (theInventory.getStackInSlot(i) != null) {
+                    retStack = theInventory.getStackInSlot(i).copy();
+                    theInventory.setInventorySlotContents(i, null);
+                }
+            }
+        }
+        if (retStack != null) {
+            theInventory.markDirty();
+        }
+        return retStack;
+    }
+
+    public static ItemStack insertItemStackIntoInventory(IInventory theInventory, ItemStack stack, int side) {
+        if (stack == null)
+            return null;
+
+        int stackSize = stack.stackSize;
+
+        if (theInventory instanceof ISidedInventory) {
+            ISidedInventory sidedInv = (ISidedInventory) theInventory;
+            int slots[] = sidedInv.getAccessibleSlotsFromSide(side);
+
+            if (slots == null) {
+                return stack;
+            }
+            for (int i = 0; i < slots.length && stack != null; i++) {
+                if (sidedInv.canInsertItem(slots[i], stack, side) && ItemUtil.itemsEqualWithMetadata(stack, theInventory.getStackInSlot(slots[i]), true)) {
+                    stack = addToOccupiedInventorySlot(sidedInv, slots[i], stack);
+                }
+            }
+            for (int i = 0; i < slots.length && stack != null; i++) {
+                if (sidedInv.canInsertItem(slots[i], stack, side) && theInventory.getStackInSlot(slots[i]) == null) {
+                    stack = addToEmptyInventorySlot(sidedInv, slots[i], stack);
+                }
+            }
+        } else {
+            int invSize = theInventory.getSizeInventory();
+            for (int i = 0; i < invSize && stack != null; i++) {
+                if (ItemUtil.itemsEqualWithMetadata(stack, theInventory.getStackInSlot(i), true)) {
+                    stack = addToOccupiedInventorySlot(theInventory, i, stack);
+                }
+            }
+            for (int i = 0; i < invSize && stack != null; i++) {
+                if (theInventory.getStackInSlot(i) == null) {
+                    stack = addToEmptyInventorySlot(theInventory, i, stack);
+                }
+            }
+        }
+        if (stack == null || stack.stackSize != stackSize) {
+            theInventory.markDirty();
+        }
+        return stack;
+    }
+
+    public static ItemStack simulateInsertItemStackIntoInventory(IInventory theInventory, ItemStack stack, int side) {
+        if (stack == null) {
+            return null;
+        }
+        if (theInventory instanceof ISidedInventory) {
+            ISidedInventory sidedInv = (ISidedInventory) theInventory;
+            int slots[] = sidedInv.getAccessibleSlotsFromSide(side);
+
+            if (slots == null) {
+                return stack;
+            }
+            for (int i = 0; i < slots.length && stack != null; i++) {
+                if (sidedInv.canInsertItem(slots[i], stack, side) && ItemUtil.itemsEqualWithMetadata(stack, theInventory.getStackInSlot(slots[i]), true)) {
+                    stack = simulateAddToOccupiedInventorySlot(sidedInv, slots[i], stack);
+                }
+            }
+            for (int i = 0; i < slots.length && stack != null; i++) {
+                if (sidedInv.canInsertItem(slots[i], stack, side) && theInventory.getStackInSlot(slots[i]) == null) {
+                    stack = simulateAddToEmptyInventorySlot(sidedInv, slots[i], stack);
+                }
+            }
+        } else {
+            int invSize = theInventory.getSizeInventory();
+            for (int i = 0; i < invSize && stack != null; i++) {
+                if (ItemUtil.itemsEqualWithMetadata(stack, theInventory.getStackInSlot(i), true)) {
+                    stack = simulateAddToOccupiedInventorySlot(theInventory, i, stack);
+                }
+            }
+            for (int i = 0; i < invSize && stack != null; i++) {
+                if (theInventory.getStackInSlot(i) == null) {
+                    stack = simulateAddToEmptyInventorySlot(theInventory, i, stack);
+                }
+            }
+        }
+        return stack;
+    }
+
+    /* Slot Interaction */
+    public static ItemStack addToEmptyInventorySlot(IInventory theInventory, int slot, ItemStack stack) {
+        if (!theInventory.isItemValidForSlot(slot, stack))
+            return stack;
+
+        int stackLimit = theInventory.getInventoryStackLimit();
+        theInventory.setInventorySlotContents(slot, ItemUtil.cloneStack(stack, Math.min(stack.stackSize, stackLimit)));
+        return stackLimit >= stack.stackSize ? null : stack.splitStack(stack.stackSize - stackLimit);
+    }
+
+    public static ItemStack addToOccupiedInventorySlot(IInventory theInventory, int slot, ItemStack stack) {
+
+        ItemStack stackInSlot = theInventory.getStackInSlot(slot);
+        int stackLimit = Math.min(theInventory.getInventoryStackLimit(), stackInSlot.getMaxStackSize());
+
+        if (stack.stackSize + stackInSlot.stackSize > stackLimit) {
+            int stackDiff = stackLimit - stackInSlot.stackSize;
+            stackInSlot.stackSize = stackLimit;
+            stack.stackSize -= stackDiff;
+            theInventory.setInventorySlotContents(slot, stackInSlot);
+            return stack;
+        }
+        stackInSlot.stackSize += Math.min(stack.stackSize, stackLimit);
+        theInventory.setInventorySlotContents(slot, stackInSlot);
+        return stackLimit >= stack.stackSize ? null : stack.splitStack(stack.stackSize - stackLimit);
+    }
+
+    public static ItemStack simulateAddToEmptyInventorySlot(IInventory theInventory, int slot, ItemStack stack) {
+
+        if (!theInventory.isItemValidForSlot(slot, stack)) {
+            return stack;
+        }
+        int stackLimit = theInventory.getInventoryStackLimit();
+        return stackLimit >= stack.stackSize ? null : stack.splitStack(stack.stackSize - stackLimit);
+    }
+
+    public static ItemStack simulateAddToOccupiedInventorySlot(IInventory theInventory, int slot, ItemStack stack) {
+
+        ItemStack stackInSlot = theInventory.getStackInSlot(slot);
+        int stackLimit = Math.min(theInventory.getInventoryStackLimit(), stackInSlot.getMaxStackSize());
+
+        if (stack.stackSize + stackInSlot.stackSize > stackLimit) {
+            stack.stackSize -= stackLimit - stackInSlot.stackSize;
+            return stack;
+        }
+        return stackLimit >= stack.stackSize ? null : stack.splitStack(stack.stackSize - stackLimit);
+    }
+
+    public static ItemStack addToInsertion(Object theTile, int side, ItemStack stack) {
+
+        if (stack == null) {
+            return null;
+        }
+        if (theTile instanceof IInventory) {
+            stack = insertItemStackIntoInventory((IInventory) theTile, stack, RotationHelper.SIDE_OPPOSITE[side]);
+        }
+        return stack;
+    }
+
+    public static boolean isInventory(TileEntity theTile) {
+        return theTile instanceof IInventory;
     }
 
     public static int getFirstEmptyStack(IInventory inventory) {
         for (int i = 0; i < inventory.getSizeInventory(); ++i) {
             if (inventory.getStackInSlot(i) == null) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    public static void addItemsToInventory(ItemStack stack, IInventory inventory) {
-        if (stack == null) {
-            return;
-        } else if (stack.stackSize == 0) {
-            return;
-        } else {
-            try {
-                int i;
-
-                if (stack != null && stack.isItemDamaged()) {
-                    i = getFirstEmptyStack(inventory);
-
-                    if (i >= 0) {
-                        inventory.setInventorySlotContents(i, ItemStack.copyItemStack(stack));
-                        inventory.getStackInSlot(i).animationsToGo = 5;
-                        stack.stackSize = 0;
-                        return;
-                    } else {
-                        return;
-                    }
-                } else {
-                    do {
-                        i = stack.stackSize;
-                        stack.stackSize = storePartialItemStack(stack, inventory);
-                    } while (stack.stackSize > 0 && stack.stackSize < i);
-
-                    if (stack.stackSize == i) {
-                        stack.stackSize = 0;
-                        return;
-                    }
-                    return;
-                }
-            } catch (Throwable throwable) {
-                CrashReport crashreport = CrashReport.makeCrashReport(throwable, "[LomLib]: Failed to add item to inventory");
-                CrashReportCategory crashreportcategory = crashreport.makeCategory("Item being added");
-                crashreportcategory.addCrashSection("Item ID", Integer.valueOf(stack.itemID));
-                crashreportcategory.addCrashSection("Item data", Integer.valueOf(stack.getItemDamage()));
-                throw new ReportedException(crashreport);
-            }
-        }
-    }
-
-    @SuppressWarnings("unused")
-    private static int storePartialItemStack(ItemStack par1ItemStack, IInventory inventory) {
-        int i = par1ItemStack.itemID;
-        int j = par1ItemStack.stackSize;
-        int k;
-        if (par1ItemStack != null) {
-
-            if (par1ItemStack.getMaxStackSize() == 1) {
-                k = getFirstEmptyStack(inventory);
-
-                if (k < 0) {
-                    return j;
-                } else {
-                    if (inventory.getStackInSlot(k) == null) {
-                        inventory.setInventorySlotContents(k, ItemStack.copyItemStack(par1ItemStack));
-                    }
-
-                    return 0;
-                }
-            } else {
-                k = storeItemStack(par1ItemStack, inventory);
-
-                if (k < 0) {
-                    k = getFirstEmptyStack(inventory);
-                }
-
-                if (k < 0) {
-                    return j;
-                } else {
-                    if (inventory.getStackInSlot(k) == null) {
-                        inventory.setInventorySlotContents(k, new ItemStack(i, 0, par1ItemStack.getItemDamage()));
-
-                        if (par1ItemStack.hasTagCompound()) {
-                            inventory.getStackInSlot(k).setTagCompound((NBTTagCompound) par1ItemStack.getTagCompound().copy());
-                        }
-                    }
-
-                    int l = j;
-                    if (inventory.getStackInSlot(k) != null) {
-                        if (j > inventory.getStackInSlot(k).getMaxStackSize() - inventory.getStackInSlot(k).stackSize) {
-                            l = inventory.getStackInSlot(k).getMaxStackSize() - inventory.getStackInSlot(k).stackSize;
-                        }
-
-                        if (l > inventory.getInventoryStackLimit() - inventory.getStackInSlot(k).stackSize) {
-                            l = inventory.getInventoryStackLimit() - inventory.getStackInSlot(k).stackSize;
-                        }
-
-                        if (l == 0) {
-                            return j;
-                        } else {
-                            j -= l;
-                            inventory.getStackInSlot(k).stackSize += l;
-                            inventory.getStackInSlot(k).animationsToGo = 5;
-                            return j;
-                        }
-                    } else
-                        return 0;
-                }
-            }
-        }
-        return 0;
-    }
-
-    private static int storeItemStack(ItemStack par1ItemStack, IInventory inventory) {
-        for (int i = 0; i < inventory.getSizeInventory(); ++i) {
-            if (inventory.getStackInSlot(i) != null && inventory.getStackInSlot(i).itemID == par1ItemStack.itemID && inventory.getStackInSlot(i).isStackable()
-                    && inventory.getStackInSlot(i).stackSize < inventory.getStackInSlot(i).getMaxStackSize()
-                    && inventory.getStackInSlot(i).stackSize < inventory.getInventoryStackLimit()
-                    && (!inventory.getStackInSlot(i).getHasSubtypes() || inventory.getStackInSlot(i).getItemDamage() == par1ItemStack.getItemDamage())
-                    && ItemStack.areItemStackTagsEqual(inventory.getStackInSlot(i), par1ItemStack)) {
                 return i;
             }
         }

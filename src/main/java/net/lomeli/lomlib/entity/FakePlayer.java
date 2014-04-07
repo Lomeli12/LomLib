@@ -1,30 +1,31 @@
 package net.lomeli.lomlib.entity;
 
+import com.mojang.authlib.GameProfile;
+
 import java.net.SocketAddress;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Items;
+import net.minecraft.item.EnumAction;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.INetHandler;
+import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.client.C16PacketClientStatus;
+import net.minecraft.server.management.ItemInWorldManager;
+import net.minecraft.stats.StatBase;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.DamageSource;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+
+import cpw.mods.fml.common.FMLCommonHandler;
 
 import net.lomeli.lomlib.item.ItemUtil;
 import net.lomeli.lomlib.libs.Strings;
 import net.lomeli.lomlib.util.ReflectionUtil;
-
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemInWorldManager;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.NetServerHandler;
-import net.minecraft.network.packet.NetHandler;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet204ClientInfo;
-import net.minecraft.stats.StatBase;
-import net.minecraft.util.ChatMessageComponent;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
-
-import cpw.mods.fml.common.FMLCommonHandler;
 
 public class FakePlayer extends EntityPlayerMP {
 
@@ -33,26 +34,27 @@ public class FakePlayer extends EntityPlayerMP {
     public String myName = "[" + Strings.MOD_ID + "]";
 
     public FakePlayer(World world) {
-        super(FMLCommonHandler.instance().getMinecraftServerInstance(), world, "[" + Strings.MOD_ID + "]", new ItemInWorldManager(world));
-        new NetServerHandler(FMLCommonHandler.instance().getMinecraftServerInstance(), new NetworkManagerFake(), this);
+        super(FMLCommonHandler.instance().getMinecraftServerInstance(), (WorldServer) world, new GameProfile("[" + Strings.MOD_ID
+                + "]", "[" + Strings.MOD_ID + "] FakePlayer"), new ItemInWorldManager(world));
+        new NetHandlerPlayServer(FMLCommonHandler.instance().getMinecraftServerInstance(), new NetworkManagerFake(false), this);
         this.addedToChunk = false;
     }
 
     public static boolean isBlockBreakable(FakePlayer myFakePlayer, World worldObj, int x, int y, int z) {
-        int blockID = worldObj.getBlockId(x, y, z);
-        if (myFakePlayer == null) {
-            return Block.blocksList[blockID].getBlockHardness(worldObj, x, y, z) > -1.0F;
-        }
-        return Block.blocksList[blockID].getPlayerRelativeBlockHardness(myFakePlayer, worldObj, x, y, z) > -1.0F;
+        if (myFakePlayer == null)
+            return worldObj.getBlock(x, y, z).getBlockHardness(worldObj, x, y, z) > -1.0F;
+        return worldObj.getBlock(x, y, z).getPlayerRelativeBlockHardness(myFakePlayer, worldObj, x, y, z) > -1.0F;
     }
 
-    public void sendChatToPlayer(ChatMessageComponent chatmessagecomponent) {
+    public void sendChatToPlayer(ChatComponentText chatmessagecomponent) {
     }
 
+    @Override
     public boolean canCommandSenderUseCommand(int var1, String var2) {
         return false;
     }
 
+    @Override
     public ChunkCoordinates getPlayerCoordinates() {
         return null;
     }
@@ -66,21 +68,26 @@ public class FakePlayer extends EntityPlayerMP {
         this.inventory.currentItem = slot;
     }
 
+    @Override
     public void openGui(Object mod, int modGuiId, World world, int x, int y, int z) {
     }
 
+    @Override
     public double getDistanceSq(double x, double y, double z) {
         return 0.0D;
     }
 
+    @Override
     public double getDistance(double x, double y, double z) {
         return 0.0D;
     }
 
+    @Override
     public boolean isSneaking() {
         return this.isSneaking;
     }
 
+    @Override
     public void onUpdate() {
         ItemStack itemstack = this.previousItem;
         ItemStack itemstack1 = getHeldItem();
@@ -105,7 +112,7 @@ public class FakePlayer extends EntityPlayerMP {
         ItemStack inUse = (ItemStack) ReflectionUtil.getField(this, "itemInUse", EntityPlayer.class);
         int count = ReflectionUtil.getIntField(this, "itemInUseCount");
         if ((updateItem != null) && (ItemUtil.itemsEqualWithMetadata(this.previousItem, inUse))) {
-            inUse.getItem().onUsingItemTick(inUse, this, count);
+            inUse.getItem().onUsingTick(inUse, this, count);
             if ((count <= 25) && (count % 4 == 0)) {
                 updateItemUse(updateItem, 5);
             }
@@ -117,13 +124,15 @@ public class FakePlayer extends EntityPlayerMP {
         }
     }
 
+    @Override
     protected void updateItemUse(ItemStack par1ItemStack, int par2) {
         if (par1ItemStack.getItemUseAction() == EnumAction.drink) {
             playSound("random.drink", 0.5F, this.worldObj.rand.nextFloat() * 0.1F + 0.9F);
         }
 
         if (par1ItemStack.getItemUseAction() == EnumAction.eat)
-            playSound("random.eat", 0.5F + 0.5F * this.rand.nextInt(2), (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+            playSound("random.eat", 0.5F + 0.5F * this.rand.nextInt(2),
+                    (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
     }
 
     public String getEntityName() {
@@ -134,65 +143,44 @@ public class FakePlayer extends EntityPlayerMP {
         return getEntityName();
     }
 
+    @Override
     public float getEyeHeight() {
         return 1.1F;
     }
 
+    @Override
     public ItemStack getCurrentArmor(int par1) {
-        return new ItemStack(Item.plateDiamond);
+        return new ItemStack(Items.diamond_chestplate);
     }
 
+    @Override
     public void addStat(StatBase par1StatBase, int par2) {
     }
 
+    @Override
     public void onDeath(DamageSource source) {
     }
 
+    @Override
     public void travelToDimension(int dim) {
     }
 
-    public void updateClientInfo(Packet204ClientInfo pkt) {
+    public void updateClientInfo(C16PacketClientStatus pkt) {
     }
 
-    public static class NetworkManagerFake implements INetworkManager {
+    public static class NetworkManagerFake extends NetworkManager {
 
-        @Override
-        public void setNetHandler(NetHandler nethandler) {
+        public NetworkManagerFake(boolean p_i45147_1_) {
+            super(p_i45147_1_);
         }
 
         @Override
-        public void addToSendQueue(Packet packet) {
-        }
-
-        @Override
-        public void wakeThreads() {
-        }
-
-        @Override
-        public void processReadPackets() {
+        public void setNetHandler(INetHandler nethandler) {
         }
 
         @Override
         public SocketAddress getSocketAddress() {
             return null;
         }
-
-        @Override
-        public void serverShutdown() {
-        }
-
-        @Override
-        public int packetSize() {
-            return 0;
-        }
-
-        @Override
-        public void networkShutdown(String s, Object... var2) {
-        }
-
-        @Override
-        public void closeConnections() {
-        }
-
     }
 }

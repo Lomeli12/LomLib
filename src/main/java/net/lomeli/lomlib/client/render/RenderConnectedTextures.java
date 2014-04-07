@@ -46,8 +46,8 @@ public class RenderConnectedTextures implements ISimpleBlockRenderingHandler {
         renderer.colorBlueBottomLeft *= f2;
         renderer.colorBlueBottomRight *= f2;
 
-        RenderUtils.drawBlockFaces(renderer, block, block.getIcon(0, metadata), block.getIcon(1, metadata), block.getIcon(2, metadata), block.getIcon(3, metadata), block.getIcon(4, metadata),
-                block.getIcon(5, metadata));
+        RenderUtils.drawBlockFaces(renderer, block, block.getIcon(0, metadata), block.getIcon(1, metadata),
+                block.getIcon(2, metadata), block.getIcon(3, metadata), block.getIcon(4, metadata), block.getIcon(5, metadata));
     }
 
     @Override
@@ -56,15 +56,10 @@ public class RenderConnectedTextures implements ISimpleBlockRenderingHandler {
             return renderer.renderStandardBlock(block, x, y, z);
 
         fakeBlock.setWorld(renderer.blockAccess);
-        fakeBlock.curBlock = (world.getBlockId(x, y, z) * 16 + world.getBlockMetadata(x, y, z));
+        fakeBlock.curBlock = (world.getBlock(x, y, z).hashCode() * 16 + world.getBlockMetadata(x, y, z));
         block.setBlockBoundsBasedOnState(fakeBlock.blockAccess, x, y, z);
         fakeBlock.setRenderBoundsFromBlock(block);
         return fakeBlock.renderStandardBlock(block, x, y, z);
-    }
-
-    @Override
-    public boolean shouldRender3DInInventory() {
-        return true;
     }
 
     @Override
@@ -75,6 +70,11 @@ public class RenderConnectedTextures implements ISimpleBlockRenderingHandler {
     public RenderConnectedTextures setRenderID(int id) {
         this.renderID = id;
         return this;
+    }
+
+    @Override
+    public boolean shouldRender3DInInventory(int modelId) {
+        return true;
     }
 
 }

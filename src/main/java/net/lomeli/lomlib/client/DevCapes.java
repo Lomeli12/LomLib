@@ -1,5 +1,12 @@
 package net.lomeli.lomlib.client;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+
+import javax.swing.ImageIcon;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -8,23 +15,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.ImageIcon;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 
 import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.event.ForgeSubscribe;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.ReflectionHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 import net.lomeli.lomlib.LomLib;
 import net.lomeli.lomlib.libs.Strings;
@@ -48,7 +48,7 @@ public class DevCapes {
         return instance;
     }
 
-    @ForgeSubscribe
+    @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void onPreRenderSpecials(RenderPlayerEvent.Specials.Pre event) {
         if (!ModLoaded.isModInstalled("shadersmod") && (event.entityPlayer instanceof AbstractClientPlayer)) {
@@ -60,21 +60,18 @@ public class DevCapes {
                     capePlayers.add(abstractClientPlayer);
 
                     ReflectionHelper.setPrivateValue(ThreadDownloadImageData.class, abstractClientPlayer.getTextureCape(), false,
-                            new String[] { "textureUploaded", "field_110559_g" });
+                            new String[]{"textureUploaded", "field_110559_g"});
 
                     new Thread(new CloakThread(abstractClientPlayer, cloakURL)).start();
                     event.renderCape = true;
-                }else
-                    return;
+                }
             }
         }
     }
 
     public void buildCapeDatabase() {
-        if (FMLCommonHandler.instance().getSide() != Side.CLIENT)
-            return;
         try {
-            URL xmlURL = new URL(Strings.CAPE_XML);
+            URL xmlURL = new URL(Strings.CAPE_URL);
             InputStream xml = xmlURL.openStream();
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
@@ -92,7 +89,7 @@ public class DevCapes {
                 }
             }
             xml.close();
-        }catch (Exception e) {
+        } catch (Exception e) {
         }
     }
 
@@ -119,8 +116,8 @@ public class DevCapes {
                 bo.getGraphics().drawImage(cape, 0, 0, null);
 
                 ReflectionHelper.setPrivateValue(ThreadDownloadImageData.class, abstractClientPlayer.getTextureCape(), bo,
-                        new String[] { "bufferedImage", "field_110560_d" });
-            }catch (Exception e) {
+                        new String[]{"bufferedImage", "field_110560_d"});
+            } catch (Exception e) {
                 LomLib.logger.logError("Failed to load cape!");
                 e.printStackTrace();
             }
@@ -138,7 +135,7 @@ public class DevCapes {
         public void run() {
             try {
                 TEST_GRAPHICS.drawImage(new ImageIcon(new URL(cloakURL)).getImage(), 0, 0, null);
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

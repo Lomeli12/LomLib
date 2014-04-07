@@ -5,32 +5,20 @@ buildscript {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.0-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.1-SNAPSHOT'
     }
 }
 
 repositories {
     ivy {
-        name 'com.pahimar.ee3'
-        artifactPattern "https://github.com/lluixhi/EE3-Builds/raw/master/1.6.4/[module]-1.6.4-[revision].[ext]"
-    }
-    ivy {
-        name 'Forge FS legacy'
-        artifactPattern "http://files.minecraftforge.net/[module]/[module]-dev-[revision].[ext]"
-    }
-    ivy {
         name 'CB FS'
         artifactPattern "http://www.chickenbones.craftsaddle.org/Files/New_Versions/1.6.4/[module]-dev%20[revision].[ext]"
-    }
-    maven {
-        name 'ForgeFS'
-        url 'http://files.minecraftforge.net/maven'
-    }
-    maven {
-        name 'MinecraftS3'
-        url 'http://s3.amazonaws.com/Minecraft.Download/libraries'
     }
 }
 
@@ -56,7 +44,6 @@ task Buildnumber {
 }
 
 dependencies {
-    compile name: 'EquivalentExchange3', version: 'pre2a.56', ext: 'jar'
     compile name: 'CodeChickenLib', version: '1.6.4-1.0.0.44', ext: 'jar'
     compile name: 'CodeChickenCore', version: '0.9.0.7', ext: 'jar'
     compile name: 'NotEnoughItems', version: '1.6.1.5_d1', ext: 'jar'

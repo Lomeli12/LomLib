@@ -1,24 +1,25 @@
 package net.lomeli.lomlib.client.render;
 
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.util.Icon;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.IIcon;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class IconConnected implements Icon {
+public class IconConnected implements IIcon {
 
     private int n;
 
-    public final Icon[] icons = new Icon[5];
+    public final IIcon[] icons = new IIcon[5];
 
-    public IconConnected(IconRegister register, String iconName, String modid) {
-        this(register.registerIcon(modid + ":" + iconName + "_corners"), register.registerIcon(modid + ":" + iconName + "_vertical"), register.registerIcon(modid + ":" + iconName
-                + "_horizontal"), register.registerIcon(modid + ":" + iconName), register.registerIcon(modid + ":" + iconName + "_anticorners"));
+    public IconConnected(IIconRegister register, String iconName, String modid) {
+        this(register.registerIcon(modid + ":" + iconName + "_corners"), register.registerIcon(modid + ":" + iconName
+                + "_vertical"), register.registerIcon(modid + ":" + iconName + "_horizontal"), register.registerIcon(modid + ":"
+                + iconName), register.registerIcon(modid + ":" + iconName + "_anticorners"));
     }
 
-    public IconConnected(Icon... icon) {
+    public IconConnected(IIcon... icon) {
         for (int i = 0; i < icon.length; i++) {
             this.icons[i] = icon[i];
         }

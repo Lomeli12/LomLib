@@ -3,26 +3,26 @@ package net.lomeli.lomlib.client.gui.element;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.util.Icon;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.IIcon;
 
 public class IconRegistry {
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static Map<String, Icon> icons = new HashMap();
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public static Map<String, IIcon> icons = new HashMap();
 
-    public static void addIcon(String iconName, String iconLocation, IconRegister ir) {
+    public static void addIcon(String iconName, String iconLocation, IIconRegister ir) {
         icons.put(iconName, ir.registerIcon(iconLocation));
     }
 
-    public static void addIcon(String iconName, Icon icon) {
+    public static void addIcon(String iconName, IIcon icon) {
         icons.put(iconName, icon);
     }
 
-    public static Icon getIcon(String iconName) {
+    public static IIcon getIcon(String iconName) {
         return icons.get(iconName);
     }
 
-    public static Icon getIcon(String iconName, int iconOffset) {
+    public static IIcon getIcon(String iconName, int iconOffset) {
         return icons.get(iconName + iconOffset);
     }
 }

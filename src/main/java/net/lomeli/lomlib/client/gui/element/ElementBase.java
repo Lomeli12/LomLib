@@ -2,17 +2,14 @@ package net.lomeli.lomlib.client.gui.element;
 
 import java.util.List;
 
-import net.lomeli.lomlib.client.gui.GuiContainerPlus;
-
-import net.minecraft.client.audio.SoundManager;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-public abstract class ElementBase {
+import net.lomeli.lomlib.client.gui.GuiContainerPlus;
 
-    public static final SoundManager elementSoundManager = FMLClientHandler.instance().getClient().sndManager;
+public abstract class ElementBase {
     public static final FontRenderer elementFontRenderer = FMLClientHandler.instance().getClient().fontRenderer;
 
     protected GuiContainerPlus gui;

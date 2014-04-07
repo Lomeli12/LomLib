@@ -1,31 +1,31 @@
 package net.lomeli.lomlib.client.gui;
 
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
-
-import net.lomeli.lomlib.client.ResourceUtil;
-import net.lomeli.lomlib.client.gui.element.ElementBase;
-import net.lomeli.lomlib.client.gui.element.IconRegistry;
-import net.lomeli.lomlib.client.gui.tab.TabBase;
-import net.lomeli.lomlib.client.gui.tab.TabTracker;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.inventory.Container;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 import net.minecraftforge.fluids.FluidStack;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import net.lomeli.lomlib.client.ResourceUtil;
+import net.lomeli.lomlib.client.gui.element.ElementBase;
+import net.lomeli.lomlib.client.gui.element.IconRegistry;
+import net.lomeli.lomlib.client.gui.element.TabBase;
+import net.lomeli.lomlib.client.gui.element.TabTracker;
 
 @SideOnly(Side.CLIENT)
 public class GuiContainerPlus extends GuiContainer {
@@ -74,7 +74,7 @@ public class GuiContainerPlus extends GuiContainer {
         }
     }
 
-    public void drawTiledTexture(int x, int y, Icon icon, int width, int height) {
+    public void drawTiledTexture(int x, int y, IIcon icon, int width, int height) {
         int i = 0;
         int j = 0;
 
@@ -103,7 +103,7 @@ public class GuiContainerPlus extends GuiContainer {
         tessellator.draw();
     }
 
-    public void drawIcon(Icon icon, int x, int y, int spriteSheet) {
+    public void drawIcon(IIcon icon, int x, int y, int spriteSheet) {
         if (spriteSheet == 0)
             ResourceUtil.setBlockTextureSheet();
         else
@@ -153,12 +153,13 @@ public class GuiContainerPlus extends GuiContainer {
         if (fluid == null || fluid.getFluid() == null)
             return;
         ResourceUtil.bindTexture(ResourceUtil.MC_BLOCK_SHEET);
-        GL11.glColor3ub((byte) (fluid.getFluid().getColor() >> 16 & 0xFF), (byte) (fluid.getFluid().getColor() >> 8 & 0xFF), (byte) (fluid.getFluid().getColor() & 0xFF));
+        GL11.glColor3ub((byte) (fluid.getFluid().getColor() >> 16 & 0xFF), (byte) (fluid.getFluid().getColor() >> 8 & 0xFF),
+                (byte) (fluid.getFluid().getColor() & 0xFF));
         drawTiledTexture(x, y, fluid.getFluid().getIcon(fluid), width, height);
     }
 
     public void drawTooltip(List<String> list) {
-        drawTooltipHoveringText(list, mouseX, mouseY, fontRenderer);
+        drawTooltipHoveringText(list, mouseX, mouseY, fontRendererObj);
         tooltip.clear();
     }
 
@@ -195,7 +196,7 @@ public class GuiContainerPlus extends GuiContainer {
             j1 = this.height - k1 - 6;
 
         this.zLevel = 300.0F;
-        itemRenderer.zLevel = 300.0F;
+        itemRender.zLevel = 300.0F;
         int l1 = -267386864;
         this.drawGradientRect(i1 - 3, j1 - 4, i1 + k + 3, j1 - 3, l1, l1);
         this.drawGradientRect(i1 - 3, j1 + k1 + 3, i1 + k + 3, j1 + k1 + 4, l1, l1);
@@ -219,13 +220,13 @@ public class GuiContainerPlus extends GuiContainer {
             j1 += 10;
         }
         this.zLevel = 0.0F;
-        itemRenderer.zLevel = 0.0F;
+        itemRender.zLevel = 0.0F;
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
     }
 
-    public void drawScaledTexturedModelRectFromIcon(int x, int y, Icon icon, int width, int height) {
+    public void drawScaledTexturedModelRectFromIcon(int x, int y, IIcon icon, int width, int height) {
         if (icon == null)
             return;
 
@@ -237,7 +238,8 @@ public class GuiContainerPlus extends GuiContainer {
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV(x + 0, y + height, this.zLevel, minU, minV + (maxV - minV) * height / 16F);
-        tessellator.addVertexWithUV(x + width, y + height, this.zLevel, minU + (maxU - minU) * width / 16F, minV + (maxV - minV) * height / 16F);
+        tessellator.addVertexWithUV(x + width, y + height, this.zLevel, minU + (maxU - minU) * width / 16F, minV + (maxV - minV)
+                * height / 16F);
         tessellator.addVertexWithUV(x + width, y + 0, this.zLevel, minU + (maxU - minU) * width / 16F, minV);
         tessellator.addVertexWithUV(x + 0, y + 0, this.zLevel, minU, minV);
         tessellator.draw();
