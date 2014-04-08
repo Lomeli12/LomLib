@@ -17,7 +17,7 @@ import cpw.mods.fml.relauncher.Side;
  */
 public class PacketHandler {
     /**
-     * Send this message to everyone.
+     * Send this message to all clients.
      * <p/>
      * Adapted from CPW's code in
      * cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper

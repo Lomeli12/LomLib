@@ -28,8 +28,7 @@ public class ByteUtil {
 
     public static void writeIntMap(ByteBuf buffer, HashMap<Integer, Integer> map) {
         buffer.writeInt(map.size());
-        map.entrySet();
-        for (Map.Entry mapEntry : map.entrySet()) {
+        for (Map.Entry<Integer, Integer> mapEntry : map.entrySet()) {
             int key = (Integer) mapEntry.getKey();
             int value = (Integer) mapEntry.getValue();
             buffer.writeInt(key);
@@ -42,7 +41,8 @@ public class ByteUtil {
         int size = buffer.readInt();
         if (size > 0){
             for (int i = 0; i < size; i++) {
-                int key = buffer.readInt(), value = buffer.readInt();
+                int key = buffer.readInt();
+                int value = buffer.readInt();
                 returnMap.put(key, value);
             }
         }

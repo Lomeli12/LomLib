@@ -17,7 +17,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockGeneric extends Block {
     protected String modID;
     protected String blockTexture;
-    protected World worldObj;
 
     /**
      * @param id       Block Id
@@ -29,21 +28,12 @@ public class BlockGeneric extends Block {
         super(material);
         this.modID = mod;
         this.blockTexture = texture;
+        this.setBlockTextureName(this.modID + ":" + this.blockTexture);
     }
-
-    public String getBlockTexture() {
-        return this.blockTexture;
-    }
-
+    
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iconRegister) {
-        blockIcon = iconRegister.registerIcon(modID + ":" + blockTexture);
-    }
-
-    @Override
-    public void onBlockAdded(World world, int x, int y, int z) {
-        this.worldObj = world;
-        this.worldObj.markBlockForUpdate(x, y, z);
+    public BlockGeneric setBlockName(String name) {
+    	super.setBlockName(this.modID.toLowerCase() + ":" + name);
+    	return this;
     }
 }
