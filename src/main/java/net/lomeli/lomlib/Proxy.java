@@ -6,26 +6,26 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class Proxy {
     public void doStuffPre() {
+        LomLib.logger.logBasic("Pre-Init");
     }
 
     public void doStuffInit() {
-        MinecraftForge.EVENT_BUS.register(this);
+        LomLib.logger.logBasic("Init");
     }
 
     public void doStuffPost() {
+        LomLib.logger.logBasic("Post-Init");
     }
 
     @SubscribeEvent
     public void onInteractEvent(PlayerInteractEvent event) {
         if (event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) {
-            System.out.println("Right click block");
             World world = event.entityPlayer.worldObj;
             ItemStack stack = event.entityPlayer.getCurrentEquippedItem();
             Block block = world.getBlock(event.x, event.y, event.z);

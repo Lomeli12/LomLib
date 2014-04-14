@@ -33,11 +33,13 @@ public class ChannelHandler extends MessageToMessageCodec<FMLProxyPacket, Abstra
     protected EnumMap<Side, FMLEmbeddedChannel> channels;
     private LinkedList<Class<? extends AbstractPacket>> packets = new LinkedList<Class<? extends AbstractPacket>>();
     private boolean isPostInitialised = false;
+    @SuppressWarnings("unused")
     private String modID;
 
     public ChannelHandler() {
     }
 
+    @SuppressWarnings("unchecked")
     public ChannelHandler(String modID, Class<? extends AbstractPacket>... packetTypes) {
         this.modID = modID;
         for (Class<? extends AbstractPacket> clazz : packetTypes) {

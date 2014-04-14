@@ -1,12 +1,5 @@
 package net.lomeli.lomlib.client;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-
-import javax.swing.ImageIcon;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -15,20 +8,26 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.swing.ImageIcon;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 
 import net.minecraftforge.client.event.RenderPlayerEvent;
 
-import cpw.mods.fml.common.FMLCommonHandler;
+import net.lomeli.lomlib.LomLib;
+import net.lomeli.lomlib.libs.Strings;
+import net.lomeli.lomlib.util.ModLoaded;
+
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-import net.lomeli.lomlib.LomLib;
-import net.lomeli.lomlib.libs.Strings;
-import net.lomeli.lomlib.util.ModLoaded;
 
 @SideOnly(Side.CLIENT)
 public class DevCapes {

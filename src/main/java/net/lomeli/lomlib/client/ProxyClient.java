@@ -1,7 +1,6 @@
 package net.lomeli.lomlib.client;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiOptions;
 import net.minecraft.client.gui.GuiVideoSettings;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

@@ -15,6 +15,7 @@ public class Strings {
 
     public static final String NEI_SHAPED = "recipe.lomlib:shapedFluid";
     public static final String NEI_SHAPELESS = "recipe.lomlib:shapelessFluid";
+    public static final String NEI_ANVIL = "recipe.lomlib:anvilRecipe";
     public static final String INVALID_RECIPE = "recipe.lomlib:invalid";
 
     public static final String COMMON = "net.lomeli.lomlib.Proxy";

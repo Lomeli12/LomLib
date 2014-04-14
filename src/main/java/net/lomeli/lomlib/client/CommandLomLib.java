@@ -52,7 +52,6 @@ public class CommandLomLib extends CommandBase {
         if (args.length != 0) {
             String argument1 = args[0];
 
-            @SuppressWarnings("unchecked")
             List<?> entityList = icommandsender.getEntityWorld().loadedEntityList;
 
             if (argument1.equalsIgnoreCase("calmPigmen")) {

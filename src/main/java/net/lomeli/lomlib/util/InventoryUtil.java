@@ -7,8 +7,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-import net.minecraftforge.common.util.ForgeDirection;
-
 import net.lomeli.lomlib.item.ItemUtil;
 import net.lomeli.lomlib.item.NBTUtil;
 import net.lomeli.lomlib.libs.Incomplete;

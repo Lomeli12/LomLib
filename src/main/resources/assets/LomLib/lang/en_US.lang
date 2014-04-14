@@ -1,5 +1,6 @@
 recipe.lomlib:shapedFluid=Shaped Fluid Recipe
 recipe.lomlib:shapelessFluid=Shapeless Fluid Recipe
+recipe.lomlib:anvilRecipe=Anvil Recipe
 
 tab.lomlib.info=Information
 

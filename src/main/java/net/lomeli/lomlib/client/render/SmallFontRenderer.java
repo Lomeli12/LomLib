@@ -774,6 +774,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
      * Perform actual work of rendering a multi-line string with wordwrap and
      * with darker drop shadow color if flag is set
      */
+    @SuppressWarnings("rawtypes")
     private void renderSplitString(String par1Str, int par2, int par3, int par4, boolean par5) {
         List list = this.listFormattedStringToWidth(par1Str, par4);
 
@@ -818,6 +819,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
     /**
      * Breaks a string into a list of pieces that will fit a specified width.
      */
+    @SuppressWarnings("rawtypes")
     public List listFormattedStringToWidth(String par1Str, int par2) {
         return Arrays.asList(this.wrapFormattedStringToWidth(par1Str, par2).split("\n"));
     }
