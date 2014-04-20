@@ -211,7 +211,7 @@ public class EntityUtil {
         if (player.getGameProfile() == null || player.getGameProfile().getName() == null || ("[Minecraft]".equals(player.getGameProfile().getName()))
                 || ("[ExtraUtilities:FakePlayer]".equals(player.getGameProfile().getName())))
             return true;
-        if (player instanceof FakePlayer)
+        if (player instanceof FakePlayerLomLib)
             return true;
         if (player instanceof EntityPlayerMP) {
             EntityPlayerMP mp = (EntityPlayerMP) player;

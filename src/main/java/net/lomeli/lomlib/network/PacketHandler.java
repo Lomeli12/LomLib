@@ -4,6 +4,7 @@ import java.util.EnumMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.FMLEmbeddedChannel;
 import cpw.mods.fml.common.network.FMLOutboundHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -12,7 +13,7 @@ import cpw.mods.fml.relauncher.Side;
 /**
  * Packet pipeline class. Directs all registered packet data to be handled by
  * the packets themselves.
- *
+ * 
  * @author sirgingalot some code from: cpw
  */
 public class PacketHandler {
@@ -21,8 +22,9 @@ public class PacketHandler {
      * <p/>
      * Adapted from CPW's code in
      * cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper
-     *
-     * @param message The message to send
+     * 
+     * @param message
+     *            The message to send
      */
     public static void sendToAll(EnumMap<Side, FMLEmbeddedChannel> channel, AbstractPacket message) {
         channel.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALL);
@@ -34,9 +36,11 @@ public class PacketHandler {
      * <p/>
      * Adapted from CPW's code in
      * cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper
-     *
-     * @param message The message to send
-     * @param player  The player to send it to
+     * 
+     * @param message
+     *            The message to send
+     * @param player
+     *            The player to send it to
      */
     public static void sendTo(EnumMap<Side, FMLEmbeddedChannel> channel, AbstractPacket message, EntityPlayer player) {
         channel.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.PLAYER);
@@ -49,14 +53,15 @@ public class PacketHandler {
      * <p/>
      * Adapted from CPW's code in
      * cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper
-     *
-     * @param message The message to send
-     * @param point   The
-     *                {@link cpw.mods.fml.common.network.NetworkRegistry.TargetPoint}
-     *                around which to send
+     * 
+     * @param message
+     *            The message to send
+     * @param point
+     *            The
+     *            {@link cpw.mods.fml.common.network.NetworkRegistry.TargetPoint}
+     *            around which to send
      */
-    public static void sendToAllAround(EnumMap<Side, FMLEmbeddedChannel> channel, AbstractPacket message,
-                                       NetworkRegistry.TargetPoint point) {
+    public static void sendToAllAround(EnumMap<Side, FMLEmbeddedChannel> channel, AbstractPacket message, NetworkRegistry.TargetPoint point) {
         channel.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.ALLAROUNDPOINT);
         channel.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGETARGS).set(point);
         channel.get(Side.SERVER).writeAndFlush(message);
@@ -67,9 +72,11 @@ public class PacketHandler {
      * <p/>
      * Adapted from CPW's code in
      * cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper
-     *
-     * @param message     The message to send
-     * @param dimensionId The dimension id to target
+     * 
+     * @param message
+     *            The message to send
+     * @param dimensionId
+     *            The dimension id to target
      */
     public static void sendToDimension(EnumMap<Side, FMLEmbeddedChannel> channel, AbstractPacket message, int dimensionId) {
         channel.get(Side.SERVER).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.DIMENSION);
@@ -82,11 +89,25 @@ public class PacketHandler {
      * <p/>
      * Adapted from CPW's code in
      * cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper
-     *
-     * @param message The message to send
+     * 
+     * @param message
+     *            The message to send
      */
     public static void sendToServer(EnumMap<Side, FMLEmbeddedChannel> channel, AbstractPacket message) {
         channel.get(Side.CLIENT).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.TOSERVER);
         channel.get(Side.CLIENT).writeAndFlush(message);
+    }
+
+    public static void sendToAllExcept(EnumMap<Side, FMLEmbeddedChannel> channel, AbstractPacket message, EntityPlayer player) {
+        for (int i = 0; i < FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().playerEntityList.size(); i++) {
+            EntityPlayer p = (EntityPlayer) FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().playerEntityList.get(i);
+            if (!player.getCommandSenderName().equalsIgnoreCase(p.getCommandSenderName()))
+                sendTo(channel, message, p);
+        }
+    }
+
+    public static void sendEverywhere(EnumMap<Side, FMLEmbeddedChannel> channel, AbstractPacket message) {
+        sendToAll(channel, message);
+        sendToServer(channel, message);
     }
 }

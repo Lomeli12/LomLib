@@ -16,8 +16,8 @@ public class NEIAddon {
             API.registerUsageHandler(new ShapedFluidRecipeHandler());
             API.registerRecipeHandler(new ShapelessFluidRecipeHandler());
             API.registerUsageHandler(new ShapelessFluidRecipeHandler());
-            API.registerRecipeHandler(new FluidAnvilRecipeHandler());
-            API.registerUsageHandler(new FluidAnvilRecipeHandler());
+            //API.registerRecipeHandler(new FluidAnvilRecipeHandler());
+            //API.registerUsageHandler(new FluidAnvilRecipeHandler());
         }
     }
 }
