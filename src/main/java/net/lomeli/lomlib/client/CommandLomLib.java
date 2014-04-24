@@ -11,13 +11,11 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import cpw.mods.fml.relauncher.Side;
-
 import net.lomeli.lomlib.libs.Strings;
 import net.lomeli.lomlib.util.ReflectionUtil;
 import net.lomeli.lomlib.util.ToolTipUtil;
+
+import cpw.mods.fml.relauncher.ReflectionHelper;
 
 public class CommandLomLib extends CommandBase {
 
@@ -28,22 +26,17 @@ public class CommandLomLib extends CommandBase {
 
     @Override
     public String getCommandUsage(ICommandSender icommandsender) {
-        return "/" + this.getCommandName();
-    }
-
-    @Override
-    public boolean canCommandSenderUseCommand(ICommandSender commandSender) {
-        return commandSender.getEntityWorld().getWorldInfo().areCommandsAllowed();
+        return "/" + this.getCommandName() + " help";
     }
 
     @Override
     @SuppressWarnings("rawtypes")
     public List addTabCompletionOptions(ICommandSender commandSender, String[] args) {
-        switch (args.length) {
-            case 1:
-                return getListOfStringsMatchingLastWord(args, new String[]{"calmPigmen"});
-            default:
-                return null;
+        switch(args.length) {
+        case 1 :
+            return getListOfStringsMatchingLastWord(args, new String[] { "calmPigmen" });
+        default:
+            return null;
         }
     }
 
@@ -55,102 +48,85 @@ public class CommandLomLib extends CommandBase {
             List<?> entityList = icommandsender.getEntityWorld().loadedEntityList;
 
             if (argument1.equalsIgnoreCase("calmPigmen")) {
+                boolean successful = false;
                 for (Object entity : entityList) {
                     if (entity instanceof EntityPigZombie) {
                         ((EntityPigZombie) entity).setTarget(null);
                         try {
-                            ReflectionUtil.setFieldsAccess(EntityPigZombie.class.getName(), new String[]{"angerLevel",
-                                    "field_70837_d"}, new boolean[]{true, true});
-                            ReflectionHelper.setPrivateValue(Integer.class, EntityPigZombie.class.getDeclaredField("angerLevel")
-                                    .getInt(entity), 0, new String[]{"angerLevel"});
-                            ReflectionHelper.setPrivateValue(Integer.class,
-                                    EntityPigZombie.class.getDeclaredField("field_70837_d").getInt(entity), 0,
-                                    new String[]{"field_70837_d"});
-                            if (FMLCommonHandler.instance().getSide() != Side.CLIENT)
-                                sendCommanderMessage(icommandsender, ToolTipUtil.BLUE
-                                        + "[LomLib]: Pig Zombies should now be calm");
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                            if (!ReflectionUtil.isFieldAccessible(EntityPigZombie.class, "angerLevel"))
+                                ReflectionUtil.setFieldAccess(EntityPigZombie.class, "angerLevel", true);
+                            ReflectionHelper.setPrivateValue(EntityPigZombie.class, ((EntityPigZombie) entity), 0, "angerLevel");
+                            if (!successful)
+                                successful = true;
+                        }catch (Exception e) {
+                            try {
+                                if (!ReflectionUtil.isFieldAccessible(EntityPigZombie.class, "field_70837_d"))
+                                    ReflectionUtil.setFieldAccess(EntityPigZombie.class, "field_70837_d", true);
+                                ReflectionHelper.setPrivateValue(EntityPigZombie.class, ((EntityPigZombie) entity), 0, "field_70837_d");
+                                if (!successful)
+                                    successful = true;
+                            }catch (Exception e1) {
+                                try {
+                                    if (!ReflectionUtil.isFieldAccessible(EntityPigZombie.class, "bs"))
+                                        ReflectionUtil.setFieldAccess(EntityPigZombie.class, "bs", true);
+                                    ReflectionHelper.setPrivateValue(EntityPigZombie.class, ((EntityPigZombie) entity), 0, "bs");
+                                    if (!successful)
+                                        successful = true;
+                                }catch (Exception e2) {
+                                    sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: Failed to calm Pig Zombies!");
+                                    e2.printStackTrace();
+                                }
+                            }
                         }
                     }
                 }
-            } else if (argument1.equalsIgnoreCase("clearAllEntities")) {
+                if (successful)
+                    sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: Pig Zombies should now be calm");
+            }else if (argument1.equalsIgnoreCase("clearAllEntities")) {
                 for (Object entity : entityList) {
                     if (entity instanceof Entity) {
                         if (!(entity instanceof EntityPlayer))
                             ((Entity) entity).setDead();
                     }
                 }
-                if (FMLCommonHandler.instance().getSide() != Side.CLIENT)
-                    sendCommanderMessage(icommandsender, ToolTipUtil.BLUE
-                            + "[LomLib]: All non-player entities have been removed.");
-            } else if (argument1.equalsIgnoreCase("clearEntities")) {
+                sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All loaded non-player entities have been removed.");
+            }else if (argument1.equalsIgnoreCase("clearEntities")) {
                 for (Object entity : entityList) {
                     if (entity instanceof Entity) {
                         if (!(entity instanceof EntityLivingBase))
                             ((Entity) entity).setDead();
                     }
                 }
-                if (FMLCommonHandler.instance().getSide() != Side.CLIENT)
-                    sendCommanderMessage(icommandsender, ToolTipUtil.BLUE
-                            + "[LomLib]: All non-living entities have been removed.");
-            } else if (argument1.equalsIgnoreCase("clearLivingEntities")) {
+                sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All loaded non-living entities have been removed.");
+            }else if (argument1.equalsIgnoreCase("clearLivingEntities")) {
                 for (Object entity : entityList) {
                     if (entity instanceof EntityLivingBase)
                         ((EntityLivingBase) entity).setDead();
                 }
-                if (FMLCommonHandler.instance().getSide() != Side.CLIENT)
-                    sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All Living mobs have been removed.");
-            } else if (argument1.equalsIgnoreCase("clearHostiles")) {
+                sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All loaded Living mobs have been removed.");
+            }else if (argument1.equalsIgnoreCase("clearHostiles")) {
                 for (Object entity : entityList) {
                     if (entity instanceof Entity) {
                         if (entity instanceof IMob)
                             ((Entity) entity).setDead();
                     }
                 }
-                if (FMLCommonHandler.instance().getSide() != Side.CLIENT)
-                    sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All Hostile mobs have been removed.");
-            } else if (argument1.equalsIgnoreCase("help") || argument1.equalsIgnoreCase("?")) {
-                if (FMLCommonHandler.instance().getSide() != Side.CLIENT) {
-                    sendCommanderMessage(icommandsender, "/lomlib calmPigmen " + ToolTipUtil.GREEN
-                            + "-Calms down all pigmen in loaded chunks.");
-                    sendCommanderMessage(icommandsender, "/lomlib clearAllEntities " + ToolTipUtil.GREEN
-                            + "-Clears all non-player entities in loaded chunks.");
-                    sendCommanderMessage(icommandsender, "/lomlib clearEntities " + ToolTipUtil.GREEN
-                            + "-Clears all non-living entities in loaded chunks.");
-                    sendCommanderMessage(icommandsender, "/lomlib clearLivingEntities " + ToolTipUtil.GREEN
-                            + "-Clears all living entities in loaded chunks.");
-                    sendCommanderMessage(icommandsender, "/lomlib clearHostiles  " + ToolTipUtil.GREEN
-                            + "-Clears all hostile entities in loaded chunks.");
-                }
-            } else if(argument1.equalsIgnoreCase("cape")) {
-                if (FMLCommonHandler.instance().getSide() != Side.CLIENT) {
-                    if (args.length == 3) {
-                        String user = args[1], url = args[2];
-                        if (user != "" && url != "") {
-
-                        }
-                    }
-                }
+                sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All loaded Hostile mobs have been removed.");
+            }else if (argument1.equalsIgnoreCase("help") || argument1.equalsIgnoreCase("?")) {
+                sendCommanderMessage(icommandsender, "Format: `" + ToolTipUtil.ORANGE + "lomlib <command>" + ToolTipUtil.WHITE + "'");
+                sendCommanderMessage(icommandsender, "Available commands: ");
+                sendCommanderMessage(icommandsender, "- calmPigmen : " + ToolTipUtil.GREEN + "Calms down all loaded pigmen.");
+                sendCommanderMessage(icommandsender, "- clearAllEntities : " + ToolTipUtil.GREEN + "Clears all loaded non-player entities.");
+                sendCommanderMessage(icommandsender, "- clearEntities : " + ToolTipUtil.GREEN + "Clears all loaded non-living entities.");
+                sendCommanderMessage(icommandsender, "- clearLivingEntities : " + ToolTipUtil.GREEN + "Clears all loaded living entities.");
+                sendCommanderMessage(icommandsender, "- clearHostiles : " + ToolTipUtil.GREEN + "Clears all loaded hostile entities.");
             }
-        } else {
-            if (FMLCommonHandler.instance().getSide() != Side.CLIENT)
-                sendCommanderMessage(icommandsender, ToolTipUtil.GREEN + "Type /lomlib help or /lomlib ? for more info");
-        }
+        }else
+            sendCommanderMessage(icommandsender, ToolTipUtil.GREEN + "Type /lomlib help or /lomlib ? for more info");
     }
 
     private void sendCommanderMessage(ICommandSender sender, String message) {
-        if (sender != null) {
-            sender.getEntityWorld().getPlayerEntityByName(sender.getCommandSenderName())
-                    .addChatMessage(new ChatComponentText(message));
-        } else {
-
-            // sender.addChatMessage(new ChatComponentText(message));
-        }
-    }
-
-    @Override
-    public int compareTo(Object arg0) {
-        return 0;
+        if (sender != null)
+            sender.addChatMessage(new ChatComponentText(message));
     }
 }

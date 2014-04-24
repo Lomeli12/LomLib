@@ -21,7 +21,16 @@ public class ReflectionUtil {
         }
         return true;
     }
-    
+
+    public static boolean isFieldAccessible(Class<?> clazz, String fieldName) throws Exception {
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            if (field.getName().equalsIgnoreCase(fieldName))
+                return field.isAccessible();
+        }
+        return false;
+    }
+
     public static void setFieldAccess(Class<?> clazz, String fieldName, boolean access) throws Exception {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
@@ -29,6 +38,13 @@ public class ReflectionUtil {
                 field.setAccessible(access);
                 break;
             }
+        }
+    }
+
+    public static void setFieldsAccess(Class<?> clazz, String[] fields, boolean[] access) throws Exception {
+        for (int i = 0; i < fields.length; i++) {
+            if (i < access.length)
+                setFieldAccess(clazz, fields[i], access[i]);
         }
     }
 
@@ -70,6 +86,19 @@ public class ReflectionUtil {
 
     public static void setFieldsAccess(String className, String[] fieldNames, boolean[] access) {
         setFieldsAccess(className, fieldNames, access, false);
+    }
+
+    public static boolean isMethodAccessible(String className, String methodName) {
+        try {
+            Method[] methods = Class.forName(className).getDeclaredMethods();
+            for (Method method : methods) {
+                if (method.getName().equalsIgnoreCase(methodName))
+                    return method.isAccessible();
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static void setMethodAccess(String className, String methodName, boolean access, boolean debug) {
