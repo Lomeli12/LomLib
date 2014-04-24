@@ -1,6 +1,7 @@
 package net.lomeli.lomlib.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.GuiVideoSettings;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -20,6 +21,7 @@ import net.lomeli.lomlib.Proxy;
 import net.lomeli.lomlib.client.gui.element.IconRegistry;
 import net.lomeli.lomlib.client.render.SmallFontRenderer;
 import net.lomeli.lomlib.util.ModLoaded;
+import net.lomeli.lomlib.util.ReflectionUtil;
 
 public class ProxyClient extends Proxy {
 
@@ -30,20 +32,18 @@ public class ProxyClient extends Proxy {
         super.doStuffPre();
         ResourceUtil.initResourceUtil();
 
-        if (LomLib.capes)
+        if (LomLib.capes && setCapeAccess())
             MinecraftForge.EVENT_BUS.register(DevCapes.getInstance());
 
         if (isOptifineInstalled())
-            LomLib.logger
-                    .logWarning("Optifine detected! If you run into any bugs, please test without optifine first before reporting, otherwise it WILL BE IGNORED! (Applies to both my mods and most others)");
+            LomLib.logger.logWarning("Optifine detected! If you run into any bugs, please test without optifine first before reporting, otherwise it WILL BE IGNORED! (Applies to both my mods and most others)");
     }
 
     @Override
     public void doStuffInit() {
         FMLCommonHandler.instance().bus().register(new LomlibEvents());
         Minecraft mc = Minecraft.getMinecraft();
-        smallFontRenderer = new SmallFontRenderer(mc.gameSettings, new ResourceLocation("minecraft:textures/font/ascii.png"),
-                mc.renderEngine, false);
+        smallFontRenderer = new SmallFontRenderer(mc.gameSettings, new ResourceLocation("minecraft:textures/font/ascii.png"), mc.renderEngine, false);
     }
 
     @Override
@@ -56,9 +56,40 @@ public class ProxyClient extends Proxy {
     private boolean isOptifineInstalled() {
         try {
             return Class.forName("optifine.OptiFineForgeTweaker") != null;
-        } catch (ClassNotFoundException e) {
+        }catch (ClassNotFoundException e) {
             return false;
         }
+    }
+
+    private boolean setCapeAccess() {
+        boolean successfull = false;
+        try {
+            if(LomLib.debug)
+                LomLib.logger.logBasic("Accessing AbstractClientPlayer fields with MCP Names");
+            ReflectionUtil.setFieldAccess(AbstractClientPlayer.class, "downloadImageCape", true);
+            ReflectionUtil.setFieldAccess(AbstractClientPlayer.class, "locationCape", true);
+            successfull = true;
+        }catch (Exception e) {
+            try {
+                if(LomLib.debug)
+                    LomLib.logger.logBasic("Failed with MCP names, using SRG Names");
+                ReflectionUtil.setFieldAccess(AbstractClientPlayer.class, "field_110315_c", true);
+                ReflectionUtil.setFieldAccess(AbstractClientPlayer.class, "field_110313_e", true);
+                successfull = true;
+            }catch (Exception e1) {
+                try {
+                    if(LomLib.debug)
+                        LomLib.logger.logBasic("Failed with SRG names, using Obfuscated Names");
+                    ReflectionUtil.setFieldAccess(AbstractClientPlayer.class, "c", true);
+                    ReflectionUtil.setFieldAccess(AbstractClientPlayer.class, "e", true);
+                    successfull = true;
+                }catch (Exception e2) {
+                    LomLib.logger.logError("Could not set cape access!");
+                    e2.printStackTrace();
+                }
+            }
+        }
+        return successfull;
     }
 
     public static class LomlibEvents {
@@ -72,7 +103,7 @@ public class ProxyClient extends Proxy {
             }
         }
 
-        //@SubscribeEvent
+        // @SubscribeEvent
         public void renderTick(TickEvent.RenderTickEvent event) {
             if (event.phase == TickEvent.Phase.END) {
                 if (Minecraft.getMinecraft().currentScreen instanceof GuiVideoSettings) {

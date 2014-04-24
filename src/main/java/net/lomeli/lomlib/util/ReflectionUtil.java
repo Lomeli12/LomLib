@@ -17,29 +17,36 @@ public class ReflectionUtil {
                 if (f.getName().equalsIgnoreCase("loadedEntityList"))
                     return false;
             }
-        } catch (Exception e) {
+        }catch (Exception e) {
         }
         return true;
     }
-
-    public static void setFieldAccess(String className, String fieldName, boolean access, boolean debug) {
-        try {
-            if (debug)
-                LomLib.logger.logBasic("Getting class " + className);
-            Field[] fields = Class.forName(className).getDeclaredFields();
-            for (Field field : fields) {
-                if (field.getName().equalsIgnoreCase(fieldName)) {
-                    field.setAccessible(access);
-                    if (debug)
-                        LomLib.logger.logBasic("Setting access for " + fieldName + " to " + access);
-                    break;
-                }
+    
+    public static void setFieldAccess(Class<?> clazz, String fieldName, boolean access) throws Exception {
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            if (field.getName().equalsIgnoreCase(fieldName)) {
+                field.setAccessible(access);
+                break;
             }
-        } catch (Exception e) {
         }
     }
 
-    public static void setFieldAccess(String className, String fieldName, boolean access) {
+    public static void setFieldAccess(String className, String fieldName, boolean access, boolean debug) throws Exception {
+        if (debug)
+            LomLib.logger.logBasic("Getting class " + className);
+        Field[] fields = Class.forName(className).getDeclaredFields();
+        for (Field field : fields) {
+            if (field.getName().equalsIgnoreCase(fieldName)) {
+                field.setAccessible(access);
+                if (debug)
+                    LomLib.logger.logBasic("Setting access for " + fieldName + " to " + access);
+                break;
+            }
+        }
+    }
+
+    public static void setFieldAccess(String className, String fieldName, boolean access) throws Exception {
         setFieldAccess(className, fieldName, access, false);
     }
 
@@ -57,7 +64,7 @@ public class ReflectionUtil {
                     }
                 }
             }
-        } catch (Exception e) {
+        }catch (Exception e) {
         }
     }
 
@@ -73,7 +80,7 @@ public class ReflectionUtil {
                     method.setAccessible(access);
                 }
             }
-        } catch (Exception e) {
+        }catch (Exception e) {
         }
     }
 
@@ -85,20 +92,19 @@ public class ReflectionUtil {
         return targetClass.getDeclaredField(fieldName);
     }
 
-    public static String getFieldString(Class<?> targetClass, String fieldName, Object instance) throws NoSuchFieldException,
-            SecurityException, IllegalArgumentException, IllegalAccessException {
+    public static String getFieldString(Class<?> targetClass, String fieldName, Object instance) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
         return (String) getField(targetClass, fieldName).get(instance);
     }
 
-    public static ThreadDownloadImageData getFieldDownloadImageData(Class<?> targetClass, String fieldName, Object instance)
-            throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+    public static ThreadDownloadImageData getFieldDownloadImageData(Class<?> targetClass, String fieldName, Object instance) throws NoSuchFieldException, SecurityException, IllegalArgumentException,
+            IllegalAccessException {
         return (ThreadDownloadImageData) getField(targetClass, fieldName).get(instance);
     }
 
     public static int getIntField(Object obj, String fieldName) {
         try {
             return obj.getClass().getDeclaredField(fieldName).getInt(obj);
-        } catch (Exception e) {
+        }catch (Exception e) {
             return 0;
         }
     }
@@ -110,7 +116,7 @@ public class ReflectionUtil {
     public static Object getField(Object obj, String field, Class<?> baseClass) {
         try {
             return baseClass.getDeclaredField(field).get(obj);
-        } catch (Exception e) {
+        }catch (Exception e) {
             if (LomLib.debug)
                 LomLib.logger.logWarning("Could not modify field " + field + " in " + obj.toString());
             return null;
@@ -120,7 +126,7 @@ public class ReflectionUtil {
     public static void setField(Object obj, String field, Object set) {
         try {
             obj.getClass().getDeclaredField(field).set(obj, set);
-        } catch (Exception e) {
+        }catch (Exception e) {
             if (LomLib.debug)
                 LomLib.logger.logWarning("Could not modify field " + field + " in " + obj.toString());
         }
@@ -129,7 +135,7 @@ public class ReflectionUtil {
     public static void useMethod(Object obj, String method, Object... arguments) {
         try {
             obj.getClass().getDeclaredMethod(method, arguments.getClass()).invoke(obj, arguments);
-        } catch (Exception e) {
+        }catch (Exception e) {
             if (LomLib.debug)
                 LomLib.logger.logWarning("Could not use method " + method + " within " + obj.toString());
         }

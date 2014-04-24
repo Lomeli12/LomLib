@@ -1,14 +1,12 @@
 package net.lomeli.lomlib.client.gui.element;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 
 public class IconRegistry {
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public static Map<String, IIcon> icons = new HashMap();
+    public static HashMap<String, IIcon> icons = new HashMap<String, IIcon> ();
 
     public static void addIcon(String iconName, String iconLocation, IIconRegister ir) {
         icons.put(iconName, ir.registerIcon(iconLocation));
