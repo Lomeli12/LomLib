@@ -7,9 +7,9 @@ import net.minecraftforge.oredict.RecipeSorter;
 
 import net.lomeli.lomlib.client.CommandLomLib;
 import net.lomeli.lomlib.libs.Strings;
+import net.lomeli.lomlib.recipes.AnvilRecipeManager;
 import net.lomeli.lomlib.recipes.ShapedFluidRecipe;
 import net.lomeli.lomlib.recipes.ShapelessFluidRecipe;
-import net.lomeli.lomlib.recipes.anvil.AnvilRecipeManager;
 import net.lomeli.lomlib.util.LogHelper;
 import net.lomeli.lomlib.util.XMLConfiguration;
 
@@ -22,6 +22,9 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = Strings.MOD_ID, name = Strings.MOD_NAME, version = Strings.VERSION)
 public class LomLib {
+    
+    @Mod.Instance
+    public static LomLib instance;
 
     @SidedProxy(clientSide = Strings.CLIENT, serverSide = Strings.COMMON)
     public static Proxy proxy;
@@ -40,7 +43,7 @@ public class LomLib {
         logger = new LogHelper(Strings.MOD_NAME);
 
         configureMod(event.getSuggestedConfigurationFile());
-
+        
         RecipeSorter.register(Strings.NEI_SHAPED, ShapedFluidRecipe.class, RecipeSorter.Category.SHAPED, "after:minecraft:shaped before:minecraft:shapeless");
         RecipeSorter.register(Strings.NEI_SHAPELESS, ShapelessFluidRecipe.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 
@@ -49,9 +52,9 @@ public class LomLib {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
+        proxy.doStuffInit();
         MinecraftForge.EVENT_BUS.register(proxy);
         MinecraftForge.EVENT_BUS.register(new AnvilRecipeManager());
-        proxy.doStuffInit();
     }
 
     @Mod.EventHandler

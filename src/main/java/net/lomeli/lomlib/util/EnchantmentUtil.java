@@ -21,12 +21,55 @@ public class EnchantmentUtil {
             book.stackTagCompound = new NBTTagCompound();
             NBTTagList enchantList = new NBTTagList();
             NBTTagCompound enchantTag = new NBTTagCompound();
-            enchantTag.setShort("id", (short)enchant.effectId);
+            enchantTag.setShort("id", (short) enchant.effectId);
             enchantTag.setShort("lvl", lvl);
             enchantList.appendTag(enchantTag);
             book.stackTagCompound.setTag("StoredEnchantments", enchantList);
         }
         return book;
+    }
+
+    public static ItemStack addEnchantment(ItemStack stack, Enchantment enchant, short lvl) {
+        if (stack == null || enchant == null)
+            return null;
+        if (stack.getTagCompound() == null)
+            stack.stackTagCompound = new NBTTagCompound();
+
+        NBTTagList enchantList = stack.getEnchantmentTagList();
+        NBTTagCompound enchantTag = new NBTTagCompound();
+
+        if (itemHasEnchant(stack, enchant)) {
+            if (lvl > 0) {
+                for (int i = 0; i < enchantList.tagCount(); i++) {
+                    NBTTagCompound enc = enchantList.getCompoundTagAt(i);
+                    if (enc.hasKey("id")) {
+                        if (enc.getShort("id") == (short) enchant.effectId) {
+                            enc.setShort("lvl", lvl);
+                            break;
+                        }
+                    }
+                }
+            }else {
+                for (int i = 0; i < enchantList.tagCount(); i++) {
+                    NBTTagCompound enc = enchantList.getCompoundTagAt(i);
+                    if (enc.hasKey("id")) {
+                        if (enc.getShort("id") == (short) enchant.effectId) {
+                            enchantList.removeTag(i);
+                            break;
+                        }
+                    }
+                }
+            }
+        }else {
+            if (lvl > 0) {
+                enchantTag.setShort("id", (short) enchant.effectId);
+                enchantTag.setShort("lvl", lvl);
+                enchantList.appendTag(enchantTag);
+            }
+        }
+        stack.stackTagCompound.setTag("ench", enchantList);
+
+        return stack;
     }
 
     public static boolean itemHasEnchant(ItemStack stack, Enchantment enchant) {

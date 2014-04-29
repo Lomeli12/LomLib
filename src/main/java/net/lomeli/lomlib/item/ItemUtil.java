@@ -1,6 +1,7 @@
 package net.lomeli.lomlib.item;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -67,11 +68,10 @@ public class ItemUtil {
 
     public static ItemStack consumeItem(ItemStack stack) {
         if (stack.stackSize == 1) {
-            if (stack.getItem().hasContainerItem(stack)) {
+            if (stack.getItem().hasContainerItem(stack))
                 return stack.getItem().getContainerItem(stack);
-            }else {
+            else
                 return null;
-            }
         }else {
             stack.splitStack(1);
 
@@ -163,5 +163,32 @@ public class ItemUtil {
         retStack.stackSize = stackSize;
 
         return retStack;
+    }
+
+    public static void dropItemStackIntoWorld(ItemStack stack, World world, double x, double y, double z, boolean velocity) {
+        if (stack != null) {
+            float x2 = 0.5F;
+            float y2 = 0.0F;
+            float z2 = 0.5F;
+
+            if (velocity) {
+                x2 = world.rand.nextFloat() * 0.8F + 0.1F;
+                y2 = world.rand.nextFloat() * 0.8F + 0.1F;
+                z2 = world.rand.nextFloat() * 0.8F + 0.1F;
+            }
+            EntityItem entity = new EntityItem(world, x + x2, y + y2, z + z2, stack.copy());
+
+            if (velocity) {
+                entity.motionX = ((float) world.rand.nextGaussian() * 0.05F);
+                entity.motionY = ((float) world.rand.nextGaussian() * 0.05F + 0.2F);
+                entity.motionZ = ((float) world.rand.nextGaussian() * 0.05F);
+            }else {
+                entity.motionY = -0.0500000007450581D;
+                entity.motionX = 0.0D;
+                entity.motionZ = 0.0D;
+            }
+
+            world.spawnEntityInWorld(entity);
+        }
     }
 }

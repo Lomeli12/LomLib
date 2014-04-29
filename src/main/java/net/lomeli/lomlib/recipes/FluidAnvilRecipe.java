@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.recipes.anvil;
+package net.lomeli.lomlib.recipes;
 
 import java.util.ArrayList;
 

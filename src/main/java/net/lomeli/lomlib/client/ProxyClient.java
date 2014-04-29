@@ -21,7 +21,7 @@ import net.lomeli.lomlib.Proxy;
 import net.lomeli.lomlib.client.gui.element.IconRegistry;
 import net.lomeli.lomlib.client.render.SmallFontRenderer;
 import net.lomeli.lomlib.util.ModLoaded;
-import net.lomeli.lomlib.util.ReflectionUtil;
+import net.lomeli.lomlib.util.ObfUtil;
 
 public class ProxyClient extends Proxy {
 
@@ -66,22 +66,22 @@ public class ProxyClient extends Proxy {
         try {
             if(LomLib.debug)
                 LomLib.logger.logBasic("Accessing AbstractClientPlayer fields with MCP Names");
-            ReflectionUtil.setFieldAccess(AbstractClientPlayer.class, "downloadImageCape", true);
-            ReflectionUtil.setFieldAccess(AbstractClientPlayer.class, "locationCape", true);
+            ObfUtil.setFieldAccess(AbstractClientPlayer.class, "downloadImageCape", true);
+            ObfUtil.setFieldAccess(AbstractClientPlayer.class, "locationCape", true);
             successfull = true;
         }catch (Exception e) {
             try {
                 if(LomLib.debug)
                     LomLib.logger.logBasic("Failed with MCP names, using SRG Names");
-                ReflectionUtil.setFieldAccess(AbstractClientPlayer.class, "field_110315_c", true);
-                ReflectionUtil.setFieldAccess(AbstractClientPlayer.class, "field_110313_e", true);
+                ObfUtil.setFieldAccess(AbstractClientPlayer.class, "field_110315_c", true);
+                ObfUtil.setFieldAccess(AbstractClientPlayer.class, "field_110313_e", true);
                 successfull = true;
             }catch (Exception e1) {
                 try {
                     if(LomLib.debug)
                         LomLib.logger.logBasic("Failed with SRG names, using Obfuscated Names");
-                    ReflectionUtil.setFieldAccess(AbstractClientPlayer.class, "c", true);
-                    ReflectionUtil.setFieldAccess(AbstractClientPlayer.class, "e", true);
+                    ObfUtil.setFieldAccess(AbstractClientPlayer.class, "c", true);
+                    ObfUtil.setFieldAccess(AbstractClientPlayer.class, "e", true);
                     successfull = true;
                 }catch (Exception e2) {
                     LomLib.logger.logError("Could not set cape access!");

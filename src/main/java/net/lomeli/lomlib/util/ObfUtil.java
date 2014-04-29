@@ -7,7 +7,11 @@ import net.minecraft.client.renderer.ThreadDownloadImageData;
 
 import net.lomeli.lomlib.LomLib;
 
-public class ReflectionUtil {
+public class ObfUtil {
+
+    public static int gcd(int a, int b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
 
     public static boolean isObf() {
         try {
@@ -18,6 +22,7 @@ public class ReflectionUtil {
                     return false;
             }
         }catch (Exception e) {
+            return true;
         }
         return true;
     }
@@ -45,6 +50,8 @@ public class ReflectionUtil {
         for (int i = 0; i < fields.length; i++) {
             if (i < access.length)
                 setFieldAccess(clazz, fields[i], access[i]);
+            else
+                break;
         }
     }
 
@@ -81,6 +88,7 @@ public class ReflectionUtil {
                 }
             }
         }catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -110,6 +118,7 @@ public class ReflectionUtil {
                 }
             }
         }catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -146,8 +155,10 @@ public class ReflectionUtil {
         try {
             return baseClass.getDeclaredField(field).get(obj);
         }catch (Exception e) {
-            if (LomLib.debug)
+            if (LomLib.debug) {
                 LomLib.logger.logWarning("Could not modify field " + field + " in " + obj.toString());
+                e.printStackTrace();
+            }
             return null;
         }
     }
@@ -156,8 +167,10 @@ public class ReflectionUtil {
         try {
             obj.getClass().getDeclaredField(field).set(obj, set);
         }catch (Exception e) {
-            if (LomLib.debug)
+            if (LomLib.debug) {
                 LomLib.logger.logWarning("Could not modify field " + field + " in " + obj.toString());
+                e.printStackTrace();
+            }
         }
     }
 
@@ -165,8 +178,10 @@ public class ReflectionUtil {
         try {
             obj.getClass().getDeclaredMethod(method, arguments.getClass()).invoke(obj, arguments);
         }catch (Exception e) {
-            if (LomLib.debug)
+            if (LomLib.debug) {
                 LomLib.logger.logWarning("Could not use method " + method + " within " + obj.toString());
+                e.printStackTrace();
+            }
         }
     }
 }

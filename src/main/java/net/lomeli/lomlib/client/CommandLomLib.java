@@ -12,7 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 
 import net.lomeli.lomlib.libs.Strings;
-import net.lomeli.lomlib.util.ReflectionUtil;
+import net.lomeli.lomlib.util.ObfUtil;
 import net.lomeli.lomlib.util.ToolTipUtil;
 
 import cpw.mods.fml.relauncher.ReflectionHelper;
@@ -52,36 +52,11 @@ public class CommandLomLib extends CommandBase {
                 for (Object entity : entityList) {
                     if (entity instanceof EntityPigZombie) {
                         ((EntityPigZombie) entity).setTarget(null);
-                        try {
-                            if (!ReflectionUtil.isFieldAccessible(EntityPigZombie.class, "angerLevel"))
-                                ReflectionUtil.setFieldAccess(EntityPigZombie.class, "angerLevel", true);
-                            ReflectionHelper.setPrivateValue(EntityPigZombie.class, ((EntityPigZombie) entity), 0, "angerLevel");
-                            if (!successful)
-                                successful = true;
-                        }catch (Exception e) {
-                            try {
-                                if (!ReflectionUtil.isFieldAccessible(EntityPigZombie.class, "field_70837_d"))
-                                    ReflectionUtil.setFieldAccess(EntityPigZombie.class, "field_70837_d", true);
-                                ReflectionHelper.setPrivateValue(EntityPigZombie.class, ((EntityPigZombie) entity), 0, "field_70837_d");
-                                if (!successful)
-                                    successful = true;
-                            }catch (Exception e1) {
-                                try {
-                                    if (!ReflectionUtil.isFieldAccessible(EntityPigZombie.class, "bs"))
-                                        ReflectionUtil.setFieldAccess(EntityPigZombie.class, "bs", true);
-                                    ReflectionHelper.setPrivateValue(EntityPigZombie.class, ((EntityPigZombie) entity), 0, "bs");
-                                    if (!successful)
-                                        successful = true;
-                                }catch (Exception e2) {
-                                    sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: Failed to calm Pig Zombies!");
-                                    e2.printStackTrace();
-                                }
-                            }
-                        }
+                        successful = calmPigmen(icommandsender, ((EntityPigZombie) entity));
                     }
                 }
                 if (successful)
-                    sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: Pig Zombies should now be calm");
+                    sendMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: Pig Zombies should now be calm");
             }else if (argument1.equalsIgnoreCase("clearAllEntities")) {
                 for (Object entity : entityList) {
                     if (entity instanceof Entity) {
@@ -89,7 +64,7 @@ public class CommandLomLib extends CommandBase {
                             ((Entity) entity).setDead();
                     }
                 }
-                sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All loaded non-player entities have been removed.");
+                sendMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All loaded non-player entities have been removed.");
             }else if (argument1.equalsIgnoreCase("clearEntities")) {
                 for (Object entity : entityList) {
                     if (entity instanceof Entity) {
@@ -97,13 +72,13 @@ public class CommandLomLib extends CommandBase {
                             ((Entity) entity).setDead();
                     }
                 }
-                sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All loaded non-living entities have been removed.");
+                sendMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All loaded non-living entities have been removed.");
             }else if (argument1.equalsIgnoreCase("clearLivingEntities")) {
                 for (Object entity : entityList) {
                     if (entity instanceof EntityLivingBase)
                         ((EntityLivingBase) entity).setDead();
                 }
-                sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All loaded Living mobs have been removed.");
+                sendMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All loaded Living mobs have been removed.");
             }else if (argument1.equalsIgnoreCase("clearHostiles")) {
                 for (Object entity : entityList) {
                     if (entity instanceof Entity) {
@@ -111,21 +86,59 @@ public class CommandLomLib extends CommandBase {
                             ((Entity) entity).setDead();
                     }
                 }
-                sendCommanderMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All loaded Hostile mobs have been removed.");
-            }else if (argument1.equalsIgnoreCase("help") || argument1.equalsIgnoreCase("?")) {
-                sendCommanderMessage(icommandsender, "Format: `" + ToolTipUtil.ORANGE + "lomlib <command>" + ToolTipUtil.WHITE + "'");
-                sendCommanderMessage(icommandsender, "Available commands: ");
-                sendCommanderMessage(icommandsender, "- calmPigmen : " + ToolTipUtil.GREEN + "Calms down all loaded pigmen.");
-                sendCommanderMessage(icommandsender, "- clearAllEntities : " + ToolTipUtil.GREEN + "Clears all loaded non-player entities.");
-                sendCommanderMessage(icommandsender, "- clearEntities : " + ToolTipUtil.GREEN + "Clears all loaded non-living entities.");
-                sendCommanderMessage(icommandsender, "- clearLivingEntities : " + ToolTipUtil.GREEN + "Clears all loaded living entities.");
-                sendCommanderMessage(icommandsender, "- clearHostiles : " + ToolTipUtil.GREEN + "Clears all loaded hostile entities.");
-            }
+                sendMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All loaded Hostile mobs have been removed.");
+            }else if (argument1.equalsIgnoreCase("allowFly")) {
+                String username = args[1];
+                EntityPlayer player = icommandsender.getEntityWorld().getPlayerEntityByName(username);
+                if (player != null && !player.capabilities.isCreativeMode)
+                    player.capabilities.allowFlying = !player.capabilities.allowFlying;
+                else
+                    sendMessage(icommandsender, ToolTipUtil.ORANGE + "allowFly <playername>");
+            }else if (argument1.equalsIgnoreCase("help") || argument1.equalsIgnoreCase("?"))
+                displayHelp(icommandsender);
         }else
-            sendCommanderMessage(icommandsender, ToolTipUtil.GREEN + "Type /lomlib help or /lomlib ? for more info");
+            sendMessage(icommandsender, ToolTipUtil.GREEN + "Type /lomlib help or /lomlib ? for more info");
     }
 
-    private void sendCommanderMessage(ICommandSender sender, String message) {
+    private boolean calmPigmen(ICommandSender sender, EntityPigZombie pigZombie) {
+        try {
+            if (!ObfUtil.isFieldAccessible(EntityPigZombie.class, "angerLevel"))
+                ObfUtil.setFieldAccess(EntityPigZombie.class, "angerLevel", true);
+            ReflectionHelper.setPrivateValue(EntityPigZombie.class, pigZombie, 0, "angerLevel");
+            return true;
+        }catch (Exception e) {
+            try {
+                if (!ObfUtil.isFieldAccessible(EntityPigZombie.class, "field_70837_d"))
+                    ObfUtil.setFieldAccess(EntityPigZombie.class, "field_70837_d", true);
+                ReflectionHelper.setPrivateValue(EntityPigZombie.class, pigZombie, 0, "field_70837_d");
+                return true;
+            }catch (Exception e1) {
+                try {
+                    if (!ObfUtil.isFieldAccessible(EntityPigZombie.class, "bs"))
+                        ObfUtil.setFieldAccess(EntityPigZombie.class, "bs", true);
+                    ReflectionHelper.setPrivateValue(EntityPigZombie.class, pigZombie, 0, "bs");
+                    return true;
+                }catch (Exception e2) {
+                    sendMessage(sender, ToolTipUtil.BLUE + "[LomLib]: Failed to calm Pig Zombies!");
+                    e2.printStackTrace();
+                    return false;
+                }
+            }
+        }
+    }
+
+    private void displayHelp(ICommandSender sender) {
+        sendMessage(sender, "Format: `" + ToolTipUtil.ORANGE + "lomlib <command> <command Argument>" + ToolTipUtil.WHITE + "'");
+        sendMessage(sender, "Available commands: ");
+        sendMessage(sender, "- calmPigmen : " + ToolTipUtil.GREEN + "Calms down all loaded pigmen.");
+        sendMessage(sender, "- clearAllEntities : " + ToolTipUtil.GREEN + "Clears all loaded non-player entities.");
+        sendMessage(sender, "- clearEntities : " + ToolTipUtil.GREEN + "Clears all loaded non-living entities.");
+        sendMessage(sender, "- clearLivingEntities : " + ToolTipUtil.GREEN + "Clears all loaded living entities.");
+        sendMessage(sender, "- clearHostiles : " + ToolTipUtil.GREEN + "Clears all loaded hostile entities.");
+        sendMessage(sender, "- allowFly <player> : " + ToolTipUtil.GREEN + "Enable/Disable flying for a player");
+    }
+
+    private void sendMessage(ICommandSender sender, String message) {
         if (sender != null)
             sender.addChatMessage(new ChatComponentText(message));
     }
