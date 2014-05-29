@@ -13,8 +13,9 @@ public class ToolTipUtil {
 
     /**
      * Search up the color codes on the minecraft wiki page for sign colors
-     *
-     * @param color Single character that will adds in color and simple formatting
+     * 
+     * @param color
+     *            Single character that will adds in color and simple formatting
      * @author Lomeli12
      */
     public static String additionalInfoInstructions(String color) {

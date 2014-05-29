@@ -56,8 +56,7 @@ public class ResourceUtil {
     }
 
     public static IIcon getIconfromRegistry(String modid, String folder, String icon) {
-        return ((TextureMap) Minecraft.getMinecraft().getTextureManager()
-                .getTexture(ResourceUtil.getResource(modid, folder, icon))).getAtlasSprite("missingno");
+        return ((TextureMap) Minecraft.getMinecraft().getTextureManager().getTexture(ResourceUtil.getResource(modid, folder, icon))).getAtlasSprite("missingno");
     }
 
     public static File getModsFolder() {

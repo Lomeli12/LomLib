@@ -7,12 +7,12 @@ import net.minecraft.util.ResourceLocation;
 
 import cpw.mods.fml.client.FMLClientHandler;
 
-import net.lomeli.lomlib.client.gui.GuiContainerPlus;
+import net.lomeli.lomlib.client.gui.GuiLomLib;
 
 public abstract class ElementBase {
     public static final FontRenderer elementFontRenderer = FMLClientHandler.instance().getClient().fontRenderer;
 
-    protected GuiContainerPlus gui;
+    protected GuiLomLib gui;
     protected ResourceLocation texture;
 
     protected int posX;
@@ -28,7 +28,7 @@ public abstract class ElementBase {
 
     protected boolean visible = true;
 
-    public ElementBase(GuiContainerPlus gui, int posX, int posY) {
+    public ElementBase(GuiLomLib gui, int posX, int posY) {
         this.gui = gui;
         this.posX = gui.getGuiLeft() + posX;
         this.posY = gui.getGuiTop() + posY;

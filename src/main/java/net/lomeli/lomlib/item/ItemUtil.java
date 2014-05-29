@@ -82,9 +82,9 @@ public class ItemUtil {
     public static void setBlock(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, Block block, int metaData) {
         Block i1 = world.getBlock(x, y, z);
 
-        if (i1.getUnlocalizedName().equals(Blocks.snow.getUnlocalizedName()) && (world.getBlockMetadata(x, y, z) & 7) < 1) {
+        if (i1.equals(Blocks.snow) && (world.getBlockMetadata(x, y, z) & 7) < 1)
             side = 1;
-        }else if (i1 != Blocks.vine && i1 != Blocks.tallgrass && i1 != Blocks.deadbush && (i1 == null || !i1.isReplaceable(world, x, y, z))) {
+        else if (i1 != Blocks.vine && i1 != Blocks.tallgrass && i1 != Blocks.deadbush && (i1 == null || !i1.isReplaceable(world, x, y, z))) {
             if (side == 0)
                 --y;
 
@@ -125,7 +125,7 @@ public class ItemUtil {
         if (!world.setBlock(x, y, z, block, metadata, 3))
             return false;
 
-        if (world.getBlock(x, y, z).getUnlocalizedName().equals(block)) {
+        if (world.getBlock(x, y, z).equals(block)) {
             block.onBlockPlacedBy(world, x, y, z, player, stack);
             block.onPostBlockPlaced(world, x, y, z, metadata);
         }

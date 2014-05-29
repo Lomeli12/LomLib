@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.client.gui.element.pages;
+package net.lomeli.lomlib.client.gui.pages;
 
 import org.lwjgl.opengl.GL11;
 
@@ -27,8 +27,7 @@ public class PageMultiBlock extends PageBase {
     public void draw() {
         super.draw();
         String translated = StatCollector.translateToLocal(name);
-        smallFontRenderer.drawStringWithShadow(translated, x + (width / 2) - (smallFontRenderer.getStringWidth(translated) / 2),
-                y + 5, Color.YELLOW.getRGB());
+        smallFontRenderer.drawStringWithShadow(translated, x + (width / 2) - (smallFontRenderer.getStringWidth(translated) / 2), y + 5, Color.YELLOW.getRGB());
         if (blocks != null && blocks.length >= 27) {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             bindTexture(grid);

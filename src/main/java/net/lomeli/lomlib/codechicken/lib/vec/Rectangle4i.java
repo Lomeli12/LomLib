@@ -44,10 +44,14 @@ public class Rectangle4i {
     }
 
     public Rectangle4i include(int px, int py) {
-        if (px < x) expand(px - x, 0);
-        if (px >= x + w) expand(px - x - w + 1, 0);
-        if (py < y) expand(0, py - y);
-        if (py >= y + h) expand(0, py - y - h + 1);
+        if (px < x)
+            expand(px - x, 0);
+        if (px >= x + w)
+            expand(px - x - w + 1, 0);
+        if (py < y)
+            expand(0, py - y);
+        if (py >= y + h)
+            expand(0, py - y - h + 1);
         return this;
     }
 
@@ -77,10 +81,7 @@ public class Rectangle4i {
     }
 
     public boolean intersects(Rectangle4i r) {
-        return r.x + r.w > x &&
-                r.x < x + w &&
-                r.y + r.h > y &&
-                r.y < y + h;
+        return r.x + r.w > x && r.x < x + w && r.y + r.h > y && r.y < y + h;
     }
 
     public int area() {

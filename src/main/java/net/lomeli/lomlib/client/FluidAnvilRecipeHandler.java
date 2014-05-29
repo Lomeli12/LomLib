@@ -8,7 +8,7 @@ import net.minecraft.util.StatCollector;
 
 import net.lomeli.lomlib.libs.Strings;
 
-import codechicken.core.gui.GuiDraw;
+import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 

@@ -31,15 +31,22 @@ def loadProperties(String sourceFileName) {
 loadProperties 'build.properties'
 
 repositories {
-    ivy {
-        name 'CB FS'
-        artifactPattern "http://anthony-lomeli.net/ProjectFiles/libs/[module]-[revision].[ext]"
+    maven {
+        name = 'codechicken'
+        url = "http://chickenbones.net/maven/"
     }
+    //ivy {
+    //    name 'CB FS'
+    //    artifactPattern "http://anthony-lomeli.net/ProjectFiles/libs/[module]-[revision].[ext]"
+    //}
 }
 
 dependencies {
-    compile name: 'NotEnoughItems', version: '1.7.2-rc2', ext: 'jar'
-    compile name: 'CodeChickenCore', version: '1.7.2-rc1', ext: 'jar'
+    //compile name: 'NotEnoughItems', version: '1.7.2-rc2', ext: 'jar'
+    //compile name: 'CodeChickenCore', version: '1.7.2-rc1', ext: 'jar'
+    compile "codechicken:CodeChickenCore:$mcVersion-$cccVersion:dev"
+    compile "codechicken:NotEnoughItems:$mcVersion-$neiVersion:dev"
+    compile "codechicken:CodeChickenLib:$mcVersion-$cclVersion:dev"
 }
 
 task Buildnumber {

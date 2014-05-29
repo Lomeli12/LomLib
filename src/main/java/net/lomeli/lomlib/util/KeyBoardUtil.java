@@ -8,7 +8,7 @@ import cpw.mods.fml.relauncher.Side;
 public class KeyBoardUtil {
     /**
      * Checks if player is holding a certain key down
-     *
+     * 
      * @param key
      * @return true if key is pressed.
      */

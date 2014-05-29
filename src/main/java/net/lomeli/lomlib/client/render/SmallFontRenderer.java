@@ -134,8 +134,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
      */
     private boolean strikethroughStyle;
 
-    public SmallFontRenderer(GameSettings par1GameSettings, ResourceLocation par2ResourceLocation,
-                             TextureManager par3TextureManager, boolean par4) {
+    public SmallFontRenderer(GameSettings par1GameSettings, ResourceLocation par2ResourceLocation, TextureManager par3TextureManager, boolean par4) {
         this.locationFontTexture = par2ResourceLocation;
         // logger.error(this.locationFontTexture.toString() + "    " +
         // this.locationFontTexture.getResourcePath());
@@ -187,9 +186,8 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
         BufferedImage bufferedimage;
 
         try {
-            bufferedimage = ImageIO.read(Minecraft.getMinecraft().getResourceManager().getResource(this.locationFontTexture)
-                    .getInputStream());
-        } catch (IOException ioexception) {
+            bufferedimage = ImageIO.read(Minecraft.getMinecraft().getResourceManager().getResource(this.locationFontTexture).getInputStream());
+        }catch (IOException ioexception) {
             throw new RuntimeException(ioexception);
         }
 
@@ -242,10 +240,9 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
 
     private void readGlyphSizes() {
         try {
-            InputStream inputstream = Minecraft.getMinecraft().getResourceManager()
-                    .getResource(new ResourceLocation("font/glyph_sizes.bin")).getInputStream();
+            InputStream inputstream = Minecraft.getMinecraft().getResourceManager().getResource(new ResourceLocation("font/glyph_sizes.bin")).getInputStream();
             inputstream.read(this.glyphWidth);
-        } catch (IOException ioexception) {
+        }catch (IOException ioexception) {
             throw new RuntimeException(ioexception);
         }
     }
@@ -254,8 +251,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
      * Pick how to render a single character and return the width used.
      */
     private float renderCharAtPos(int par1, char par2, boolean par3) {
-        return par2 == 32 ? 4.0F : (par1 > 0 && !this.unicodeFlag ? this.renderDefaultChar(par1 + 32, par3) : this
-                .renderUnicodeChar(par2, par3));
+        return par2 == 32 ? 4.0F : (par1 > 0 && !this.unicodeFlag ? this.renderDefaultChar(par1 + 32, par3) : this.renderUnicodeChar(par2, par3));
     }
 
     /**
@@ -283,8 +279,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
 
     private ResourceLocation getUnicodePageLocation(int par1) {
         if (unicodePageLocations[par1] == null) {
-            unicodePageLocations[par1] = new ResourceLocation("minecraft", String.format("textures/font/unicode_page_%02x.png",
-                    new Object[]{Integer.valueOf(par1)}));
+            unicodePageLocations[par1] = new ResourceLocation("minecraft", String.format("textures/font/unicode_page_%02x.png", new Object[] { Integer.valueOf(par1) }));
         }
         return unicodePageLocations[par1];
     }
@@ -304,7 +299,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
     private float renderUnicodeChar(char par1, boolean par2) {
         if (this.glyphWidth[par1] == 0) {
             return 0.0F;
-        } else {
+        }else {
             int i = par1 / 256;
             this.loadGlyphTexture(i);
             int j = this.glyphWidth[par1] >>> 4;
@@ -358,7 +353,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
         if (par5) {
             l = this.renderString(par1Str, par2 + 1, par3 + 1, par4, true);
             l = Math.max(l, this.renderString(par1Str, par2, par3, par4, false));
-        } else {
+        }else {
             l = this.renderString(par1Str, par2, par3, par4, false);
         }
 
@@ -406,13 +401,13 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
 
                     if ((b0 & 1) == 0) {
                         stringbuilder.append(astring[i]);
-                    } else {
+                    }else {
                         for (i1 = astring[i].length() - 1; i1 >= 0; --i1) {
                             char c0 = astring[i].charAt(i1);
 
                             if (c0 == 40) {
                                 c0 = 41;
-                            } else if (c0 == 41) {
+                            }else if (c0 == 41) {
                                 c0 = 40;
                             }
 
@@ -426,7 +421,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
             }
 
             return stringbuilder.toString();
-        } else {
+        }else {
             return par1Str;
         }
     }
@@ -473,17 +468,17 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
                     k = this.colorCode[j];
                     this.textColor = k;
                     GL11.glColor4f((k >> 16) / 255.0F, (k >> 8 & 255) / 255.0F, (k & 255) / 255.0F, this.alpha);
-                } else if (j == 16) {
+                }else if (j == 16) {
                     this.randomStyle = true;
-                } else if (j == 17) {
+                }else if (j == 17) {
                     this.boldStyle = true;
-                } else if (j == 18) {
+                }else if (j == 18) {
                     this.strikethroughStyle = true;
-                } else if (j == 19) {
+                }else if (j == 19) {
                     this.underlineStyle = true;
-                } else if (j == 20) {
+                }else if (j == 20) {
                     this.italicStyle = true;
-                } else if (j == 21) {
+                }else if (j == 21) {
                     this.randomStyle = false;
                     this.boldStyle = false;
                     this.strikethroughStyle = false;
@@ -493,7 +488,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
                 }
 
                 ++i;
-            } else {
+            }else {
                 j = ' ';
                 for (char c : ChatAllowedCharacters.allowedCharacters) {
                     if (c == c0) {
@@ -505,7 +500,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
                 if (this.randomStyle && j > 0) {
                     do {
                         k = this.fontRandom.nextInt(ChatAllowedCharacters.allowedCharacters.length);
-                    } while (this.charWidth[j + 32] != this.charWidth[k + 32]);
+                    }while (this.charWidth[j + 32] != this.charWidth[k + 32]);
 
                     j = k;
                 }
@@ -595,7 +590,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
     private int renderString(String par1Str, int par2, int par3, int par4, boolean par5) {
         if (par1Str == null) {
             return 0;
-        } else {
+        }else {
             if ((par4 & -67108864) == 0) {
                 par4 |= -16777216;
             }
@@ -623,7 +618,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
     public int getStringWidth(String par1Str) {
         if (par1Str == null) {
             return 0;
-        } else {
+        }else {
             int i = 0;
             boolean flag = false;
 
@@ -639,7 +634,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
                         if (c0 == 114 || c0 == 82) {
                             flag = false;
                         }
-                    } else {
+                    }else {
                         flag = true;
                     }
 
@@ -663,9 +658,9 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
     public int getCharWidth(char par1) {
         if (par1 == 167) {
             return -1;
-        } else if (par1 == 32) {
+        }else if (par1 == 32) {
             return 4;
-        } else {
+        }else {
             int i;
             if (ChatAllowedCharacters.isAllowedCharacter(par1))
                 i = par1;
@@ -676,7 +671,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
 
             if (i >= 0 && !this.unicodeFlag) {
                 return this.charWidth[i + 32];
-            } else if (this.glyphWidth[par1] != 0) {
+            }else if (this.glyphWidth[par1] != 0) {
                 int j = this.glyphWidth[par1] >>> 4;
                 int k = this.glyphWidth[par1] & 15;
 
@@ -687,7 +682,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
 
                 ++k;
                 return (k - j) / 2 + 1;
-            } else {
+            }else {
                 return 0;
             }
         }
@@ -722,12 +717,12 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
                     if (c0 == 114 || c0 == 82) {
                         flag2 = false;
                     }
-                } else {
+                }else {
                     flag2 = true;
                 }
-            } else if (j1 < 0) {
+            }else if (j1 < 0) {
                 flag1 = true;
-            } else {
+            }else {
                 j += j1;
 
                 if (flag2) {
@@ -741,7 +736,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
 
             if (par3) {
                 stringbuilder.insert(0, c0);
-            } else {
+            }else {
                 stringbuilder.append(c0);
             }
         }
@@ -833,7 +828,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
 
         if (par1Str.length() <= j) {
             return par1Str;
-        } else {
+        }else {
             String s1 = par1Str.substring(0, j);
             char c0 = par1Str.charAt(j);
             boolean flag = c0 == 32 || c0 == 10;
@@ -855,33 +850,33 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
         for (boolean flag = false; l < j; ++l) {
             char c0 = par1Str.charAt(l);
 
-            switch (c0) {
-                case 10:
-                    --l;
-                    break;
-                case 167:
-                    if (l < j - 1) {
-                        ++l;
-                        char c1 = par1Str.charAt(l);
+            switch(c0) {
+            case 10 :
+                --l;
+                break;
+            case 167 :
+                if (l < j - 1) {
+                    ++l;
+                    char c1 = par1Str.charAt(l);
 
-                        if (c1 != 108 && c1 != 76) {
-                            if (c1 == 114 || c1 == 82 || isFormatColor(c1)) {
-                                flag = false;
-                            }
-                        } else {
-                            flag = true;
+                    if (c1 != 108 && c1 != 76) {
+                        if (c1 == 114 || c1 == 82 || isFormatColor(c1)) {
+                            flag = false;
                         }
+                    }else {
+                        flag = true;
                     }
+                }
 
-                    break;
-                case 32:
-                    i1 = l;
-                default:
-                    k += this.getCharWidth(c0);
+                break;
+            case 32 :
+                i1 = l;
+            default:
+                k += this.getCharWidth(c0);
 
-                    if (flag) {
-                        ++k;
-                    }
+                if (flag) {
+                    ++k;
+                }
             }
 
             if (c0 == 10) {
@@ -928,7 +923,7 @@ public class SmallFontRenderer implements IResourceManagerReloadListener {
 
                 if (isFormatColor(c0)) {
                     s1 = "\u00a7" + c0;
-                } else if (isFormatSpecial(c0)) {
+                }else if (isFormatSpecial(c0)) {
                     s1 = s1 + "\u00a7" + c0;
                 }
             }

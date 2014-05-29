@@ -21,7 +21,7 @@ import net.lomeli.lomlib.util.FluidUtil;
 
 /**
  * Based off of OreDict's ShapedOreRecipe
- *
+ * 
  * @author Lomeli12
  */
 public class ShapedFluidRecipe implements IRecipe {
@@ -30,9 +30,9 @@ public class ShapedFluidRecipe implements IRecipe {
     private static final int MAX_CRAFT_GRID_HEIGHT = 3;
 
     private ItemStack output = null;
-    private Object[] input = null;
-    private int width = 0;
-    private int height = 0;
+    public Object[] input = null;
+    public int width = 0;
+    public int height = 0;
     private boolean mirrored = true;
 
     public ShapedFluidRecipe(ItemStack result, Object... recipe) {
@@ -58,7 +58,7 @@ public class ShapedFluidRecipe implements IRecipe {
             }
 
             height = parts.length;
-        } else {
+        }else {
             while (recipe[idx] instanceof String) {
                 String s = (String) recipe[idx++];
                 shape += s;
@@ -87,7 +87,7 @@ public class ShapedFluidRecipe implements IRecipe {
                     itemMap.put(chr, FluidUtil.getContainersForFluid(FluidUtil.getContainerFluid((ItemStack) in)));
                 else
                     itemMap.put(chr, ((ItemStack) in).copy());
-            } else if (in instanceof Item)
+            }else if (in instanceof Item)
                 if (FluidContainerRegistry.isFilledContainer(new ItemStack((Item) in)))
                     itemMap.put(chr, FluidUtil.getContainersForFluid(FluidUtil.getContainerFluid(new ItemStack((Item) in))));
                 else
@@ -99,9 +99,9 @@ public class ShapedFluidRecipe implements IRecipe {
                     String fluidName = ((String) in).substring(6);
                     if (FluidRegistry.isFluidRegistered(fluidName))
                         itemMap.put(chr, FluidUtil.getContainersForFluid(FluidRegistry.getFluid(fluidName)));
-                } else
+                }else
                     itemMap.put(chr, OreDictionary.getOres((String) in));
-            } else {
+            }else {
                 String ret = "Invalid shaped ore recipe: ";
                 for (Object tmp : recipe) {
                     ret += tmp + ", ";
@@ -145,9 +145,8 @@ public class ShapedFluidRecipe implements IRecipe {
                 if (OreDictionary.itemMatches(replace.getKey(), ingred, true)) {
                     input[i] = OreDictionary.getOres(replace.getValue());
                     break;
-                } else if (FluidContainerRegistry.isFilledContainer(replace.getKey())) {
-                    input[i] = FluidUtil.getContainersForFluid(FluidContainerRegistry.getFluidForFilledItem(replace.getKey())
-                            .getFluid());
+                }else if (FluidContainerRegistry.isFilledContainer(replace.getKey())) {
+                    input[i] = FluidUtil.getContainersForFluid(FluidContainerRegistry.getFluidForFilledItem(replace.getKey()).getFluid());
                     break;
                 }
             }
@@ -204,7 +203,7 @@ public class ShapedFluidRecipe implements IRecipe {
                 if (target instanceof ItemStack) {
                     if (!checkItemEquals((ItemStack) target, slot))
                         return false;
-                } else if (target instanceof ArrayList) {
+                }else if (target instanceof ArrayList) {
                     boolean matched = false;
 
                     for (ItemStack item : (ArrayList<ItemStack>) target) {
@@ -213,7 +212,7 @@ public class ShapedFluidRecipe implements IRecipe {
 
                     if (!matched)
                         return false;
-                } else if (target == null && slot != null)
+                }else if (target == null && slot != null)
                     return false;
             }
         }
@@ -224,8 +223,7 @@ public class ShapedFluidRecipe implements IRecipe {
     private boolean checkItemEquals(ItemStack target, ItemStack input) {
         if (input == null && target != null || input != null && target == null)
             return false;
-        return (target.getItem() == input.getItem() && (target.getItemDamage() == OreDictionary.WILDCARD_VALUE || target
-                .getItemDamage() == input.getItemDamage()));
+        return (target.getItem() == input.getItem() && (target.getItemDamage() == OreDictionary.WILDCARD_VALUE || target.getItemDamage() == input.getItemDamage()));
     }
 
     public ShapedFluidRecipe setMirrored(boolean mirror) {

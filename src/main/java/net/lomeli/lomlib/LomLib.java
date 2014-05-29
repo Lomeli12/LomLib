@@ -22,7 +22,7 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = Strings.MOD_ID, name = Strings.MOD_NAME, version = Strings.VERSION)
 public class LomLib {
-    
+
     @Mod.Instance
     public static LomLib instance;
 
@@ -43,7 +43,7 @@ public class LomLib {
         logger = new LogHelper(Strings.MOD_NAME);
 
         configureMod(event.getSuggestedConfigurationFile());
-        
+
         RecipeSorter.register(Strings.NEI_SHAPED, ShapedFluidRecipe.class, RecipeSorter.Category.SHAPED, "after:minecraft:shaped before:minecraft:shapeless");
         RecipeSorter.register(Strings.NEI_SHAPELESS, ShapelessFluidRecipe.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 
@@ -52,9 +52,9 @@ public class LomLib {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        proxy.doStuffInit();
         MinecraftForge.EVENT_BUS.register(proxy);
         MinecraftForge.EVENT_BUS.register(new AnvilRecipeManager());
+        proxy.doStuffInit();
     }
 
     @Mod.EventHandler

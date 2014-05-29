@@ -8,7 +8,7 @@ import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidTank;
 
 import net.lomeli.lomlib.client.ResourceUtil;
-import net.lomeli.lomlib.client.gui.GuiContainerPlus;
+import net.lomeli.lomlib.client.gui.GuiLomLib;
 
 public class ElementTank extends ElementBase {
 
@@ -16,7 +16,7 @@ public class ElementTank extends ElementBase {
     protected FluidTank tank;
     protected int gaugeType;
 
-    public ElementTank(GuiContainerPlus gui, int posX, int posY, FluidTank tank) {
+    public ElementTank(GuiLomLib gui, int posX, int posY, FluidTank tank) {
         super(gui, posX, posY);
         this.setSize(16, 60);
         this.texture = defaultTexture;
@@ -25,7 +25,7 @@ public class ElementTank extends ElementBase {
         this.tank = tank;
     }
 
-    public ElementTank(GuiContainerPlus gui, int posX, int posY, FluidTank tank, String texture) {
+    public ElementTank(GuiLomLib gui, int posX, int posY, FluidTank tank, String texture) {
         super(gui, posX, posY);
         this.setSize(16, 60);
         this.texture = new ResourceLocation(texture);
@@ -59,7 +59,7 @@ public class ElementTank extends ElementBase {
         if (tank.getFluid() != null && tank.getFluidAmount() > 0) {
             list.add(tank.getFluid().getFluid().getLocalizedName());
             list.add("" + tank.getFluidAmount() + " / " + tank.getCapacity() + " mB");
-        } else
+        }else
             list.add(StatCollector.translateToLocal("element.lomlib.tankEmpty"));
     }
 }

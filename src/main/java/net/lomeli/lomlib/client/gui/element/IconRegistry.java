@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 
 public class IconRegistry {
-    public static HashMap<String, IIcon> icons = new HashMap<String, IIcon> ();
+    public static HashMap<String, IIcon> icons = new HashMap<String, IIcon>();
 
     public static void addIcon(String iconName, String iconLocation, IIconRegister ir) {
         icons.put(iconName, ir.registerIcon(iconLocation));

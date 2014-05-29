@@ -46,8 +46,8 @@ public class RenderConnectedTextures implements ISimpleBlockRenderingHandler {
         renderer.colorBlueBottomLeft *= f2;
         renderer.colorBlueBottomRight *= f2;
 
-        RenderUtils.drawBlockFaces(renderer, block, block.getIcon(0, metadata), block.getIcon(1, metadata),
-                block.getIcon(2, metadata), block.getIcon(3, metadata), block.getIcon(4, metadata), block.getIcon(5, metadata));
+        RenderUtils.drawBlockFaces(renderer, block, block.getIcon(0, metadata), block.getIcon(1, metadata), block.getIcon(2, metadata), block.getIcon(3, metadata), block.getIcon(4, metadata),
+                block.getIcon(5, metadata));
     }
 
     @Override

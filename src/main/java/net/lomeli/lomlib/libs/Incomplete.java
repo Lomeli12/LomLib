@@ -15,9 +15,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)
 public @interface Incomplete {
-    
+
     MethodState currentState() default MethodState.NEW;
-    
+
     public static enum MethodState {
         NEW, BUGGY, NEAR_COMPELETION
     }

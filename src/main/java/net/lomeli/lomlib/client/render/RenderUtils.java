@@ -51,6 +51,7 @@ public class RenderUtils {
     public static final int DISPLAY_STAGES = 100;
     private static final BlockInterface liquidBlock = new BlockInterface();
     public static final ResourceLocation texEnchant = new ResourceLocation("textures/misc/enchanted_item_glint.png");
+    public static final float magicNum = 0.0625F;
 
     public static void drawBlockFaces(RenderBlocks renderer, Block block, IIcon icon) {
         drawBlockFaces(renderer, block, icon, icon, icon, icon, icon, icon);

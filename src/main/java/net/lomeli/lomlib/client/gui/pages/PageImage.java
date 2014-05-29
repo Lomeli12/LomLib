@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.client.gui.element.pages;
+package net.lomeli.lomlib.client.gui.pages;
 
 import java.awt.Color;
 
@@ -11,8 +11,7 @@ public class PageImage extends PageBase {
     private String[] pageText;
     private int imaageWidth, imageHeight, imageX, imageY;
 
-    public PageImage(GuiScreen gui, ResourceLocation image, int imageX, int imageY, int imageWidth, int imageHeight,
-                     String... imageDescription) {
+    public PageImage(GuiScreen gui, ResourceLocation image, int imageX, int imageY, int imageWidth, int imageHeight, String... imageDescription) {
         super(gui);
         this.image = image;
         pageText = imageDescription;
@@ -32,8 +31,7 @@ public class PageImage extends PageBase {
             if (pageText != null) {
                 for (int i = 0; i < pageText.length; i++) {
                     if (pageText[i] != "") {
-                        smallFontRenderer.drawSplitString(StatCollector.translateToLocal(pageText[i]), x, textHeight, width,
-                                Color.BLACK.getRGB());
+                        smallFontRenderer.drawSplitString(StatCollector.translateToLocal(pageText[i]), x, textHeight, width, Color.BLACK.getRGB());
                         textHeight += smallFontRenderer.getStringHeight(StatCollector.translateToLocal(pageText[i]), width) + 20;
                     }
                 }

@@ -16,6 +16,15 @@ public class FluidAnvilRecipe implements IAnvilRecipe {
     private Object[] inputs = new Object[2];
     private int expLvlCost = 0;
 
+    /**
+     * ATM, right input cannot be null due to how the AnvilUpdateEvent works.
+     * Not much I can do about that
+     * 
+     * @param output
+     * @param leftInput
+     * @param rightInput
+     * @param expCost
+     */
     public FluidAnvilRecipe(ItemStack output, Object leftInput, Object rightInput, int expCost) {
         this.output = output;
         addInput(leftInput, 0);
@@ -39,7 +48,7 @@ public class FluidAnvilRecipe implements IAnvilRecipe {
         if (slot == 0 || slot == 1) {
             if (input != null) {
                 if (input instanceof ItemStack)
-                    inputs[slot] = (ItemStack) input;
+                    inputs[slot] = input;
                 else if (input instanceof Item)
                     inputs[slot] = new ItemStack((Item) input, 1);
                 else if (input instanceof Block)
@@ -47,7 +56,7 @@ public class FluidAnvilRecipe implements IAnvilRecipe {
                 else if (input instanceof String) {
                     String in = (String) input;
                     if (in.startsWith("fluid$")) {
-                        String fluidName = ((String) in).substring(6);
+                        String fluidName = in.substring(6);
                         if (FluidRegistry.isFluidRegistered(fluidName))
                             inputs[slot] = FluidUtil.getContainersForFluid(FluidRegistry.getFluid(fluidName));
                     }else

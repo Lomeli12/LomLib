@@ -69,8 +69,7 @@ public class RotationHelper {
     }
 
     public static int directionToMetadata(BlockType blockType, ForgeDirection direction) {
-        if ((blockType == BlockType.LOG || blockType == BlockType.ANVIL)
-                && (direction.offsetX + direction.offsetY + direction.offsetZ) < 0)
+        if ((blockType == BlockType.LOG || blockType == BlockType.ANVIL) && (direction.offsetX + direction.offsetY + direction.offsetZ) < 0)
             direction = direction.getOpposite();
 
         if (MAPPINGS.containsKey(blockType)) {
@@ -105,12 +104,12 @@ public class RotationHelper {
                 return ForgeDirection.EAST;
             else
                 return ForgeDirection.WEST;
-        } else if (y != 0) {
+        }else if (y != 0) {
             if (y == 1)
                 return ForgeDirection.UP;
             else
                 return ForgeDirection.DOWN;
-        } else if (z != 0) {
+        }else if (z != 0) {
             if (z == 1)
                 return ForgeDirection.SOUTH;
             else

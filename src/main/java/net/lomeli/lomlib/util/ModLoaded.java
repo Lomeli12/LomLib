@@ -18,13 +18,13 @@ public class ModLoaded {
                     LomLib.logger.logBasic(modName + " is installed!");
 
                 isInstalled = true;
-            } catch (Exception ex) {
+            }catch (Exception ex) {
                 if (display)
                     LomLib.logger.logWarning(modName + " is not installed!");
 
                 isInstalled = false;
             }
-        } else {
+        }else {
             if (display)
                 LomLib.logger.logWarning(modName + " is not installed!");
 
@@ -46,13 +46,13 @@ public class ModLoaded {
                     LomLib.logger.logBasic(modID + " is installed!");
 
                 isInstalled = true;
-            } catch (Exception ex) {
+            }catch (Exception ex) {
                 if (display)
                     LomLib.logger.logWarning(modID + " is not installed!");
 
                 isInstalled = false;
             }
-        } else {
+        }else {
             if (display)
                 LomLib.logger.logWarning(modID + " is not installed!");
 

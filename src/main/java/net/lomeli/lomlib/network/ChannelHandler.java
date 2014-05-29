@@ -24,7 +24,7 @@ import net.lomeli.lomlib.LomLib;
 /**
  * Packet pipeline class. Directs all registered packet data to be handled by
  * the packets themselves.
- *
+ * 
  * @author sirgingalot some code from: cpw
  */
 @ChannelHandler.Sharable
@@ -50,11 +50,12 @@ public class ChannelHandler extends MessageToMessageCodec<FMLProxyPacket, Abstra
     /**
      * Register your packet with the pipeline. Discriminators are automatically
      * set.
-     *
-     * @param clazz the class to register
+     * 
+     * @param clazz
+     *            the class to register
      * @return whether registration was successful. Failure may occur if 256
-     * packets have been registered or if the registry already contains
-     * this packet
+     *         packets have been registered or if the registry already contains
+     *         this packet
      */
     public boolean registerPacket(Class<? extends AbstractPacket> clazz) {
         if (this.packets.size() > 256) {
@@ -108,17 +109,17 @@ public class ChannelHandler extends MessageToMessageCodec<FMLProxyPacket, Abstra
         pkt.decodeInto(ctx, payload.slice());
 
         EntityPlayer player;
-        switch (FMLCommonHandler.instance().getEffectiveSide()) {
-            case CLIENT:
-                player = this.getClientPlayer();
-                pkt.handleClientSide(player);
-                break;
-            case SERVER:
-                INetHandler netHandler = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get();
-                player = ((NetHandlerPlayServer) netHandler).playerEntity;
-                pkt.handleServerSide(player);
-                break;
-            default:
+        switch(FMLCommonHandler.instance().getEffectiveSide()) {
+        case CLIENT :
+            player = this.getClientPlayer();
+            pkt.handleClientSide(player);
+            break;
+        case SERVER :
+            INetHandler netHandler = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get();
+            player = ((NetHandlerPlayServer) netHandler).playerEntity;
+            pkt.handleServerSide(player);
+            break;
+        default:
         }
         out.add(pkt);
     }
@@ -150,5 +151,9 @@ public class ChannelHandler extends MessageToMessageCodec<FMLProxyPacket, Abstra
     @SideOnly(Side.CLIENT)
     private EntityPlayer getClientPlayer() {
         return Minecraft.getMinecraft().thePlayer;
+    }
+
+    public EnumMap<Side, FMLEmbeddedChannel> getChannel() {
+        return this.channels;
     }
 }

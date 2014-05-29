@@ -33,13 +33,13 @@ public class XMLUtil {
             NodeList node = doc.getElementsByTagName(nodeName);
             try {
                 var1 = node.item(0).getTextContent();
-            } catch (NullPointerException b) {
+            }catch (NullPointerException b) {
             }
-        } catch (SocketException e) {
-        } catch (MalformedURLException e) {
-        } catch (IOException e) {
-        } catch (ParserConfigurationException e) {
-        } catch (SAXException e) {
+        }catch (SocketException e) {
+        }catch (MalformedURLException e) {
+        }catch (IOException e) {
+        }catch (ParserConfigurationException e) {
+        }catch (SAXException e) {
         }
         return var1;
     }
@@ -56,7 +56,7 @@ public class XMLUtil {
         URL ur = null;
         try {
             ur = new URL(getString(URLLoc, nodeName));
-        } catch (Exception e) {
+        }catch (Exception e) {
         }
         return ur != null ? ur : null;
     }
@@ -100,7 +100,7 @@ public class XMLUtil {
                 Document document = builder.parse(f);
                 return true;
             }
-        } catch (Exception e) {
+        }catch (Exception e) {
             LomLib.logger.logWarning("Invalid XML file!");
         }
         return true;
@@ -115,7 +115,7 @@ public class XMLUtil {
                 Document document = builder.parse(config);
                 return true;
             }
-        } catch (Exception e) {
+        }catch (Exception e) {
             LomLib.logger.logWarning("Invalid configuration file!");
             if (config.exists()) {
                 LomLib.logger.logWarning("Removing invalid file...");

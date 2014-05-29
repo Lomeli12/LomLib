@@ -58,8 +58,7 @@ public class DevCapes {
                 if (cloakURL != null) {
                     capePlayers.add(abstractClientPlayer);
 
-                    ReflectionHelper.setPrivateValue(ThreadDownloadImageData.class, abstractClientPlayer.getTextureCape(), false,
-                            new String[]{"textureUploaded", "field_110559_g"});
+                    ReflectionHelper.setPrivateValue(ThreadDownloadImageData.class, abstractClientPlayer.getTextureCape(), false, new String[] { "textureUploaded", "field_110559_g" });
 
                     new Thread(new CloakThread(abstractClientPlayer, cloakURL)).start();
                     event.renderCape = true;
@@ -88,7 +87,7 @@ public class DevCapes {
                 }
             }
             xml.close();
-        } catch (Exception e) {
+        }catch (Exception e) {
         }
     }
 
@@ -114,9 +113,8 @@ public class DevCapes {
                 BufferedImage bo = new BufferedImage(cape.getWidth(null), cape.getHeight(null), BufferedImage.TYPE_INT_ARGB);
                 bo.getGraphics().drawImage(cape, 0, 0, null);
 
-                ReflectionHelper.setPrivateValue(ThreadDownloadImageData.class, abstractClientPlayer.getTextureCape(), bo,
-                        new String[]{"bufferedImage", "field_110560_d"});
-            } catch (Exception e) {
+                ReflectionHelper.setPrivateValue(ThreadDownloadImageData.class, abstractClientPlayer.getTextureCape(), bo, new String[] { "bufferedImage", "field_110560_d" });
+            }catch (Exception e) {
                 LomLib.logger.logError("Failed to load cape!");
                 e.printStackTrace();
             }
@@ -134,7 +132,7 @@ public class DevCapes {
         public void run() {
             try {
                 TEST_GRAPHICS.drawImage(new ImageIcon(new URL(cloakURL)).getImage(), 0, 0, null);
-            } catch (Exception e) {
+            }catch (Exception e) {
                 e.printStackTrace();
             }
         }

@@ -28,7 +28,7 @@ import net.lomeli.lomlib.client.gui.element.TabBase;
 import net.lomeli.lomlib.client.gui.element.TabTracker;
 
 @SideOnly(Side.CLIENT)
-public class GuiContainerPlus extends GuiContainer {
+public class GuiLomLib extends GuiContainer {
 
     protected ArrayList<TabBase> tabs = new ArrayList<TabBase>();
     protected ArrayList<ElementBase> elements = new ArrayList<ElementBase>();
@@ -37,7 +37,7 @@ public class GuiContainerPlus extends GuiContainer {
 
     protected int mouseX = 0, mouseY = 0;
 
-    public GuiContainerPlus(Container par1Container) {
+    public GuiLomLib(Container par1Container) {
         super(par1Container);
     }
 
@@ -153,8 +153,7 @@ public class GuiContainerPlus extends GuiContainer {
         if (fluid == null || fluid.getFluid() == null)
             return;
         ResourceUtil.bindTexture(ResourceUtil.MC_BLOCK_SHEET);
-        GL11.glColor3ub((byte) (fluid.getFluid().getColor() >> 16 & 0xFF), (byte) (fluid.getFluid().getColor() >> 8 & 0xFF),
-                (byte) (fluid.getFluid().getColor() & 0xFF));
+        GL11.glColor3ub((byte) (fluid.getFluid().getColor() >> 16 & 0xFF), (byte) (fluid.getFluid().getColor() >> 8 & 0xFF), (byte) (fluid.getFluid().getColor() & 0xFF));
         drawTiledTexture(x, y, fluid.getFluid().getIcon(fluid), width, height);
     }
 
@@ -238,8 +237,7 @@ public class GuiContainerPlus extends GuiContainer {
         Tessellator tessellator = Tessellator.instance;
         tessellator.startDrawingQuads();
         tessellator.addVertexWithUV(x + 0, y + height, this.zLevel, minU, minV + (maxV - minV) * height / 16F);
-        tessellator.addVertexWithUV(x + width, y + height, this.zLevel, minU + (maxU - minU) * width / 16F, minV + (maxV - minV)
-                * height / 16F);
+        tessellator.addVertexWithUV(x + width, y + height, this.zLevel, minU + (maxU - minU) * width / 16F, minV + (maxV - minV) * height / 16F);
         tessellator.addVertexWithUV(x + width, y + 0, this.zLevel, minU + (maxU - minU) * width / 16F, minV);
         tessellator.addVertexWithUV(x + 0, y + 0, this.zLevel, minU, minV);
         tessellator.draw();
@@ -263,7 +261,7 @@ public class GuiContainerPlus extends GuiContainer {
             if (tab.side == 0) {
                 tab.draw(guiLeft, guiTop + yPosLeft);
                 yPosLeft += tab.currentHeight;
-            } else {
+            }else {
                 tab.draw(guiLeft + xSize, guiTop + yPosRight);
                 yPosRight += tab.currentHeight;
             }

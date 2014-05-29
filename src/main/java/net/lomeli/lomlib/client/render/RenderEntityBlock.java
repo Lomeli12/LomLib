@@ -108,8 +108,7 @@ public class RenderEntityBlock extends Render {
         }
     }
 
-    public void renderBlock(BlockInterface block, IBlockAccess blockAccess, int i, int j, int k, boolean doLight,
-                            boolean doTessellating) {
+    public void renderBlock(BlockInterface block, IBlockAccess blockAccess, int i, int j, int k, boolean doLight, boolean doTessellating) {
         float f = 0.5F;
         float f1 = 1.0F;
         float f2 = 0.8F;

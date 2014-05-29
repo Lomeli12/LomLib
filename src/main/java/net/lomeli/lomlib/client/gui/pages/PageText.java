@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.client.gui.element.pages;
+package net.lomeli.lomlib.client.gui.pages;
 
 import java.awt.Color;
 
@@ -25,8 +25,7 @@ public class PageText extends PageBase {
         int textHeight = y + 5;
 
         for (int i = 0; i < pageText.length; i++) {
-            smallFontRenderer.drawSplitString(StatCollector.translateToLocal(pageText[i]), x, textHeight, width,
-                    Color.BLACK.getRGB());
+            smallFontRenderer.drawSplitString(StatCollector.translateToLocal(pageText[i]), x, textHeight, width, Color.BLACK.getRGB());
             textHeight += smallFontRenderer.getStringHeight(StatCollector.translateToLocal(pageText[i]), width) + 20;
         }
     }

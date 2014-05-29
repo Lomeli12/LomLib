@@ -6,7 +6,7 @@ import java.util.List;
 
 import net.minecraft.util.StatCollector;
 
-import net.lomeli.lomlib.client.gui.GuiContainerPlus;
+import net.lomeli.lomlib.client.gui.GuiLomLib;
 import net.lomeli.lomlib.util.ToolTipUtil;
 
 public class TabInfo extends TabBase {
@@ -16,18 +16,17 @@ public class TabInfo extends TabBase {
     int textColor = 16777215;
     String myInfo;
 
-    public TabInfo(GuiContainerPlus gui, String info) {
+    public TabInfo(GuiLomLib gui, String info) {
         super(gui, 0);
         this.backgroundColor = 5592405;
         this.maxHeight += 4 + ToolTipUtil.getSplitStringHeight(elementFontRenderer, info, this.maxWidth);
         this.myInfo = info;
     }
 
-    public TabInfo(GuiContainerPlus gui, String info, int extraLines) {
+    public TabInfo(GuiLomLib gui, String info, int extraLines) {
         super(gui, 0);
         this.backgroundColor = 5592405;
-        this.maxHeight += 4 + elementFontRenderer.FONT_HEIGHT * extraLines
-                + ToolTipUtil.getSplitStringHeight(elementFontRenderer, info, this.maxWidth);
+        this.maxHeight += 4 + elementFontRenderer.FONT_HEIGHT * extraLines + ToolTipUtil.getSplitStringHeight(elementFontRenderer, info, this.maxWidth);
         this.myInfo = info;
     }
 
@@ -43,13 +42,12 @@ public class TabInfo extends TabBase {
         if (side == 0) {
             xPos1 = this.posX - this.currentWidth + 22;
             xPos2 = this.posX + 8 - this.currentWidth;
-        } else {
+        }else {
             xPos1 = this.posX + this.currentWidth - 105;
             xPos2 = this.posX + 128 - this.currentWidth;
         }
 
-        elementFontRenderer.drawStringWithShadow(StatCollector.translateToLocal("tab.lomlib.info"), xPos1, this.posY + 6,
-                this.headerColor);
+        elementFontRenderer.drawStringWithShadow(StatCollector.translateToLocal("tab.lomlib.info"), xPos1, this.posY + 6, this.headerColor);
         elementFontRenderer.drawSplitString(this.myInfo, xPos2, this.posY + 20, this.maxWidth - 8, this.textColor);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     }

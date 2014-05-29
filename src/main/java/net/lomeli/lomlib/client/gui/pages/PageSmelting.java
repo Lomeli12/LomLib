@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.client.gui.element.pages;
+package net.lomeli.lomlib.client.gui.pages;
 
 import java.awt.Color;
 
@@ -21,9 +21,7 @@ public class PageSmelting extends PageBase {
     public void draw() {
         super.draw();
         if (input != null) {
-            smallFontRenderer.drawStringWithShadow(input.getDisplayName(),
-                    x + (width / 2) - (smallFontRenderer.getStringWidth(input.getDisplayName()) / 2), y + 2,
-                    Color.YELLOW.getRGB());
+            smallFontRenderer.drawStringWithShadow(input.getDisplayName(), x + (width / 2) - (smallFontRenderer.getStringWidth(input.getDisplayName()) / 2), y + 2, Color.YELLOW.getRGB());
             super.draw();
 
             bindTexture(prop);
@@ -38,9 +36,8 @@ public class PageSmelting extends PageBase {
                 gui.drawTexturedModalRect(x + 35, y + 40, 13, 240, 22, 16);
                 gui.drawTexturedModalRect(x + 58, y + 38, 35, 236, 20, 20);
                 itemRenderer.renderItemAndEffectIntoGUI(largeFontRenderer, mc.renderEngine, output, x + 60, y + 40);
-            } else
-                smallFontRenderer.drawSplitString(StatCollector.translateToLocal(Strings.INVALID_RECIPE), x, y + 95, width,
-                        Color.BLACK.getRGB());
+            }else
+                smallFontRenderer.drawSplitString(StatCollector.translateToLocal(Strings.INVALID_RECIPE), x, y + 95, width, Color.BLACK.getRGB());
         }
     }
 }

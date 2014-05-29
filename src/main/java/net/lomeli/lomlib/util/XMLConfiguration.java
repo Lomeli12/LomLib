@@ -62,7 +62,7 @@ public class XMLConfiguration {
                 Element general = document.createElement(ConfigEnum.GENERAL_CONFIG.getName());
                 Element other = document.createElement(ConfigEnum.OTHER.getName());
 
-                Element[] elements = {block, item, general, other};
+                Element[] elements = { block, item, general, other };
 
                 for (Element j : elements) {
                     rootElement.appendChild(j);
@@ -94,7 +94,7 @@ public class XMLConfiguration {
 
                 StreamResult result = new StreamResult(configurationFile.getAbsolutePath());
                 transformer.transform(source, result);
-            } catch (Exception e) {
+            }catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -203,9 +203,9 @@ public class XMLConfiguration {
             NodeList node = doc.getElementsByTagName(nodeName);
             try {
                 obj = node.item(0).getTextContent();
-            } catch (NullPointerException b) {
+            }catch (NullPointerException b) {
             }
-        } catch (Exception e) {
+        }catch (Exception e) {
         }
         return obj;
     }

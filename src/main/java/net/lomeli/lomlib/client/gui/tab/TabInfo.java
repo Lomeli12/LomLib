@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-import net.lomeli.lomlib.client.gui.GuiContainerPlus;
+import net.lomeli.lomlib.client.gui.GuiLomLib;
 import net.lomeli.lomlib.util.ToolTipUtil;
 
 import net.minecraft.util.StatCollector;
@@ -16,14 +16,14 @@ public class TabInfo extends TabBase {
     int textColor = 16777215;
     String myInfo;
 
-    public TabInfo(GuiContainerPlus gui, String info) {
+    public TabInfo(GuiLomLib gui, String info) {
         super(gui, 0);
         this.backgroundColor = 5592405;
         this.maxHeight += 4 + ToolTipUtil.getSplitStringHeight(elementFontRenderer, info, this.maxWidth);
         this.myInfo = info;
     }
 
-    public TabInfo(GuiContainerPlus gui, String info, int extraLines) {
+    public TabInfo(GuiLomLib gui, String info, int extraLines) {
         super(gui, 0);
         this.backgroundColor = 5592405;
         this.maxHeight += 4 + elementFontRenderer.FONT_HEIGHT * extraLines + ToolTipUtil.getSplitStringHeight(elementFontRenderer, info, this.maxWidth);
@@ -42,7 +42,7 @@ public class TabInfo extends TabBase {
         if (side == 0) {
             xPos1 = this.posX - this.currentWidth + 22;
             xPos2 = this.posX + 8 - this.currentWidth;
-        } else {
+        }else {
             xPos1 = this.posX + this.currentWidth - 105;
             xPos2 = this.posX + 128 - this.currentWidth;
         }

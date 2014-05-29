@@ -17,6 +17,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
@@ -226,5 +227,179 @@ public class EntityUtil {
             return !MinecraftServer.getServer().getConfigurationManager().playerEntityList.contains(player);
         }
         return false;
+    }
+
+    public static Vec3 getPosition(Entity ent, float par1, boolean midPoint) {
+        if (par1 == 1.0F)
+            return ent.worldObj.getWorldVec3Pool().getVecFromPool(ent.posX,
+                    midPoint ? ((ent.boundingBox.minY + ent.boundingBox.maxY) / 2D) : (ent.posY + (ent.worldObj.isRemote ? 0.0D : (ent.getEyeHeight() - 0.09D))), ent.posZ);
+        else {
+            double var2 = ent.prevPosX + (ent.posX - ent.prevPosX) * par1;
+            double var4 = midPoint ? ((ent.boundingBox.minY + ent.boundingBox.maxY) / 2D) : (ent.prevPosY + (ent.worldObj.isRemote ? 0.0D : (ent.getEyeHeight() - 0.09D)) + (ent.posY - ent.prevPosY)
+                    * par1);
+            double var6 = ent.prevPosZ + (ent.posZ - ent.prevPosZ) * par1;
+            return ent.worldObj.getWorldVec3Pool().getVecFromPool(var2, var4, var6);
+        }
+    }
+
+    public static MovingObjectPosition rayTrace(EntityLivingBase ent, double distance, float par3) {
+        return rayTrace(ent, distance, par3, false);
+    }
+
+    public static MovingObjectPosition rayTrace(EntityLivingBase ent, double distance, float par3, boolean midPoint) {
+        Vec3 vec0 = getPosition(ent, par3, midPoint);
+        Vec3 vec1 = ent.getLook(par3);
+        Vec3 vec2 = vec0.addVector(vec1.xCoord, vec1.yCoord, vec1.zCoord);
+        return ent.worldObj.func_147447_a(vec0, vec2, false, false, true);
+    }
+
+    public static MovingObjectPosition rayTrace(World world, Vec3 vec3d, Vec3 vec3d1, boolean flag, boolean flag1, boolean goThroughTransparentBlocks) {
+        return rayTrace(world, vec3d, vec3d1, flag, flag1, goThroughTransparentBlocks, 200);
+    }
+
+    public static MovingObjectPosition rayTrace(World world, Vec3 vec3d, Vec3 vec3d1, boolean flag, boolean flag1, boolean goThroughTransparentBlocks, int distance) {
+        if (Double.isNaN(vec3d.xCoord) || Double.isNaN(vec3d.yCoord) || Double.isNaN(vec3d.zCoord))
+            return null;
+
+        if (Double.isNaN(vec3d1.xCoord) || Double.isNaN(vec3d1.yCoord) || Double.isNaN(vec3d1.zCoord))
+            return null;
+
+        int i = MathHelper.floor_double(vec3d1.xCoord);
+        int j = MathHelper.floor_double(vec3d1.yCoord);
+        int k = MathHelper.floor_double(vec3d1.zCoord);
+        int l = MathHelper.floor_double(vec3d.xCoord);
+        int i1 = MathHelper.floor_double(vec3d.yCoord);
+        int j1 = MathHelper.floor_double(vec3d.zCoord);
+        int i2 = world.getBlockMetadata(l, i1, j1);
+        Block block = world.getBlock(l, i1, j1);
+
+        if ((!flag1 || block.getCollisionBoundingBoxFromPool(world, l, i1, j1) != null) && block.canCollideCheck(i2, flag)) {
+            MovingObjectPosition movingobjectposition = block.collisionRayTrace(world, l, i1, j1, vec3d, vec3d1);
+
+            if (movingobjectposition != null)
+                return movingobjectposition;
+        }
+
+        for (int l1 = distance; l1-- >= 0;) {
+            if (Double.isNaN(vec3d.xCoord) || Double.isNaN(vec3d.yCoord) || Double.isNaN(vec3d.zCoord))
+                return null;
+
+            if (l == i && i1 == j && j1 == k)
+                return null;
+
+            boolean flag2 = true;
+            boolean flag3 = true;
+            boolean flag4 = true;
+            double d = 999D;
+            double d1 = 999D;
+            double d2 = 999D;
+
+            if (i > l)
+                d = l + 1.0D;
+            else if (i < l)
+                d = l + 0.0D;
+            else
+                flag2 = false;
+
+            if (j > i1)
+                d1 = i1 + 1.0D;
+            else if (j < i1)
+                d1 = i1 + 0.0D;
+            else
+                flag3 = false;
+
+            if (k > j1)
+                d2 = j1 + 1.0D;
+            else if (k < j1)
+                d2 = j1 + 0.0D;
+            else
+                flag4 = false;
+
+            double d3 = 999D;
+            double d4 = 999D;
+            double d5 = 999D;
+            double d6 = vec3d1.xCoord - vec3d.xCoord;
+            double d7 = vec3d1.yCoord - vec3d.yCoord;
+            double d8 = vec3d1.zCoord - vec3d.zCoord;
+
+            if (flag2)
+                d3 = (d - vec3d.xCoord) / d6;
+
+            if (flag3)
+                d4 = (d1 - vec3d.yCoord) / d7;
+
+            if (flag4)
+                d5 = (d2 - vec3d.zCoord) / d8;
+
+            byte byte0 = 0;
+
+            if (d3 < d4 && d3 < d5) {
+                if (i > l)
+                    byte0 = 4;
+                else
+                    byte0 = 5;
+
+                vec3d.xCoord = d;
+                vec3d.yCoord += d7 * d3;
+                vec3d.zCoord += d8 * d3;
+            }else if (d4 < d5) {
+                if (j > i1)
+                    byte0 = 0;
+                else
+                    byte0 = 1;
+
+                vec3d.xCoord += d6 * d4;
+                vec3d.yCoord = d1;
+                vec3d.zCoord += d8 * d4;
+            }else {
+                if (k > j1)
+                    byte0 = 2;
+                else
+                    byte0 = 3;
+
+                vec3d.xCoord += d6 * d5;
+                vec3d.yCoord += d7 * d5;
+                vec3d.zCoord = d2;
+            }
+
+            Vec3 vec3d2 = world.getWorldVec3Pool().getVecFromPool(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord);
+            l = (int) (vec3d2.xCoord = MathHelper.floor_double(vec3d.xCoord));
+
+            if (byte0 == 5) {
+                l--;
+                vec3d2.xCoord++;
+            }
+
+            i1 = (int) (vec3d2.yCoord = MathHelper.floor_double(vec3d.yCoord));
+
+            if (byte0 == 1) {
+                i1--;
+                vec3d2.yCoord++;
+            }
+
+            j1 = (int) (vec3d2.zCoord = MathHelper.floor_double(vec3d.zCoord));
+
+            if (byte0 == 3) {
+                j1--;
+                vec3d2.zCoord++;
+            }
+
+            Block block1 = world.getBlock(l, i1, j1);
+
+            if (goThroughTransparentBlocks && BlockUtil.isTransparent(block1)) {
+                continue;
+            }
+
+            int k2 = world.getBlockMetadata(l, i1, j1);
+
+            if ((!flag1 || block1.getCollisionBoundingBoxFromPool(world, l, i1, j1) != null) && block1.canCollideCheck(k2, flag)) {
+                MovingObjectPosition movingobjectposition1 = block1.collisionRayTrace(world, l, i1, j1, vec3d, vec3d1);
+
+                if (movingobjectposition1 != null)
+                    return movingobjectposition1;
+            }
+        }
+
+        return null;
     }
 }

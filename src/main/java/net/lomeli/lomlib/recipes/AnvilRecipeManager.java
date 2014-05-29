@@ -17,6 +17,10 @@ public class AnvilRecipeManager {
             recipeList.add(recipe);
     }
 
+    public static List<IAnvilRecipe> getRegistry() {
+        return recipeList;
+    }
+
     @SubscribeEvent
     public void onAnvilUpdate(AnvilUpdateEvent event) {
         for (int i = 0; i < recipeList.size(); i++) {
