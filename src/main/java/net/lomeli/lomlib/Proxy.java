@@ -1,9 +1,12 @@
 package net.lomeli.lomlib;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.INetHandler;
+import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.World;
 
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -21,6 +24,13 @@ public class Proxy {
 
     public void doStuffPost() {
         LomLib.logger.logBasic("Post-Init");
+    }
+    
+    public EntityPlayer getPlayerFromNetHandler(INetHandler handler) {
+        if (handler instanceof NetHandlerPlayServer)
+            return ((NetHandlerPlayServer) handler).playerEntity;
+        else
+            return null;
     }
 
     @SubscribeEvent

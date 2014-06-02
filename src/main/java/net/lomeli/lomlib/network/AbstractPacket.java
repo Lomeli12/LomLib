@@ -1,9 +1,8 @@
 package net.lomeli.lomlib.network;
 
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandlerContext;
-
 import net.minecraft.entity.player.EntityPlayer;
+
+import io.netty.buffer.ByteBuf;
 
 public abstract class AbstractPacket {
     /**
@@ -16,7 +15,7 @@ public abstract class AbstractPacket {
      *            the buffer to encode into
      * @link{cpw.mods.fml.common.network.ByteBuffUtils )
      */
-    public abstract void encodeInto(ChannelHandlerContext ctx, ByteBuf buffer);
+    public abstract void encodeInto(ByteBuf buffer);
 
     /**
      * Decode the packet data from the ByteBuf stream. Complex data sets may
@@ -28,7 +27,7 @@ public abstract class AbstractPacket {
      *            the buffer to decode from
      * @link{cpw.mods.fml.common.network.ByteBuffUtils )
      */
-    public abstract void decodeInto(ChannelHandlerContext ctx, ByteBuf buffer);
+    public abstract void decodeInto(ByteBuf buffer);
 
     /**
      * Handle a packet on the client side. Note this occurs after decoding has
@@ -46,5 +45,5 @@ public abstract class AbstractPacket {
      * @param player
      *            the player reference
      */
-    public abstract void handleServerSide(EntityPlayer player);
+    public abstract void handleServerSide();
 }

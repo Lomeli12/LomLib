@@ -5,10 +5,12 @@ import org.lwjgl.input.Keyboard;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.gui.GuiIngameMenu;
 import net.minecraft.client.gui.GuiVideoSettings;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.INetHandler;
+import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.util.ResourceLocation;
 
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -96,6 +98,14 @@ public class ProxyClient extends Proxy {
         }
         return successfull;
     }
+    
+    @Override
+    public EntityPlayer getPlayerFromNetHandler(INetHandler handler) {
+        if (handler instanceof NetHandlerPlayServer)
+            return ((NetHandlerPlayServer) handler).playerEntity;
+        else
+            return Minecraft.getMinecraft().thePlayer;
+    }
 
     public static class LomlibEvents {
         @SideOnly(Side.CLIENT)
@@ -114,7 +124,7 @@ public class ProxyClient extends Proxy {
             if (event.phase == TickEvent.Phase.END) {
                 Minecraft mc = Minecraft.getMinecraft();
                 if (mc.currentScreen instanceof GuiVideoSettings) {
-                    GuiIngameMenu gui = (GuiIngameMenu) mc.currentScreen;
+                    GuiVideoSettings gui = (GuiVideoSettings) mc.currentScreen;
                     String s = "Hit H for mod Info";
                     gui.drawString(mc.fontRenderer, s, gui.width - mc.fontRenderer.getStringWidth(s) - 2, gui.height - 10, 16777215);
                     if (Keyboard.isKeyDown(Keyboard.KEY_H)) {

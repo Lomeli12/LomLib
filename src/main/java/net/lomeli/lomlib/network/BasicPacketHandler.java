@@ -3,6 +3,13 @@ package net.lomeli.lomlib.network;
 import java.util.EnumMap;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.INetHandler;
+
+import net.lomeli.lomlib.LomLib;
+
+import io.netty.channel.ChannelHandler.Sharable;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.FMLEmbeddedChannel;
@@ -10,13 +17,26 @@ import cpw.mods.fml.common.network.FMLOutboundHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-/**
- * Packet pipeline class. Directs all registered packet data to be handled by
- * the packets themselves.
- * 
- * @author sirgingalot some code from: cpw
- */
-public class PacketHandler {
+@Sharable
+public class BasicPacketHandler extends SimpleChannelInboundHandler<AbstractPacket> {
+
+    @Override
+    protected void channelRead0(ChannelHandlerContext ctx, AbstractPacket msg) throws Exception {
+        try {
+            switch(FMLCommonHandler.instance().getEffectiveSide()) {
+            case CLIENT :
+                INetHandler netHandler = ctx.channel().attr(NetworkRegistry.NET_HANDLER).get();
+                msg.handleClientSide(LomLib.proxy.getPlayerFromNetHandler(netHandler));
+                break;
+            case SERVER :
+                msg.handleServerSide();
+                break;
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Send this message to all clients.
      * <p/>
