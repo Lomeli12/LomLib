@@ -16,13 +16,12 @@ import net.lomeli.lomlib.entity.EntityBlock;
 
 @SideOnly(Side.CLIENT)
 public class ResourceUtil {
-    private static File mods;
-    private static File assets;
-
     public static final ResourceLocation MC_BLOCK_SHEET = new ResourceLocation("textures/atlas/blocks.png");
     public static final ResourceLocation MC_ITEM_SHEET = new ResourceLocation("textures/atlas/items.png");
     public static final ResourceLocation MC_FONT_DEFAULT = new ResourceLocation("textures/font/ascii.png");
     public static final ResourceLocation MC_FONT_ALTERNATE = new ResourceLocation("textures/font/ascii_sga.png");
+    private static File mods;
+    private static File assets;
 
     @SideOnly(Side.CLIENT)
     public static void initResourceUtil() {

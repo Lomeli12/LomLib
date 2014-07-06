@@ -15,7 +15,7 @@ import net.lomeli.lomlib.libs.Strings;
 /**
  * Allows you to add a page with a crafting recipe. ATM only works with Vanilla,
  * IC2, and Forge OreDictionary Recipes, more to come.
- * 
+ *
  * @author Anthony
  */
 public class PageCrafting extends PageBase {
@@ -81,7 +81,7 @@ public class PageCrafting extends PageBase {
                 renderSlot(x + 63, y + 88);
                 renderItem(items[8], x + 65, y + 90);
             }
-        }else
+        } else
             smallFontRenderer.drawSplitString(StatCollector.translateToLocal(Strings.INVALID_RECIPE), x + 5, y + 25, width, Color.BLACK.getRGB());
     }
 
@@ -100,7 +100,7 @@ public class PageCrafting extends PageBase {
                             itemRenderer.renderItemAndEffectIntoGUI(largeFontRenderer, mc.renderEngine, new ItemStack((Block) j), x, y);
                     }
                 }
-            }else if (obj instanceof Item)
+            } else if (obj instanceof Item)
                 itemRenderer.renderItemAndEffectIntoGUI(largeFontRenderer, mc.renderEngine, new ItemStack((Item) obj), x, y);
             else if (obj instanceof Block)
                 itemRenderer.renderItemAndEffectIntoGUI(largeFontRenderer, mc.renderEngine, new ItemStack((Block) obj), x, y);

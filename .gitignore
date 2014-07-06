@@ -6,3 +6,5 @@ ftp.properties
 # Package Files #
 *.war
 *.ear
+*.iml
+build.bat

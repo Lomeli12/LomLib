@@ -22,14 +22,14 @@ import net.lomeli.lomlib.util.FluidUtil;
 
 /**
  * Based off of OreDict's ShapelessOreRecipe
- * 
+ *
  * @author Lomeli12
  */
 public class ShapelessFluidRecipe implements IRecipe {
 
-    private ItemStack output = null;
     @SuppressWarnings("rawtypes")
     public ArrayList input = new ArrayList();
+    private ItemStack output = null;
 
     @SuppressWarnings("unchecked")
     public ShapelessFluidRecipe(ItemStack result, Object... recipe) {
@@ -40,21 +40,21 @@ public class ShapelessFluidRecipe implements IRecipe {
                     input.add(FluidUtil.getContainersForFluid(FluidUtil.getContainerFluid((ItemStack) in)));
                 else
                     input.add(((ItemStack) in).copy());
-            }else if (in instanceof Item) {
+            } else if (in instanceof Item) {
                 if (FluidContainerRegistry.isFilledContainer(new ItemStack((Item) in)))
                     input.add(FluidUtil.getContainersForFluid(FluidUtil.getContainerFluid(new ItemStack((Item) in))));
                 else
                     input.add(new ItemStack((Item) in));
-            }else if (in instanceof Block)
+            } else if (in instanceof Block)
                 input.add(new ItemStack((Block) in));
             else if (in instanceof String) {
                 if (((String) in).startsWith("fluid$")) {
                     String fluidName = ((String) in).substring(6);
                     if (FluidRegistry.isFluidRegistered(fluidName))
                         input.add(FluidUtil.getContainersForFluid(FluidRegistry.getFluid(fluidName)));
-                }else
+                } else
                     input.add(OreDictionary.getOres((String) in));
-            }else {
+            } else {
                 String ret = "Invalid shapeless ore recipe: ";
                 for (Object tmp : recipe) {
                     ret += tmp + ", ";
@@ -83,7 +83,7 @@ public class ShapelessFluidRecipe implements IRecipe {
                 if (OreDictionary.itemMatches(replace.getKey(), ingred, false)) {
                     finalObj = OreDictionary.getOres(replace.getValue());
                     break;
-                }else if (FluidContainerRegistry.isFilledContainer(replace.getKey())) {
+                } else if (FluidContainerRegistry.isFilledContainer(replace.getKey())) {
                     finalObj = FluidUtil.getContainersForFluid(FluidContainerRegistry.getFluidForFilledItem(replace.getKey()).getFluid());
                     break;
                 }
@@ -107,7 +107,7 @@ public class ShapelessFluidRecipe implements IRecipe {
         return output.copy();
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public boolean matches(InventoryCrafting var1, World world) {
         ArrayList required = new ArrayList(input);

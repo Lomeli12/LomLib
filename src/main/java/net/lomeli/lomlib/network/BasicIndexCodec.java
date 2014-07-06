@@ -5,10 +5,10 @@ import io.netty.channel.ChannelHandlerContext;
 
 import cpw.mods.fml.common.network.FMLIndexedMessageToMessageCodec;
 
-public class BasicChannelHandler extends FMLIndexedMessageToMessageCodec<AbstractPacket> {
-    
+public class BasicIndexCodec extends FMLIndexedMessageToMessageCodec<AbstractPacket> {
+
     @SuppressWarnings("unchecked")
-    public BasicChannelHandler(Class<? extends AbstractPacket>...classes) {
+    public BasicIndexCodec(Class<? extends AbstractPacket>... classes) {
         if (classes.length > 0) {
             for (int i = 0; i < classes.length; i++) {
                 this.addDiscriminator(i, classes[i]);

@@ -23,35 +23,12 @@ public class RenderEntityBlock extends Render {
 
     public static RenderEntityBlock INSTANCE = new RenderEntityBlock();
 
+    private RenderEntityBlock() {
+    }
+
     @Override
     protected ResourceLocation getEntityTexture(Entity entity) {
         throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public static class BlockInterface {
-
-        public double minX;
-        public double minY;
-        public double minZ;
-        public double maxX;
-        public double maxY;
-        public double maxZ;
-        public Block baseBlock = Blocks.sand;
-        public IIcon texture = null;
-
-        public IIcon getBlockTextureFromSide(int i) {
-            if (texture == null)
-                return baseBlock.getBlockTextureFromSide(i);
-            else
-                return texture;
-        }
-
-        public float getBlockBrightness(IBlockAccess iblockaccess, int i, int j, int k) {
-            return baseBlock.getLightValue(iblockaccess, i, j, k);
-        }
-    }
-
-    private RenderEntityBlock() {
     }
 
     @Override
@@ -187,5 +164,28 @@ public class RenderEntityBlock extends Render {
 
         if (doTessellating)
             tessellator.draw();
+    }
+
+    public static class BlockInterface {
+
+        public double minX;
+        public double minY;
+        public double minZ;
+        public double maxX;
+        public double maxY;
+        public double maxZ;
+        public Block baseBlock = Blocks.sand;
+        public IIcon texture = null;
+
+        public IIcon getBlockTextureFromSide(int i) {
+            if (texture == null)
+                return baseBlock.getBlockTextureFromSide(i);
+            else
+                return texture;
+        }
+
+        public float getBlockBrightness(IBlockAccess iblockaccess, int i, int j, int k) {
+            return baseBlock.getLightValue(iblockaccess, i, j, k);
+        }
     }
 }

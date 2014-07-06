@@ -9,12 +9,12 @@ public class TabTracker {
         return openedLeftTab;
     }
 
-    public static Class<? extends TabBase> getOpenedRightTab() {
-        return openedRightTab;
-    }
-
     public static void setOpenedLeftTab(Class<? extends TabBase> tabClass) {
         openedLeftTab = tabClass;
+    }
+
+    public static Class<? extends TabBase> getOpenedRightTab() {
+        return openedRightTab;
     }
 
     public static void setOpenedRightTab(Class<? extends TabBase> tabClass) {

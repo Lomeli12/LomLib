@@ -11,19 +11,14 @@ import net.lomeli.lomlib.client.gui.GuiLomLib;
 
 public abstract class ElementBase {
     public static final FontRenderer elementFontRenderer = FMLClientHandler.instance().getClient().fontRenderer;
-
-    protected GuiLomLib gui;
-    protected ResourceLocation texture;
-
-    protected int posX;
-    protected int posY;
-
-    protected int sizeX;
-    protected int sizeY;
-
     public int texW = 256;
     public int texH = 256;
-
+    protected GuiLomLib gui;
+    protected ResourceLocation texture;
+    protected int posX;
+    protected int posY;
+    protected int sizeX;
+    protected int sizeY;
     protected String name;
 
     protected boolean visible = true;
@@ -53,18 +48,13 @@ public abstract class ElementBase {
         return this;
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
+
     public ElementBase setVisible(boolean visible) {
         this.visible = visible;
         return this;
-    }
-
-    public ElementBase setName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    public boolean isVisible() {
-        return visible;
     }
 
     public void update() {
@@ -102,5 +92,10 @@ public abstract class ElementBase {
 
     public String getName() {
         return name;
+    }
+
+    public ElementBase setName(String name) {
+        this.name = name;
+        return this;
     }
 }

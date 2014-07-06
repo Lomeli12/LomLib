@@ -2,6 +2,8 @@ recipe.lomlib:shapedFluid=Shaped Fluid Recipe
 recipe.lomlib:shapelessFluid=Shapeless Fluid Recipe
 recipe.lomlib:anvilRecipe=Anvil Recipe
 
+message.lomlib.update=There's a new update for LomLib! Download:
+
 tab.lomlib.info=Information
 
 element.lomlib.tankEmpty=Empty

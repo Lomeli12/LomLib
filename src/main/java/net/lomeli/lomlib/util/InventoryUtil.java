@@ -5,9 +5,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-import net.lomeli.lomlib.item.ItemUtil;
-import net.lomeli.lomlib.item.NBTUtil;
-
 public class InventoryUtil {
     /**
      * Copy an entire inventory. Best to avoid doing this often.
@@ -24,13 +21,10 @@ public class InventoryUtil {
     /**
      * Add an ItemStack to an inventory. Return true if the entire stack was
      * added.
-     * 
-     * @param inventory
-     *            The inventory.
-     * @param stack
-     *            ItemStack to add.
-     * @param startIndex
-     *            First slot to attempt to add into. Does not loop around fully.
+     *
+     * @param inventory  The inventory.
+     * @param stack      ItemStack to add.
+     * @param startIndex First slot to attempt to add into. Does not loop around fully.
      */
     public static boolean addItemStackToInventory(ItemStack[] inventory, ItemStack stack, int startIndex) {
         if (stack == null)
@@ -43,11 +37,11 @@ public class InventoryUtil {
                     inventory[i].stackSize += stack.stackSize;
                     stack = null;
                     return true;
-                }else {
+                } else {
                     stack.stackSize -= hold;
                     inventory[i].stackSize += hold;
                 }
-            }else if (inventory[i] == null && openSlot == -1)
+            } else if (inventory[i] == null && openSlot == -1)
                 openSlot = i;
         }
         if (stack != null) {
@@ -83,7 +77,7 @@ public class InventoryUtil {
                     sidedInv.setInventorySlotContents(i, null);
                 }
             }
-        }else {
+        } else {
             for (int i = 0; i < theInventory.getSizeInventory() && retStack == null; i++) {
                 if (theInventory.getStackInSlot(i) != null) {
                     retStack = theInventory.getStackInSlot(i).copy();
@@ -117,7 +111,7 @@ public class InventoryUtil {
                 if (sidedInv.canInsertItem(slots[i], stack, side) && theInventory.getStackInSlot(slots[i]) == null)
                     stack = addToEmptyInventorySlot(sidedInv, slots[i], stack);
             }
-        }else {
+        } else {
             int invSize = theInventory.getSizeInventory();
             for (int i = 0; i < invSize && stack != null; i++) {
                 if (ItemUtil.itemsEqualWithMetadata(stack, theInventory.getStackInSlot(i), true))
@@ -151,7 +145,7 @@ public class InventoryUtil {
                 if (sidedInv.canInsertItem(slots[i], stack, side) && theInventory.getStackInSlot(slots[i]) == null)
                     stack = simulateAddToEmptyInventorySlot(sidedInv, slots[i], stack);
             }
-        }else {
+        } else {
             int invSize = theInventory.getSizeInventory();
             for (int i = 0; i < invSize && stack != null; i++) {
                 if (ItemUtil.itemsEqualWithMetadata(stack, theInventory.getStackInSlot(i), true))
@@ -215,7 +209,7 @@ public class InventoryUtil {
         if (stack == null)
             return null;
         if (theTile instanceof IInventory)
-            stack = insertItemStackIntoInventory((IInventory) theTile, stack, RotationHelper.SIDE_OPPOSITE[side]);
+            stack = insertItemStackIntoInventory((IInventory) theTile, stack, RotationUtil.SIDE_OPPOSITE[side]);
         return stack;
     }
 

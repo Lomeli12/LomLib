@@ -10,11 +10,11 @@ import net.minecraft.world.chunk.IChunkProvider;
 
 public class WorldGenSubmergedOre {
 
+    private OreData data;
+
     public WorldGenSubmergedOre(OreData data) {
         this.data = data;
     }
-
-    private OreData data;
 
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
         int x, y, z;
@@ -54,16 +54,16 @@ public class WorldGenSubmergedOre {
             if (world.getBlock(lx, ly + 1, lz).getUnlocalizedName().equals(Blocks.water) || world.getBlock(lx, ly + 1, lz).getUnlocalizedName().equals(Blocks.flowing_water.getUnlocalizedName())) {
 
                 world.setBlock(lx, ly, lz, block, meta, 2);
-                switch(rand.nextInt(3)) {
-                case 0 :
-                    lx = lx + (rand.nextInt(4) - 2);
-                    break;
-                case 1 :
-                    ly = ly + (rand.nextInt(4) - 2);
-                    break;
-                case 2 :
-                    lz = lz + (rand.nextInt(4) - 2);
-                    break;
+                switch (rand.nextInt(3)) {
+                    case 0:
+                        lx = lx + (rand.nextInt(4) - 2);
+                        break;
+                    case 1:
+                        ly = ly + (rand.nextInt(4) - 2);
+                        break;
+                    case 2:
+                        lz = lz + (rand.nextInt(4) - 2);
+                        break;
                 }
             }
         }

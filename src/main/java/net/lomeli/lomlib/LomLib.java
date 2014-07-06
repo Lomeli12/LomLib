@@ -1,9 +1,18 @@
 package net.lomeli.lomlib;
 
-import java.io.File;
-
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.RecipeSorter;
+
+import cpw.mods.fml.client.event.ConfigChangedEvent;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 import net.lomeli.lomlib.client.CommandLomLib;
 import net.lomeli.lomlib.libs.Strings;
@@ -11,16 +20,8 @@ import net.lomeli.lomlib.recipes.AnvilRecipeManager;
 import net.lomeli.lomlib.recipes.ShapedFluidRecipe;
 import net.lomeli.lomlib.recipes.ShapelessFluidRecipe;
 import net.lomeli.lomlib.util.LogHelper;
-import net.lomeli.lomlib.util.XMLConfiguration;
 
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-
-@Mod(modid = Strings.MOD_ID, name = Strings.MOD_NAME, version = Strings.VERSION)
+@Mod(modid = Strings.MOD_ID, name = Strings.MOD_NAME, version = Strings.VERSION, guiFactory = Strings.CONFIG_FACTORY)
 public class LomLib {
 
     @Mod.Instance
@@ -31,7 +32,8 @@ public class LomLib {
 
     public static LogHelper logger;
 
-    public static boolean debug, capes;
+    public static boolean debug = false, capes = true, slime = false;
+    public static Configuration config;
 
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
@@ -41,12 +43,13 @@ public class LomLib {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = new LogHelper(Strings.MOD_NAME);
-
-        configureMod(event.getSuggestedConfigurationFile());
+        config = new Configuration(event.getSuggestedConfigurationFile());
+        configureMod();
 
         RecipeSorter.register(Strings.NEI_SHAPED, ShapedFluidRecipe.class, RecipeSorter.Category.SHAPED, "after:minecraft:shaped before:minecraft:shapeless");
         RecipeSorter.register(Strings.NEI_SHAPELESS, ShapelessFluidRecipe.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 
+        proxy.checkForUpdate();
         proxy.doStuffPre();
     }
 
@@ -54,6 +57,7 @@ public class LomLib {
     public void init(FMLInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(proxy);
         MinecraftForge.EVENT_BUS.register(new AnvilRecipeManager());
+        FMLCommonHandler.instance().bus().register(this);
         proxy.doStuffInit();
     }
 
@@ -62,14 +66,23 @@ public class LomLib {
         proxy.doStuffPost();
     }
 
-    public void configureMod(File configFile) {
-        XMLConfiguration config = new XMLConfiguration(configFile);
-
-        config.loadXml();
-
-        debug = config.getBoolean("debugMode", false, Strings.DEBUG_MODE, XMLConfiguration.ConfigEnum.GENERAL_CONFIG);
-        capes = config.getBoolean("capes", true, Strings.CAPES, XMLConfiguration.ConfigEnum.GENERAL_CONFIG);
-
-        config.saveXML();
+    public static void configureMod() {
+        //config.load();
+        debug = config.getBoolean("debugMode", Configuration.CATEGORY_GENERAL, debug, Strings.DEBUG_MODE);
+        capes = config.getBoolean("capes", Configuration.CATEGORY_GENERAL, capes, Strings.CAPES);
+        slime = config.getBoolean("slimePistonRightClick", Configuration.CATEGORY_GENERAL, slime, Strings.SLIMES);
+        System.out.println(debug + " " + capes + " " + slime);
+        //if (config.hasChanged())
+        //    config.save();
+    }
+    
+    @SubscribeEvent
+    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
+        //System.out.println(eventArgs.modID);
+        //System.out.println(eventArgs.modID.equalsIgnoreCase(Strings.MOD_ID));
+        if(eventArgs.modID.equalsIgnoreCase(Strings.MOD_ID)) {
+            System.out.println("yay! " + Strings.MOD_NAME);
+            configureMod();
+        }
     }
 }

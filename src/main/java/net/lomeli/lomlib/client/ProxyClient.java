@@ -6,22 +6,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.GuiVideoSettings;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.INetHandler;
-import net.minecraft.network.NetHandlerPlayServer;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
-
-import net.lomeli.lomlib.LomLib;
-import net.lomeli.lomlib.Proxy;
-import net.lomeli.lomlib.client.gui.element.IconRegistry;
-import net.lomeli.lomlib.client.render.SmallFontRenderer;
-import net.lomeli.lomlib.util.ModLoaded;
-import net.lomeli.lomlib.util.ObfUtil;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -29,20 +21,32 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import net.lomeli.lomlib.LomLib;
+import net.lomeli.lomlib.Proxy;
+import net.lomeli.lomlib.client.gui.element.IconRegistry;
+import net.lomeli.lomlib.client.render.SmallFontRenderer;
+import net.lomeli.lomlib.util.ModLoaded;
+import net.lomeli.lomlib.util.ObfUtil;
+import net.lomeli.lomlib.util.ToolTipUtil;
+import net.lomeli.lomlib.util.UpdateHelper;
+
 public class ProxyClient extends Proxy {
 
     public static SmallFontRenderer smallFontRenderer;
+    private DevCapes capes;
 
     @Override
     public void doStuffPre() {
         super.doStuffPre();
         ResourceUtil.initResourceUtil();
 
-        if (LomLib.capes && setCapeAccess())
-            MinecraftForge.EVENT_BUS.register(DevCapes.getInstance());
+        if (LomLib.capes && setCapeAccess()) {
+            capes = DevCapes.getInstance();
+            MinecraftForge.EVENT_BUS.register(capes);
+        }
 
-        if (isOptifineInstalled())
-            LomLib.logger.logWarning("Optifine detected! If you run into any bugs, please test without optifine first before reporting, otherwise it WILL BE IGNORED! (Applies to both my mods and most others)");
+        if (ObfUtil.isOptifineInstalled())
+            LomLib.logger.logWarning("Optifine detected! If you run into any bugs, please test without optifine first before reporting, otherwise it WILL BE IGNORED! (Applies to both my mods and most others). Capes disabled to prevent optifine related crashes");
     }
 
     @Override
@@ -60,51 +64,18 @@ public class ProxyClient extends Proxy {
             NEIAddon.loadAddon();
     }
 
-    private boolean isOptifineInstalled() {
-        try {
-            return Class.forName("optifine.OptiFineForgeTweaker") != null;
-        }catch (ClassNotFoundException e) {
-            return false;
-        }
-    }
-
     private boolean setCapeAccess() {
         boolean successfull = false;
         try {
             if (LomLib.debug)
-                LomLib.logger.logBasic("Accessing AbstractClientPlayer fields with MCP Names");
-            ObfUtil.setFieldAccess(AbstractClientPlayer.class, "downloadImageCape", true);
-            ObfUtil.setFieldAccess(AbstractClientPlayer.class, "locationCape", true);
+                LomLib.logger.logBasic("Accessing AbstractClientPlayer fields");
+            ObfUtil.setFieldAccessible(AbstractClientPlayer.class, "downloadImageCape", "field_110315_c", "c");
+            ObfUtil.setFieldAccessible(AbstractClientPlayer.class, "locationCape", "field_110313_e", "e");
             successfull = true;
-        }catch (Exception e) {
-            try {
-                if (LomLib.debug)
-                    LomLib.logger.logBasic("Failed with MCP names, using SRG Names");
-                ObfUtil.setFieldAccess(AbstractClientPlayer.class, "field_110315_c", true);
-                ObfUtil.setFieldAccess(AbstractClientPlayer.class, "field_110313_e", true);
-                successfull = true;
-            }catch (Exception e1) {
-                try {
-                    if (LomLib.debug)
-                        LomLib.logger.logBasic("Failed with SRG names, using Obfuscated Names");
-                    ObfUtil.setFieldAccess(AbstractClientPlayer.class, "c", true);
-                    ObfUtil.setFieldAccess(AbstractClientPlayer.class, "e", true);
-                    successfull = true;
-                }catch (Exception e2) {
-                    LomLib.logger.logError("Could not set cape access!");
-                    e2.printStackTrace();
-                }
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return successfull;
-    }
-    
-    @Override
-    public EntityPlayer getPlayerFromNetHandler(INetHandler handler) {
-        if (handler instanceof NetHandlerPlayServer)
-            return ((NetHandlerPlayServer) handler).playerEntity;
-        else
-            return Minecraft.getMinecraft().thePlayer;
     }
 
     public static class LomlibEvents {
@@ -130,8 +101,14 @@ public class ProxyClient extends Proxy {
                     if (Keyboard.isKeyDown(Keyboard.KEY_H)) {
                         mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
                     }
+                } else if (mc.inGameHasFocus && (UpdateHelper.modList != null && !UpdateHelper.modList.isEmpty()) && !LomLib.proxy.sentMessage) {
+                    for (UpdateHelper uh : UpdateHelper.modList) {
+                        mc.thePlayer.addChatMessage(new ChatComponentText(ToolTipUtil.BLUE + StatCollector.translateToLocal("message." + uh.getModID() + ".update") + uh.getDownloadURL()));
+                    }
+                    LomLib.proxy.sentMessage = true;
                 }
             }
         }
+
     }
 }

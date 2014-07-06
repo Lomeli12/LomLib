@@ -49,7 +49,7 @@ public class EnchantmentUtil {
                         }
                     }
                 }
-            }else {
+            } else {
                 for (int i = 0; i < enchantList.tagCount(); i++) {
                     NBTTagCompound enc = enchantList.getCompoundTagAt(i);
                     if (enc.hasKey("id")) {
@@ -60,7 +60,7 @@ public class EnchantmentUtil {
                     }
                 }
             }
-        }else {
+        } else {
             if (lvl > 0) {
                 enchantTag.setShort("id", (short) enchant.effectId);
                 enchantTag.setShort("lvl", lvl);

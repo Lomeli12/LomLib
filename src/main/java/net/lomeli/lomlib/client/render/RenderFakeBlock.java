@@ -8,8 +8,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
 public class RenderFakeBlock extends RenderBlocks {
-    public static final double[] u = { -1.0D, 1.0D, 1.0D, -1.0D };
-    public static final double[] v = { 1.0D, 1.0D, -1.0D, -1.0D };
+    public static final double[] u = {-1.0D, 1.0D, 1.0D, -1.0D};
+    public static final double[] v = {1.0D, 1.0D, -1.0D, -1.0D};
 
     public int curBlock = 0;
     public boolean isOpaque = false;
@@ -27,16 +27,16 @@ public class RenderFakeBlock extends RenderBlocks {
             if ((side == 0) || (side == 1)) {
                 u = 1.0D - u2;
                 v = 1.0D - v2;
-            }else if (side == 2) {
+            } else if (side == 2) {
                 u = v2;
                 v = 1.0D - u2;
-            }else if (side == 3) {
+            } else if (side == 3) {
                 u = u2;
                 v = v2;
-            }else if (side == 4) {
+            } else if (side == 4) {
                 u = v2;
                 v = 1.0D - u2;
-            }else if (side == 5) {
+            } else if (side == 5) {
                 u = 1.0D - v2;
                 v = u2;
             }

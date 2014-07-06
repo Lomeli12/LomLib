@@ -15,8 +15,6 @@ import net.lomeli.lomlib.libs.Strings;
 import net.lomeli.lomlib.util.ObfUtil;
 import net.lomeli.lomlib.util.ToolTipUtil;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
-
 public class CommandLomLib extends CommandBase {
 
     @Override
@@ -32,11 +30,11 @@ public class CommandLomLib extends CommandBase {
     @Override
     @SuppressWarnings("rawtypes")
     public List addTabCompletionOptions(ICommandSender commandSender, String[] args) {
-        switch(args.length) {
-        case 1 :
-            return getListOfStringsMatchingLastWord(args, new String[] { "calmPigmen" });
-        default:
-            return null;
+        switch (args.length) {
+            case 1:
+                return getListOfStringsMatchingLastWord(args, new String[]{"calmPigmen"});
+            default:
+                return null;
         }
     }
 
@@ -57,7 +55,7 @@ public class CommandLomLib extends CommandBase {
                 }
                 if (successful)
                     sendMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: Pig Zombies should now be calm");
-            }else if (argument1.equalsIgnoreCase("clearAllEntities")) {
+            } else if (argument1.equalsIgnoreCase("clearAllEntities")) {
                 for (Object entity : entityList) {
                     if (entity instanceof Entity) {
                         if (!(entity instanceof EntityPlayer))
@@ -65,7 +63,7 @@ public class CommandLomLib extends CommandBase {
                     }
                 }
                 sendMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All loaded non-player entities have been removed.");
-            }else if (argument1.equalsIgnoreCase("clearEntities")) {
+            } else if (argument1.equalsIgnoreCase("clearEntities")) {
                 for (Object entity : entityList) {
                     if (entity instanceof Entity) {
                         if (!(entity instanceof EntityLivingBase))
@@ -73,13 +71,13 @@ public class CommandLomLib extends CommandBase {
                     }
                 }
                 sendMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All loaded non-living entities have been removed.");
-            }else if (argument1.equalsIgnoreCase("clearLivingEntities")) {
+            } else if (argument1.equalsIgnoreCase("clearLivingEntities")) {
                 for (Object entity : entityList) {
                     if (entity instanceof EntityLivingBase)
                         ((EntityLivingBase) entity).setDead();
                 }
                 sendMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All loaded Living mobs have been removed.");
-            }else if (argument1.equalsIgnoreCase("clearHostiles")) {
+            } else if (argument1.equalsIgnoreCase("clearHostiles")) {
                 for (Object entity : entityList) {
                     if (entity instanceof Entity) {
                         if (entity instanceof IMob)
@@ -87,43 +85,29 @@ public class CommandLomLib extends CommandBase {
                     }
                 }
                 sendMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All loaded Hostile mobs have been removed.");
-            }else if (argument1.equalsIgnoreCase("allowFly")) {
+            } else if (argument1.equalsIgnoreCase("allowFly")) {
                 String username = args[1];
                 EntityPlayer player = icommandsender.getEntityWorld().getPlayerEntityByName(username);
                 if (player != null && !player.capabilities.isCreativeMode)
                     player.capabilities.allowFlying = !player.capabilities.allowFlying;
                 else
                     sendMessage(icommandsender, ToolTipUtil.ORANGE + "allowFly <playername>");
-            }else if (argument1.equalsIgnoreCase("help") || argument1.equalsIgnoreCase("?"))
+            } else if (argument1.equalsIgnoreCase("help") || argument1.equalsIgnoreCase("?"))
                 displayHelp(icommandsender);
-        }else
+        } else
             sendMessage(icommandsender, ToolTipUtil.GREEN + "Type /lomlib help or /lomlib ? for more info");
     }
 
     private boolean calmPigmen(ICommandSender sender, EntityPigZombie pigZombie) {
         try {
-            if (!ObfUtil.isFieldAccessible(EntityPigZombie.class, "angerLevel"))
-                ObfUtil.setFieldAccess(EntityPigZombie.class, "angerLevel", true);
-            ReflectionHelper.setPrivateValue(EntityPigZombie.class, pigZombie, 0, "angerLevel");
+            if (!ObfUtil.isFieldAccessible(EntityPigZombie.class, "angerLevel", "field_70837_d", "bs"))
+                ObfUtil.setFieldAccessible(EntityPigZombie.class, "angerLevel", "field_70837_d", "bs");
+            ObfUtil.setFieldValue(EntityPigZombie.class, pigZombie, 0, "angerLevel", "field_70837_d", "bs");
             return true;
-        }catch (Exception e) {
-            try {
-                if (!ObfUtil.isFieldAccessible(EntityPigZombie.class, "field_70837_d"))
-                    ObfUtil.setFieldAccess(EntityPigZombie.class, "field_70837_d", true);
-                ReflectionHelper.setPrivateValue(EntityPigZombie.class, pigZombie, 0, "field_70837_d");
-                return true;
-            }catch (Exception e1) {
-                try {
-                    if (!ObfUtil.isFieldAccessible(EntityPigZombie.class, "bs"))
-                        ObfUtil.setFieldAccess(EntityPigZombie.class, "bs", true);
-                    ReflectionHelper.setPrivateValue(EntityPigZombie.class, pigZombie, 0, "bs");
-                    return true;
-                }catch (Exception e2) {
-                    sendMessage(sender, ToolTipUtil.BLUE + "[LomLib]: Failed to calm Pig Zombies!");
-                    e2.printStackTrace();
-                    return false;
-                }
-            }
+        } catch (Exception e) {
+            sendMessage(sender, ToolTipUtil.BLUE + "[LomLib]: Failed to calm Pig Zombies!");
+            e.printStackTrace();
+            return false;
         }
     }
 

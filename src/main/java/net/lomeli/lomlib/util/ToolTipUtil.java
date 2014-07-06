@@ -7,32 +7,6 @@ import java.util.List;
 import net.minecraft.client.gui.FontRenderer;
 
 public class ToolTipUtil {
-    public static boolean doAdditionalInfo() {
-        return KeyBoardUtil.isKeyDown(Keyboard.KEY_LSHIFT);
-    }
-
-    /**
-     * Search up the color codes on the minecraft wiki page for sign colors
-     * 
-     * @param color
-     *            Single character that will adds in color and simple formatting
-     * @author Lomeli12
-     */
-    public static String additionalInfoInstructions(String color) {
-        String message = "<SHIFT for info>";
-        return color + ITALIC + message;
-    }
-
-    public static String toolTipInfo(String color, String message) {
-        return doAdditionalInfo() ? message : additionalInfoInstructions(color);
-    }
-
-    public static int getSplitStringHeight(FontRenderer renderer, String input, int width) {
-        @SuppressWarnings("rawtypes")
-        List stringRows = renderer.listFormattedStringToWidth(input, width);
-        return stringRows.size() * renderer.FONT_HEIGHT;
-    }
-
     public static final String BLACK = "\u00a70";
     public static final String DARK_BLUE = "\u00a71";
     public static final String GREEN = "\u00a72";
@@ -54,4 +28,29 @@ public class ToolTipUtil {
     public static final String STRIKE = "\u00a7m";
     public static final String UNDERLINE = "\u00a7n";
     public static final String ITALIC = "\u00a7o";
+
+    public static boolean doAdditionalInfo() {
+        return KeyBoardUtil.isKeyDown(Keyboard.KEY_LSHIFT);
+    }
+
+    /**
+     * Search up the color codes on the minecraft wiki page for sign colors
+     *
+     * @param color Single character that will adds in color and simple formatting
+     * @author Lomeli12
+     */
+    public static String additionalInfoInstructions(String color) {
+        String message = "<SHIFT for info>";
+        return color + ITALIC + message;
+    }
+
+    public static String toolTipInfo(String color, String message) {
+        return doAdditionalInfo() ? message : additionalInfoInstructions(color);
+    }
+
+    public static int getSplitStringHeight(FontRenderer renderer, String input, int width) {
+        @SuppressWarnings("rawtypes")
+        List stringRows = renderer.listFormattedStringToWidth(input, width);
+        return stringRows.size() * renderer.FONT_HEIGHT;
+    }
 }

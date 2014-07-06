@@ -36,7 +36,7 @@ public class PageSmelting extends PageBase {
                 gui.drawTexturedModalRect(x + 35, y + 40, 13, 240, 22, 16);
                 gui.drawTexturedModalRect(x + 58, y + 38, 35, 236, 20, 20);
                 itemRenderer.renderItemAndEffectIntoGUI(largeFontRenderer, mc.renderEngine, output, x + 60, y + 40);
-            }else
+            } else
                 smallFontRenderer.drawSplitString(StatCollector.translateToLocal(Strings.INVALID_RECIPE), x, y + 95, width, Color.BLACK.getRGB());
         }
     }

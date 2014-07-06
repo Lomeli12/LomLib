@@ -9,9 +9,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class IconConnected implements IIcon {
 
-    private int n;
-
     public final IIcon[] icons = new IIcon[5];
+    private int n;
 
     public IconConnected(IIconRegister register, String iconName, String modid) {
         this(register.registerIcon(modid + ":" + iconName + "_corners"), register.registerIcon(modid + ":" + iconName + "_vertical"), register.registerIcon(modid + ":" + iconName + "_horizontal"), register

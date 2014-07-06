@@ -59,7 +59,7 @@ public class ElementTank extends ElementBase {
         if (tank.getFluid() != null && tank.getFluidAmount() > 0) {
             list.add(tank.getFluid().getFluid().getLocalizedName());
             list.add("" + tank.getFluidAmount() + " / " + tank.getCapacity() + " mB");
-        }else
+        } else
             list.add(StatCollector.translateToLocal("element.lomlib.tankEmpty"));
     }
 }

@@ -46,7 +46,7 @@ public class ItemRecipeUtil {
                                     finalRecipe[i] = Array.get(inputs.get(main), i);
                             }
                         }
-                    }else if (main instanceof ShapelessRecipes) {
+                    } else if (main instanceof ShapelessRecipes) {
                         Field inputs = fields[1];
                         if (List.class.isAssignableFrom(inputs.getType())) {
                             inputs.setAccessible(true);
@@ -59,7 +59,7 @@ public class ItemRecipeUtil {
                                 }
                             }
                         }
-                    }else if (main instanceof ShapedOreRecipe || main instanceof ShapelessOreRecipe) {
+                    } else if (main instanceof ShapedOreRecipe || main instanceof ShapelessOreRecipe) {
                         Object[] inputs = null;
                         if (main instanceof ShapedOreRecipe)
                             inputs = ((ShapedOreRecipe) main).getInput();
@@ -73,7 +73,7 @@ public class ItemRecipeUtil {
                             else
                                 finalRecipe[i] = obj;
                         }
-                    }else if (ModLoaded.isModInstalled("IC2")) {
+                    } else if (ModLoaded.isModInstalled("IC2")) {
                         if (Class.forName("ic2.core.AdvRecipe").isAssignableFrom(main.getClass()) || Class.forName("ic2.core.AdvShapelessRecipe").isAssignableFrom(main.getClass())) {
                             Field inputs = fields[2];
                             if (inputs.getType().isArray()) {
@@ -83,7 +83,7 @@ public class ItemRecipeUtil {
                                 }
                             }
                         }
-                    }else if (main instanceof ShapedFluidRecipe || main instanceof ShapelessFluidRecipe) {
+                    } else if (main instanceof ShapedFluidRecipe || main instanceof ShapelessFluidRecipe) {
                         Object[] inputs = null;
                         if (main instanceof ShapedFluidRecipe)
                             inputs = ((ShapedFluidRecipe) main).getInput();
@@ -98,7 +98,7 @@ public class ItemRecipeUtil {
                                 finalRecipe[i] = obj;
                         }
                     }
-                }catch (Exception e) {
+                } catch (Exception e) {
                 }
             }
         }
@@ -112,7 +112,7 @@ public class ItemRecipeUtil {
             Field field = fields[i];
             field.setAccessible(true);
             return (T) field.get(instance);
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

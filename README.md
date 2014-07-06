@@ -5,7 +5,7 @@ Just a set of utilities that I use often. A prerequisite for most my mods.
 
 ## Website and Download
 
-[http://anthony-lomeli.net/projects/minecraft-mods/lomlib](http://anthony-lomeli.net/projects/minecraft-mods/lomlib)
+[http://lomeli12.net/minecraft-mods/lomlib](http://lomeli12.net/minecraft-mods/lomlib)
 
 ## Version
 
@@ -21,7 +21,7 @@ Just a set of utilities that I use often. A prerequisite for most my mods.
 #### Easy Way
 
 1. Setup your Forge Development Environment like normal
-2. Download the latest Dev Version from http://anthony-lomeli.net/MinecraftMods/LomLib/dev/
+2. Download the latest Dev Version from http://lomeli12.net/MinecraftMods/LomLib/dev/
 3. Place the development jar in `jars/mods`(or equivalent).
 4. Add the jar to your project's build path. In eclipse, this can be done in the package exploerer by *Right-Clicking your project->Properties->Java Build Path->Libraries->Add External JARs...*
 
@@ -51,7 +51,7 @@ Open up your *build.gradle* file with your favorite text editor and add this to 
     repositories {
 	    ivy {
         	name 'LomLib'
-        	artifactPattern "http://anthony-lomeli.net/MinecraftMods/LomLib/dev/[module]-dev-[revision].[ext]"
+        	artifactPattern "http://lomeli12.net/MinecraftMods/LomLib/dev/[module]-dev-[revision].[ext]"
     	}
 	}
 	

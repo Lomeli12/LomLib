@@ -1,18 +1,19 @@
 package net.lomeli.lomlib.util;
 
-import org.apache.logging.log4j.Level;
-
-import cpw.mods.fml.common.FMLLog;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LogHelper {
     private String modName;
+    private Logger logger;
 
     public LogHelper(String modName) {
         this.modName = modName;
+        logger = Logger.getLogger(this.modName);
     }
 
     public void log(Level logLevel, String message) {
-        FMLLog.log(modName, logLevel, message, new Object[] {});
+        logger.log(logLevel, "[" + this.modName + "]: " + message);
     }
 
     public void logBasic(String message) {
@@ -20,7 +21,7 @@ public class LogHelper {
     }
 
     public void logWarning(String message) {
-        log(Level.WARN, message);
+        log(Level.WARNING, message);
     }
 
     public void logInfo(String message) {
@@ -28,6 +29,6 @@ public class LogHelper {
     }
 
     public void logError(String message) {
-        log(Level.FATAL, message);
+        log(Level.SEVERE, message);
     }
 }

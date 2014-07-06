@@ -261,7 +261,7 @@ public class GuiLomLib extends GuiContainer {
             if (tab.side == 0) {
                 tab.draw(guiLeft, guiTop + yPosLeft);
                 yPosLeft += tab.currentHeight;
-            }else {
+            } else {
                 tab.draw(guiLeft + xSize, guiTop + yPosRight);
                 yPosRight += tab.currentHeight;
             }

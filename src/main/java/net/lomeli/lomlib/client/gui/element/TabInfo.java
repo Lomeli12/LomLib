@@ -42,7 +42,7 @@ public class TabInfo extends TabBase {
         if (side == 0) {
             xPos1 = this.posX - this.currentWidth + 22;
             xPos2 = this.posX + 8 - this.currentWidth;
-        }else {
+        } else {
             xPos1 = this.posX + this.currentWidth - 105;
             xPos2 = this.posX + 128 - this.currentWidth;
         }

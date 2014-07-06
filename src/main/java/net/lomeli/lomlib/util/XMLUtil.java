@@ -2,17 +2,12 @@ package net.lomeli.lomlib.util;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.SocketException;
 import java.net.URL;
 
 import net.lomeli.lomlib.LomLib;
@@ -33,13 +28,9 @@ public class XMLUtil {
             NodeList node = doc.getElementsByTagName(nodeName);
             try {
                 var1 = node.item(0).getTextContent();
-            }catch (NullPointerException b) {
+            } catch (NullPointerException b) {
             }
-        }catch (SocketException e) {
-        }catch (MalformedURLException e) {
-        }catch (IOException e) {
-        }catch (ParserConfigurationException e) {
-        }catch (SAXException e) {
+        } catch (Exception e) {
         }
         return var1;
     }
@@ -56,7 +47,7 @@ public class XMLUtil {
         URL ur = null;
         try {
             ur = new URL(getString(URLLoc, nodeName));
-        }catch (Exception e) {
+        } catch (Exception e) {
         }
         return ur != null ? ur : null;
     }
@@ -100,7 +91,7 @@ public class XMLUtil {
                 Document document = builder.parse(f);
                 return true;
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             LomLib.logger.logWarning("Invalid XML file!");
         }
         return true;
@@ -115,7 +106,7 @@ public class XMLUtil {
                 Document document = builder.parse(config);
                 return true;
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             LomLib.logger.logWarning("Invalid configuration file!");
             if (config.exists()) {
                 LomLib.logger.logWarning("Removing invalid file...");

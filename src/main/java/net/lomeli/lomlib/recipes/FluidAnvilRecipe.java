@@ -19,7 +19,7 @@ public class FluidAnvilRecipe implements IAnvilRecipe {
     /**
      * ATM, right input cannot be null due to how the AnvilUpdateEvent works.
      * Not much I can do about that
-     * 
+     *
      * @param output
      * @param leftInput
      * @param rightInput
@@ -59,9 +59,9 @@ public class FluidAnvilRecipe implements IAnvilRecipe {
                         String fluidName = in.substring(6);
                         if (FluidRegistry.isFluidRegistered(fluidName))
                             inputs[slot] = FluidUtil.getContainersForFluid(FluidRegistry.getFluid(fluidName));
-                    }else
+                    } else
                         inputs[slot] = OreDictionary.getOres(in);
-                }else
+                } else
                     throw new RuntimeException("Invalid Anvil Recipe: " + input);
             }
         }
@@ -81,7 +81,7 @@ public class FluidAnvilRecipe implements IAnvilRecipe {
             else if (target instanceof ItemStack) {
                 if (!checkItemEquals((ItemStack) target, itemStack))
                     return false;
-            }else if (target instanceof ArrayList) {
+            } else if (target instanceof ArrayList) {
                 boolean matched = false;
                 for (ItemStack item : (ArrayList<ItemStack>) target) {
                     matched = matched || checkItemEquals(item, itemStack);

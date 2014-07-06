@@ -10,26 +10,20 @@ import net.lomeli.lomlib.codechicken.lib.vec.Rectangle4i;
 
 public class TabBase extends ElementBase {
 
-    public static int tabExpandSpeed = 8;
-
-    public boolean open;
-    public int side = 1;
-
-    public int backgroundColor = 0xffffff;
-
-    public int currentShiftX = 0;
-    public int currentShiftY = 0;
-
-    public int minWidth = 22;
-    public int maxWidth = 124;
-    public int currentWidth = minWidth;
-
-    public int minHeight = 22;
-    public int maxHeight = 22;
-    public int currentHeight = minHeight;
-
     public static final ResourceLocation DEFAULT_TEXTURE_LEFT = new ResourceLocation("lomlib:textures/elements/Tab_Left.png");
     public static final ResourceLocation DEFAULT_TEXTURE_RIGHT = new ResourceLocation("lomlib:textures/elements/Tab_Right.png");
+    public static int tabExpandSpeed = 8;
+    public boolean open;
+    public int side = 1;
+    public int backgroundColor = 0xffffff;
+    public int currentShiftX = 0;
+    public int currentShiftY = 0;
+    public int minWidth = 22;
+    public int currentWidth = minWidth;
+    public int maxWidth = 124;
+    public int minHeight = 22;
+    public int currentHeight = minHeight;
+    public int maxHeight = 22;
 
     public TabBase(GuiLomLib gui) {
         super(gui, 0, 0);
@@ -86,7 +80,7 @@ public class TabBase extends ElementBase {
         if (side == 0) {
             if (mouseX <= shiftX && mouseX >= shiftX - currentWidth && mouseY >= shiftY && mouseY <= shiftY + currentHeight)
                 return true;
-        }else if (mouseX >= shiftX && mouseX <= shiftX + currentWidth && mouseY >= shiftY && mouseY <= shiftY + currentHeight)
+        } else if (mouseX >= shiftX && mouseX <= shiftX + currentWidth && mouseY >= shiftY && mouseY <= shiftY + currentHeight)
             return true;
 
         return false;
@@ -106,7 +100,7 @@ public class TabBase extends ElementBase {
             gui.drawTexturedModalRect(posX - currentWidth + 4, posY, 256 - currentWidth + 4, 0, currentWidth - 4, 4);
             gui.drawTexturedModalRect(posX - currentWidth, posY, 0, 0, 4, 4);
             gui.drawTexturedModalRect(posX - currentWidth + 4, posY + 4, 256 - currentWidth + 4, 256 - currentHeight + 4, currentWidth - 4, currentHeight - 4);
-        }else {
+        } else {
             gui.drawTexturedModalRect(posX, posY, 0, 256 - currentHeight, 4, currentHeight);
             gui.drawTexturedModalRect(posX + 4, posY, 256 - currentWidth + 4, 0, currentWidth - 4, 4);
             gui.drawTexturedModalRect(posX, posY, 0, 0, 4, 4);
@@ -144,7 +138,7 @@ public class TabBase extends ElementBase {
                 TabTracker.setOpenedLeftTab(null);
             else
                 TabTracker.setOpenedRightTab(null);
-        }else {
+        } else {
             open = true;
             if (side == 0)
                 TabTracker.setOpenedLeftTab(this.getClass());

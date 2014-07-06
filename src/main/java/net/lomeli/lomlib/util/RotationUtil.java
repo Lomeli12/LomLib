@@ -10,14 +10,9 @@ import net.minecraft.world.World;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class RotationHelper {
+public class RotationUtil {
 
-    public static enum BlockType {
-        LOG, DISPENSER, BED, RAIL, RAIL_POWERED, RAIL_ASCENDING, RAIL_CORNER, TORCH, STAIR, CHEST, SIGNPOST, DOOR, LEVER, BUTTON, REDSTONE_REPEATER, TRAPDOOR, MUSHROOM_CAP, MUSHROOM_CAP_CORNER, MUSHROOM_CAP_SIDE, VINE, SKULL, ANVIL
-    }
-
-    public static final byte[] SIDE_OPPOSITE = { 1, 0, 3, 2, 5, 4 };
-
+    public static final byte[] SIDE_OPPOSITE = {1, 0, 3, 2, 5, 4};
     private static final Map<BlockType, BiMap<Integer, ForgeDirection>> MAPPINGS = new HashMap<BlockType, BiMap<Integer, ForgeDirection>>();
 
     public static boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis, int mask, BlockType blockType) {
@@ -104,17 +99,21 @@ public class RotationHelper {
                 return ForgeDirection.EAST;
             else
                 return ForgeDirection.WEST;
-        }else if (y != 0) {
+        } else if (y != 0) {
             if (y == 1)
                 return ForgeDirection.UP;
             else
                 return ForgeDirection.DOWN;
-        }else if (z != 0) {
+        } else if (z != 0) {
             if (z == 1)
                 return ForgeDirection.SOUTH;
             else
                 return ForgeDirection.NORTH;
         }
         return ForgeDirection.UNKNOWN;
+    }
+
+    public static enum BlockType {
+        LOG, DISPENSER, BED, RAIL, RAIL_POWERED, RAIL_ASCENDING, RAIL_CORNER, TORCH, STAIR, CHEST, SIGNPOST, DOOR, LEVER, BUTTON, REDSTONE_REPEATER, TRAPDOOR, MUSHROOM_CAP, MUSHROOM_CAP_CORNER, MUSHROOM_CAP_SIDE, VINE, SKULL, ANVIL
     }
 }

@@ -1,11 +1,15 @@
-package net.lomeli.lomlib.item;
+package net.lomeli.lomlib.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.world.World;
 
 import cpw.mods.fml.common.FMLLog;
@@ -13,13 +17,10 @@ import cpw.mods.fml.common.FMLLog;
 public class ItemUtil {
     /**
      * Allows you to get a item from practically any other mod.
-     * 
-     * @param itemString
-     *            name of item instance
-     * @param meta
-     *            Metadata number for the item
-     * @param itemClassLoc
-     *            Class where the items are declared
+     *
+     * @param itemString   name of item instance
+     * @param meta         Metadata number for the item
+     * @param itemClassLoc Class where the items are declared
      * @author Lomeli12
      */
 
@@ -34,7 +35,7 @@ public class ItemUtil {
             else if (obj instanceof ItemStack)
                 item = (ItemStack) obj;
 
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             FMLLog.warning("Could not retrieve item identified by: " + itemString);
         }
         return item;
@@ -42,11 +43,9 @@ public class ItemUtil {
 
     /**
      * Allows you to get a item from practically any other mod.
-     * 
-     * @param itemString
-     *            name of item instance
-     * @param itemClassLoc
-     *            Class where the items are declared
+     *
+     * @param itemString   name of item instance
+     * @param itemClassLoc Class where the items are declared
      * @author Lomeli12
      */
     public static ItemStack getItem(String itemString, String itemClassLoc) {
@@ -60,7 +59,7 @@ public class ItemUtil {
             else if (obj instanceof ItemStack)
                 item = (ItemStack) obj;
 
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             FMLLog.warning("Could not retrieve item identified by: " + itemString);
         }
         return item;
@@ -72,7 +71,7 @@ public class ItemUtil {
                 return stack.getItem().getContainerItem(stack);
             else
                 return null;
-        }else {
+        } else {
             stack.splitStack(1);
 
             return stack;
@@ -182,7 +181,7 @@ public class ItemUtil {
                 entity.motionX = ((float) world.rand.nextGaussian() * 0.05F);
                 entity.motionY = ((float) world.rand.nextGaussian() * 0.05F + 0.2F);
                 entity.motionZ = ((float) world.rand.nextGaussian() * 0.05F);
-            }else {
+            } else {
                 entity.motionY = -0.0500000007450581D;
                 entity.motionX = 0.0D;
                 entity.motionZ = 0.0D;
@@ -190,5 +189,21 @@ public class ItemUtil {
 
             world.spawnEntityInWorld(entity);
         }
+    }
+
+    public static ItemStack createNewBook(String author, String title, String[] pageText) {
+        ItemStack newBook = new ItemStack(Items.written_book);
+
+        if (!newBook.hasTagCompound())
+            newBook.stackTagCompound = new NBTTagCompound();
+
+        NBTUtil.setString(newBook, "author", author);
+        NBTUtil.setString(newBook, "title", title);
+        NBTTagList pages = new NBTTagList();
+        for (int i = 0; i < pageText.length; i++) {
+            pages.appendTag(new NBTTagString("" + (i + 1)));
+        }
+        newBook.setTagInfo("pages", pages);
+        return newBook;
     }
 }

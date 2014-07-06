@@ -1,10 +1,10 @@
 package net.lomeli.lomlib.client.gui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -17,9 +17,8 @@ import net.lomeli.lomlib.libs.Strings;
 public class GuiBook extends GuiScreen {
     public List<PageBase> pagesLeft = new ArrayList<PageBase>();
     public List<PageBase> pagesRight = new ArrayList<PageBase>();
-
-    private int bookImageWidth = 256, bookImageHeight = 207, currentPage, maxPages, guiLeft, guiTop;
     public int pageLeftX, pageRightX, pageY;
+    private int bookImageWidth = 256, bookImageHeight = 207, currentPage, maxPages, guiLeft, guiTop;
     private GuiButtonNextPage buttonNextPage, buttonPreviousPage;
 
     public GuiBook() {
@@ -30,7 +29,7 @@ public class GuiBook extends GuiScreen {
         if (right) {
             pagesRight.add(page);
             pagesLeft.add(null);
-        }else {
+        } else {
             pagesRight.add(null);
             pagesLeft.add(page);
         }

@@ -1,5 +1,8 @@
 package net.lomeli.lomlib.client;
 
+import codechicken.lib.gui.GuiDraw;
+import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.TemplateRecipeHandler;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.gui.GuiRepair;
@@ -8,20 +11,7 @@ import net.minecraft.util.StatCollector;
 
 import net.lomeli.lomlib.libs.Strings;
 
-import codechicken.lib.gui.GuiDraw;
-import codechicken.nei.PositionedStack;
-import codechicken.nei.recipe.TemplateRecipeHandler;
-
 public class FluidAnvilRecipeHandler extends TemplateRecipeHandler {
-
-    public class CachedIORecipe extends TemplateRecipeHandler.CachedRecipe {
-
-        @Override
-        public PositionedStack getResult() {
-            return null;
-        }
-
-    }
 
     @Override
     public void drawBackground(int i) {
@@ -57,6 +47,15 @@ public class FluidAnvilRecipeHandler extends TemplateRecipeHandler {
     @Override
     public String getOverlayIdentifier() {
         return "anvil";
+    }
+
+    public class CachedIORecipe extends TemplateRecipeHandler.CachedRecipe {
+
+        @Override
+        public PositionedStack getResult() {
+            return null;
+        }
+
     }
 
 }

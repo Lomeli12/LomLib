@@ -18,15 +18,15 @@ import net.lomeli.lomlib.libs.Strings;
 
 @SideOnly(Side.CLIENT)
 public class PageBase {
-    public int width = 106, height = 180, x = 0, y = 0;
-    public GuiScreen gui;
-    protected static RenderItem itemRenderer = new RenderItem();
-    protected Minecraft mc;
-    private String tag;
-    private boolean requiresTag;
-    protected ResourceLocation prop = new ResourceLocation(Strings.MOD_ID.toLowerCase(), "textures/images/imageSheet1.png");
     public static final FontRenderer largeFontRenderer = FMLClientHandler.instance().getClient().fontRenderer;
     public static final SmallFontRenderer smallFontRenderer = ProxyClient.smallFontRenderer;
+    protected static RenderItem itemRenderer = new RenderItem();
+    public int width = 106, height = 180, x = 0, y = 0;
+    public GuiScreen gui;
+    protected Minecraft mc;
+    protected ResourceLocation prop = new ResourceLocation(Strings.MOD_ID.toLowerCase(), "textures/images/imageSheet1.png");
+    private String tag;
+    private boolean requiresTag;
 
     public PageBase(GuiScreen gui) {
         this.gui = gui;
@@ -47,18 +47,18 @@ public class PageBase {
         return this;
     }
 
-    public PageBase setTag(String tag) {
-        this.tag = tag;
-        requiresTag = true;
-        return this;
-    }
-
     public void draw() {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
     public String getTag() {
         return tag;
+    }
+
+    public PageBase setTag(String tag) {
+        this.tag = tag;
+        requiresTag = true;
+        return this;
     }
 
     public boolean needsTag() {

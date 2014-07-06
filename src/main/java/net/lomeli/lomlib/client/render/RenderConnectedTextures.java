@@ -10,9 +10,8 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class RenderConnectedTextures implements ISimpleBlockRenderingHandler {
-    protected int renderID;
-
     public static RenderFakeBlock fakeBlock = new RenderFakeBlock();
+    protected int renderID;
 
     @Override
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
