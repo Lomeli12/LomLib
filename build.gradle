@@ -43,12 +43,6 @@ dependencies {
     compile "codechicken:CodeChickenLib:$mcVersion-$cclVersion:dev"
 }
 
-task Buildnumber {
-    ant.propertyfile(file: "build.properties") {
-        entry(key: 'buildNumber', type: 'int', operation: '+', value: 1)
-    }
-}
-
 group = 'net.lomeli.lomlib'
 archivesBaseName = 'LomLib'
 version = "$releaseVersion"
@@ -73,12 +67,12 @@ processResources {
 
 
 jar {
-	appendix = "universal-$buildNumber"
+	appendix = "universal"
 }
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output
-    appendix = "dev-$buildNumber"
+    appendix = "dev"
 }
 
 artifacts {
