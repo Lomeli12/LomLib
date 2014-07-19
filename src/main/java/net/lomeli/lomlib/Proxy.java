@@ -63,7 +63,6 @@ public class Proxy {
                 Block block = world.getBlock(event.x, event.y, event.z);
                 int meta = world.getBlockMetadata(event.x, event.y, event.z);
                 if (stack != null && stack.getUnlocalizedName().equals(Items.slime_ball.getUnlocalizedName())) {
-                    System.out.println("Slime ball");
                     if (block.getUnlocalizedName().equals(Blocks.piston.getUnlocalizedName())) {
                         world.setBlock(event.x, event.y, event.z, Blocks.sticky_piston, meta, 3);
                         if (!event.entityPlayer.capabilities.isCreativeMode)
