@@ -99,14 +99,7 @@ public class ProxyClient extends Proxy {
             if (event.phase == TickEvent.Phase.END) {
                 Minecraft mc = Minecraft.getMinecraft();
                 if (mc.currentScreen != null) {
-                    if (mc.currentScreen instanceof GuiVideoSettings) {
-                        /*GuiVideoSettings gui = (GuiVideoSettings) mc.currentScreen;
-                        String s = "Hit H for mod Info";
-                        gui.drawString(mc.fontRenderer, s, gui.width - mc.fontRenderer.getStringWidth(s) - 2, gui.height - 10, 16777215);
-                        if (Keyboard.isKeyDown(Keyboard.KEY_H)) {
-                            mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-                        }*/
-                    } else if ((mc.currentScreen instanceof InventoryEffectRenderer) && !(mc.currentScreen instanceof GuiOreDic)) {
+                    if ((mc.currentScreen instanceof InventoryEffectRenderer) && !(mc.currentScreen instanceof GuiOreDic)) {
                         if (Keyboard.isKeyDown(Keyboard.KEY_D) && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
                             mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
                             mc.displayGuiScreen(new GuiOreDic());
