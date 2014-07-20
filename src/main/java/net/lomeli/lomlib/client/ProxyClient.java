@@ -6,6 +6,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.GuiVideoSettings;
+import net.minecraft.client.gui.inventory.GuiContainerCreative;
+import net.minecraft.client.gui.inventory.GuiInventory;
+import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
@@ -23,6 +26,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import net.lomeli.lomlib.LomLib;
 import net.lomeli.lomlib.Proxy;
+import net.lomeli.lomlib.client.gui.GuiOreDic;
 import net.lomeli.lomlib.client.gui.element.IconRegistry;
 import net.lomeli.lomlib.client.render.SmallFontRenderer;
 import net.lomeli.lomlib.util.ModLoaded;
@@ -94,12 +98,19 @@ public class ProxyClient extends Proxy {
         public void renderTick(TickEvent.RenderTickEvent event) {
             if (event.phase == TickEvent.Phase.END) {
                 Minecraft mc = Minecraft.getMinecraft();
-                if (mc.currentScreen instanceof GuiVideoSettings) {
-                    GuiVideoSettings gui = (GuiVideoSettings) mc.currentScreen;
-                    String s = "Hit H for mod Info";
-                    gui.drawString(mc.fontRenderer, s, gui.width - mc.fontRenderer.getStringWidth(s) - 2, gui.height - 10, 16777215);
-                    if (Keyboard.isKeyDown(Keyboard.KEY_H)) {
-                        mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+                if (mc.currentScreen != null) {
+                    if (mc.currentScreen instanceof GuiVideoSettings) {
+                        /*GuiVideoSettings gui = (GuiVideoSettings) mc.currentScreen;
+                        String s = "Hit H for mod Info";
+                        gui.drawString(mc.fontRenderer, s, gui.width - mc.fontRenderer.getStringWidth(s) - 2, gui.height - 10, 16777215);
+                        if (Keyboard.isKeyDown(Keyboard.KEY_H)) {
+                            mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+                        }*/
+                    } else if ((mc.currentScreen instanceof InventoryEffectRenderer) && !(mc.currentScreen instanceof GuiOreDic)) {
+                        if (Keyboard.isKeyDown(Keyboard.KEY_D) && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+                            mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+                            mc.displayGuiScreen(new GuiOreDic());
+                        }
                     }
                 } else if (mc.inGameHasFocus && (UpdateHelper.modList != null && !UpdateHelper.modList.isEmpty()) && !LomLib.proxy.sentMessage) {
                     for (UpdateHelper uh : UpdateHelper.modList) {
