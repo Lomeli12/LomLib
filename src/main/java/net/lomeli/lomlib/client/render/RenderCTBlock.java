@@ -22,6 +22,8 @@ public class RenderCTBlock {
 
     public boolean renderCTBlock(IBlockAccess world, int x, int y, int z) {
         Tessellator tess = Tessellator.instance;
+        renderblocks.enableAO = false;
+        tess.setColorOpaque_F(1f, 1f, 1f);
         IIcon blockIcon = ctBlock.getIcon(7, meta);
         boolean flag = false;
         List<IIcon> iconList = new ArrayList<IIcon>();
@@ -120,19 +122,19 @@ public class RenderCTBlock {
                         iconList.add(icon.getBottomEdge());
                     if (doBlocksMatch(world, x, y - 1, z) && doBlocksMatch(world, x, y, z + 1)) {
                         if (!doBlocksMatch(world, x, y - 1, z + 1))
-                            iconList.add(icon.getBottomRightCorner());
+                            iconList.add(icon.getBottomLeftCorner());
                     }
                     if (doBlocksMatch(world, x, y - 1, z) && doBlocksMatch(world, x, y, z - 1)) {
                         if (!doBlocksMatch(world, x, y - 1, z - 1))
-                            iconList.add(icon.getBottomLeftCorner());
+                            iconList.add(icon.getBottomRightCorner());
                     }
                     if (doBlocksMatch(world, x, y + 1, z) && doBlocksMatch(world, x, y, z + 1)) {
                         if (!doBlocksMatch(world, x, y + 1, z + 1))
-                            iconList.add(icon.getTopRightCorner());
+                            iconList.add(icon.getTopLeftCorner());
                     }
                     if (doBlocksMatch(world, x, y + 1, z) && doBlocksMatch(world, x, y, z - 1)) {
                         if (!doBlocksMatch(world, x, y + 1, z - 1))
-                            iconList.add(icon.getTopLeftCorner());
+                            iconList.add(icon.getTopRightCorner());
                     }
                     if (renderblocks.renderAllFaces || ctBlock.shouldSideBeRendered(world, x + 1, y, z, side)) {
                         flag = true;
