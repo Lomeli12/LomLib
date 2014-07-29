@@ -1,18 +1,19 @@
 package net.lomeli.lomlib.client;
 
 import com.google.gson.stream.JsonReader;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 
-import java.io.File;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.renderer.IImageBuffer;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.texture.ITextureObject;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
 
 import net.minecraftforge.client.event.RenderPlayerEvent;
@@ -21,18 +22,15 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import net.lomeli.lomlib.LomLib;
 import net.lomeli.lomlib.libs.Strings;
-import net.lomeli.lomlib.util.ModLoaded;
-import net.lomeli.lomlib.util.ObfUtil;
 
 @SideOnly(Side.CLIENT)
 public class DevCapes {
     private static DevCapes instance;
-    public HashMap<String, String> capes = new HashMap<String, String>();
-    private ArrayList<AbstractClientPlayer> capePlayers = new ArrayList<AbstractClientPlayer>();
+    public HashMap<String, String> capes;
 
     public DevCapes() {
+        capes = new HashMap<String, String>();
         buildCapeDatabase();
     }
 
@@ -42,29 +40,27 @@ public class DevCapes {
         return instance;
     }
 
-    @SubscribeEvent
     @SideOnly(Side.CLIENT)
-    public void onPreRenderSpecials(RenderPlayerEvent.Specials.Pre event) {
-        if (event.entityPlayer != null && LomLib.capes) {
-            if (!ModLoaded.isModInstalled("shadersmod") && (event.entityPlayer instanceof AbstractClientPlayer) && !ObfUtil.isOptifineInstalled()) {
-                AbstractClientPlayer abstractClientPlayer = (AbstractClientPlayer) event.entityPlayer;
-
-                if (!capePlayers.contains(abstractClientPlayer)) {
-                    String playerUUID = event.entityPlayer.getUniqueID().toString().replace("-", "");
-                    ResourceLocation cape = new ResourceLocation("lomlib:capes/cape_" + capes.get(playerUUID) + ".png");
-                    if (cape != null && capes.containsKey(playerUUID)) {
-                        capePlayers.add(abstractClientPlayer);
-                        String[] locationCape = new String[]{"locationCape", "field_110313_e", "e"};
-                        try {
-                            ObfUtil.setFieldValue(AbstractClientPlayer.class, abstractClientPlayer, cape, locationCape);
-                            new Thread(new CloakThread(abstractClientPlayer, cape)).start();
-                            event.renderCape = true;
-                        } catch (Exception e) {
-                        }
-                    }
+    @SubscribeEvent
+    public void renderPlayer(RenderPlayerEvent.Specials.Pre event) {
+        if (event.entityPlayer != null && !capes.isEmpty()) {
+            AbstractClientPlayer player = (AbstractClientPlayer) event.entityPlayer;
+            if (player != null) {
+                String playerUUID = event.entityPlayer.getUniqueID().toString().replace("-", "");
+                if (capes.containsKey(playerUUID)) {
+                    PlayerCape cape = new PlayerCape(playerUUID, capes.get(playerUUID));
+                    if (!isTextureLoaded(player))
+                        cape.loadTexture(player);
                 }
             }
         }
+    }
+
+    public boolean isTextureLoaded(AbstractClientPlayer player) {
+        ResourceLocation location = player.getLocationCape();
+        if (location == null)
+            return false;
+        return true;
     }
 
     public void buildCapeDatabase() {
@@ -83,26 +79,54 @@ public class DevCapes {
         }
     }
 
-    private class CloakThread implements Runnable {
-        AbstractClientPlayer abstractClientPlayer;
-        ResourceLocation cape;
+    private class PlayerCape {
+        private ITextureObject texture;
+        private ResourceLocation resource;
 
-        public CloakThread(AbstractClientPlayer player, ResourceLocation cloak) {
-            abstractClientPlayer = player;
-            cape = cloak;
+        public PlayerCape(String uuid, String capeURL) {
+            this.resource = new ResourceLocation("cloaks/" + uuid);
+            this.texture = new ThreadDownloadImageData(null, capeURL, null, new HDImageBuffer());
+        }
+
+        public ResourceLocation getResource() {
+            return this.resource;
+        }
+
+        public ITextureObject getTexture() {
+            return this.texture;
+        }
+
+        public void loadTexture(AbstractClientPlayer player) {
+            ResourceLocation location = player.getLocationCape();
+            if (location == null) {
+                location = this.getResource();
+                player.func_152121_a(MinecraftProfileTexture.Type.CAPE, location);
+            }
+
+            Minecraft.getMinecraft().renderEngine.loadTexture(location, this.getTexture());
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public class HDImageBuffer implements IImageBuffer {
+        @Override
+        public BufferedImage parseUserSkin(final BufferedImage texture) {
+            if (texture == null)
+                return null;
+            int imageWidth = texture.getWidth(null) <= 64 ? 64 : texture.getWidth(null);
+            int imageHeight = texture.getHeight(null) <= 32 ? 32 : texture.getHeight(null);
+
+            BufferedImage capeImage = new BufferedImage(imageWidth, imageHeight, 2);
+
+            Graphics graphics = capeImage.getGraphics();
+            graphics.drawImage(texture, 0, 0, null);
+            graphics.dispose();
+
+            return capeImage;
         }
 
         @Override
-        public void run() {
-            if (LomLib.capes) {
-                try {
-                    String[] locationCape = new String[]{"locationCape", "field_110313_e", "e"};
-                    ObfUtil.setFieldValue(AbstractClientPlayer.class, abstractClientPlayer, cape, locationCape);
-                } catch (Exception e) {
-                    LomLib.logger.logError("Failed to load cape!");
-                    e.printStackTrace();
-                }
-            }
+        public void func_152634_a() {
         }
     }
 }

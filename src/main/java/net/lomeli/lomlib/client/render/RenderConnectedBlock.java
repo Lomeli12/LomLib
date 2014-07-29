@@ -9,12 +9,15 @@ import net.minecraft.world.IBlockAccess;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-public class RenderConnectedTextures implements ISimpleBlockRenderingHandler {
-    public static RenderFakeBlock fakeBlock = new RenderFakeBlock();
-    protected int renderID;
+public class RenderConnectedBlock implements ISimpleBlockRenderingHandler {
+    private int renderID;
+
+    public RenderConnectedBlock(int id) {
+        this.renderID = id;
+    }
 
     @Override
-    public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
+    public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
         block.setBlockBoundsForItemRender();
         renderer.setRenderBoundsFromBlock(block);
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
@@ -51,24 +54,8 @@ public class RenderConnectedTextures implements ISimpleBlockRenderingHandler {
 
     @Override
     public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-        if (renderer.hasOverrideBlockTexture())
-            return renderer.renderStandardBlock(block, x, y, z);
-
-        fakeBlock.setWorld(renderer.blockAccess);
-        fakeBlock.curBlock = (world.getBlock(x, y, z).hashCode() * 16 + world.getBlockMetadata(x, y, z));
-        block.setBlockBoundsBasedOnState(fakeBlock.blockAccess, x, y, z);
-        fakeBlock.setRenderBoundsFromBlock(block);
-        return fakeBlock.renderStandardBlock(block, x, y, z);
-    }
-
-    @Override
-    public int getRenderId() {
-        return this.renderID;
-    }
-
-    public RenderConnectedTextures setRenderID(int id) {
-        this.renderID = id;
-        return this;
+        RenderCTBlock renderCTBlock = new RenderCTBlock(block, world.getBlockMetadata(x, y, z), renderer);
+        return renderCTBlock.renderCTBlock(world, x, y, z);
     }
 
     @Override
@@ -76,4 +63,8 @@ public class RenderConnectedTextures implements ISimpleBlockRenderingHandler {
         return true;
     }
 
+    @Override
+    public int getRenderId() {
+        return this.renderID;
+    }
 }

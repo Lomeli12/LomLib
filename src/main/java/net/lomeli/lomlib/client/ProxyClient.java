@@ -5,9 +5,6 @@ import org.lwjgl.input.Keyboard;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.gui.GuiVideoSettings;
-import net.minecraft.client.gui.inventory.GuiContainerCreative;
-import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -37,19 +34,16 @@ import net.lomeli.lomlib.util.UpdateHelper;
 public class ProxyClient extends Proxy {
 
     public static SmallFontRenderer smallFontRenderer;
-    private DevCapes capes;
 
     @Override
     public void doStuffPre() {
         super.doStuffPre();
         ResourceUtil.initResourceUtil();
 
-        if (LomLib.capes && setCapeAccess()) {
-            capes = DevCapes.getInstance();
-            MinecraftForge.EVENT_BUS.register(capes);
-        }
-
-        if (ObfUtil.isOptifineInstalled())
+        if (!ObfUtil.isOptifineInstalled()) {
+            if (LomLib.capes && setCapeAccess())
+                MinecraftForge.EVENT_BUS.register(DevCapes.getInstance());
+        } else
             LomLib.logger.logWarning("Optifine detected! If you run into any bugs, please test without optifine first before reporting, otherwise it WILL BE IGNORED! (Applies to both my mods and most others). Capes disabled to prevent optifine related crashes");
     }
 

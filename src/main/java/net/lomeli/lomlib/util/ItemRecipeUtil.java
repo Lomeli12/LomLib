@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.client.gui.pages;
+package net.lomeli.lomlib.util;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -16,7 +16,6 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import net.lomeli.lomlib.recipes.ShapedFluidRecipe;
 import net.lomeli.lomlib.recipes.ShapelessFluidRecipe;
-import net.lomeli.lomlib.util.ModLoaded;
 
 public class ItemRecipeUtil {
 
