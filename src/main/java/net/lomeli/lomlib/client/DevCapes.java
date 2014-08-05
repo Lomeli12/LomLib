@@ -97,13 +97,8 @@ public class DevCapes {
         }
 
         public void loadTexture(AbstractClientPlayer player) {
-            ResourceLocation location = player.getLocationCape();
-            if (location == null) {
-                location = this.getResource();
-                player.func_152121_a(MinecraftProfileTexture.Type.CAPE, location);
-            }
-
-            Minecraft.getMinecraft().renderEngine.loadTexture(location, this.getTexture());
+            player.func_152121_a(MinecraftProfileTexture.Type.CAPE, resource);
+            Minecraft.getMinecraft().renderEngine.loadTexture(resource, this.texture);
         }
     }
 

@@ -67,19 +67,15 @@ public class LomLib {
     }
 
     public static void configureMod() {
-        //config.load();
         debug = config.getBoolean("debugMode", Configuration.CATEGORY_GENERAL, debug, Strings.DEBUG_MODE);
         capes = config.getBoolean("capes", Configuration.CATEGORY_GENERAL, capes, Strings.CAPES);
         slime = config.getBoolean("slimePistonRightClick", Configuration.CATEGORY_GENERAL, slime, Strings.SLIMES);
-        System.out.println(debug + " " + capes + " " + slime);
-        //if (config.hasChanged())
-        //    config.save();
+        if (config.hasChanged())
+            config.save();
     }
     
     @SubscribeEvent
     public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
-        //System.out.println(eventArgs.modID);
-        //System.out.println(eventArgs.modID.equalsIgnoreCase(Strings.MOD_ID));
         if(eventArgs.modID.equalsIgnoreCase(Strings.MOD_ID)) {
             System.out.println("yay! " + Strings.MOD_NAME);
             configureMod();
