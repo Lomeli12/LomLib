@@ -74,8 +74,9 @@ public class DevCapes {
                     if (!capes.containsKey(uuid))
                         capes.put(uuid, cape);
                 }
+                reader.close();
             }
-        } catch (Exception e) {
+        }catch (Exception e) {
         }
     }
 

@@ -80,7 +80,6 @@ public class XMLUtil {
         return new Byte(getString(URLLoc, nodeName));
     }
 
-    @SuppressWarnings("unused")
     private static boolean isValidXMLFile(String filename) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
@@ -97,7 +96,6 @@ public class XMLUtil {
         return true;
     }
 
-    @SuppressWarnings("unused")
     public static boolean isValidXMLFile(File config) {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         try {
