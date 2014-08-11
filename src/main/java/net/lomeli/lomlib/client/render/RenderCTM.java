@@ -9,12 +9,12 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-public class RenderCTBlock {
+public class RenderCTM {
     private Block ctBlock;
     private int meta;
     private RenderBlocks renderblocks;
 
-    public RenderCTBlock(Block block, int meta, RenderBlocks renderblocks) {
+    public RenderCTM(Block block, int meta, RenderBlocks renderblocks) {
         this.ctBlock = block;
         this.meta = meta;
         this.renderblocks = renderblocks;
@@ -31,8 +31,8 @@ public class RenderCTBlock {
             IconCT icon = (IconCT) blockIcon;
             for (int side = 0; side < 6; side++) {
                 int brightness = ctBlock.getMixedBrightnessForBlock(world, x, y, z);
+                iconList.add(icon.getBase());
                 if (side == 2) {
-                    iconList.add(icon.getBase());
                     tess.setBrightness(renderblocks.renderMaxZ < 1.0D ? brightness : ctBlock.getMixedBrightnessForBlock(world, x, y, z + 1));
                     if (!doBlocksMatch(world, x - 1, y, z))
                         iconList.add(icon.getLeftEdge());
@@ -58,7 +58,7 @@ public class RenderCTBlock {
                         if (!doBlocksMatch(world, x - 1, y + 1, z))
                             iconList.add(icon.getTopLeftCorner());
                     }
-                    if (renderblocks.renderAllFaces || ctBlock.shouldSideBeRendered(world, x, y, z + 1, side)) {
+                    if (ctBlock.shouldSideBeRendered(world, x, y, z + 1, side) || renderblocks.renderAllFaces) {
                         flag = true;
                         if (iconList.size() == 1)
                             renderblocks.renderFaceZPos(ctBlock, x, y, z, getCenterIcon(world, x, y, z, side, icon));
@@ -71,7 +71,6 @@ public class RenderCTBlock {
                         }
                     }
                 } else if (side == 3) {
-                    iconList.add(icon.getBase());
                     tess.setBrightness(renderblocks.renderMinZ > 0.0D ? brightness : ctBlock.getMixedBrightnessForBlock(world, x, y, z - 1));
                     if (!doBlocksMatch(world, x + 1, y, z))
                         iconList.add(icon.getLeftEdge());
@@ -97,7 +96,7 @@ public class RenderCTBlock {
                         if (!doBlocksMatch(world, x - 1, y + 1, z))
                             iconList.add(icon.getTopRightCorner());
                     }
-                    if (renderblocks.renderAllFaces || ctBlock.shouldSideBeRendered(world, x, y, z - 1, side)) {
+                    if (ctBlock.shouldSideBeRendered(world, x, y, z - 1, side) || renderblocks.renderAllFaces) {
                         flag = true;
                         if (iconList.size() == 1)
                             renderblocks.renderFaceZNeg(ctBlock, x, y, z, getCenterIcon(world, x, y, z, side, icon));
@@ -110,7 +109,6 @@ public class RenderCTBlock {
                         }
                     }
                 } else if (side == 4) {
-                    iconList.add(icon.getBase());
                     tess.setBrightness(renderblocks.renderMaxX < 1.0D ? brightness : ctBlock.getMixedBrightnessForBlock(world, x + 1, y, z));
                     if (!doBlocksMatch(world, x, y, z + 1))
                         iconList.add(icon.getLeftEdge());
@@ -136,7 +134,7 @@ public class RenderCTBlock {
                         if (!doBlocksMatch(world, x, y + 1, z - 1))
                             iconList.add(icon.getTopRightCorner());
                     }
-                    if (renderblocks.renderAllFaces || ctBlock.shouldSideBeRendered(world, x + 1, y, z, side)) {
+                    if (ctBlock.shouldSideBeRendered(world, x + 1, y, z, side) || renderblocks.renderAllFaces) {
                         flag = true;
                         if (iconList.size() == 1)
                             renderblocks.renderFaceXPos(ctBlock, x, y, z, getCenterIcon(world, x, y, z, side, icon));
@@ -149,7 +147,6 @@ public class RenderCTBlock {
                         }
                     }
                 } else if (side == 5) {
-                    iconList.add(icon.getBase());
                     tess.setBrightness(renderblocks.renderMinX > 0.0D ? brightness : ctBlock.getMixedBrightnessForBlock(world, x - 1, y, z));
                     if (!doBlocksMatch(world, x, y, z - 1))
                         iconList.add(icon.getLeftEdge());
@@ -175,7 +172,7 @@ public class RenderCTBlock {
                         if (!doBlocksMatch(world, x, y + 1, z - 1))
                             iconList.add(icon.getTopLeftCorner());
                     }
-                    if (renderblocks.renderAllFaces || ctBlock.shouldSideBeRendered(world, x - 1, y, z, side)) {
+                    if (ctBlock.shouldSideBeRendered(world, x - 1, y, z, side) || renderblocks.renderAllFaces) {
                         flag = true;
                         if (iconList.size() == 1)
                             renderblocks.renderFaceXNeg(ctBlock, x, y, z, getCenterIcon(world, x, y, z, side, icon));
@@ -188,7 +185,6 @@ public class RenderCTBlock {
                         }
                     }
                 } else if (side == 0 || side == 1) {
-                    iconList.add(icon.getBase());
                     if (side == 0)
                         tess.setBrightness(renderblocks.renderMinY > 0.0D ? brightness : ctBlock.getMixedBrightnessForBlock(world, x, y - 1, z));
                     else
@@ -217,7 +213,7 @@ public class RenderCTBlock {
                         if (!doBlocksMatch(world, x + 1, y, z + 1))
                             iconList.add(icon.getBottomRightCorner());
                     }
-                    if (renderblocks.renderAllFaces || ctBlock.shouldSideBeRendered(world, x, y + (side == 0 ? -1 : 1), z, side)) {
+                    if (ctBlock.shouldSideBeRendered(world, x, y + (side == 0 ? -1 : 1), z, side) || renderblocks.renderAllFaces) {
                         flag = true;
                         if (iconList.size() == 1) {
                             IIcon i = getCenterIcon(world, x, y, z, side, icon);

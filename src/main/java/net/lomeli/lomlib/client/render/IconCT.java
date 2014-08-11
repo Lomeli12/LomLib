@@ -7,17 +7,21 @@ public class IconCT implements IIcon {
     private final IIcon[] icons = new IIcon[10];
     private int type;
 
+    public IconCT(IIconRegister register, String iconName, String folder, String modid) {
+        this(register.registerIcon(modid.toLowerCase() + ":" + folder + "full_" + iconName),          //0
+                register.registerIcon(modid.toLowerCase() + ":" + folder + "base_" + iconName),       //1
+                register.registerIcon(modid.toLowerCase() + ":" + folder + "tEdge_" + iconName),      //2
+                register.registerIcon(modid.toLowerCase() + ":" + folder + "lEdge_" + iconName),      //3
+                register.registerIcon(modid.toLowerCase() + ":" + folder + "bEdge_" + iconName),      //4
+                register.registerIcon(modid.toLowerCase() + ":" + folder + "rEdge_" + iconName),      //5
+                register.registerIcon(modid.toLowerCase() + ":" + folder + "bLCorner_" + iconName),   //6
+                register.registerIcon(modid.toLowerCase() + ":" + folder + "tLCorner_" + iconName),   //7
+                register.registerIcon(modid.toLowerCase() + ":" + folder + "bRCorner_" + iconName),   //8
+                register.registerIcon(modid.toLowerCase() + ":" + folder + "tRCorner_" + iconName));  //9
+    }
+
     public IconCT(IIconRegister register, String iconName, String modid) {
-        this(register.registerIcon(modid.toLowerCase() + ":full_" + iconName),          //0
-                register.registerIcon(modid.toLowerCase() + ":base_" + iconName),       //1
-                register.registerIcon(modid.toLowerCase() + ":tEdge_" + iconName),      //2
-                register.registerIcon(modid.toLowerCase() + ":lEdge_" + iconName),      //3
-                register.registerIcon(modid.toLowerCase() + ":bEdge_" + iconName),      //4
-                register.registerIcon(modid.toLowerCase() + ":rEdge_" + iconName),      //5
-                register.registerIcon(modid.toLowerCase() + ":bLCorner_" + iconName),   //6
-                register.registerIcon(modid.toLowerCase() + ":tLCorner_" + iconName),   //7
-                register.registerIcon(modid.toLowerCase() + ":bRCorner_" + iconName),   //8
-                register.registerIcon(modid.toLowerCase() + ":tRCorner_" + iconName));  //9
+        this(register, iconName, "", modid);
     }
 
     public IconCT(IIcon... icon) {
@@ -27,12 +31,12 @@ public class IconCT implements IIcon {
         }
     }
 
-    public void setType(int i) {
-        type = i;
-    }
-
     public int getType() {
         return type;
+    }
+
+    public void setType(int i) {
+        type = i;
     }
 
     @Override
