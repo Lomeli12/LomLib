@@ -9,9 +9,9 @@ Just a set of utilities that I use often. A prerequisite for most my mods.
 
 ## Version
 
-**Current Stable Version:** 1.1.0
+**Current Stable Version:** 3.0.0
 
-**Dev Version:** 2.0.0
+**Dev Version:** 3.0.0
 
 ## How to develop with LomLib
 
@@ -49,14 +49,15 @@ Depending on whether your using ForgeGradle or not will effect how you compile y
 Open up your *build.gradle* file with your favorite text editor and add this to it:
 
     repositories {
-	    ivy {
-        	name 'LomLib'
-        	artifactPattern "http://lomeli12.net/MinecraftMods/LomLib/dev/[module]-dev-[revision].[ext]"
+	    maven {
+        	name = 'Lomeli Repo'
+        	url = "http://lomeli12.net/maven/"
     	}
 	}
 	
 	dependencies {
-    	compile name: 'LomLib, version: '16-1.0.8', ext: 'jar'
+    //example:  compile "net.lomeli:LomLib:{MCVersion}-{LomLibVersion}:dev"
+    	compile "net.lomeli:LomLib:1.7.10-3.0.0:dev"
 	}
 
 Remember to modify the version number to match the version of LomLib you're using. Then just run `gradlew build` like usual and your mod should compile like normal.

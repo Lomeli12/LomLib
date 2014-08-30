@@ -16,6 +16,8 @@ import net.lomeli.lomlib.entity.EntityBlock;
 
 @SideOnly(Side.CLIENT)
 public class ResourceUtil {
+    public static TextureMap blockIconRegister;
+    public static TextureMap itemIconRegister;
     public static final ResourceLocation MC_BLOCK_SHEET = new ResourceLocation("textures/atlas/blocks.png");
     public static final ResourceLocation MC_ITEM_SHEET = new ResourceLocation("textures/atlas/items.png");
     public static final ResourceLocation MC_FONT_DEFAULT = new ResourceLocation("textures/font/ascii.png");

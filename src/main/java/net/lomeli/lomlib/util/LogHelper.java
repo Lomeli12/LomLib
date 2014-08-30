@@ -11,23 +11,27 @@ public class LogHelper {
         this.modName = modName;
     }
 
-    public void log(Level logLevel, String message) {
-        FMLLog.log(logLevel, message);
+    public void log(Level logLevel, Object message) {
+        FMLLog.log(this.modName, logLevel, String.valueOf(message));
     }
 
-    public void logBasic(String message) {
+    public void logBasic(Object message) {
         log(Level.INFO, message);
     }
 
-    public void logWarning(String message) {
+    public void logWarning(Object message) {
         log(Level.WARN, message);
     }
 
-    public void logInfo(String message) {
+    public void logInfo(Object message) {
         log(Level.INFO, message);
     }
 
-    public void logError(String message) {
+    public void logError(Object message) {
         log(Level.ERROR, message);
+    }
+
+    public void logException(Exception e) {
+        FMLLog.log(this.modName, Level.ERROR, e, null);
     }
 }

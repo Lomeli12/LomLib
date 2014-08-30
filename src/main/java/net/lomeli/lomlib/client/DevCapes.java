@@ -48,12 +48,19 @@ public class DevCapes {
             if (player != null) {
                 String playerUUID = event.entityPlayer.getUniqueID().toString().replace("-", "");
                 if (capes.containsKey(playerUUID)) {
-                    PlayerCape cape = new PlayerCape(playerUUID, capes.get(playerUUID));
-                    if (!isTextureLoaded(player))
-                        cape.loadTexture(player);
+                    ResourceLocation cape = getCape(capes.get(playerUUID));
+                    if (!isTextureLoaded(player) && cape != null)
+                        player.func_152121_a(MinecraftProfileTexture.Type.CAPE, cape);
+                    //PlayerCape cape = new PlayerCape(playerUUID, capes.get(playerUUID));
+                    //if (!isTextureLoaded(player))
+                    //    cape.loadTexture(player);
                 }
             }
         }
+    }
+
+    private ResourceLocation getCape(String i) {
+        return new ResourceLocation(Strings.MOD_ID.toLowerCase() + ":capes/cape_" + i + ".png");
     }
 
     public boolean isTextureLoaded(AbstractClientPlayer player) {
@@ -76,7 +83,7 @@ public class DevCapes {
                 }
                 reader.close();
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
         }
     }
 

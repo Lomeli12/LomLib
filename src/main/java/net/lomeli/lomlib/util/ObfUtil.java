@@ -29,7 +29,7 @@ public class ObfUtil {
         return true;
     }
 
-    public static boolean isFieldAccessible(Class<?> clazz, String... names) throws Exception {
+    public static boolean isFieldAccessible(Class<?> clazz, String... names) {
         try {
             Field[] fields = clazz.getDeclaredFields();
             for (Field field : fields) {

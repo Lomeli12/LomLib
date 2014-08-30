@@ -80,7 +80,12 @@ public class ProxyClient extends Proxy {
         @SideOnly(Side.CLIENT)
         @SubscribeEvent
         public void registerIcons(TextureStitchEvent.Pre event) {
-            if (event.map.getTextureType() != 0 && event.map.getTextureType() == 1) {
+            if (event.map.getTextureType() == 0)
+                ResourceUtil.blockIconRegister = event.map;
+            if (event.map.getTextureType() == 1)
+                ResourceUtil.itemIconRegister = event.map;
+
+            if (event.map.getTextureType() == 1) {
                 IconRegistry.addIcon("Icon_Redstone", new ItemStack(Items.redstone).getIconIndex());
                 IconRegistry.addIcon("Icon_Info", "lomlib:icons/Icon_Information", event.map);
                 IconRegistry.addIcon("Icon_Energy", "lomlib:icons/Icon_Energy", event.map);
