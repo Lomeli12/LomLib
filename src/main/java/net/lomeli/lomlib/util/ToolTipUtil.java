@@ -29,10 +29,6 @@ public class ToolTipUtil {
     public static final String UNDERLINE = "\u00a7n";
     public static final String ITALIC = "\u00a7o";
 
-    public static boolean doAdditionalInfo() {
-        return KeyBoardUtil.isKeyDown(Keyboard.KEY_LSHIFT);
-    }
-
     /**
      * Search up the color codes on the minecraft wiki page for sign colors
      *
@@ -45,7 +41,7 @@ public class ToolTipUtil {
     }
 
     public static String toolTipInfo(String color, String message) {
-        return doAdditionalInfo() ? message : additionalInfoInstructions(color);
+        return Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? message : additionalInfoInstructions(color);
     }
 
     public static int getSplitStringHeight(FontRenderer renderer, String input, int width) {

@@ -8,14 +8,14 @@ import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -26,10 +26,7 @@ import net.lomeli.lomlib.Proxy;
 import net.lomeli.lomlib.client.gui.GuiOreDic;
 import net.lomeli.lomlib.client.gui.element.IconRegistry;
 import net.lomeli.lomlib.client.render.SmallFontRenderer;
-import net.lomeli.lomlib.util.ModLoaded;
 import net.lomeli.lomlib.util.ObfUtil;
-import net.lomeli.lomlib.util.ToolTipUtil;
-import net.lomeli.lomlib.util.UpdateHelper;
 
 public class ProxyClient extends Proxy {
 
@@ -58,7 +55,7 @@ public class ProxyClient extends Proxy {
     @Override
     public void doStuffPost() {
         super.doStuffPost();
-        if (ModLoaded.isModInstalled("NotEnoughItems"))
+        if (Loader.isModLoaded("NotEnoughItems"))
             NEIAddon.loadAddon();
     }
 
@@ -74,6 +71,12 @@ public class ProxyClient extends Proxy {
             e.printStackTrace();
         }
         return successfull;
+    }
+
+    @Override
+    public void messageClient(String msg) {
+        if (Minecraft.getMinecraft().thePlayer != null)
+            Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation(msg));
     }
 
     public static class LomlibEvents {
@@ -104,11 +107,6 @@ public class ProxyClient extends Proxy {
                             mc.displayGuiScreen(new GuiOreDic());
                         }
                     }
-                } else if (mc.inGameHasFocus && (UpdateHelper.modList != null && !UpdateHelper.modList.isEmpty()) && !LomLib.proxy.sentMessage) {
-                    for (UpdateHelper uh : UpdateHelper.modList) {
-                        mc.thePlayer.addChatMessage(new ChatComponentText(ToolTipUtil.BLUE + StatCollector.translateToLocal("message." + uh.getModID() + ".update") + uh.getDownloadURL()));
-                    }
-                    LomLib.proxy.sentMessage = true;
                 }
             }
         }

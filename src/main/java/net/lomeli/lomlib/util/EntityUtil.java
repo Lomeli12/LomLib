@@ -13,13 +13,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
-
-import net.minecraftforge.common.util.FakePlayer;
-
-import net.lomeli.lomlib.entity.FakePlayerLomLib;
 
 public class EntityUtil {
 
@@ -68,13 +63,19 @@ public class EntityUtil {
         }
     }
 
+
+    @Deprecated
+    public static boolean wasEntityKilledByPlayer(DamageSource source) {
+        return damageFromPlayer(source);
+    }
+
     /**
      * Checks if damage source was from player.
      *
      * @param source
      * @return true if player caused damage, else false
      */
-    public static boolean wasEntityKilledByPlayer(DamageSource source) {
+    public static boolean damageFromPlayer(DamageSource source) {
         if (source.getDamageType().equals("player"))
             return true;
         if (source.getSourceOfDamage() instanceof EntityArrow) {
@@ -207,26 +208,7 @@ public class EntityUtil {
     }
 
     public static boolean isFakePlayer(EntityPlayer player) {
-        if (player.getGameProfile() == null || player.getGameProfile().getName() == null || ("[Minecraft]".equals(player.getGameProfile().getName()))
-                || ("[ExtraUtilities:FakePlayer]".equals(player.getGameProfile().getName())))
-            return true;
-        if (player instanceof FakePlayerLomLib)
-            return true;
-        if (player instanceof FakePlayer)
-            return true;
-        if (player instanceof EntityPlayerMP) {
-            EntityPlayerMP mp = (EntityPlayerMP) player;
-            if (mp.playerNetServerHandler == null)
-                return true;
-            try {
-                mp.getPlayerIP();
-                mp.playerNetServerHandler.netManager.getSocketAddress().toString();
-            } catch (Exception e) {
-                return true;
-            }
-            return !MinecraftServer.getServer().getConfigurationManager().playerEntityList.contains(player);
-        }
-        return false;
+        return player != null ? player.getClass() != EntityPlayerMP.class : false;
     }
 
     public static MovingObjectPosition rayTrace(EntityPlayer player, World world) {

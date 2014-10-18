@@ -14,6 +14,7 @@ import net.minecraft.util.ChatComponentText;
 import net.lomeli.lomlib.libs.Strings;
 import net.lomeli.lomlib.util.ObfUtil;
 import net.lomeli.lomlib.util.ToolTipUtil;
+import net.lomeli.lomlib.util.version.VersionChecker;
 
 public class CommandLomLib extends CommandBase {
 
@@ -40,7 +41,7 @@ public class CommandLomLib extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender icommandsender, String[] args) {
-        if (args.length != 0) {
+        if (args.length > 0) {
             String argument1 = args[0];
 
             List<?> entityList = icommandsender.getEntityWorld().loadedEntityList;
@@ -71,9 +72,9 @@ public class CommandLomLib extends CommandBase {
                     }
                 }
                 sendMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All loaded non-living entities have been removed.");
-            } else if (argument1.equalsIgnoreCase("clearLivingEntities")) {
+            } else if (argument1.equalsIgnoreCase("clearLiving")) {
                 for (Object entity : entityList) {
-                    if (entity instanceof EntityLivingBase)
+                    if ((entity instanceof EntityLivingBase) && !(entity instanceof EntityPlayer))
                         ((EntityLivingBase) entity).setDead();
                 }
                 sendMessage(icommandsender, ToolTipUtil.BLUE + "[LomLib]: All loaded Living mobs have been removed.");
@@ -92,6 +93,12 @@ public class CommandLomLib extends CommandBase {
                     player.capabilities.allowFlying = !player.capabilities.allowFlying;
                 else
                     sendMessage(icommandsender, ToolTipUtil.ORANGE + "allowFly <playername>");
+            } else if (argument1.equalsIgnoreCase("update")) {
+                if (args.length >= 2) {
+                    String id = args[1];
+                    VersionChecker.beginModDownloader(icommandsender, id);
+                } else
+                    sendMessage(icommandsender, ToolTipUtil.RED + "/lomlib update [modid]");
             } else if (argument1.equalsIgnoreCase("help") || argument1.equalsIgnoreCase("?"))
                 displayHelp(icommandsender);
         } else
@@ -120,6 +127,7 @@ public class CommandLomLib extends CommandBase {
         sendMessage(sender, "- clearLivingEntities : " + ToolTipUtil.GREEN + "Clears all loaded living entities.");
         sendMessage(sender, "- clearHostiles : " + ToolTipUtil.GREEN + "Clears all loaded hostile entities.");
         sendMessage(sender, "- allowFly <player> : " + ToolTipUtil.GREEN + "Enable/Disable flying for a player");
+        sendMessage(sender, "- update <modid] : " + ToolTipUtil.GREEN + "Begin downloading an updated version of a mod.");
     }
 
     private void sendMessage(ICommandSender sender, String message) {

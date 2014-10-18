@@ -14,6 +14,8 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
+import cpw.mods.fml.common.Loader;
+
 import net.lomeli.lomlib.recipes.ShapedFluidRecipe;
 import net.lomeli.lomlib.recipes.ShapelessFluidRecipe;
 
@@ -72,7 +74,7 @@ public class ItemRecipeUtil {
                             else
                                 finalRecipe[i] = obj;
                         }
-                    } else if (ModLoaded.isModInstalled("IC2")) {
+                    } else if (Loader.isModLoaded("IC2")) {
                         if (Class.forName("ic2.core.AdvRecipe").isAssignableFrom(main.getClass()) || Class.forName("ic2.core.AdvShapelessRecipe").isAssignableFrom(main.getClass())) {
                             Field inputs = fields[2];
                             if (inputs.getType().isArray()) {

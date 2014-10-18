@@ -65,7 +65,6 @@ public class EntityBlock extends Entity {
 
     @Override
     protected void entityInit() {
-        // TODO Auto-generated method stub
     }
 
     @Override
