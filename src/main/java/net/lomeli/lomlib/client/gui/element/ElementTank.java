@@ -57,7 +57,7 @@ public class ElementTank extends ElementBase {
     @Override
     public void addTooltip(List<String> list) {
         if (tank.getFluid() != null && tank.getFluidAmount() > 0) {
-            list.add(tank.getFluid().getLocalizedName());
+            list.add(StatCollector.translateToLocal(tank.getFluid().getFluid().getUnlocalizedName()));
             list.add("" + tank.getFluidAmount() + " / " + tank.getCapacity() + " mB");
         } else
             list.add(StatCollector.translateToLocal("element.lomlib.tankEmpty"));
