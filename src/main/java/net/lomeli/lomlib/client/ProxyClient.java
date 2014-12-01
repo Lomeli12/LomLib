@@ -47,7 +47,9 @@ public class ProxyClient extends Proxy {
     @Override
     public void doStuffInit() {
         super.doStuffInit();
-        FMLCommonHandler.instance().bus().register(new LomlibEvents());
+        LomlibEvents lomlibEvents = new LomlibEvents();
+        FMLCommonHandler.instance().bus().register(lomlibEvents);
+        MinecraftForge.EVENT_BUS.register(lomlibEvents);
         Minecraft mc = Minecraft.getMinecraft();
         smallFontRenderer = new SmallFontRenderer(mc.gameSettings, new ResourceLocation("minecraft:textures/font/ascii.png"), mc.renderEngine, false);
     }

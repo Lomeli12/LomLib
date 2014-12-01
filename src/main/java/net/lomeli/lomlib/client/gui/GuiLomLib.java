@@ -146,7 +146,9 @@ public class GuiLomLib extends GuiContainer {
     }
 
     public void drawIcon(String iconName, int x, int y, int spriteSheet) {
-        drawIcon(IconRegistry.getIcon(iconName), x, y, spriteSheet);
+        IIcon icon = IconRegistry.getIcon(iconName);
+        if (icon != null)
+            drawIcon(icon, x, y, spriteSheet);
     }
 
     public void drawFluid(int x, int y, FluidStack fluid, int width, int height) {

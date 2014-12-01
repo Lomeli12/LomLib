@@ -1,9 +1,0 @@
-recipe.lomlib:shapedFluid=Форменный рецепт жидкости
-recipe.lomlib:shapelessFluid=Бесформенный рецепт жидкости
-recipe.lomlib:anvilRecipe=Рецепт наковальни
-
-message.lomlib.update=Доступно новое обновление для LomLib! Скачать:
-
-tab.lomlib.info=Информация
-
-element.lomlib.tankEmpty=Пусто
