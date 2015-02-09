@@ -3,7 +3,7 @@ package net.lomeli.lomlib.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class ObfUtil {
 

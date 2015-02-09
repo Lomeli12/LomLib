@@ -14,10 +14,10 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import cpw.mods.fml.common.Loader;
+import net.minecraftforge.fml.common.Loader;
 
-import net.lomeli.lomlib.recipes.ShapedFluidRecipe;
-import net.lomeli.lomlib.recipes.ShapelessFluidRecipe;
+import net.lomeli.lomlib.core.recipes.ShapedFluidRecipe;
+import net.lomeli.lomlib.core.recipes.ShapelessFluidRecipe;
 
 public class ItemRecipeUtil {
 
@@ -37,84 +37,70 @@ public class ItemRecipeUtil {
 
             if (!possibleRecipe.isEmpty()) {
                 IRecipe main = possibleRecipe.get(0);
-                try {
-                    Field[] fields = main.getClass().getDeclaredFields();
-                    if (main instanceof ShapedRecipes) {
-                        Field inputs = fields[2];
-                        if (inputs.getType().isArray()) {
-                            for (int i = 0; i < Array.getLength(inputs.get(main)); i++) {
-                                if ((Array.get(inputs.get(main), i) instanceof ItemStack) && i < finalRecipe.length)
-                                    finalRecipe[i] = Array.get(inputs.get(main), i);
-                            }
-                        }
-                    } else if (main instanceof ShapelessRecipes) {
-                        Field inputs = fields[1];
-                        if (List.class.isAssignableFrom(inputs.getType())) {
-                            inputs.setAccessible(true);
-
-                            List<ItemStack> items = getField(ShapelessRecipes.class, List.class, main, 1);
-                            if (items != null) {
-                                for (int i = 0; i < items.size(); i++) {
-                                    if (i < finalRecipe.length)
-                                        finalRecipe[i] = items.get(i);
-                                }
-                            }
-                        }
-                    } else if (main instanceof ShapedOreRecipe || main instanceof ShapelessOreRecipe) {
-                        Object[] inputs = null;
-                        if (main instanceof ShapedOreRecipe)
-                            inputs = ((ShapedOreRecipe) main).getInput();
-                        else
-                            inputs = ((ShapelessOreRecipe) main).getInput().toArray();
-
+                if (main instanceof ShapedRecipes) {
+                    ItemStack[] inputs = ((ShapedRecipes) main).recipeItems;
+                    if (inputs != null) {
                         for (int i = 0; i < inputs.length; i++) {
-                            Object obj = inputs[i];
-                            if (obj instanceof ArrayList<?>)
-                                finalRecipe[i] = ((ArrayList<?>) obj).get(0);
-                            else
-                                finalRecipe[i] = obj;
-                        }
-                    } else if (Loader.isModLoaded("IC2")) {
-                        if (Class.forName("ic2.core.AdvRecipe").isAssignableFrom(main.getClass()) || Class.forName("ic2.core.AdvShapelessRecipe").isAssignableFrom(main.getClass())) {
-                            Field inputs = fields[2];
-                            if (inputs.getType().isArray()) {
-                                for (int i = 0; i < Array.getLength(inputs.get(main)); i++) {
-                                    if (i < finalRecipe.length)
-                                        finalRecipe[i] = Array.get(inputs.get(main), i);
-                                }
-                            }
-                        }
-                    } else if (main instanceof ShapedFluidRecipe || main instanceof ShapelessFluidRecipe) {
-                        Object[] inputs = null;
-                        if (main instanceof ShapedFluidRecipe)
-                            inputs = ((ShapedFluidRecipe) main).getInput();
-                        else
-                            inputs = ((ShapelessFluidRecipe) main).getInput().toArray();
-
-                        for (int i = 0; i < inputs.length; i++) {
-                            Object obj = inputs[i];
-                            if (obj instanceof ArrayList<?>)
-                                finalRecipe[i] = ((ArrayList<?>) obj).get(0);
-                            else
-                                finalRecipe[i] = obj;
+                            ItemStack item = inputs[i];
+                            if (item != null && item.getItem() != null)
+                                finalRecipe[i] = item;
                         }
                     }
-                } catch (Exception e) {
+                } else if (main instanceof ShapelessRecipes) {
+                    List<ItemStack> items = ((ShapelessRecipes) main).recipeItems;
+                    if (items != null) {
+                        for (int i = 0; i < items.size(); i++) {
+                            if (i < finalRecipe.length)
+                                finalRecipe[i] = items.get(i);
+                        }
+                    }
+                } else if (main instanceof ShapedOreRecipe || main instanceof ShapelessOreRecipe) {
+                    Object[] inputs = null;
+                    if (main instanceof ShapedOreRecipe)
+                        inputs = ((ShapedOreRecipe) main).getInput();
+                    else
+                        inputs = ((ShapelessOreRecipe) main).getInput().toArray();
+
+                    for (int i = 0; i < inputs.length; i++) {
+                        Object obj = inputs[i];
+                        if (obj instanceof ArrayList<?>)
+                            finalRecipe[i] = ((ArrayList<?>) obj).get(0);
+                        else
+                            finalRecipe[i] = obj;
+                    }
+                } else if (main instanceof ShapedFluidRecipe || main instanceof ShapelessFluidRecipe) {
+                    Object[] inputs = null;
+                    if (main instanceof ShapedFluidRecipe)
+                        inputs = ((ShapedFluidRecipe) main).getInput();
+                    else
+                        inputs = ((ShapelessFluidRecipe) main).getInput().toArray();
+
+                    for (int i = 0; i < inputs.length; i++) {
+                        Object obj = inputs[i];
+                        if (obj instanceof ArrayList<?>)
+                            finalRecipe[i] = ((ArrayList<?>) obj).get(0);
+                        else
+                            finalRecipe[i] = obj;
+                    }
+                } else {
+                    try {
+                        Field[] fields = main.getClass().getDeclaredFields();
+                        if (Loader.isModLoaded("IC2")) {
+                            if (Class.forName("ic2.core.AdvRecipe").isAssignableFrom(main.getClass()) || Class.forName("ic2.core.AdvShapelessRecipe").isAssignableFrom(main.getClass())) {
+                                Field inputs = fields[2];
+                                if (inputs.getType().isArray()) {
+                                    for (int i = 0; i < Array.getLength(inputs.get(main)); i++) {
+                                        if (i < finalRecipe.length)
+                                            finalRecipe[i] = Array.get(inputs.get(main), i);
+                                    }
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+                    }
                 }
             }
         }
         return finalRecipe;
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T> T getField(Class<?> class1, Class<T> fieldType, Object instance, int i) {
-        try {
-            Field[] fields = class1.getDeclaredFields();
-            Field field = fields[i];
-            field.setAccessible(true);
-            return (T) field.get(instance);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 }

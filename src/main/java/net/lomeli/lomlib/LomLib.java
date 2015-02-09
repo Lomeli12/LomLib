@@ -1,25 +1,23 @@
 package net.lomeli.lomlib;
 
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.oredict.RecipeSorter;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
-import cpw.mods.fml.client.event.ConfigChangedEvent;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-
-import net.lomeli.lomlib.client.CommandLomLib;
+import net.lomeli.lomlib.core.CommandLomLib;
+import net.lomeli.lomlib.core.Proxy;
+import net.lomeli.lomlib.core.recipes.AnvilRecipeManager;
+import net.lomeli.lomlib.core.recipes.FluidAnvilRecipe;
 import net.lomeli.lomlib.libs.Strings;
-import net.lomeli.lomlib.recipes.AnvilRecipeManager;
-import net.lomeli.lomlib.recipes.ShapedFluidRecipe;
-import net.lomeli.lomlib.recipes.ShapelessFluidRecipe;
 import net.lomeli.lomlib.util.LogHelper;
+import net.lomeli.lomlib.util.SimpleConfig;
 
 @Mod(modid = Strings.MOD_ID, name = Strings.MOD_NAME, version = Strings.VERSION, guiFactory = Strings.CONFIG_FACTORY)
 public class LomLib {
@@ -32,8 +30,8 @@ public class LomLib {
 
     public static LogHelper logger;
 
-    public static boolean debug = false, capes = true, slime = false;
-    public static Configuration config;
+    public static boolean debug = false, crown = true;
+    public static SimpleConfig config;
 
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent event) {
@@ -43,42 +41,27 @@ public class LomLib {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = new LogHelper(Strings.MOD_NAME);
-        config = new Configuration(event.getSuggestedConfigurationFile());
-        configureMod();
+        config = new SimpleConfig(Strings.MOD_ID, new Configuration(event.getSuggestedConfigurationFile())) {
+            @Override
+            public void loadConfig() {
+                debug = getConfig().getBoolean("debugMode", Configuration.CATEGORY_GENERAL, debug, Strings.DEBUG_MODE);
+                crown = getConfig().getBoolean("patreon", Configuration.CATEGORY_GENERAL, crown, Strings.CROWN);
+                if (getConfig().hasChanged())
+                    getConfig().save();
+            }
+        };
+        config.loadConfig();
 
-        RecipeSorter.register(Strings.NEI_SHAPED, ShapedFluidRecipe.class, RecipeSorter.Category.SHAPED, "after:minecraft:shaped before:minecraft:shapeless");
-        RecipeSorter.register(Strings.NEI_SHAPELESS, ShapelessFluidRecipe.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
-
-        proxy.checkForUpdate();
-        proxy.doStuffPre();
+        proxy.preInit();
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        MinecraftForge.EVENT_BUS.register(proxy);
-        MinecraftForge.EVENT_BUS.register(new AnvilRecipeManager());
-        FMLCommonHandler.instance().bus().register(this);
-        proxy.doStuffInit();
+        proxy.init();
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        proxy.doStuffPost();
-    }
-
-    public static void configureMod() {
-        debug = config.getBoolean("debugMode", Configuration.CATEGORY_GENERAL, debug, Strings.DEBUG_MODE);
-        capes = config.getBoolean("capes", Configuration.CATEGORY_GENERAL, capes, Strings.CAPES);
-        slime = config.getBoolean("slimePistonRightClick", Configuration.CATEGORY_GENERAL, slime, Strings.SLIMES);
-        if (config.hasChanged())
-            config.save();
-    }
-    
-    @SubscribeEvent
-    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
-        if(eventArgs.modID.equalsIgnoreCase(Strings.MOD_ID)) {
-            System.out.println("yay! " + Strings.MOD_NAME);
-            configureMod();
-        }
+        proxy.postInit();
     }
 }

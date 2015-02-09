@@ -4,75 +4,64 @@ import org.lwjgl.input.Keyboard;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
-import net.minecraft.init.Items;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ResourceLocation;
 
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.lomeli.lomlib.LomLib;
-import net.lomeli.lomlib.Proxy;
 import net.lomeli.lomlib.client.gui.GuiOreDic;
-import net.lomeli.lomlib.client.gui.element.IconRegistry;
-import net.lomeli.lomlib.client.render.SmallFontRenderer;
+import net.lomeli.lomlib.client.nei.NEIAddon;
+import net.lomeli.lomlib.client.patreon.LayerCrown;
+import net.lomeli.lomlib.core.Proxy;
 import net.lomeli.lomlib.util.ObfUtil;
+import net.lomeli.lomlib.util.entity.ItemCustomEgg;
 
 public class ProxyClient extends Proxy {
 
-    public static SmallFontRenderer smallFontRenderer;
-
     @Override
-    public void doStuffPre() {
-        super.doStuffPre();
-        ResourceUtil.initResourceUtil();
+    public void preInit() {
+        super.preInit();
 
-        if (!ObfUtil.isOptifineInstalled()) {
-            if (LomLib.capes && setCapeAccess())
-                MinecraftForge.EVENT_BUS.register(DevCapes.getInstance());
-        } else
-            LomLib.logger.logWarning("Optifine detected! If you run into any bugs, please test without optifine first before reporting, otherwise it WILL BE IGNORED! (Applies to both my mods and most others). Capes disabled to prevent optifine related crashes");
+        if (ObfUtil.isOptifineInstalled())
+            LomLib.logger.logWarning("Optifine detected! If you run into any bugs, please test without optifine first before reporting, otherwise it WILL BE IGNORED! (Applies to both my mods and most others)");
     }
 
     @Override
-    public void doStuffInit() {
-        super.doStuffInit();
-        LomlibEvents lomlibEvents = new LomlibEvents();
-        FMLCommonHandler.instance().bus().register(lomlibEvents);
-        MinecraftForge.EVENT_BUS.register(lomlibEvents);
-        Minecraft mc = Minecraft.getMinecraft();
-        smallFontRenderer = new SmallFontRenderer(mc.gameSettings, new ResourceLocation("minecraft:textures/font/ascii.png"), mc.renderEngine, false);
+    public void init() {
+        super.init();
+        FMLCommonHandler.instance().bus().register(LomLib.config);
+        FMLCommonHandler.instance().bus().register(this);
+        MinecraftForge.EVENT_BUS.register(this);
+        LayerRenderer crownRenderer = new LayerCrown();
+        ((RenderPlayer) Minecraft.getMinecraft().getRenderManager().skinMap.get("default")).addLayer(crownRenderer);
+        ((RenderPlayer) Minecraft.getMinecraft().getRenderManager().skinMap.get("slim")).addLayer(crownRenderer);
+
+        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(ItemCustomEgg.customEgg, new ItemMeshDefinition() {
+            @Override
+            public ModelResourceLocation getModelLocation(ItemStack stack) {
+                return new ModelResourceLocation("lomlib:spawnEgg", "inventory");
+            }
+        });
     }
 
     @Override
-    public void doStuffPost() {
-        super.doStuffPost();
+    public void postInit() {
+        super.postInit();
         if (Loader.isModLoaded("NotEnoughItems"))
             NEIAddon.loadAddon();
-    }
-
-    private boolean setCapeAccess() {
-        boolean successfull = false;
-        try {
-            if (LomLib.debug)
-                LomLib.logger.logBasic("Accessing AbstractClientPlayer fields");
-            ObfUtil.setFieldAccessible(AbstractClientPlayer.class, "downloadImageCape", "field_110315_c", "c");
-            ObfUtil.setFieldAccessible(AbstractClientPlayer.class, "locationCape", "field_110313_e", "e");
-            successfull = true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return successfull;
     }
 
     @Override
@@ -81,37 +70,19 @@ public class ProxyClient extends Proxy {
             Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation(msg));
     }
 
-    public static class LomlibEvents {
-        @SideOnly(Side.CLIENT)
-        @SubscribeEvent
-        public void registerIcons(TextureStitchEvent.Pre event) {
-            if (event.map.getTextureType() == 0)
-                ResourceUtil.blockIconRegister = event.map;
-            if (event.map.getTextureType() == 1)
-                ResourceUtil.itemIconRegister = event.map;
-
-            if (event.map.getTextureType() == 1) {
-                IconRegistry.addIcon("Icon_Redstone", new ItemStack(Items.redstone).getIconIndex());
-                IconRegistry.addIcon("Icon_Info", "lomlib:icons/Icon_Information", event.map);
-                IconRegistry.addIcon("Icon_Energy", "lomlib:icons/Icon_Energy", event.map);
-            }
-        }
-
-        @SideOnly(Side.CLIENT)
-        @SubscribeEvent
-        public void renderTick(TickEvent.RenderTickEvent event) {
-            if (event.phase == TickEvent.Phase.END) {
-                Minecraft mc = Minecraft.getMinecraft();
-                if (mc.currentScreen != null) {
-                    if ((mc.currentScreen instanceof InventoryEffectRenderer) && !(mc.currentScreen instanceof GuiOreDic)) {
-                        if (Keyboard.isKeyDown(Keyboard.KEY_D) && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-                            mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-                            mc.displayGuiScreen(new GuiOreDic());
-                        }
+    @SideOnly(Side.CLIENT)
+    @SubscribeEvent
+    public void renderTick(TickEvent.RenderTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            Minecraft mc = Minecraft.getMinecraft();
+            if (mc.currentScreen != null) {
+                if ((mc.currentScreen instanceof InventoryEffectRenderer) && !(mc.currentScreen instanceof GuiOreDic)) {
+                    if (Keyboard.isKeyDown(Keyboard.KEY_D) && Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
+                        mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
+                        mc.displayGuiScreen(new GuiOreDic());
                     }
                 }
             }
         }
-
     }
 }

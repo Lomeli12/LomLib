@@ -1,0 +1,10 @@
+{
+    "major" : 4,
+    "minor" : 0,
+    "revision" : 0,
+    "downloadURL" : "https://lomeli12.net/minecraft-mods/lomlib/",
+    "direct" : false,
+    "changeLog" : [
+      "Update to 1.8"
+    ]
+}

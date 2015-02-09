@@ -19,13 +19,13 @@ apply plugin: "forge"
 
 def loadProperties(String sourceFileName) {
     def config = new Properties()
-        def propFile = new File(sourceFileName)
-            if (propFile.canRead()) {
-                config.load(new FileInputStream(propFile))
-                    for (Map.Entry property in config) {
-                        ext[property.key] = property.value;
-                    }
-            }
+    def propFile = new File(sourceFileName)
+    if (propFile.canRead()) {
+        config.load(new FileInputStream(propFile))
+        for (Map.Entry property in config) {
+            ext[property.key] = property.value;
+        }
+    }
 }
 
 loadProperties 'build.properties'
@@ -67,8 +67,11 @@ processResources {
 
 
 jar {
+    manifest {
+        attributes 'FMLAT' : 'lomlib_at.cfg'
+    }
     appendix = "$mcVersion"
-	classifier = "universal"
+    classifier = "universal"
 }
 
 task deobfJar(type: Jar) {

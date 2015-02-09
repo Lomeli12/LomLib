@@ -3,7 +3,3 @@ recipe.lomlib:shapelessFluid=Бесформенный рецепт жидкос�
 recipe.lomlib:anvilRecipe=Рецепт наковальни
 
 message.lomlib.update=Доступно новое обновление для LomLib! Скачать:
-
-tab.lomlib.info=Информация
-
-element.lomlib.tankEmpty=Пусто

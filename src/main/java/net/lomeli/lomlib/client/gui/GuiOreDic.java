@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
@@ -20,11 +20,12 @@ import net.minecraft.util.ResourceLocation;
 
 import net.minecraftforge.oredict.OreDictionary;
 
-import net.lomeli.lomlib.client.render.RenderUtils;
+import net.lomeli.lomlib.util.RenderUtils;
+import net.lomeli.lomlib.util.ResourceUtil;
 import net.lomeli.lomlib.libs.Strings;
 
 public class GuiOreDic extends InventoryEffectRenderer {
-    private final ResourceLocation guiTexture = new ResourceLocation(Strings.MOD_ID.toLowerCase() + ":textures/gui/oreDicSearch.png");
+    private final ResourceLocation guiTexture = ResourceUtil.getGuiResource(Strings.MOD_ID.toLowerCase(), "oreDicSearch.png");
     private GuiButton prev, next;
     private int guiWidth = 176, guiHeight = 166, left, top, index, mouseX, mouseY;
     private List<String> oreDicList;
@@ -70,7 +71,7 @@ public class GuiOreDic extends InventoryEffectRenderer {
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) {
+    protected void actionPerformed(GuiButton button) throws IOException {
         super.actionPerformed(button);
         if (button != null) {
             if (button.id == this.next.id) {
@@ -89,7 +90,7 @@ public class GuiOreDic extends InventoryEffectRenderer {
         else if (this.index < 0)
             this.index = 0;
         String s = oreDicList.get(index);
-        mc.fontRenderer.drawString(s, left + 85 - (mc.fontRenderer.getStringWidth(s) / 2), top + 10, 0);
+        mc.fontRendererObj.drawString(s, left + 85 - (mc.fontRendererObj.getStringWidth(s) / 2), top + 10, 0);
 
         List<ItemStack> list = OreDictionary.getOres(s);
         if (list != null && !list.isEmpty()) {
@@ -114,15 +115,15 @@ public class GuiOreDic extends InventoryEffectRenderer {
     }
 
     private void renderItem(int x, int y, ItemStack item) {
-        RenderItem renderItem = new RenderItem();
+        //TODO fix render item
+        //RenderItem renderItem = new RenderItem(Minecraft.getMinecraft().getTextureManager(), FMLClientHandler.instance().getClient().);
         GL11.glPushMatrix();
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         RenderHelper.enableGUIStandardItemLighting();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
-        renderItem.renderItemIntoGUI(Minecraft.getMinecraft().fontRenderer, Minecraft.getMinecraft().renderEngine, item, x, y);
-        renderItem.renderItemOverlayIntoGUI(Minecraft.getMinecraft().fontRenderer, Minecraft.getMinecraft().renderEngine, item, x, y);
+        //renderItem.func_175030_a(Minecraft.getMinecraft().fontRendererObj, item, x, y);
         RenderHelper.disableStandardItemLighting();
         GL11.glPopMatrix();
         if ((mouseX >= x && mouseX <= x + 16) && (mouseY >= y && mouseY <= y + 16))
@@ -139,7 +140,7 @@ public class GuiOreDic extends InventoryEffectRenderer {
     }
 
     @Override
-    public void handleMouseInput() {
+    public void handleMouseInput() throws IOException {
         int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
         int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
 
@@ -170,7 +171,7 @@ public class GuiOreDic extends InventoryEffectRenderer {
                     k += 13;
 
                 this.drawTexturedModalRect(this.xPosition, this.yPosition, k, l, 13, 13);
-                this.drawString(Minecraft.getMinecraft().fontRenderer, this.displayString, (this.xPosition + this.width / 2) - (Minecraft.getMinecraft().fontRenderer.getStringWidth(this.displayString) / 2), this.yPosition + (this.height - 6) / 2, Color.WHITE.getRGB());
+                this.drawString(Minecraft.getMinecraft().fontRendererObj, this.displayString, (this.xPosition + this.width / 2) - (Minecraft.getMinecraft().fontRendererObj.getStringWidth(this.displayString) / 2), this.yPosition + (this.height - 6) / 2, Color.WHITE.getRGB());
             }
         }
     }
