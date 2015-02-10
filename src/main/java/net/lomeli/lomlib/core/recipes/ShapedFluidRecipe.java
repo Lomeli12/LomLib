@@ -235,8 +235,6 @@ public class ShapedFluidRecipe implements IRecipe {
         return this.input;
     }
 
-
-
     @Override
     public ItemStack[] getRemainingItems(InventoryCrafting inv) {
         return ForgeHooks.defaultRecipeGetRemainingItems(inv);

@@ -23,7 +23,7 @@ public class LayerCrown implements LayerRenderer {
         if (LomLib.proxy.list.isPatreon(player)) {
             if (Loader.isModLoaded("morph")) {
                 try {
-                    Object obj = ObfUtil.invokeMethod(Class.forName("morph.api.Api"), null, new String[]{""}, player.getName(), true);
+                    Object obj = ObfUtil.invokeMethod(Class.forName("morph.api.Api"), null, new String[]{"getMorphEntity"}, player.getName(), true);
                     if (obj != null && !(obj instanceof EntityPlayer))
                         return;
                 } catch (Exception e) {

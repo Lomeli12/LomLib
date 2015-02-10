@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.renderer.InventoryEffectRenderer;
 import net.minecraft.client.renderer.ItemMeshDefinition;
-import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
@@ -46,8 +46,12 @@ public class ProxyClient extends Proxy {
         FMLCommonHandler.instance().bus().register(this);
         MinecraftForge.EVENT_BUS.register(this);
         LayerRenderer crownRenderer = new LayerCrown();
-        ((RenderPlayer) Minecraft.getMinecraft().getRenderManager().skinMap.get("default")).addLayer(crownRenderer);
-        ((RenderPlayer) Minecraft.getMinecraft().getRenderManager().skinMap.get("slim")).addLayer(crownRenderer);
+        RendererLivingEntity rendererLivingEntity = (RendererLivingEntity) Minecraft.getMinecraft().getRenderManager().skinMap.get("default");
+        if (rendererLivingEntity != null)
+            rendererLivingEntity.addLayer(crownRenderer);
+        rendererLivingEntity = (RendererLivingEntity) Minecraft.getMinecraft().getRenderManager().skinMap.get("slim");
+        if (rendererLivingEntity != null)
+            rendererLivingEntity.addLayer(crownRenderer);
 
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(ItemCustomEgg.customEgg, new ItemMeshDefinition() {
             @Override

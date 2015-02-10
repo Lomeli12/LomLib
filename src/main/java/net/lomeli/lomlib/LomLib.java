@@ -1,8 +1,5 @@
 package net.lomeli.lomlib;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -13,8 +10,6 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 import net.lomeli.lomlib.core.CommandLomLib;
 import net.lomeli.lomlib.core.Proxy;
-import net.lomeli.lomlib.core.recipes.AnvilRecipeManager;
-import net.lomeli.lomlib.core.recipes.FluidAnvilRecipe;
 import net.lomeli.lomlib.libs.Strings;
 import net.lomeli.lomlib.util.LogHelper;
 import net.lomeli.lomlib.util.SimpleConfig;
