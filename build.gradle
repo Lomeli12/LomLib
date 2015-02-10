@@ -15,7 +15,7 @@ buildscript {
     }
 }
 
-apply plugin: "forge"
+apply plugin: 'forge'
 
 def loadProperties(String sourceFileName) {
     def config = new Properties()
@@ -49,7 +49,8 @@ version = "$releaseVersion"
 
 minecraft {
     version = "$mcVersion-$forgeVersion" // grab latest forge
-    runDir = "build/vanilla/assets"
+    runDir = "eclipse"
+    mappings = "snapshot_nodoc_20141130"
 }
 
 processResources {
@@ -64,7 +65,6 @@ processResources {
         exclude  'mcmod.info'
     }
 }
-
 
 jar {
     manifest {
