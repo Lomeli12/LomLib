@@ -21,7 +21,7 @@ public class PatreonCrown extends ModelBase {
         this.baseCrown.setRotationPoint(-5.0F, 12.0F, 2.0F);
         this.baseCrown.addBox(0.0F, 0.0F, 0.0F, 5, 4, 0, 0.0F);
         this.setRotateAngle(baseCrown, -0.3490658503988659F, 0.0F, 0.0F);
-        this.baseCrown1 = new ModelRenderer(this, 0, -2);
+        this.baseCrown1 = new ModelRenderer(this, 0, -6);
         this.baseCrown1.setRotationPoint(-5.0F, 12.0F, 2.0F);
         this.baseCrown1.addBox(0.0F, 0.0F, 0.0F, 0, 4, 5, 0.0F);
         this.setRotateAngle(baseCrown1, -0.3490658503988659F, 0.0F, 0.0F);
@@ -29,7 +29,7 @@ public class PatreonCrown extends ModelBase {
         this.baseCrown2.setRotationPoint(-5.0F, 13.71F, 6.71F);
         this.baseCrown2.addBox(0.0F, 0.0F, 0.0F, 5, 4, 0, 0.0F);
         this.setRotateAngle(baseCrown2, -0.3490658503988659F, 0.0F, 0.0F);
-        this.baseCrown3 = new ModelRenderer(this, 0, -2);
+        this.baseCrown3 = new ModelRenderer(this, 0, -6);
         this.baseCrown3.setRotationPoint(0.0F, 12.0F, 2.0F);
         this.baseCrown3.addBox(0.0F, 0.0F, 0.0F, 0, 4, 5, 0.0F);
         this.setRotateAngle(baseCrown3, -0.3490658503988659F, 0.0F, 0.0F);

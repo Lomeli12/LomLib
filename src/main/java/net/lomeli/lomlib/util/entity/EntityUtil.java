@@ -75,14 +75,8 @@ public class EntityUtil {
      * @return true if player caused damage, else false
      */
     public static boolean damageFromPlayer(DamageSource source) {
-        if (source.getDamageType().equals("player"))
+        if (source != null && (source.getDamageType().equals("player") || source.getEntity() instanceof EntityPlayer))
             return true;
-        if (source.getSourceOfDamage() instanceof EntityArrow) {
-            if (((EntityArrow) source.getSourceOfDamage()).shootingEntity != null) {
-                if (((EntityArrow) source.getSourceOfDamage()).shootingEntity instanceof EntityPlayer)
-                    return true;
-            }
-        }
         return false;
     }
 
@@ -131,9 +125,9 @@ public class EntityUtil {
                 BlockPos blockpos1 = blockpos.down();
                 Block block = worldObj.getBlockState(blockpos1).getBlock();
 
-                if (block.getMaterial().blocksMovement()) {
+                if (block.getMaterial().blocksMovement())
                     flag1 = true;
-                } else {
+                else {
                     --telporter.posY;
                     blockpos = blockpos1;
                 }
@@ -142,9 +136,8 @@ public class EntityUtil {
             if (flag1) {
                 telporter.setPositionAndUpdate(telporter.posX, telporter.posY, telporter.posZ);
 
-                if (worldObj.getCollidingBoundingBoxes(telporter, telporter.getEntityBoundingBox()).isEmpty() && !worldObj.isAnyLiquid(telporter.getEntityBoundingBox())) {
+                if (worldObj.getCollidingBoundingBoxes(telporter, telporter.getEntityBoundingBox()).isEmpty() && !worldObj.isAnyLiquid(telporter.getEntityBoundingBox()))
                     flag = true;
-                }
             }
         }
 
