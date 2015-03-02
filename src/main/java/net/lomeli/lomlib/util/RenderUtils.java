@@ -14,6 +14,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.entity.RendererLivingEntity;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.model.ModelManager;
@@ -38,6 +40,15 @@ public class RenderUtils {
     public static final ResourceLocation TEXTURE_MAP = TextureMap.locationBlocksTexture;
     public static final ResourceLocation texEnchant = new ResourceLocation("textures/misc/enchanted_item_glint.png");
     public static final float magicNum = 0.0625F;
+    
+    public static void addLayerToRenderer(RendererLivingEntity renderer, LayerRenderer layer) {
+        if (renderer != null && layer != null)
+            renderer.addLayer(layer);
+    }
+    
+    public static RendererLivingEntity getEntityRenderer(Class<?> clazz) {
+        return (RendererLivingEntity) Minecraft.getMinecraft().getRenderManager().entityRenderMap.get(clazz);
+    }
 
     public static RenderItem getNewRenderItems() {
         return new RenderItem(getTextureManager(), new ModelManager(Minecraft.getMinecraft().getTextureMapBlocks()));

@@ -20,6 +20,8 @@ import net.minecraftforge.client.event.RenderHandEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+import net.lomeli.lomlib.util.RenderUtils;
+
 public class RendererRegistry {
     private HashMap<Item, IItemRenderer> itemRendererList;
     private static RendererRegistry INSTANCE;
@@ -33,18 +35,16 @@ public class RendererRegistry {
     public static void initLayerRenderer() {
         MinecraftForge.EVENT_BUS.register(instance());
         RendererLivingEntity rendererLivingEntity = (RendererLivingEntity) Minecraft.getMinecraft().getRenderManager().skinMap.get("default");
-        if (rendererLivingEntity != null)
-            rendererLivingEntity.addLayer(new LayerItemModel(rendererLivingEntity));
+        RenderUtils.addLayerToRenderer(rendererLivingEntity, new LayerItemModel(rendererLivingEntity));
         rendererLivingEntity = (RendererLivingEntity) Minecraft.getMinecraft().getRenderManager().skinMap.get("slim");
-        if (rendererLivingEntity != null)
-            rendererLivingEntity.addLayer(new LayerItemModel(rendererLivingEntity));
+        RenderUtils.addLayerToRenderer(rendererLivingEntity, new LayerItemModel(rendererLivingEntity));
         Map<Class<?>, Render> renderMap = Minecraft.getMinecraft().getRenderManager().entityRenderMap;
         for (Map.Entry<Class<?>, Render> entry : renderMap.entrySet()) {
             Render render = entry.getValue();
             if (render != null && render instanceof RendererLivingEntity) {
                 RendererLivingEntity renderLiving = (RendererLivingEntity) render;
                 if (renderLiving.getMainModel() instanceof ModelBiped)
-                    renderLiving.addLayer(new LayerItemModel(renderLiving));
+                    RenderUtils.addLayerToRenderer(renderLiving, new LayerItemModel(renderLiving));
             }
         }
     }

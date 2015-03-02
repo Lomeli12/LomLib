@@ -14,6 +14,7 @@ import net.lomeli.lomlib.client.models.RendererRegistry;
 import net.lomeli.lomlib.client.nei.NEIAddon;
 import net.lomeli.lomlib.client.patreon.LayerCrown;
 import net.lomeli.lomlib.core.Proxy;
+import net.lomeli.lomlib.util.RenderUtils;
 import net.lomeli.lomlib.util.entity.ItemCustomEgg;
 
 public class ProxyClient extends Proxy {
@@ -31,12 +32,8 @@ public class ProxyClient extends Proxy {
         super.init();
         FMLCommonHandler.instance().bus().register(LomLib.config);
         LayerRenderer crownRenderer = new LayerCrown();
-        RendererLivingEntity rendererLivingEntity = (RendererLivingEntity) Minecraft.getMinecraft().getRenderManager().skinMap.get("default");
-        if (rendererLivingEntity != null)
-            rendererLivingEntity.addLayer(crownRenderer);
-        rendererLivingEntity = (RendererLivingEntity) Minecraft.getMinecraft().getRenderManager().skinMap.get("slim");
-        if (rendererLivingEntity != null)
-            rendererLivingEntity.addLayer(crownRenderer);
+        RenderUtils.addLayerToRenderer((RendererLivingEntity) Minecraft.getMinecraft().getRenderManager().skinMap.get("default"), crownRenderer);
+        RenderUtils.addLayerToRenderer((RendererLivingEntity) Minecraft.getMinecraft().getRenderManager().skinMap.get("slim"), crownRenderer);
         RendererRegistry.initLayerRenderer();
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(ItemCustomEgg.customEgg, new BasicItemMesh("lomlib:spawnEgg"));
     }
