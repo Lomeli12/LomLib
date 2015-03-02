@@ -21,6 +21,18 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 public class EntityUtil {
     public static List<SimpleEggInfo> eggList = new ArrayList<SimpleEggInfo>();
     public static int count = 0;
+    
+    public static ItemStack getEntitySpawnEgg(Class<? extends Entity> entityClass) {
+        if (!eggList.isEmpty()) {
+            for (int i = 0; i < eggList.size(); i++) {
+                SimpleEggInfo info = eggList.get(i);
+                if (info != null && info.entityClass != null && info.entityClass.equals(entityClass))
+                    return new ItemStack(ItemCustomEgg.customEgg, 1, i);
+            }
+        }        
+        return null; 
+    }
+    
     /**
      * Check if entity is hostile
      *
@@ -61,11 +73,11 @@ public class EntityUtil {
                 entity.entityDropItem(itemStack, 0.0F);
         }
     }
-
-
-    @Deprecated
-    public static boolean wasEntityKilledByPlayer(DamageSource source) {
-        return damageFromPlayer(source);
+    
+    public static Entity getSourceOfDamage(DamageSource source) {
+        if (source != null)
+            return source.isProjectile() ? source.getEntity() : source.getSourceOfDamage();
+        return null;
     }
 
     /**
@@ -75,7 +87,7 @@ public class EntityUtil {
      * @return true if player caused damage, else false
      */
     public static boolean damageFromPlayer(DamageSource source) {
-        if (source != null && (source.getDamageType().equals("player") || source.getEntity() instanceof EntityPlayer))
+        if (source != null && (source.getDamageType().equals("player") || source.getSourceOfDamage() instanceof EntityPlayer || source.getEntity() instanceof EntityPlayer))
             return true;
         return false;
     }

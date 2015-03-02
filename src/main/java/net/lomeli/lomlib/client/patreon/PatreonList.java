@@ -10,7 +10,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 
-import net.lomeli.lomlib.libs.Strings;
+import net.lomeli.lomlib.core.Strings;
 
 public class PatreonList {
     private List<String> idList;

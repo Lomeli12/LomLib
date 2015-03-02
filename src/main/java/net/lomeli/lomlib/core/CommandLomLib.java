@@ -13,10 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 
-import net.lomeli.lomlib.libs.Strings;
-import net.lomeli.lomlib.util.ObfUtil;
-import net.lomeli.lomlib.core.version.VersionChecker;
-
 public class CommandLomLib extends CommandBase {
 
     @Override
@@ -39,10 +35,8 @@ public class CommandLomLib extends CommandBase {
             if (argument1.equalsIgnoreCase("calmPigmen")) {
                 boolean successful = false;
                 for (Object entity : entityList) {
-                    if (entity instanceof EntityPigZombie) {
-                        ((EntityPigZombie) entity).setAttackTarget(null);
+                    if (entity instanceof EntityPigZombie)
                         successful = calmPigmen(icommandsender, ((EntityPigZombie) entity));
-                    }
                 }
                 if (successful)
                     sendMessage(icommandsender, EnumChatFormatting.BLUE + "[LomLib]: Pig Zombies should now be calm");
@@ -83,12 +77,6 @@ public class CommandLomLib extends CommandBase {
                     player.capabilities.allowFlying = !player.capabilities.allowFlying;
                 else
                     sendMessage(icommandsender, EnumChatFormatting.GOLD + "allowFly <playername>");
-            } else if (argument1.equalsIgnoreCase("update")) {
-                if (args.length >= 2) {
-                    String id = args[1];
-                    VersionChecker.beginModDownloader(icommandsender, id);
-                } else
-                    sendMessage(icommandsender, EnumChatFormatting.RED + "/lomlib update [modid]");
             } else if (argument1.equalsIgnoreCase("help") || argument1.equalsIgnoreCase("?"))
                 displayHelp(icommandsender);
         } else
@@ -96,16 +84,9 @@ public class CommandLomLib extends CommandBase {
     }
 
     private boolean calmPigmen(ICommandSender sender, EntityPigZombie pigZombie) {
-        try {
-            if (!ObfUtil.isFieldAccessible(EntityPigZombie.class, "angerLevel", "field_70837_d", "bs"))
-                ObfUtil.setFieldAccessible(EntityPigZombie.class, "angerLevel", "field_70837_d", "bs");
-            ObfUtil.setFieldValue(EntityPigZombie.class, pigZombie, 0, "angerLevel", "field_70837_d", "bs");
-            return true;
-        } catch (Exception e) {
-            sendMessage(sender, EnumChatFormatting.BLUE + "[LomLib]: Failed to calm Pig Zombies!");
-            e.printStackTrace();
-            return false;
-        }
+        pigZombie.angerLevel = 0;
+        pigZombie.setAttackTarget(null);
+        return true;
     }
 
     private void displayHelp(ICommandSender sender) {
@@ -117,7 +98,6 @@ public class CommandLomLib extends CommandBase {
         sendMessage(sender, "- clearLivingEntities : " + EnumChatFormatting.GREEN + "Clears all loaded living entities.");
         sendMessage(sender, "- clearHostiles : " + EnumChatFormatting.GREEN + "Clears all loaded hostile entities.");
         sendMessage(sender, "- allowFly <player> : " + EnumChatFormatting.GREEN + "Enable/Disable flying for a player");
-        sendMessage(sender, "- update <modid] : " + EnumChatFormatting.GREEN + "Begin downloading an updated version of a mod.");
     }
 
     private void sendMessage(ICommandSender sender, String message) {

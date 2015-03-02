@@ -1,5 +1,7 @@
 package net.lomeli.lomlib;
 
+import net.minecraft.util.StatCollector;
+
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -10,7 +12,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 import net.lomeli.lomlib.core.CommandLomLib;
 import net.lomeli.lomlib.core.Proxy;
-import net.lomeli.lomlib.libs.Strings;
+import net.lomeli.lomlib.core.Strings;
 import net.lomeli.lomlib.util.LogHelper;
 import net.lomeli.lomlib.util.SimpleConfig;
 
@@ -25,7 +27,7 @@ public class LomLib {
 
     public static LogHelper logger;
 
-    public static boolean debug = false, crown = true;
+    public static boolean crown = true;
     public static SimpleConfig config;
 
     @Mod.EventHandler
@@ -39,8 +41,7 @@ public class LomLib {
         config = new SimpleConfig(Strings.MOD_ID, new Configuration(event.getSuggestedConfigurationFile())) {
             @Override
             public void loadConfig() {
-                debug = getConfig().getBoolean("debugMode", Configuration.CATEGORY_GENERAL, debug, Strings.DEBUG_MODE);
-                crown = getConfig().getBoolean("patreon", Configuration.CATEGORY_GENERAL, crown, Strings.CROWN);
+                crown = getConfig().getBoolean("patreon", Configuration.CATEGORY_GENERAL, crown, StatCollector.translateToLocal(Strings.CROWN));
                 if (getConfig().hasChanged())
                     getConfig().save();
             }

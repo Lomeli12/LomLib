@@ -1,74 +1,11 @@
 package net.lomeli.lomlib.util;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockSnow;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
-import net.minecraftforge.fml.common.FMLLog;
-
 public class ItemUtil {
-    /**
-     * Allows you to get a item from practically any other mod.
-     *
-     * @param itemString   name of item instance
-     * @param meta         Metadata number for the item
-     * @param itemClassLoc Class where the items are declared
-     * @author Lomeli12
-     */
-
-    public static ItemStack getItem(String itemString, int meta, String itemClassLoc) {
-        ItemStack item = null;
-
-        try {
-            String itemClass = itemClassLoc;
-            Object obj = Class.forName(itemClass).getField(itemString).get(null);
-            if (obj instanceof Item)
-                item = new ItemStack((Item) obj, 1, meta);
-            else if (obj instanceof ItemStack)
-                item = (ItemStack) obj;
-
-        } catch (Exception ex) {
-            FMLLog.warning("Could not retrieve item identified by: " + itemString);
-        }
-        return item;
-    }
-
-    /**
-     * Allows you to get a item from practically any other mod.
-     *
-     * @param itemString   name of item instance
-     * @param itemClassLoc Class where the items are declared
-     * @author Lomeli12
-     */
-    public static ItemStack getItem(String itemString, String itemClassLoc) {
-        ItemStack item = null;
-
-        try {
-            String itemClass = itemClassLoc;
-            Object obj = Class.forName(itemClass).getField(itemString).get(null);
-            if (obj instanceof Item)
-                item = new ItemStack((Item) obj);
-            else if (obj instanceof ItemStack)
-                item = (ItemStack) obj;
-
-        } catch (Exception ex) {
-            FMLLog.warning("Could not retrieve item identified by: " + itemString);
-        }
-        return item;
-    }
-
     public static ItemStack consumeItem(ItemStack stack) {
         if (stack.stackSize == 1) {
             if (stack.getItem().hasContainerItem(stack))
@@ -139,20 +76,5 @@ public class ItemUtil {
 
             world.spawnEntityInWorld(entity);
         }
-    }
-
-    public static ItemStack createNewBook(String author, String title, String[] pageText) {
-        ItemStack newBook = new ItemStack(Items.written_book);
-
-        NBTUtil.initNBTTagCompound(newBook);
-
-        NBTUtil.setString(newBook, "author", author);
-        NBTUtil.setString(newBook, "title", title);
-        NBTTagList pages = new NBTTagList();
-        for (int i = 0; i < pageText.length; i++) {
-            pages.appendTag(new NBTTagString("" + (i + 1)));
-        }
-        newBook.setTagInfo("pages", pages);
-        return newBook;
     }
 }

@@ -51,7 +51,7 @@ public class RenderUtils {
     }
 
     public static void translateToHeadLevel(EntityPlayer player) {
-        GlStateManager.translate(0, (player.getDefaultEyeHeight() - player.getEyeHeight() + (player.isSneaking() ? 0.1725 : 0)) - (player.getCurrentArmor(3) != null ? 0.045f : 0f), 0);
+        GlStateManager.translate(0, 0.08f - player.getEyeHeight() + (player.isSneaking() ? 0.1725 : 0) - (player.getCurrentArmor(3) != null ? 0.045f : 0f), 0);
     }
 
     public static void bindTexture(String modid, String texture) {

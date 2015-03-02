@@ -6,15 +6,6 @@ import java.lang.reflect.Method;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class ObfUtil {
-
-    public static boolean isOptifineInstalled() {
-        try {
-            return Class.forName("optifine.OptiFineForgeTweaker") != null;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
-    }
-
     public static boolean isObf() {
         try {
             Field[] fields = Class.forName("net.minecraft.world.World").getDeclaredFields();

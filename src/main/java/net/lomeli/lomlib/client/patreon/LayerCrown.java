@@ -8,9 +8,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.Loader;
 
 import net.lomeli.lomlib.LomLib;
-import net.lomeli.lomlib.util.RenderUtils;
-import net.lomeli.lomlib.libs.Strings;
+import net.lomeli.lomlib.core.Strings;
 import net.lomeli.lomlib.util.ObfUtil;
+import net.lomeli.lomlib.util.RenderUtils;
 
 public class LayerCrown implements LayerRenderer {
     public PatreonCrown model;

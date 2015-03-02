@@ -1,12 +1,12 @@
 package net.lomeli.lomlib.core;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.oredict.RecipeSorter;
 
 import net.lomeli.lomlib.LomLib;
 import net.lomeli.lomlib.client.patreon.PatreonList;
-import net.lomeli.lomlib.libs.Strings;
 import net.lomeli.lomlib.core.recipes.AnvilRecipeManager;
 import net.lomeli.lomlib.core.recipes.ShapedFluidRecipe;
 import net.lomeli.lomlib.core.recipes.ShapelessFluidRecipe;
@@ -31,7 +31,6 @@ public class Proxy {
 
         list.getLatestList();
         
-        MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new AnvilRecipeManager());
 
         FMLCommonHandler.instance().bus().register(this);

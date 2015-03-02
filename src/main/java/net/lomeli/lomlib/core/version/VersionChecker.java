@@ -1,5 +1,12 @@
 package net.lomeli.lomlib.core.version;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
+import org.apache.logging.log4j.Level;
+
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
@@ -8,7 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
@@ -25,13 +31,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.lomeli.lomlib.LomLib;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
-import org.apache.logging.log4j.Level;
-
 /**
  * A nicer version check implementation (based on what i use for Elemental Creepers)
  * <p/>
@@ -40,11 +39,9 @@ import org.apache.logging.log4j.Level;
  * @author Lomeli12
  */
 public class VersionChecker {
-    public static HashMap<String, ModDownloader> updateList = new HashMap<String, ModDownloader>();
     private int mod_major, mod_minor, mod_rev;
-    private long size;
     private boolean needsUpdate, isDirect, doneTelling;
-    private String version, downloadURL, jsonURL, modid, modname, currentVer;
+    private String version, downloadURL, jsonURL, modid, modname, currentVer, cursePage;
     private List<String> changeList;
 
     public VersionChecker(String jsonURL, String modid, String modname, int major, int minor, int rev) {
@@ -81,7 +78,6 @@ public class VersionChecker {
                 revision = jsonObject.get("revision").getAsInt();
                 this.downloadURL = jsonObject.get("downloadURL").getAsString();
                 this.isDirect = jsonObject.get("direct").getAsBoolean();
-                this.size = jsonObject.get("fileSize").getAsLong();
                 if (jsonObject.has("changeLog")) {
                     if (jsonObject.get("changeLog").isJsonArray()) {
                         JsonArray changeLog = jsonObject.get("changeLog").getAsJsonArray();
@@ -125,15 +121,10 @@ public class VersionChecker {
             tag.setBoolean("isDirectLink", this.isDirect);
             tag.setString("changeLog", changeLog);
             FMLInterModComms.sendMessage("VersionChecker", "addUpdate", tag);
-        } else if (this.isDirect)
-            updateList.put(this.modid, new ModDownloader(this.modname, this.downloadURL, this.size));
+        }
         FMLLog.log(Level.INFO, String.format(translate("message.lomlib.updateMessage"), this.modname, this.downloadURL));
         FMLLog.log(Level.INFO, translate("message.lomlib.updateOld") + " " + this.currentVer);
         FMLLog.log(Level.INFO, translate("message.lomlib.updateNew") + " " + this.version);
-        if (!Loader.isModLoaded("VersionChecker")) {
-            FMLLog.log(Level.INFO, String.format(translate("message.lomlib.updateDownloadP1"), this.modid));
-            FMLLog.log(Level.INFO, translate("message.lomlib.updateDownloadP2"));
-        }
     }
 
     @SubscribeEvent
@@ -147,23 +138,8 @@ public class VersionChecker {
                     player.addChatComponentMessage(new ChatComponentText(translate("message.lomlib.updateChangeLog")));
                     for (String change : changeList)
                         player.addChatComponentMessage(new ChatComponentText("- " + change));
-                    if (!Loader.isModLoaded("VersionChecker")) {
-                        player.addChatComponentMessage(new ChatComponentText(String.format(translate("message.lomlib.updateDownloadP1"), this.modid)));
-                        player.addChatComponentMessage(new ChatComponentText(translate("message.lomlib.updateDownloadP2")));
-                    }
                     this.doneTelling = true;
                 }
-            }
-        }
-    }
-
-    public static void beginModDownloader(ICommandSender sender, String id) {
-        if (updateList.containsKey(id)) {
-            ModDownloader downloader = updateList.get(id);
-            if (downloader != null) {
-                downloader.start();
-                updateList.remove(id);
-                sender.addChatMessage(new ChatComponentText(String.format(StatCollector.translateToLocal("message.lomlib.updateCommand"), downloader.modname)));
             }
         }
     }

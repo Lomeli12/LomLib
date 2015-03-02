@@ -15,7 +15,7 @@ import net.minecraft.util.StatCollector;
 
 import net.lomeli.lomlib.core.recipes.AnvilRecipeManager;
 import net.lomeli.lomlib.core.recipes.IAnvilRecipe;
-import net.lomeli.lomlib.libs.Strings;
+import net.lomeli.lomlib.core.Strings;
 
 import static codechicken.lib.gui.GuiDraw.*;
 

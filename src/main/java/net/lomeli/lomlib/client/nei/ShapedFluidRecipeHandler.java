@@ -10,7 +10,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.StatCollector;
 
-import net.lomeli.lomlib.libs.Strings;
+import net.lomeli.lomlib.core.Strings;
 import net.lomeli.lomlib.core.recipes.ShapedFluidRecipe;
 
 public class ShapedFluidRecipeHandler extends ShapedRecipeHandler {
