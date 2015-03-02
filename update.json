@@ -5,6 +5,6 @@
     "downloadURL" : "https://lomeli12.net/minecraft-mods/lomlib/",
     "direct" : false,
     "changeLog" : [
-      "Update to 1.8"
+      "Added methods so my other mods can take advantage of LomLib's ATs."
     ]
 }
