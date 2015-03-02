@@ -23,7 +23,7 @@ public class LayerItemModel implements LayerRenderer {
     public void doRenderLayer(EntityLivingBase entity, float f, float f1, float renderTick, float f2, float f3, float f4, float f5) {
         ItemStack stack = entity.getHeldItem();
         if (stack != null && stack.getItem() != null && RendererRegistry.instance().stackHasRenderer(stack)) {
-            
+
             GlStateManager.pushMatrix();
 
             if (this.entityRenderer.getMainModel().isChild) {

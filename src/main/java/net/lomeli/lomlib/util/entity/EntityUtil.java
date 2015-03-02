@@ -11,7 +11,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
@@ -21,7 +20,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 public class EntityUtil {
     public static List<SimpleEggInfo> eggList = new ArrayList<SimpleEggInfo>();
     public static int count = 0;
-    
+
     public static ItemStack getEntitySpawnEgg(Class<? extends Entity> entityClass) {
         if (!eggList.isEmpty()) {
             for (int i = 0; i < eggList.size(); i++) {
@@ -29,10 +28,10 @@ public class EntityUtil {
                 if (info != null && info.entityClass != null && info.entityClass.equals(entityClass))
                     return new ItemStack(ItemCustomEgg.customEgg, 1, i);
             }
-        }        
-        return null; 
+        }
+        return null;
     }
-    
+
     /**
      * Check if entity is hostile
      *
@@ -73,7 +72,7 @@ public class EntityUtil {
                 entity.entityDropItem(itemStack, 0.0F);
         }
     }
-    
+
     public static Entity getSourceOfDamage(DamageSource source) {
         if (source != null)
             return source.isProjectile() ? source.getEntity() : source.getSourceOfDamage();

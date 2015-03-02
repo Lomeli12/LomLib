@@ -6,7 +6,6 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 
 import net.minecraftforge.event.AnvilUpdateEvent;
-
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class AnvilRecipeManager {

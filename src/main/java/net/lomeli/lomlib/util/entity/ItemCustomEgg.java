@@ -21,14 +21,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ItemCustomEgg extends Item {
-    
+
     public static Item customEgg;
-    
+
     public static void initCustomEggs() {
         customEgg = new ItemCustomEgg();
         GameRegistry.registerItem(customEgg, "spawnEgg");
     }
-    
+
     public ItemCustomEgg() {
         super();
         this.setHasSubtypes(true);
@@ -111,11 +111,11 @@ public class ItemCustomEgg extends Item {
                         return itemStackIn;
 
                     if (worldIn.getBlockState(blockpos).getBlock() instanceof BlockLiquid) {
-                        Entity entity = spawnCreature(worldIn, info, (double)blockpos.getX() + 0.5D, (double)blockpos.getY() + 0.5D, (double)blockpos.getZ() + 0.5D);
+                        Entity entity = spawnCreature(worldIn, info, (double) blockpos.getX() + 0.5D, (double) blockpos.getY() + 0.5D, (double) blockpos.getZ() + 0.5D);
 
                         if (entity != null) {
                             if (entity instanceof EntityLivingBase && itemStackIn.hasDisplayName())
-                                ((EntityLiving)entity).setCustomNameTag(itemStackIn.getDisplayName());
+                                ((EntityLiving) entity).setCustomNameTag(itemStackIn.getDisplayName());
 
                             if (!playerIn.capabilities.isCreativeMode)
                                 --itemStackIn.stackSize;

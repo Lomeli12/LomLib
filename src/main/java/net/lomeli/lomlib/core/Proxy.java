@@ -1,7 +1,6 @@
 package net.lomeli.lomlib.core;
 
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.oredict.RecipeSorter;
 
@@ -30,7 +29,7 @@ public class Proxy {
         LomLib.logger.logBasic("Init");
 
         list.getLatestList();
-        
+
         MinecraftForge.EVENT_BUS.register(new AnvilRecipeManager());
 
         FMLCommonHandler.instance().bus().register(this);

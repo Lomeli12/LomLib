@@ -119,5 +119,4 @@ public class FluidAnvilRecipe implements IAnvilRecipe {
     public int recipeCost() {
         return expLvlCost;
     }
-
 }

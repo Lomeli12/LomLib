@@ -100,5 +100,4 @@ public class ShapedFluidRecipeHandler extends ShapedRecipeHandler {
 
         return new CachedShapedRecipe(width, height, items, recipe.getRecipeOutput());
     }
-
 }

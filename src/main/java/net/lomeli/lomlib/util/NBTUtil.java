@@ -176,5 +176,4 @@ public class NBTUtil {
     public static boolean doNBTsMatch(NBTTagCompound nbtA, NBTTagCompound nbtB) {
         return nbtA == null ? nbtB == null ? true : false : nbtB == null ? false : nbtA.equals(nbtB);
     }
-
 }

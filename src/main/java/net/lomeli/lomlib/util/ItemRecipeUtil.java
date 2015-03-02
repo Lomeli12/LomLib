@@ -11,10 +11,9 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-
-import net.minecraftforge.fml.common.Loader;
 
 import net.lomeli.lomlib.core.recipes.ShapedFluidRecipe;
 import net.lomeli.lomlib.core.recipes.ShapelessFluidRecipe;

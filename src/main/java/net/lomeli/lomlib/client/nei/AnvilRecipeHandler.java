@@ -13,9 +13,9 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
+import net.lomeli.lomlib.core.Strings;
 import net.lomeli.lomlib.core.recipes.AnvilRecipeManager;
 import net.lomeli.lomlib.core.recipes.IAnvilRecipe;
-import net.lomeli.lomlib.core.Strings;
 
 import static codechicken.lib.gui.GuiDraw.*;
 
@@ -93,7 +93,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler {
         public List<PositionedStack> inputs;
         public PositionedStack output;
         public int expCost;
-        
+
         public CachedAnvilRecipe(ItemStack output, int expCost) {
             this.expCost = expCost;
             this.inputs = new ArrayList<PositionedStack>();

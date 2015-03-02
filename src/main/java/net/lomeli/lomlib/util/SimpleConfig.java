@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public abstract class SimpleConfig {
     protected Configuration config;
     protected String modid;
-    
+
     public SimpleConfig(String modid, Configuration config) {
         this.config = config;
         this.modid = modid;
@@ -16,7 +16,7 @@ public abstract class SimpleConfig {
     public Configuration getConfig() {
         return config;
     }
-    
+
     public abstract void loadConfig();
 
     @SubscribeEvent
