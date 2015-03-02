@@ -36,13 +36,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 //TODO Fix all my utilities
 @SideOnly(Side.CLIENT)
 public class RenderUtils {
-    public static final Color blankColor = new Color(255, 255, 255);
     public static final ResourceLocation TEXTURE_MAP = TextureMap.locationBlocksTexture;
-    public static final int DISPLAY_STAGES = 100;
     public static final ResourceLocation texEnchant = new ResourceLocation("textures/misc/enchanted_item_glint.png");
     public static final float magicNum = 0.0625F;
-    private static Map<Fluid, int[]> flowingRenderCache = new HashMap<Fluid, int[]>();
-    private static Map<Fluid, int[]> stillRenderCache = new HashMap<Fluid, int[]>();
 
 
     public static RenderItem getNewRenderItems() {

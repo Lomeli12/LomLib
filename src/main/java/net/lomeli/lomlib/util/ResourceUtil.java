@@ -47,12 +47,4 @@ public class ResourceUtil {
     public static void bindTexture(ResourceLocation texture) {
         Minecraft.getMinecraft().renderEngine.bindTexture(texture);
     }
-
-    public static final void setBlockTextureSheet() {
-        bindTexture(MC_BLOCK_SHEET);
-    }
-
-    public static final void setItemTextureSheet() {
-        bindTexture(MC_ITEM_SHEET);
-    }
 }
