@@ -33,13 +33,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  *
  * @author Anthony
  */
-//TODO Fix all my utilities
 @SideOnly(Side.CLIENT)
 public class RenderUtils {
     public static final ResourceLocation TEXTURE_MAP = TextureMap.locationBlocksTexture;
     public static final ResourceLocation texEnchant = new ResourceLocation("textures/misc/enchanted_item_glint.png");
     public static final float magicNum = 0.0625F;
-
 
     public static RenderItem getNewRenderItems() {
         return new RenderItem(getTextureManager(), new ModelManager(Minecraft.getMinecraft().getTextureMapBlocks()));
