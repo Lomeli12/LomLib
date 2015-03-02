@@ -4,9 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -24,30 +22,28 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-/**
- * Rendering stuff I can't be asked to rewrite!
- *
- * @author Anthony
- */
 @SideOnly(Side.CLIENT)
 public class RenderUtils {
     public static final ResourceLocation TEXTURE_MAP = TextureMap.locationBlocksTexture;
     public static final ResourceLocation texEnchant = new ResourceLocation("textures/misc/enchanted_item_glint.png");
     public static final float magicNum = 0.0625F;
-    
+
     public static void addLayerToRenderer(RendererLivingEntity renderer, LayerRenderer layer) {
         if (renderer != null && layer != null)
             renderer.addLayer(layer);
     }
-    
+
     public static RendererLivingEntity getEntityRenderer(Class<?> clazz) {
         return (RendererLivingEntity) Minecraft.getMinecraft().getRenderManager().entityRenderMap.get(clazz);
+    }
+
+    public static void setPlayerUseCount(EntityPlayer player, int count) {
+        if (player != null) player.itemInUseCount = count;
     }
 
     public static RenderItem getNewRenderItems() {
