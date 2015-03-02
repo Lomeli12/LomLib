@@ -37,8 +37,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderUtils {
     public static final Color blankColor = new Color(255, 255, 255);
-    public static final ResourceLocation BLOCK_TEXTURE = TextureMap.locationBlocksTexture;
-    public static final ResourceLocation ITEM_TEXTURE = TextureMap.LOCATION_MISSING_TEXTURE;
+    public static final ResourceLocation TEXTURE_MAP = TextureMap.locationBlocksTexture;
     public static final int DISPLAY_STAGES = 100;
     public static final ResourceLocation texEnchant = new ResourceLocation("textures/misc/enchanted_item_glint.png");
     public static final float magicNum = 0.0625F;
@@ -95,16 +94,6 @@ public class RenderUtils {
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(0x302, 0x303);
         GlStateManager.color(r, g, b, alpha);
-    }
-
-    public static ResourceLocation getFluidSheet(FluidStack liquid) {
-        if (liquid == null)
-            return BLOCK_TEXTURE;
-        return getFluidSheet(liquid.getFluid());
-    }
-
-    public static ResourceLocation getFluidSheet(Fluid liquid) {
-        return BLOCK_TEXTURE;
     }
 
     public static void setColorForFluidStack(FluidStack fluidstack) {

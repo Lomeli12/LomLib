@@ -4,7 +4,7 @@ public class Strings {
 
     public static final String MOD_ID = "LomLib";
     public static final String MOD_NAME = MOD_ID;
-    public static final String CONFIG_FACTORY = "net.lomeli.lomlib.client.gui.GuiConfigFactory";
+    public static final String CONFIG_FACTORY = "net.lomeli.lomlib.client.config.GuiConfigFactory";
 
     public static final int MAJOR = 4, MINOR = 0, REVISION = 0;
 

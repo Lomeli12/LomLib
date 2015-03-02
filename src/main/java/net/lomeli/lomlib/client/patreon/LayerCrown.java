@@ -20,7 +20,7 @@ public class LayerCrown implements LayerRenderer {
     }
 
     public void doRender(EntityPlayer player, float f, float f1, float renderTick, float f2, float f3, float f4, float f5) {
-        if (LomLib.proxy.list.isPatreon(player)) {
+        if (LomLib.proxy.list.isPatreon(player) && !player.isInvisible()) {
             if (Loader.isModLoaded("morph")) {
                 try {
                     Object obj = ObfUtil.invokeMethod(Class.forName("morph.api.Api"), null, new String[]{"getMorphEntity"}, player.getName(), true);
