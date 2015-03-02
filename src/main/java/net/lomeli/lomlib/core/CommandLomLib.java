@@ -70,13 +70,6 @@ public class CommandLomLib extends CommandBase {
                     }
                 }
                 sendMessage(icommandsender, EnumChatFormatting.BLUE + "[LomLib]: All loaded Hostile mobs have been removed.");
-            } else if (argument1.equalsIgnoreCase("allowFly")) {
-                String username = args[1];
-                EntityPlayer player = icommandsender.getEntityWorld().getPlayerEntityByName(username);
-                if (player != null && !player.capabilities.isCreativeMode)
-                    player.capabilities.allowFlying = !player.capabilities.allowFlying;
-                else
-                    sendMessage(icommandsender, EnumChatFormatting.GOLD + "allowFly <playername>");
             } else if (argument1.equalsIgnoreCase("help") || argument1.equalsIgnoreCase("?"))
                 displayHelp(icommandsender);
         } else
@@ -97,7 +90,6 @@ public class CommandLomLib extends CommandBase {
         sendMessage(sender, "- clearEntities : " + EnumChatFormatting.GREEN + "Clears all loaded non-living entities.");
         sendMessage(sender, "- clearLivingEntities : " + EnumChatFormatting.GREEN + "Clears all loaded living entities.");
         sendMessage(sender, "- clearHostiles : " + EnumChatFormatting.GREEN + "Clears all loaded hostile entities.");
-        sendMessage(sender, "- allowFly <player> : " + EnumChatFormatting.GREEN + "Enable/Disable flying for a player");
     }
 
     private void sendMessage(ICommandSender sender, String message) {
