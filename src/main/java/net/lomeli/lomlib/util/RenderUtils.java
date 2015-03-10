@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.model.ModelManager;
@@ -198,5 +199,45 @@ public class RenderUtils {
         GlStateManager.disableBlend();
         GlStateManager.enableAlpha();
         GlStateManager.enableTexture2D();
+    }
+
+    public static void drawFluid(Minecraft mc, FluidStack fluid, int x, int y, float zLevel, int width, int height, int maxCapacity) {
+        if (fluid == null || fluid.getFluid() == null)
+            return;
+        TextureAtlasSprite sprite = fluid.getFluid().getIcon(fluid);
+        mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+        RenderUtils.applyColor(fluid.getFluid().getColor(fluid));
+        int fullX = width / 16;
+        int fullY = height / 16;
+        int lastX = width - fullX * 16;
+        int lastY = height - fullY * 16;
+        int level = fluid.amount * height / maxCapacity;
+        int fullLvl = (height - level) / 16;
+        int lastLvl = (height - level) - fullLvl * 16;
+        for (int i = 0; i < fullX; i++) {
+            for (int j = 0; j < fullY; j++) {
+                if (j >= fullLvl)
+                    drawCutIcon(sprite, x + i * 16, y + j * 16, zLevel, 16, 16, j == fullLvl ? lastLvl : 0);
+            }
+        }
+        for (int i = 0; i < fullX; i++) {
+            drawCutIcon(sprite, x + i * 16, y + fullY * 16, zLevel, 16, lastY, fullLvl == fullY ? lastLvl : 0);
+        }
+        for (int i = 0; i < fullY; i++) {
+            if (i >= fullLvl)
+                drawCutIcon(sprite, x + fullX * 16, y + i * 16, zLevel, lastX, 16, i == fullLvl ? lastLvl : 0);
+        }
+        drawCutIcon(sprite, x + fullX * 16, y + fullY * 16, zLevel, lastX, lastY, fullLvl == fullY ? lastLvl : 0);
+    }
+
+    public static void drawCutIcon(TextureAtlasSprite sprite, int x, int y, float zLevel, int width, int height, int cut) {
+        Tessellator tess = Tessellator.getInstance();
+        WorldRenderer renderer = tess.getWorldRenderer();
+        renderer.startDrawingQuads();
+        renderer.addVertexWithUV(x, y + height, zLevel, sprite.getMinU(), sprite.getInterpolatedV(height));
+        renderer.addVertexWithUV(x + width, y + height, zLevel, sprite.getInterpolatedU(width), sprite.getInterpolatedV(height));
+        renderer.addVertexWithUV(x + width, y + cut, zLevel, sprite.getInterpolatedU(width), sprite.getInterpolatedV(cut));
+        renderer.addVertexWithUV(x, y + cut, zLevel, sprite.getMinU(), sprite.getInterpolatedV(cut));
+        tess.draw();
     }
 }

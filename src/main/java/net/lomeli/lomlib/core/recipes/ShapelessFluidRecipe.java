@@ -111,14 +111,14 @@ public class ShapelessFluidRecipe implements IRecipe {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public boolean matches(InventoryCrafting var1, World world) {
-        ArrayList required = new ArrayList(input);
+        ArrayList<Object> required = new ArrayList<Object>(input);
 
         for (int x = 0; x < var1.getSizeInventory(); x++) {
             ItemStack slot = var1.getStackInSlot(x);
 
             if (slot != null) {
                 boolean inRecipe = false;
-                Iterator req = required.iterator();
+                Iterator<Object> req = required.iterator();
 
                 while (req.hasNext()) {
                     boolean match = false;
@@ -126,10 +126,11 @@ public class ShapelessFluidRecipe implements IRecipe {
                     Object next = req.next();
 
                     if (next instanceof ItemStack)
-                        match = checkItemEquals((ItemStack) next, slot);
-                    else if (next instanceof ArrayList) {
-                        for (ItemStack item : (ArrayList<ItemStack>) next) {
-                            match = match || checkItemEquals(item, slot);
+                        match = OreDictionary.itemMatches((ItemStack) next, slot, false);
+                    else if (next instanceof List) {
+                        Iterator<ItemStack> itr = ((List<ItemStack>) next).iterator();
+                        while (itr.hasNext() && !match) {
+                            match = OreDictionary.itemMatches(itr.next(), slot, false);
                         }
                     }
 
@@ -148,12 +149,7 @@ public class ShapelessFluidRecipe implements IRecipe {
         return required.isEmpty();
     }
 
-    private boolean checkItemEquals(ItemStack target, ItemStack input) {
-        return (target.getItem() == input.getItem() && (target.getItemDamage() == OreDictionary.WILDCARD_VALUE || target.getItemDamage() == input.getItemDamage()));
-    }
-
-    @SuppressWarnings("rawtypes")
-    public ArrayList getInput() {
+    public ArrayList<Object> getInput() {
         return this.input;
     }
 

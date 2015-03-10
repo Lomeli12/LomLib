@@ -6,7 +6,7 @@ public class Strings {
     public static final String MOD_NAME = MOD_ID;
     public static final String CONFIG_FACTORY = "net.lomeli.lomlib.client.config.GuiConfigFactory";
 
-    public static final int MAJOR = 4, MINOR = 0, REVISION = 1;
+    public static final int MAJOR = 4, MINOR = 1, REVISION = 0;
 
     public static final String VERSION = MAJOR + "." + MINOR + "." + REVISION;
 

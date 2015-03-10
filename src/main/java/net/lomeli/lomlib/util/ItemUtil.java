@@ -77,4 +77,14 @@ public class ItemUtil {
             world.spawnEntityInWorld(entity);
         }
     }
+
+    public static boolean canStacksMerge(ItemStack stack1, ItemStack stack2) {
+        if (stack1 == null || stack2 == null)
+            return false;
+        if (!stack1.isItemEqual(stack2))
+            return false;
+        if (!ItemStack.areItemStackTagsEqual(stack1, stack2))
+            return false;
+        return true;
+    }
 }

@@ -1,7 +1,8 @@
 package net.lomeli.lomlib.core.recipes;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -192,23 +193,24 @@ public class ShapedFluidRecipe implements IRecipe {
                 Object target = null;
 
                 if (subX >= 0 && subY >= 0 && subX < width && subY < height) {
-                    if (mirror)
+                    if (mirror) {
                         target = input[width - subX - 1 + subY * width];
-                    else
+                    } else {
                         target = input[subX + subY * width];
+                    }
                 }
 
                 ItemStack slot = inv.getStackInRowAndColumn(x, y);
 
                 if (target instanceof ItemStack) {
-                    if (!checkItemEquals((ItemStack) target, slot))
+                    if (!OreDictionary.itemMatches((ItemStack) target, slot, false))
                         return false;
-                } else if (target instanceof ArrayList) {
+                } else if (target instanceof List) {
                     boolean matched = false;
 
-                    for (ItemStack item : (ArrayList<ItemStack>) target) {
-                        matched = matched || checkItemEquals(item, slot);
-                    }
+                    Iterator<ItemStack> itr = ((List<ItemStack>) target).iterator();
+                    while (itr.hasNext() && !matched)
+                        matched = OreDictionary.itemMatches(itr.next(), slot, false);
 
                     if (!matched)
                         return false;
@@ -218,17 +220,6 @@ public class ShapedFluidRecipe implements IRecipe {
         }
 
         return true;
-    }
-
-    private boolean checkItemEquals(ItemStack target, ItemStack input) {
-        if (input == null && target != null || input != null && target == null)
-            return false;
-        return (target.getItem() == input.getItem() && (target.getItemDamage() == OreDictionary.WILDCARD_VALUE || target.getItemDamage() == input.getItemDamage()));
-    }
-
-    public ShapedFluidRecipe setMirrored(boolean mirror) {
-        mirrored = mirror;
-        return this;
     }
 
     public Object[] getInput() {

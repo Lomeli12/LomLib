@@ -184,24 +184,23 @@ public class EntityUtil {
     }
 
     public static MovingObjectPosition rayTrace(EntityPlayer player, World world, boolean hitLiquids) {
-        float f = 1f;
-        float f1 = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * f;
-        float f2 = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * f;
-        double d = player.prevPosX + (player.posX - player.prevPosX) * f;
-        double d1 = player.prevPosY + (player.getEyeHeight()) + (player.posY - player.prevPosY) * (f + 1.6200000000000001D);
-        double d2 = player.prevPosZ + (player.posZ - player.prevPosZ) * f;
-        Vec3 vec3d = new Vec3(d, d1, d2);
-        float f3 = MathHelper.cos(-f2 * 0.01745329f - 3.141593f);
-        float f4 = MathHelper.sin(-f2 * 0.01745329f - 3.141593f);
-        float f5 = -MathHelper.cos(-f1 * 0.01745329f);
-        float f6 = MathHelper.sin(-f1 * 0.01745329f);
-        float f7 = f4 * f5;
-        float f8 = f6;
-        float f9 = f3 * f5;
-        double d3 = 5000D;
-        Vec3 vec3d2 = vec3d.addVector(f7 * d3, f8 * d3, f9 * d3);
-        MovingObjectPosition mop = world.rayTraceBlocks(vec3d, vec3d2, hitLiquids);
-        return mop;
+        float f = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch);
+        float f1 = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw);
+        double d0 = player.prevPosX + (player.posX - player.prevPosX);
+        double d1 = player.prevPosY + (player.posY - player.prevPosY) + (double)(world.isRemote ? player.getEyeHeight() - player.getDefaultEyeHeight() : player.getEyeHeight());
+        double d2 = player.prevPosZ + (player.posZ - player.prevPosZ);
+        Vec3 vec3 = new Vec3(d0, d1, d2);
+        float f2 = MathHelper.cos(-f1 * 0.017453292F - (float)Math.PI);
+        float f3 = MathHelper.sin(-f1 * 0.017453292F - (float) Math.PI);
+        float f4 = -MathHelper.cos(-f * 0.017453292F);
+        float f5 = MathHelper.sin(-f * 0.017453292F);
+        float f6 = f3 * f4;
+        float f7 = f2 * f4;
+        double d3 = 5.0D;
+        if (player instanceof net.minecraft.entity.player.EntityPlayerMP)
+            d3 = ((net.minecraft.entity.player.EntityPlayerMP)player).theItemInWorldManager.getBlockReachDistance();
+        Vec3 vec31 = vec3.addVector((double) f6 * d3, (double) f5 * d3, (double) f7 * d3);
+        return world.rayTraceBlocks(vec3, vec31, hitLiquids, !hitLiquids, false);
     }
 
     public static void registerEntity(Class<? extends Entity> entityClass, String entityName, Object mod, int bkEggColor, int fgEggColor, int id) {
