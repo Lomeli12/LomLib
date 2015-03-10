@@ -1,10 +1,12 @@
 {
     "major" : 4,
-    "minor" : 0,
-    "revision" : 1,
+    "minor" : 1,
+    "revision" : 0,
     "downloadURL" : "https://lomeli12.net/minecraft-mods/lomlib/",
     "direct" : false,
     "changeLog" : [
-      "Added methods so my other mods can take advantage of LomLib's ATs."
+      "Fixed dupe bug with Fluid Recipes",
+      "Added method to render fluids in GUIs.",
+      "Updates to various other utils."
     ]
 }
