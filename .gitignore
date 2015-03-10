@@ -8,3 +8,4 @@ ftp.properties
 *.ear
 *.iml
 build.bat
+build.sh
