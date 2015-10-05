@@ -13,9 +13,9 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 
-import net.lomeli.lomlib.core.Strings;
 import net.lomeli.lomlib.core.recipes.AnvilRecipeManager;
 import net.lomeli.lomlib.core.recipes.IAnvilRecipe;
+import net.lomeli.lomlib.lib.ModLibs;
 
 import static codechicken.lib.gui.GuiDraw.*;
 
@@ -27,7 +27,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public String getRecipeName() {
-        return StatCollector.translateToLocal(Strings.NEI_ANVIL);
+        return StatCollector.translateToLocal(ModLibs.NEI_ANVIL);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public int recipiesPerPage() {
-        return 1;
+        return 2;
     }
 
     @Override

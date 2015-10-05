@@ -15,7 +15,6 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraft.world.World;
 
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -37,13 +36,14 @@ public class ShapelessFluidRecipe implements IRecipe {
         output = result.copy();
         for (Object in : recipe) {
             if (in instanceof ItemStack) {
-                if (FluidContainerRegistry.isFilledContainer((ItemStack) in))
+                if (FluidUtil.isFilledContainer((ItemStack) in))
                     input.add(FluidUtil.getContainersForFluid(FluidUtil.getContainerFluid((ItemStack) in)));
                 else
                     input.add(((ItemStack) in).copy());
             } else if (in instanceof Item) {
-                if (FluidContainerRegistry.isFilledContainer(new ItemStack((Item) in)))
-                    input.add(FluidUtil.getContainersForFluid(FluidUtil.getContainerFluid(new ItemStack((Item) in))));
+                ItemStack itemStack = new ItemStack((Item) in);
+                if (FluidUtil.isFilledContainer(itemStack))
+                    input.add(FluidUtil.getContainersForFluid(FluidUtil.getContainerFluid(itemStack)));
                 else
                     input.add(new ItemStack((Item) in));
             } else if (in instanceof Block)
@@ -84,8 +84,8 @@ public class ShapelessFluidRecipe implements IRecipe {
                 if (OreDictionary.itemMatches(replace.getKey(), ingred, false)) {
                     finalObj = OreDictionary.getOres(replace.getValue());
                     break;
-                } else if (FluidContainerRegistry.isFilledContainer(replace.getKey())) {
-                    finalObj = FluidUtil.getContainersForFluid(FluidContainerRegistry.getFluidForFilledItem(replace.getKey()).getFluid());
+                } else if (FluidUtil.isFilledContainer(replace.getKey())) {
+                    finalObj = FluidUtil.getContainersForFluid(FluidUtil.getContainerFluid(replace.getKey()));
                     break;
                 }
             }

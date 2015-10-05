@@ -24,11 +24,6 @@ public class ItemCustomEgg extends Item {
 
     public static Item customEgg;
 
-    public static void initCustomEggs() {
-        customEgg = new ItemCustomEgg();
-        GameRegistry.registerItem(customEgg, "spawnEgg");
-    }
-
     public ItemCustomEgg() {
         super();
         this.setHasSubtypes(true);
@@ -151,6 +146,11 @@ public class ItemCustomEgg extends Item {
                 s = s + " " + StatCollector.translateToLocal("entity." + info.unlocalizedName + ".name");
         }
         return s;
+    }
+
+    public static void initCustomEggs() {
+        customEgg = new ItemCustomEgg();
+        GameRegistry.registerItem(customEgg, "spawnEgg");
     }
 
     public static Entity spawnCreature(World worldIn, SimpleEggInfo eggInfo, double x, double y, double z) {

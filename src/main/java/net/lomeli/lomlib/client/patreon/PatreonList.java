@@ -10,7 +10,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 
-import net.lomeli.lomlib.core.Strings;
+import net.lomeli.lomlib.lib.ModLibs;
 
 public class PatreonList {
     private List<String> idList;
@@ -23,7 +23,7 @@ public class PatreonList {
         try {
             idList.clear();
             Gson gson = new Gson();
-            Reader file = new InputStreamReader(new URL(Strings.PATREON_URL).openStream());
+            Reader file = new InputStreamReader(new URL(ModLibs.PATREON_URL).openStream());
             String[] json = gson.fromJson(file, String[].class);
             file.close();
             if (json != null) {

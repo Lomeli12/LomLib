@@ -10,14 +10,14 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.StatCollector;
 
-import net.lomeli.lomlib.core.Strings;
 import net.lomeli.lomlib.core.recipes.ShapedFluidRecipe;
+import net.lomeli.lomlib.lib.ModLibs;
 
 public class ShapedFluidRecipeHandler extends ShapedRecipeHandler {
 
     @Override
     public String getRecipeName() {
-        return StatCollector.translateToLocal(Strings.NEI_SHAPED);
+        return StatCollector.translateToLocal(ModLibs.NEI_SHAPED);
     }
 
     @SuppressWarnings("unchecked")

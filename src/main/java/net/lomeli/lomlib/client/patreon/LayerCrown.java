@@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.Loader;
 
 import net.lomeli.lomlib.LomLib;
-import net.lomeli.lomlib.core.Strings;
+import net.lomeli.lomlib.lib.ModLibs;
 import net.lomeli.lomlib.util.ObfUtil;
 import net.lomeli.lomlib.util.RenderUtils;
 
@@ -19,7 +19,7 @@ public class LayerCrown implements LayerRenderer {
         model = new PatreonCrown();
     }
 
-    public void doRender(EntityPlayer player, float f, float f1, float renderTick, float f2, float f3, float f4, float f5) {
+    public void doRender(EntityPlayer player, float renderTick) {
         if (LomLib.proxy.list.isPatreon(player) && !player.isInvisible()) {
             if (Loader.isModLoaded("morph")) {
                 try {
@@ -27,20 +27,23 @@ public class LayerCrown implements LayerRenderer {
                     if (obj != null && !(obj instanceof EntityPlayer))
                         return;
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
             float renderYaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * renderTick - (player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * renderTick);
             float renderPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * renderTick;
             GlStateManager.pushMatrix();
+            GlStateManager.disableCull();
             GlStateManager.rotate(renderYaw, 0f, 1f, 0f);
             GlStateManager.rotate(renderPitch, 1f, 0f, 0f);
             RenderUtils.translateToHeadLevel(player);
 
-            RenderUtils.bindTexture(Strings.MOD_ID.toLowerCase(), "textures/Crown.png");
-            GlStateManager.resetColor();
+            RenderUtils.bindTexture(ModLibs.MOD_ID.toLowerCase(), "textures/Crown.png");
+            RenderUtils.resetColor();
             model.render(0.0625f);
-            GlStateManager.resetColor();
+            RenderUtils.resetColor();
             GlStateManager.alphaFunc(0x204, 0.1F);
+            GlStateManager.enableCull();
             GlStateManager.popMatrix();
         }
     }
@@ -48,7 +51,7 @@ public class LayerCrown implements LayerRenderer {
     @Override
     public void doRenderLayer(EntityLivingBase entity, float f, float f1, float renderTick, float f2, float f3, float f4, float f5) {
         if (entity != null && entity instanceof EntityPlayer)
-            doRender((EntityPlayer) entity, f, f1, renderTick, f2, f3, f4, f5);
+            doRender((EntityPlayer) entity, renderTick);
     }
 
     @Override

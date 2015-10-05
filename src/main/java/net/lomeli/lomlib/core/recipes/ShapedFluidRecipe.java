@@ -15,7 +15,6 @@ import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.world.World;
 
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -84,16 +83,16 @@ public class ShapedFluidRecipe implements IRecipe {
             Object in = recipe[idx + 1];
 
             if (in instanceof ItemStack) {
-                if (FluidContainerRegistry.isFilledContainer((ItemStack) in))
+                if (FluidUtil.isFilledContainer((ItemStack) in))
                     itemMap.put(chr, FluidUtil.getContainersForFluid(FluidUtil.getContainerFluid((ItemStack) in)));
                 else
                     itemMap.put(chr, ((ItemStack) in).copy());
-            } else if (in instanceof Item)
-                if (FluidContainerRegistry.isFilledContainer(new ItemStack((Item) in)))
+            } else if (in instanceof Item) {
+                if (FluidUtil.isFilledContainer(new ItemStack((Item) in)))
                     itemMap.put(chr, FluidUtil.getContainersForFluid(FluidUtil.getContainerFluid(new ItemStack((Item) in))));
                 else
                     itemMap.put(chr, new ItemStack((Item) in));
-            else if (in instanceof Block)
+            } else if (in instanceof Block)
                 itemMap.put(chr, new ItemStack((Block) in, 1, OreDictionary.WILDCARD_VALUE));
             else if (in instanceof String) {
                 if (((String) in).startsWith("fluid$")) {
@@ -146,8 +145,8 @@ public class ShapedFluidRecipe implements IRecipe {
                 if (OreDictionary.itemMatches(replace.getKey(), ingred, true)) {
                     input[i] = OreDictionary.getOres(replace.getValue());
                     break;
-                } else if (FluidContainerRegistry.isFilledContainer(replace.getKey())) {
-                    input[i] = FluidUtil.getContainersForFluid(FluidContainerRegistry.getFluidForFilledItem(replace.getKey()).getFluid());
+                } else if (FluidUtil.isFilledContainer(replace.getKey())) {
+                    input[i] = FluidUtil.getContainersForFluid(FluidUtil.getContainerFluid(replace.getKey()));
                     break;
                 }
             }

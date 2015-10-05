@@ -9,6 +9,7 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -34,11 +35,21 @@ public class RenderUtils {
     public static final ResourceLocation texEnchant = new ResourceLocation("textures/misc/enchanted_item_glint.png");
     public static final float magicNum = 0.0625F;
 
+    /**
+     * Allows adding custom layers to a entity renderer
+     * @param renderer
+     * @param layer
+     */
     public static void addLayerToRenderer(RendererLivingEntity renderer, LayerRenderer layer) {
         if (renderer != null && layer != null)
             renderer.addLayer(layer);
     }
 
+    /**
+     * Get an entity's renderer
+     * @param clazz
+     * @return
+     */
     public static RendererLivingEntity getEntityRenderer(Class<?> clazz) {
         return (RendererLivingEntity) Minecraft.getMinecraft().getRenderManager().entityRenderMap.get(clazz);
     }
@@ -51,6 +62,10 @@ public class RenderUtils {
         return new RenderItem(getTextureManager(), new ModelManager(Minecraft.getMinecraft().getTextureMapBlocks()));
     }
 
+    /**
+     * Translate to player head
+     * @param player
+     */
     public static void translateToHeadLevel(EntityPlayer player) {
         GlStateManager.translate(0, 0.08f - player.getEyeHeight() + (player.isSneaking() ? 0.1725 : 0) - (player.getCurrentArmor(3) != null ? 0.045f : 0f), 0);
     }
@@ -107,6 +122,12 @@ public class RenderUtils {
         return Minecraft.getMinecraft().getTextureManager();
     }
 
+    /**
+     * Renders the standard item tooltip
+     * @param x
+     * @param y
+     * @param stack
+     */
     public static void renderItemToolTip(int x, int y, ItemStack stack) {
         int color = 0x505000ff;
         int color2 = 0xf0100010;
@@ -124,11 +145,18 @@ public class RenderUtils {
         renderTooltip(x, y, parsedTooltip, color, color2);
     }
 
+    /**
+     * Render a tooltip
+     * @param x
+     * @param y
+     * @param tooltipData
+     * @param color
+     * @param color2
+     */
     public static void renderTooltip(int x, int y, List<String> tooltipData, int color, int color2) {
         boolean lighting = GL11.glGetBoolean(GL11.GL_LIGHTING);
         if (lighting)
-            net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
-
+            RenderHelper.disableStandardItemLighting();
         if (!tooltipData.isEmpty()) {
             int var5 = 0;
             int var6;
@@ -168,7 +196,7 @@ public class RenderUtils {
             GlStateManager.enableDepth();
         }
         if (!lighting)
-            net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
+            RenderHelper.disableStandardItemLighting();
         GlStateManager.resetColor();
     }
 
@@ -239,5 +267,18 @@ public class RenderUtils {
         renderer.addVertexWithUV(x + width, y + cut, zLevel, sprite.getInterpolatedU(width), sprite.getInterpolatedV(cut));
         renderer.addVertexWithUV(x, y + cut, zLevel, sprite.getMinU(), sprite.getInterpolatedV(cut));
         tess.draw();
+    }
+
+    public static void drawTexturedModalRect(int x, int y, float zLevel, int textureX, int textureY, int width, int height) {
+        float f = 0.00390625F;
+        float f1 = 0.00390625F;
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        worldrenderer.startDrawingQuads();
+        worldrenderer.addVertexWithUV((double) (x + 0), (double) (y + height), (double) zLevel, (double) ((float) (textureX + 0) * f), (double) ((float) (textureY + height) * f1));
+        worldrenderer.addVertexWithUV((double) (x + width), (double) (y + height), (double) zLevel, (double) ((float) (textureX + width) * f), (double) ((float) (textureY + height) * f1));
+        worldrenderer.addVertexWithUV((double) (x + width), (double) (y + 0), (double) zLevel, (double) ((float) (textureX + width) * f), (double) ((float) (textureY + 0) * f1));
+        worldrenderer.addVertexWithUV((double) (x + 0), (double) (y + 0), (double) zLevel, (double) ((float) (textureX + 0) * f), (double) ((float) (textureY + 0) * f1));
+        tessellator.draw();
     }
 }

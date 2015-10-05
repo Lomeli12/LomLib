@@ -11,15 +11,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class AnvilRecipeManager {
     private static List<IAnvilRecipe> recipeList = new ArrayList<IAnvilRecipe>();
 
-    public static void addRecipe(IAnvilRecipe recipe) {
-        if (recipe != null)
-            recipeList.add(recipe);
-    }
-
-    public static List<IAnvilRecipe> getRegistry() {
-        return recipeList;
-    }
-
     @SubscribeEvent
     public void onAnvilUpdate(AnvilUpdateEvent event) {
         for (int i = 0; i < recipeList.size(); i++) {
@@ -32,5 +23,14 @@ public class AnvilRecipeManager {
                 }
             }
         }
+    }
+
+    public static void addRecipe(IAnvilRecipe recipe) {
+        if (recipe != null)
+            recipeList.add(recipe);
+    }
+
+    public static List<IAnvilRecipe> getRegistry() {
+        return recipeList;
     }
 }

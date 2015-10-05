@@ -2,15 +2,16 @@ package net.lomeli.lomlib.core.network;
 
 import io.netty.buffer.ByteBuf;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.relauncher.Side;
 
+@SidedPacket
 public abstract class AbstractPacket {
     /**
      * Encode the packet data into the ByteBuf stream. Complex data sets may
      * need specific data handlers.
      *
      * @param buffer the buffer to encode into
-     * @link{cpw.mods.fml.common.network.ByteBuffUtils )
+     * @link{cpw.mods.fml.common.network.ByteBuffUtils}
      */
     public abstract void encodeInto(ByteBuf buffer);
 
@@ -19,21 +20,13 @@ public abstract class AbstractPacket {
      * need specific data handlers.
      *
      * @param buffer the buffer to decode from
-     * @link{cpw.mods.fml.common.network.ByteBuffUtils )
+     * @link{cpw.mods.fml.common.network.ByteBuffUtils}
      */
     public abstract void decodeInto(ByteBuf buffer);
 
     /**
-     * Handle a packet on the client side. Note this occurs after decoding has
-     * completed.
-     *
-     * @param player the player reference
+     * @param context - contains nethandlers
+     * @param side - Side the packet is being handled on
      */
-    public abstract void handleClientSide(EntityPlayer player);
-
-    /**
-     * Handle a packet on the server side. Note this occurs after decoding has
-     * completed.
-     */
-    public abstract void handleServerSide();
+    public abstract void handlePacket(PacketContext context, Side side);
 }

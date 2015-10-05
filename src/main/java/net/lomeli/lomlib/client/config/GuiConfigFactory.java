@@ -10,7 +10,6 @@ import net.minecraftforge.fml.client.IModGuiFactory;
 public class GuiConfigFactory implements IModGuiFactory {
     @Override
     public void initialize(Minecraft minecraftInstance) {
-
     }
 
     @Override

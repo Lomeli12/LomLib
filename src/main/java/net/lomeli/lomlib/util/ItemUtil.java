@@ -1,9 +1,12 @@
 package net.lomeli.lomlib.util;
 
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemUtil {
     public static ItemStack consumeItem(ItemStack stack) {
@@ -86,5 +89,81 @@ public class ItemUtil {
         if (!ItemStack.areItemStackTagsEqual(stack1, stack2))
             return false;
         return true;
+    }
+
+    public static int searchForPossibleSlot(ItemStack stack, IInventory inventory) {
+        for (int i = 0; i < inventory.getSizeInventory(); i++) {
+            ItemStack item = inventory.getStackInSlot(i);
+            if (item == null || item.getItem() == null)
+                return i;
+            else if (canStacksMerge(stack, item) && (item.stackSize + stack.stackSize) < item.getMaxStackSize())
+                return i;
+        }
+        return -1;
+    }
+
+    /**
+     * Attempts to put an item into the given inventory. Returns false if it fails.
+     *
+     * @param inventory
+     * @param stack
+     * @param doMove
+     * @return
+     */
+    public static boolean insertIntoInventory(IInventory inventory, ItemStack stack, boolean doMove) {
+        if (stack == null) return false;
+        if (inventory == null) return false;
+
+        int slot = searchForPossibleSlot(stack, inventory);
+
+        if (doMove && slot > -1 && slot < inventory.getSizeInventory())
+            return tryInsertStack(inventory, slot, stack, true);
+
+        return slot != -1;
+    }
+
+    public static boolean tryInsertStack(IInventory targetInventory, int slot, ItemStack stack, boolean canMerge) {
+        if (targetInventory.isItemValidForSlot(slot, stack)) {
+            ItemStack targetStack = targetInventory.getStackInSlot(slot);
+            if (targetStack == null) {
+                int limit = targetInventory.getInventoryStackLimit();
+                if (limit < stack.stackSize)
+                    targetInventory.setInventorySlotContents(slot, stack.splitStack(limit));
+                else {
+                    targetInventory.setInventorySlotContents(slot, stack.copy());
+                    stack.stackSize = 0;
+                }
+                return true;
+            } else if (canMerge) {
+                if (targetInventory.isItemValidForSlot(slot, stack) &&
+                        canStacksMerge(stack, targetStack)) {
+                    int space = targetStack.getMaxStackSize() - targetStack.stackSize;
+                    int mergeAmount = Math.min(space, stack.stackSize);
+                    ItemStack copy = targetStack.copy();
+                    copy.stackSize += mergeAmount;
+                    targetInventory.setInventorySlotContents(slot, copy);
+                    stack.stackSize -= mergeAmount;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static int getSlotWithStack(IInventory inventory, ItemStack stack) {
+        for (int i = 0; i < inventory.getSizeInventory(); i++) {
+            ItemStack item = inventory.getStackInSlot(i);
+            if (item != null && OreDictionary.itemMatches(item, stack, false))
+                return i;
+        }
+        return -1;
+    }
+
+    public static boolean hasItemStack(IInventory inventory, ItemStack stack) {
+        return getSlotWithStack(inventory, stack) != -1;
+    }
+
+    public static void setEntityItemAge(EntityItem item, int age) {
+        item.age = age;
     }
 }

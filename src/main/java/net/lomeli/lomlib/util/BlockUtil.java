@@ -19,4 +19,12 @@ public class BlockUtil {
     public static Block getBlock(IBlockAccess world, int x, int y, int z) {
         return getBlock(world, new BlockPos(x, y, z));
     }
+
+    public static boolean posEqual(BlockPos pos1, BlockPos pos2) {
+        return pos1.getX() == pos2.getX() && pos1.getY() == pos2.getY() && pos1.getZ() == pos2.getZ();
+    }
+
+    public static float getDistance(BlockPos pos1, BlockPos pos2) {
+        return net.minecraft.util.MathHelper.sqrt_double(pos1.distanceSq(pos2.getX(), pos2.getY(), pos2.getZ()));
+    }
 }

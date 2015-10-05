@@ -15,6 +15,7 @@ public class FluidAnvilRecipe implements IAnvilRecipe {
     private ItemStack output = null;
     private Object[] inputs = new Object[2];
     private int expLvlCost = 0;
+    private boolean reverse;
 
     /**
      * ATM, right input cannot be null due to how the AnvilUpdateEvent works.
@@ -25,17 +26,22 @@ public class FluidAnvilRecipe implements IAnvilRecipe {
      * @param rightInput
      * @param expCost
      */
-    public FluidAnvilRecipe(ItemStack output, Object leftInput, Object rightInput, int expCost) {
+    public FluidAnvilRecipe(ItemStack output, Object leftInput, Object rightInput, int expCost, boolean reverseable) {
         this.output = output;
         addInput(leftInput, 0);
         addInput(rightInput, 1);
         setXPCost(expCost);
         if (leftInput == null && rightInput == null)
             throw new RuntimeException("Invalid Anvil Recipe: Both inputs cannot be null!");
+        reverse = reverseable;
+    }
+
+    public FluidAnvilRecipe(ItemStack output, Object leftInput, Object rightInput, int expCost) {
+        this(output, leftInput, rightInput, expCost, false);
     }
 
     public FluidAnvilRecipe(ItemStack output, Object input, int expCost) {
-        this(output, input, null, expCost);
+        this(output, input, null, expCost, false);
     }
 
     private void setXPCost(int exp) {
@@ -69,7 +75,10 @@ public class FluidAnvilRecipe implements IAnvilRecipe {
 
     @Override
     public boolean matches(ItemStack left, ItemStack right) {
-        return doItemsMatch(left, 0) && doItemsMatch(right, 1);
+        boolean flag = doItemsMatch(left, 0) && doItemsMatch(right, 1);
+        if (!flag && reverse)
+            flag = doItemsMatch(left, 1) && doItemsMatch(right, 0);
+        return flag;
     }
 
     @SuppressWarnings("unchecked")
@@ -79,12 +88,12 @@ public class FluidAnvilRecipe implements IAnvilRecipe {
             if (target == null)
                 return itemStack == null;
             else if (target instanceof ItemStack) {
-                if (!checkItemEquals((ItemStack) target, itemStack))
+                if (!OreDictionary.itemMatches((ItemStack) target, itemStack, false))
                     return false;
             } else if (target instanceof ArrayList) {
                 boolean matched = false;
                 for (ItemStack item : (ArrayList<ItemStack>) target) {
-                    matched = matched || checkItemEquals(item, itemStack);
+                    matched = matched || OreDictionary.itemMatches(item, itemStack, false);
                 }
                 if (!matched)
                     return false;
@@ -92,12 +101,6 @@ public class FluidAnvilRecipe implements IAnvilRecipe {
             return true;
         }
         return false;
-    }
-
-    private boolean checkItemEquals(ItemStack target, ItemStack input) {
-        if (input == null && target != null || input != null && target == null)
-            return false;
-        return (target.getItem() == input.getItem() && (target.getItemDamage() == OreDictionary.WILDCARD_VALUE || target.getItemDamage() == input.getItemDamage()));
     }
 
     @Override

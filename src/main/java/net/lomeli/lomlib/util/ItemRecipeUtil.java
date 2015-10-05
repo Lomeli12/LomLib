@@ -3,6 +3,7 @@ package net.lomeli.lomlib.util;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
@@ -19,6 +20,21 @@ import net.lomeli.lomlib.core.recipes.ShapedFluidRecipe;
 import net.lomeli.lomlib.core.recipes.ShapelessFluidRecipe;
 
 public class ItemRecipeUtil {
+
+    /**
+     * Allows you to remove the recipe for an item
+     * @param item
+     */
+    public static void removeRecipe(ItemStack item) {
+        Iterator<IRecipe> recipes = CraftingManager.getInstance().getRecipeList().iterator();
+        while (recipes.hasNext()) {
+            ItemStack output = recipes.next().getRecipeOutput();
+            if (ItemUtil.areItemsTheSame(item, output)) {
+                recipes.remove();
+                break;
+            }
+        }
+    }
 
     @SuppressWarnings("unchecked")
     public static Object[] getItemShapedRecipe(ItemStack stack) {

@@ -11,11 +11,11 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.0-SNAPSHOT'
     }
 }
 
-apply plugin: 'forge'
+apply plugin: 'net.minecraftforge.gradle.forge'
 
 def loadProperties(String sourceFileName) {
     def config = new Properties()
@@ -48,8 +48,8 @@ archivesBaseName = 'LomLib'
 version = "$releaseVersion"
 
 minecraft {
-    version = "$mcVersion-$forgeVersion" // grab latest forge
-    runDir = "eclipse"
+    version = "1.8-11.14.3.1519" // grab latest forge
+    runDir = "run"
     mappings = "snapshot_20141130"
 }
 
@@ -58,30 +58,33 @@ processResources {
 
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
     from(sourceSets.main.resources.srcDirs) {
-        exclude  'mcmod.info'
+        exclude 'mcmod.info'
+        exclude 'dependancies.info'
     }
 }
 
 jar {
     manifest {
-        attributes 'FMLAT' : 'lomlib_at.cfg'
+        attributes("FMLAT" : "lomlib_at.cfg")
     }
     appendix = "$mcVersion"
     classifier = "universal"
+}
+
+sourceJar {
+    appendix = "$mcVersion"
 }
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output
     appendix = "$mcVersion"
     classifier = "dev"
-}
-
-artifacts {
-    archives deobfJar
+    manifest {
+        attributes("FMLAT" : "lomlib-deobf_at.cfg")
+    }
 }
 
 tasks.withType(Zip) { task ->
@@ -90,3 +93,5 @@ tasks.withType(Zip) { task ->
         ant.checksum algorithm: 'SHA1', file: it.archivePath
     }
 }
+
+build.dependsOn sourceJar, deobfJar

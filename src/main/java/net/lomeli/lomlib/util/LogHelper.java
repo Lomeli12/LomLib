@@ -1,18 +1,29 @@
 package net.lomeli.lomlib.util;
 
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import net.minecraftforge.fml.common.FMLLog;
 
+/**
+ * A very basic logger class
+ */
 public class LogHelper {
     private String modName;
+    private Logger logger;
 
-    public LogHelper(String modName) {
+    private LogHelper(String modName) {
         this.modName = modName;
+        this.logger = LogManager.getLogger(modName);
+    }
+
+    public static LogHelper createLogger(String mod) {
+        return new LogHelper(mod);
     }
 
     public void log(Level logLevel, Object message) {
-        FMLLog.log(this.modName, logLevel, String.valueOf(message));
+        this.logger.log(logLevel, "[" + modName + "] " + String.valueOf(message));
     }
 
     public void logBasic(Object message) {
@@ -32,6 +43,14 @@ public class LogHelper {
     }
 
     public void logException(Exception e) {
-        FMLLog.log(this.modName, Level.ERROR, e, null);
+        this.logger.log(Level.ERROR, "", e);
+    }
+
+    public Logger getLogger() {
+        return logger;
+    }
+
+    public String getModName() {
+        return modName;
     }
 }

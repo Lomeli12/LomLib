@@ -11,14 +11,14 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.StatCollector;
 
-import net.lomeli.lomlib.core.Strings;
 import net.lomeli.lomlib.core.recipes.ShapelessFluidRecipe;
+import net.lomeli.lomlib.lib.ModLibs;
 
 public class ShapelessFluidRecipeHandler extends ShapelessRecipeHandler {
 
     @Override
     public String getRecipeName() {
-        return StatCollector.translateToLocal(Strings.NEI_SHAPELESS);
+        return StatCollector.translateToLocal(ModLibs.NEI_SHAPELESS);
     }
 
     @SuppressWarnings("unchecked")

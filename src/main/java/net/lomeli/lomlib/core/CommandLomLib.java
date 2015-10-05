@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
+import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,11 +14,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 
+import net.lomeli.lomlib.lib.ModLibs;
+
 public class CommandLomLib extends CommandBase {
 
     @Override
     public String getName() {
-        return Strings.MOD_ID.toLowerCase();
+        return ModLibs.MOD_ID.toLowerCase();
     }
 
     @Override
@@ -74,6 +77,16 @@ public class CommandLomLib extends CommandBase {
                 displayHelp(icommandsender);
         } else
             sendMessage(icommandsender, EnumChatFormatting.GREEN + "Type /lomlib help or /lomlib ? for more info");
+    }
+
+    @Override
+    public int compareTo(ICommand command) {
+        return this.getName().compareTo(command.getName());
+    }
+
+    @Override
+    public int compareTo(Object obj) {
+        return this.compareTo((ICommand) obj);
     }
 
     private boolean calmPigmen(ICommandSender sender, EntityPigZombie pigZombie) {

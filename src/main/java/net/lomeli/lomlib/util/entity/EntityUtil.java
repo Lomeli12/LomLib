@@ -2,6 +2,7 @@ package net.lomeli.lomlib.util.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -15,12 +16,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
+
+import net.lomeli.lomlib.util.MathHelper;
 
 public class EntityUtil {
     public static List<SimpleEggInfo> eggList = new ArrayList<SimpleEggInfo>();
     public static int count = 0;
 
+    /**
+     * Creates custom LomLib spawn egg for entity
+     * @param entityClass
+     * @return
+     */
     public static ItemStack getEntitySpawnEgg(Class<? extends Entity> entityClass) {
         if (!eggList.isEmpty()) {
             for (int i = 0; i < eggList.size(); i++) {
@@ -42,6 +51,11 @@ public class EntityUtil {
         return (entity instanceof IMob);
     }
 
+    /**
+     * Check if entity is undead
+     * @param entity
+     * @return
+     */
     public static boolean isUndeadEntity(EntityLivingBase entity) {
         return isHostileEntity(entity) ? entity.getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) : false;
     }
@@ -73,6 +87,11 @@ public class EntityUtil {
         }
     }
 
+    /**
+     * Gets the source of the damage
+     * @param source
+     * @return
+     */
     public static Entity getSourceOfDamage(DamageSource source) {
         if (source != null)
             return source.isProjectile() ? source.getEntity() : source.getSourceOfDamage();
@@ -175,10 +194,24 @@ public class EntityUtil {
         }
     }
 
+
+    private static final Pattern FAKE_PLAYER_PATTERN = Pattern.compile("^(?:\\[.*\\])|(?:ComputerCraft)$");
+
+    /**
+     * Checks player is a FakePlayer
+     * @param player
+     * @return
+     */
     public static boolean isFakePlayer(EntityPlayer player) {
-        return player != null ? player.getClass() != EntityPlayerMP.class : false;
+        return player != null ? !(player instanceof EntityPlayerMP) || (player instanceof FakePlayer) || FAKE_PLAYER_PATTERN.matcher(player.getName()).matches() : false;
     }
 
+    /**
+     * Really poorly done ray
+     * @param player
+     * @param world
+     * @return
+     */
     public static MovingObjectPosition rayTrace(EntityPlayer player, World world) {
         return rayTrace(player, world, true);
     }
@@ -187,18 +220,18 @@ public class EntityUtil {
         float f = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch);
         float f1 = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw);
         double d0 = player.prevPosX + (player.posX - player.prevPosX);
-        double d1 = player.prevPosY + (player.posY - player.prevPosY) + (double)(world.isRemote ? player.getEyeHeight() - player.getDefaultEyeHeight() : player.getEyeHeight());
+        double d1 = player.prevPosY + (player.posY - player.prevPosY) + (double) (world.isRemote ? player.getEyeHeight() - player.getDefaultEyeHeight() : player.getEyeHeight());
         double d2 = player.prevPosZ + (player.posZ - player.prevPosZ);
         Vec3 vec3 = new Vec3(d0, d1, d2);
-        float f2 = MathHelper.cos(-f1 * 0.017453292F - (float)Math.PI);
-        float f3 = MathHelper.sin(-f1 * 0.017453292F - (float) Math.PI);
-        float f4 = -MathHelper.cos(-f * 0.017453292F);
-        float f5 = MathHelper.sin(-f * 0.017453292F);
+        float f2 = (float) MathHelper.cos(-f1 * 0.017453292F - (float) Math.PI);
+        float f3 = (float) MathHelper.sin(-f1 * 0.017453292F - (float) Math.PI);
+        float f4 = (float) -MathHelper.cos(-f * 0.017453292F);
+        float f5 = (float) MathHelper.sin(-f * 0.017453292F);
         float f6 = f3 * f4;
         float f7 = f2 * f4;
         double d3 = 5.0D;
         if (player instanceof net.minecraft.entity.player.EntityPlayerMP)
-            d3 = ((net.minecraft.entity.player.EntityPlayerMP)player).theItemInWorldManager.getBlockReachDistance();
+            d3 = ((net.minecraft.entity.player.EntityPlayerMP) player).theItemInWorldManager.getBlockReachDistance();
         Vec3 vec31 = vec3.addVector((double) f6 * d3, (double) f5 * d3, (double) f7 * d3);
         return world.rayTraceBlocks(vec3, vec31, hitLiquids, !hitLiquids, false);
     }
@@ -207,6 +240,16 @@ public class EntityUtil {
         registerEntity(entityClass, entityName, mod, bkEggColor, fgEggColor, id, true);
     }
 
+    /**
+     * Register a modded entity and custom spawn egg if needed.
+     * @param entityClass
+     * @param entityName
+     * @param mod
+     * @param bkEggColor
+     * @param fgEggColor
+     * @param id
+     * @param addEgg
+     */
     public static void registerEntity(Class<? extends Entity> entityClass, String entityName, Object mod, int bkEggColor, int fgEggColor, int id, boolean addEgg) {
         EntityRegistry.registerModEntity(entityClass, entityName, id, mod, 64, 3, true);
         if (addEgg) {
