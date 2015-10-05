@@ -15,8 +15,6 @@ buildscript {
     }
 }
 
-apply plugin: 'net.minecraftforge.gradle.forge'
-
 def loadProperties(String sourceFileName) {
     def config = new Properties()
     def propFile = new File(sourceFileName)
@@ -29,6 +27,8 @@ def loadProperties(String sourceFileName) {
 }
 
 loadProperties 'build.properties'
+
+apply plugin: 'net.minecraftforge.gradle.forge'
 
 repositories {
     maven {
@@ -48,9 +48,9 @@ archivesBaseName = 'LomLib'
 version = "$releaseVersion"
 
 minecraft {
-    version = "1.8-11.14.3.1519" // grab latest forge
+    version = "$mcVersion-$mcfVersion" // grab latest forge
     runDir = "run"
-    mappings = "snapshot_20141130"
+    mappings = "$mcpMap"
 }
 
 processResources {
