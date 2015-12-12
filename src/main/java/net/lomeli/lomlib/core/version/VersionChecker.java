@@ -9,9 +9,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StatCollector;
 
-import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -20,6 +19,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.lomeli.lomlib.LomLib;
+import net.lomeli.lomlib.util.LangUtil;
 
 /**
  * An example of the JSON file you'll need online can be seen <a href="http://paste.ubuntu.com/10992152/">here</a> (now with comments!)
@@ -44,18 +44,18 @@ public class VersionChecker implements Runnable {
         this.isDirect = false;
         this.doneTelling = true;
 
-        FMLCommonHandler.instance().bus().register(this);
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Override
     public void run() {
         try {
-            LomLib.logger.logInfo("Checking for updates for " + this.modname + "...");
+            LomLib.logger.logInfo(LangUtil.translate("message.lomlib.update.checking", this.modname));
             URL url = new URL(this.jsonURL);
             Gson gson = new Gson();
             UpdateJson update = gson.fromJson(new InputStreamReader(url.openStream()), UpdateJson.class);
             if (update != null) {
-                this.needsUpdate = (this.mod_major >= update.getMajor() ? (this.mod_minor >= update.getMinor() ? (this.mod_rev >= update.getRevision() ? false : true) : true) : true);
+                this.needsUpdate = compareVersion(update);
                 if (this.needsUpdate) {
                     this.downloadURL = update.getDownloadURL();
                     this.isDirect = update.isDirect();
@@ -64,15 +64,21 @@ public class VersionChecker implements Runnable {
                     this.doneTelling = false;
                     sendMessage();
                 } else
-                    LomLib.logger.logInfo("Using latest version of " + this.modname);
+                    LomLib.logger.logInfo(LangUtil.translate("message.lomlib.update.none", this.modname));
             }
         } catch (Exception e) {
-            LomLib.logger.logError("Could not check for updates for " + this.modname + "!");
+            LomLib.logger.logError(LangUtil.translate("message.lomlib.update.failed", this.modname));
         }
     }
 
-    private String translate(String unlocalized) {
-        return StatCollector.translateToLocal(unlocalized);
+    private boolean compareVersion(UpdateJson update) {
+        if (mod_major > update.getMajor()) return false;
+        if (mod_major < update.getMajor()) return true;
+        if (mod_minor > update.getMinor()) return false;
+        if (mod_minor < update.getMinor()) return true;
+        if (mod_rev > update.getRevision()) return false;
+        if (mod_rev < update.getRevision()) return true;
+        return true;
     }
 
     private void sendMessage() {
@@ -92,9 +98,9 @@ public class VersionChecker implements Runnable {
             tag.setString("changeLog", changeLog);
             FMLInterModComms.sendMessage("VersionChecker", "addUpdate", tag);
         }
-        LomLib.logger.logInfo(String.format(translate("message.lomlib.updateMessage"), this.modname, this.downloadURL));
-        LomLib.logger.logInfo(translate("message.lomlib.updateOld") + " " + this.currentVer);
-        LomLib.logger.logInfo(translate("message.lomlib.updateNew") + " " + this.version);
+        LomLib.logger.logInfo(LangUtil.translate("message.lomlib.update.message", this.modname, this.downloadURL));
+        LomLib.logger.logInfo(LangUtil.translate("message.lomlib.update.old", this.modname, this.currentVer));
+        LomLib.logger.logInfo(LangUtil.translate("message.lomlib.update.new", this.modname, this.version));
     }
 
     @SubscribeEvent
@@ -104,9 +110,9 @@ public class VersionChecker implements Runnable {
             EntityPlayer player = Minecraft.getMinecraft().thePlayer;
             if (this.needsUpdate) {
                 if (!this.version.isEmpty() && this.doneTelling) {
-                    player.addChatComponentMessage(new ChatComponentText(String.format(translate("message.lomlib.updateMessage"), this.modname, this.downloadURL)));
+                    player.addChatComponentMessage(new ChatComponentText(LangUtil.translate("message.lomlib.update.message", this.modname, this.downloadURL)));
                     if (this.changeList != null && this.changeList.length > 0) {
-                        player.addChatComponentMessage(new ChatComponentText(translate("message.lomlib.updateChangeLog")));
+                        player.addChatComponentMessage(new ChatComponentText(LangUtil.translate("message.lomlib.update.changelog")));
                         for (String change : changeList)
                             player.addChatComponentMessage(new ChatComponentText("- " + change));
                     }

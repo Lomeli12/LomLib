@@ -2,11 +2,14 @@ recipe.lomlib:shapedFluid=Shaped Fluid Recipe
 recipe.lomlib:shapelessFluid=Shapeless Fluid Recipe
 recipe.lomlib:anvilRecipe=Anvil Recipe
 
+message.lomlib.update.checking=Checking for updates for %s...
+message.lomlib.update.none=Using latest version of %s
+message.lomlib.update.failed=Could not check for updates for %s!
 message.lomlib.update=There's a new update for LomLib! Download:
-message.lomlib.updateMessage=There's a new version of %1$s out now! Download: %2$s
-message.lomlib.updateOld=Installed Version:
-message.lomlib.updateNew=New Version:
-message.lomlib.updateChangeLog=Change Log:
+message.lomlib.update.message=There's a new version of %1$s out now! Download: %2$s
+message.lomlib.update.old=Installed Version: %s %s
+message.lomlib.update.new=New Version: %s %s
+message.lomlib.update.changelog=Change Log:
 
 config.lomlib.patreon=Render patreon reward for patrons.(Client-side only)
 config.lomlib.update=Check for updates on startup. Will display a message in chat if there's an update available.
