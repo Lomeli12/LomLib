@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -37,6 +38,7 @@ public class RenderUtils {
 
     /**
      * Allows adding custom layers to a entity renderer
+     *
      * @param renderer
      * @param layer
      */
@@ -47,6 +49,7 @@ public class RenderUtils {
 
     /**
      * Get an entity's renderer
+     *
      * @param clazz
      * @return
      */
@@ -64,6 +67,7 @@ public class RenderUtils {
 
     /**
      * Translate to player head
+     *
      * @param player
      */
     public static void translateToHeadLevel(EntityPlayer player) {
@@ -124,6 +128,7 @@ public class RenderUtils {
 
     /**
      * Renders the standard item tooltip
+     *
      * @param x
      * @param y
      * @param stack
@@ -147,6 +152,7 @@ public class RenderUtils {
 
     /**
      * Render a tooltip
+     *
      * @param x
      * @param y
      * @param tooltipData
@@ -214,14 +220,14 @@ public class RenderUtils {
         GlStateManager.disableAlpha();
         GlStateManager.blendFunc(0x302, 0x303);
         GlStateManager.shadeModel(0x1D01);
-        WorldRenderer var15 = Tessellator.getInstance().getWorldRenderer();
-        var15.startDrawingQuads();
-        var15.setColorRGBA_F(var8, var9, var10, var7);
-        var15.addVertex(par3, par2, z);
-        var15.addVertex(par1, par2, z);
-        var15.setColorRGBA_F(var12, var13, var14, var11);
-        var15.addVertex(par1, par4, z);
-        var15.addVertex(par3, par4, z);
+        WorldRenderer worldRenderer = Tessellator.getInstance().getWorldRenderer();
+        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        worldRenderer.color(var8, var9, var10, var7);
+        worldRenderer.pos(par3, par2, z);
+        worldRenderer.pos(par1, par2, z);
+        worldRenderer.color(var12, var13, var14, var11);
+        worldRenderer.pos(par1, par4, z);
+        worldRenderer.pos(par3, par4, z);
         Tessellator.getInstance().draw();
         GlStateManager.shadeModel(0x1D00);
         GlStateManager.disableBlend();
@@ -229,43 +235,77 @@ public class RenderUtils {
         GlStateManager.enableTexture2D();
     }
 
+    /**
+     * Renders the given texture tiled into a GUI
+     */
+    public static void renderTiledTextureAtlas(Minecraft mc, int x, int y, int width, int height, float depth, TextureAtlasSprite sprite) {
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+
+        putTiledTextureQuads(worldrenderer, x, y, width, height, depth, sprite);
+
+        tessellator.draw();
+    }
+
+    /**
+     * Adds a quad to the rendering pipeline. Call startDrawingQuads beforehand. You need to call draw() yourself.
+     */
+    public static void putTiledTextureQuads(WorldRenderer renderer, int x, int y, int width, int height, float depth, TextureAtlasSprite sprite) {
+        float u1 = sprite.getMinU();
+        float v1 = sprite.getMinV();
+
+        // tile vertically
+        do {
+            int renderHeight = Math.min(sprite.getIconHeight(), height);
+            height -= renderHeight;
+
+            float v2 = sprite.getInterpolatedV((16f * renderHeight) / (float) sprite.getIconHeight());
+
+            // we need to draw the quads per width too
+            int x2 = x;
+            int width2 = width;
+            // tile horizontally
+            do {
+                int renderWidth = Math.min(sprite.getIconWidth(), width2);
+                width2 -= renderWidth;
+
+                float u2 = sprite.getInterpolatedU((16f * renderWidth) / (float) sprite.getIconWidth());
+
+                renderer.pos(x2, y, depth).tex(u1, v1).endVertex();
+                renderer.pos(x2, y + renderHeight, depth).tex(u1, v2).endVertex();
+                renderer.pos(x2 + renderWidth, y + renderHeight, depth).tex(u2, v2).endVertex();
+                renderer.pos(x2 + renderWidth, y, depth).tex(u2, v1).endVertex();
+
+                x2 += renderWidth;
+            } while (width2 > 0);
+
+            y += renderHeight;
+        } while (height > 0);
+    }
+
     public static void drawFluid(Minecraft mc, FluidStack fluid, int x, int y, float zLevel, int width, int height, int maxCapacity) {
         if (fluid == null || fluid.getFluid() == null)
             return;
-        TextureAtlasSprite sprite = fluid.getFluid().getIcon(fluid);
-        mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-        RenderUtils.applyColor(fluid.getFluid().getColor(fluid));
-        int fullX = width / 16;
-        int fullY = height / 16;
-        int lastX = width - fullX * 16;
-        int lastY = height - fullY * 16;
-        int level = fluid.amount * height / maxCapacity;
-        int fullLvl = (height - level) / 16;
-        int lastLvl = (height - level) - fullLvl * 16;
-        for (int i = 0; i < fullX; i++) {
-            for (int j = 0; j < fullY; j++) {
-                if (j >= fullLvl)
-                    drawCutIcon(sprite, x + i * 16, y + j * 16, zLevel, 16, 16, j == fullLvl ? lastLvl : 0);
-            }
-        }
-        for (int i = 0; i < fullX; i++) {
-            drawCutIcon(sprite, x + i * 16, y + fullY * 16, zLevel, 16, lastY, fullLvl == fullY ? lastLvl : 0);
-        }
-        for (int i = 0; i < fullY; i++) {
-            if (i >= fullLvl)
-                drawCutIcon(sprite, x + fullX * 16, y + i * 16, zLevel, lastX, 16, i == fullLvl ? lastLvl : 0);
-        }
-        drawCutIcon(sprite, x + fullX * 16, y + fullY * 16, zLevel, lastX, lastY, fullLvl == fullY ? lastLvl : 0);
+        ResourceLocation resource = fluid.getFluid().getStill(fluid);
+        TextureAtlasSprite sprite = mc.getTextureMapBlocks().getAtlasSprite(resource.toString());
+        int h = (int) (height * (float) fluid.amount / (float) maxCapacity);
+        renderTiledTextureAtlas(mc, x, y - h, width, h, zLevel, sprite);
     }
 
+    /**
+     * Doesn't work in 1.8.8
+     */
+    @Deprecated
     public static void drawCutIcon(TextureAtlasSprite sprite, int x, int y, float zLevel, int width, int height, int cut) {
         Tessellator tess = Tessellator.getInstance();
         WorldRenderer renderer = tess.getWorldRenderer();
-        renderer.startDrawingQuads();
-        renderer.addVertexWithUV(x, y + height, zLevel, sprite.getMinU(), sprite.getInterpolatedV(height));
-        renderer.addVertexWithUV(x + width, y + height, zLevel, sprite.getInterpolatedU(width), sprite.getInterpolatedV(height));
-        renderer.addVertexWithUV(x + width, y + cut, zLevel, sprite.getInterpolatedU(width), sprite.getInterpolatedV(cut));
-        renderer.addVertexWithUV(x, y + cut, zLevel, sprite.getMinU(), sprite.getInterpolatedV(cut));
+        renderer.begin(7, renderer.getVertexFormat());
+        renderer.pos(x, y + height, zLevel).tex(sprite.getMinU(), sprite.getInterpolatedV(height));
+        renderer.pos(x + width, y + height, zLevel).tex(sprite.getInterpolatedU(width), sprite.getInterpolatedV(height));
+        renderer.pos(x + width, y + cut, zLevel).tex(sprite.getInterpolatedU(width), sprite.getInterpolatedV(cut));
+        renderer.pos(x, y + cut, zLevel).tex(sprite.getMinU(), sprite.getInterpolatedV(cut));
         tess.draw();
     }
 
@@ -273,12 +313,12 @@ public class RenderUtils {
         float f = 0.00390625F;
         float f1 = 0.00390625F;
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.startDrawingQuads();
-        worldrenderer.addVertexWithUV((double) (x + 0), (double) (y + height), (double) zLevel, (double) ((float) (textureX + 0) * f), (double) ((float) (textureY + height) * f1));
-        worldrenderer.addVertexWithUV((double) (x + width), (double) (y + height), (double) zLevel, (double) ((float) (textureX + width) * f), (double) ((float) (textureY + height) * f1));
-        worldrenderer.addVertexWithUV((double) (x + width), (double) (y + 0), (double) zLevel, (double) ((float) (textureX + width) * f), (double) ((float) (textureY + 0) * f1));
-        worldrenderer.addVertexWithUV((double) (x + 0), (double) (y + 0), (double) zLevel, (double) ((float) (textureX + 0) * f), (double) ((float) (textureY + 0) * f1));
+        WorldRenderer renderer = tessellator.getWorldRenderer();
+        renderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        renderer.pos((double)(x + 0), (double)(y + height), (double)zLevel).tex((double)((float)(textureX + 0) * f), (double)((float)(textureY + height) * f1)).endVertex();
+        renderer.pos((double)(x + width), (double)(y + height), (double)zLevel).tex((double)((float)(textureX + width) * f), (double)((float)(textureY + height) * f1)).endVertex();
+        renderer.pos((double)(x + width), (double)(y + 0), (double)zLevel).tex((double)((float)(textureX + width) * f), (double)((float)(textureY + 0) * f1)).endVertex();
+        renderer.pos((double)(x + 0), (double)(y + 0), (double)zLevel).tex((double)((float)(textureX + 0) * f), (double)((float)(textureY + 0) * f1)).endVertex();
         tessellator.draw();
     }
 }

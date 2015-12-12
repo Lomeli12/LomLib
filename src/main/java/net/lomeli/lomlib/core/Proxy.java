@@ -21,13 +21,14 @@ public class Proxy {
         RecipeSorter.register(ModLibs.NEI_SHAPED, ShapedFluidRecipe.class, RecipeSorter.Category.SHAPED, "after:minecraft:shaped before:minecraft:shapeless");
         RecipeSorter.register(ModLibs.NEI_SHAPELESS, ShapelessFluidRecipe.class, RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
         list = new PatreonList();
-        checkForUpdate();
+        if (LomLib.checkForUpdates)
+            checkForUpdate();
         ItemCustomEgg.initCustomEggs();
     }
 
     public void init() {
         LomLib.logger.logBasic("Init");
-        list.getLatestList();
+        new Thread(list).start();
         MinecraftForge.EVENT_BUS.register(new AnvilRecipeManager());
     }
 
@@ -37,7 +38,7 @@ public class Proxy {
 
     public void checkForUpdate() {
         updater = new VersionChecker(ModLibs.UPDATE_URL, ModLibs.MOD_ID, ModLibs.MOD_NAME, ModLibs.MAJOR, ModLibs.MINOR, ModLibs.REVISION);
-        updater.checkForUpdates();
+        new Thread(updater).start();
     }
 
     public void messageClient(String msg) {

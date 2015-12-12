@@ -9,3 +9,13 @@ message.lomlib.updateNew=New Version:
 message.lomlib.updateChangeLog=Change Log:
 
 config.lomlib.patreon=Render patreon reward for patrons.(Client-side only)
+config.lomlib.update=Check for updates on startup. Will display a message in chat if there's an update available.
+config.lomlib.modmenu=Overrides the "Mod Options" button in the pause menu to go to the Mod list menu so you can edit configs in-game.
+
+command.lomlib.lomlib.usage=/lomlib [command]
+command.lomlib.clear-hostiles.success=/&1[LomLib]: All loaded Hostile mobs have been removed.
+command.lomlib.clear-hostiles.usage=/lomlib clear-hostiles
+command.lomlib.clear-entities.success=/&1[LomLib]: All loaded entities have been removed.
+command.lomlib.clear-entities.usage=/lomlib clear-entities
+command.lomlib.calm-pigmen.success=/&1[LomLib]: All Pig Zombies should now be calm
+command.lomlib.calm-pigmen.usage=/lomlib calm-pigmen

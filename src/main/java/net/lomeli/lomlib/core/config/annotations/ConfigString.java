@@ -14,4 +14,5 @@ public @interface ConfigString {
     String nameOverride() default "";
     String comment() default "";
     String category() default Configuration.CATEGORY_GENERAL;
+    String categoryComment() default "";
 }

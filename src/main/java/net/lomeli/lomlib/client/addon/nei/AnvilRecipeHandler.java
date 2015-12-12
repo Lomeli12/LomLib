@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.client.nei;
+package net.lomeli.lomlib.client.addon.nei;
 
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;

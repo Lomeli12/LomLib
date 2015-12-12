@@ -1,19 +1,17 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
-        maven {
-            name = "sonatype"
-            url = "https://oss.sonatype.org/content/repositories/snapshots/"
-        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.0-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
     }
 }
+
+apply plugin: 'net.minecraftforge.gradle.forge'
 
 def loadProperties(String sourceFileName) {
     def config = new Properties()
@@ -28,27 +26,30 @@ def loadProperties(String sourceFileName) {
 
 loadProperties 'build.properties'
 
-apply plugin: 'net.minecraftforge.gradle.forge'
-
 repositories {
     maven {
         name = 'codechicken'
         url = "http://chickenbones.net/maven/"
     }
+    maven {
+        name = 'progwml6'
+        url "http://dvs1.progwml6.com/files/maven"
+    }
 }
 
 dependencies {
-    compile "codechicken:CodeChickenCore:$mcVersion-$cccVersion:dev"
-    compile "codechicken:NotEnoughItems:$mcVersion-$neiVersion:dev"
-    compile "codechicken:CodeChickenLib:$mcVersion-$cclVersion:dev"
+    compile "codechicken:CodeChickenCore:1.8-$cccVersion:dev"
+    compile "codechicken:NotEnoughItems:1.8-$neiVersion:dev"
+    compile "codechicken:CodeChickenLib:1.8-$cclVersion:dev"
+    deobfCompile "mezz.jei:jei_$mcVersion:$jeiVersion"
 }
 
-group = 'net.lomeli.lomlib'
-archivesBaseName = 'LomLib'
+group = "$group"
+archivesBaseName = "$baseName"
 version = "$releaseVersion"
 
 minecraft {
-    version = "$mcVersion-$mcfVersion" // grab latest forge
+    version = "$mcVersion-$mcfVersion"
     runDir = "run"
     mappings = "$mcpMap"
 }

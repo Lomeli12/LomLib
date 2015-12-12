@@ -61,8 +61,7 @@ public class ItemRenderWrapper implements IFlexibleBakedModel, ISmartBlockModel,
             GlStateManager.popMatrix();
 
             WorldRenderer worldRenderer = tess.getWorldRenderer();
-            worldRenderer.startDrawingQuads();
-            worldRenderer.setVertexFormat(DefaultVertexFormats.ITEM);
+            worldRenderer.begin(1, DefaultVertexFormats.POSITION_TEX_COLOR);
         }
         return dummyList;
     }
@@ -77,19 +76,18 @@ public class ItemRenderWrapper implements IFlexibleBakedModel, ISmartBlockModel,
         Pair<IBakedModel, Matrix4f> pair = itemRenderer.handlePerspective(cameraTransformType, selfPair);
 
         if (itemRenderer.useVanillaCameraTransform()) {
-            switch (cameraTransformType)//this is here since this model is Perspective aware, vanilla transforms aren't used.
-            {
+            switch (cameraTransformType) { //this is here since this model is Perspective aware, vanilla transforms aren't used.
                 case FIRST_PERSON:
-                    RenderItem.applyVanillaTransform(this.getItemCameraTransforms().firstPerson);
+                    FMLClientHandler.instance().getClient().getRenderItem().func_183005_a(this.getItemCameraTransforms().firstPerson);
                     break;
                 case GUI:
-                    RenderItem.applyVanillaTransform(this.getItemCameraTransforms().gui);
+                    FMLClientHandler.instance().getClient().getRenderItem().func_183005_a(this.getItemCameraTransforms().gui);
                     break;
                 case HEAD:
-                    RenderItem.applyVanillaTransform(this.getItemCameraTransforms().head);
+                    FMLClientHandler.instance().getClient().getRenderItem().func_183005_a(this.getItemCameraTransforms().head);
                     break;
                 case THIRD_PERSON:
-                    RenderItem.applyVanillaTransform(this.getItemCameraTransforms().thirdPerson);
+                    FMLClientHandler.instance().getClient().getRenderItem().func_183005_a(this.getItemCameraTransforms().thirdPerson);
                     break;
                 default:
                     break;
@@ -126,7 +124,7 @@ public class ItemRenderWrapper implements IFlexibleBakedModel, ISmartBlockModel,
     }
 
     @Override
-    public TextureAtlasSprite getTexture() {
+    public TextureAtlasSprite getParticleTexture() {
         return FMLClientHandler.instance().getClient().getTextureMapBlocks().getMissingSprite();
     }
 

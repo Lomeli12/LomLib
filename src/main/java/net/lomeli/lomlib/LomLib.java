@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
-import net.lomeli.lomlib.core.CommandLomLib;
+import net.lomeli.lomlib.core.command.CommandLomLib;
 import net.lomeli.lomlib.core.Proxy;
 import net.lomeli.lomlib.core.config.ModConfig;
 import net.lomeli.lomlib.core.config.annotations.ConfigBoolean;
@@ -25,10 +25,12 @@ public class LomLib {
 
     public static LogHelper logger;
 
-    @ConfigBoolean(defaultValue = true)
+    @ConfigBoolean(defaultValue = true, comment = "config.lomlib.patreon")
     public static boolean crown;
-    @ConfigBoolean(defaultValue = true, comment = "Overrides the \"Mod Options\" button in the pause menu to go to the Mod list menu so you can edit configs in-game")
+    @ConfigBoolean(defaultValue = true, comment = "config.lomlib.modmenu")
     public static boolean overrideModOptions;
+    @ConfigBoolean(defaultValue = true, comment = "config.lomlib.update")
+    public static boolean checkForUpdates;
 
     public static ModConfig config;
 
@@ -40,7 +42,7 @@ public class LomLib {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = LogHelper.createLogger(ModLibs.MOD_NAME);
-        config = new ModConfig(ModLibs.MOD_ID, event.getSuggestedConfigurationFile(), this.getClass());
+        config = new ModConfig(ModLibs.MOD_ID, event.getSuggestedConfigurationFile(), this);
         config.loadConfig();
 
         proxy.preInit();

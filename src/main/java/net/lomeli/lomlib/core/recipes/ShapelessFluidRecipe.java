@@ -133,19 +133,16 @@ public class ShapelessFluidRecipe implements IRecipe {
                             match = OreDictionary.itemMatches(itr.next(), slot, false);
                         }
                     }
-
                     if (match) {
                         inRecipe = true;
                         required.remove(next);
                         break;
                     }
                 }
-
                 if (!inRecipe)
                     return false;
             }
         }
-
         return required.isEmpty();
     }
 

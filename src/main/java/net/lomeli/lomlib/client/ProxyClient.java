@@ -2,7 +2,6 @@ package net.lomeli.lomlib.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiIngameMenu;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.util.ChatComponentTranslation;
 
@@ -10,14 +9,13 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.client.GuiModList;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.lomeli.lomlib.LomLib;
-import net.lomeli.lomlib.client.nei.NEIAddon;
+import net.lomeli.lomlib.client.addon.nei.NEIAddon;
 import net.lomeli.lomlib.client.patreon.LayerCrown;
 import net.lomeli.lomlib.client.render.ModelGenerator;
 import net.lomeli.lomlib.core.Proxy;
@@ -36,12 +34,12 @@ public class ProxyClient extends Proxy {
     @Override
     public void init() {
         super.init();
-        FMLCommonHandler.instance().bus().register(LomLib.config);
+        MinecraftForge.EVENT_BUS.register(LomLib.config);
         MinecraftForge.EVENT_BUS.register(new ModelGenerator());
         MinecraftForge.EVENT_BUS.register(this);
         LayerRenderer crownRenderer = new LayerCrown();
-        RenderUtils.addLayerToRenderer((RendererLivingEntity) Minecraft.getMinecraft().getRenderManager().skinMap.get("default"), crownRenderer);
-        RenderUtils.addLayerToRenderer((RendererLivingEntity) Minecraft.getMinecraft().getRenderManager().skinMap.get("slim"), crownRenderer);
+        RenderUtils.addLayerToRenderer(Minecraft.getMinecraft().getRenderManager().skinMap.get("default"), crownRenderer);
+        RenderUtils.addLayerToRenderer(Minecraft.getMinecraft().getRenderManager().skinMap.get("slim"), crownRenderer);
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(ItemCustomEgg.customEgg, new BasicItemMesh("lomlib:spawnEgg"));
     }
 
@@ -63,7 +61,7 @@ public class ProxyClient extends Proxy {
     public void guiPostAction(GuiScreenEvent.ActionPerformedEvent.Pre event) {
         if (LomLib.overrideModOptions && event.gui instanceof GuiIngameMenu) {
             if (event.button.id == 12) {
-                event.setCanceled(true);
+                //event.setCanceled(true);
                 FMLClientHandler.instance().getClient().displayGuiScreen(new GuiModList(event.gui));
             }
         }

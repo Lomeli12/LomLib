@@ -1,7 +1,9 @@
 package net.lomeli.lomlib.util;
 
-import java.util.ArrayList;
+import com.google.common.collect.Lists;
+
 import java.util.Iterator;
+import java.util.List;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,7 +14,7 @@ import net.minecraftforge.fml.common.registry.GameData;
 public class FluidUtil {
 
     public static boolean isFluidWater(Fluid fluid) {
-        return fluid.equals(FluidRegistry.WATER);
+        return FluidRegistry.WATER.equals(fluid);
     }
 
     public static boolean isFluidWater(FluidStack fluid) {
@@ -20,7 +22,7 @@ public class FluidUtil {
     }
 
     public static boolean isFluidLava(Fluid fluid) {
-        return fluid.equals(FluidRegistry.LAVA);
+        return FluidRegistry.LAVA.equals(fluid);
     }
 
     public static boolean isFluidLava(FluidStack fluid) {
@@ -35,32 +37,31 @@ public class FluidUtil {
         if (baseFluid != null && secondFluid != null) {
             if (areFluidsEqual(baseFluid, secondFluid)) {
                 baseFluid.amount += secondFluid.amount;
-                secondFluid = null;
             }
         }
     }
 
-    public static Fluid getContainerFluid(ItemStack stack) {
-        Fluid fluid = null;
+    public static FluidStack getContainerStack(ItemStack stack) {
         if (stack != null) {
-            if (FluidContainerRegistry.isFilledContainer(stack)) {
-                FluidStack temp = FluidContainerRegistry.getFluidForFilledItem(stack);
-                if (temp != null && temp.getFluid() != null)
-                    fluid = temp.getFluid();
-            } else if (stack.getItem() instanceof IFluidContainerItem) {
-                FluidStack fluidStack = ((IFluidContainerItem) stack.getItem()).getFluid(stack);
-                if (fluidStack != null && fluidStack.getFluid() != null)
-                    fluid = fluidStack.getFluid();
-            }
+            return FluidContainerRegistry.isFilledContainer(stack) ? FluidContainerRegistry.getFluidForFilledItem(stack) :
+                    (stack.getItem() instanceof IFluidContainerItem) ? ((IFluidContainerItem) stack.getItem()).getFluid(stack) : null;
         }
-        return fluid;
+        return null;
+    }
+
+    public static Fluid getContainerFluid(ItemStack stack) {
+        if (stack != null) {
+            FluidStack fluidStack = getContainerStack(stack);
+            return fluidStack != null ? fluidStack.getFluid() : null;
+        }
+        return null;
     }
 
     public static boolean isFilledContainer(ItemStack stack) {
         if (stack != null && stack.getItem() != null) {
             if (stack.getItem() instanceof IFluidContainerItem) {
                 FluidStack fluidStack = ((IFluidContainerItem) stack.getItem()).getFluid(stack);
-                if (fluidStack != null && fluidStack.getFluid() != null)
+                if (fluidStack != null && fluidStack.getFluid() != null && fluidStack.amount > 0)
                     return true;
             }
             return FluidContainerRegistry.isFilledContainer(stack);
@@ -68,8 +69,18 @@ public class FluidUtil {
         return false;
     }
 
-    public static ArrayList<ItemStack> getContainersForFluid(Fluid targetFluid) {
-        ArrayList<ItemStack> list = new ArrayList<ItemStack>();
+    public static ItemStack getEmptyContainer(ItemStack stack) {
+        if (stack != null && isFilledContainer(stack)) {
+            if (stack.getItem() instanceof IFluidContainerItem)
+                return null;
+            else
+                return FluidContainerRegistry.drainFluidContainer(stack);
+        }
+        return null;
+    }
+
+    public static List<ItemStack> getContainersForFluid(Fluid targetFluid) {
+        List<ItemStack> list = Lists.newArrayList();
 
         if (targetFluid != null) {
             for (FluidContainerRegistry.FluidContainerData data : FluidContainerRegistry.getRegisteredFluidContainerData()) {

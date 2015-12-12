@@ -22,24 +22,24 @@ public class LogHelper {
         return new LogHelper(mod);
     }
 
-    public void log(Level logLevel, Object message) {
-        this.logger.log(logLevel, "[" + modName + "] " + String.valueOf(message));
+    public void log(Level logLevel, Object message, Object...args) {
+        this.logger.log(logLevel, "[" + modName + "]: " + String.format(String.valueOf(message), args));
     }
 
-    public void logBasic(Object message) {
-        log(Level.INFO, message);
+    public void logBasic(Object message, Object...args) {
+        log(Level.INFO, message, args);
     }
 
-    public void logWarning(Object message) {
-        log(Level.WARN, message);
+    public void logWarning(Object message, Object...args) {
+        log(Level.WARN, message, args);
     }
 
-    public void logInfo(Object message) {
-        log(Level.INFO, message);
+    public void logInfo(Object message, Object...args) {
+        log(Level.INFO, message, args);
     }
 
-    public void logError(Object message) {
-        log(Level.ERROR, message);
+    public void logError(Object message, Object...args) {
+        log(Level.ERROR, message, args);
     }
 
     public void logException(Exception e) {
@@ -48,9 +48,5 @@ public class LogHelper {
 
     public Logger getLogger() {
         return logger;
-    }
-
-    public String getModName() {
-        return modName;
     }
 }

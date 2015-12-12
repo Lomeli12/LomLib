@@ -12,14 +12,19 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import net.lomeli.lomlib.lib.ModLibs;
 
-public class PatreonList {
+public class PatreonList implements Runnable {
     private List<String> idList;
 
     public PatreonList() {
         idList = new ArrayList<String>();
     }
 
-    public void getLatestList() {
+    @Override
+    public void run() {
+        getLatestList();
+    }
+
+    private void getLatestList() {
         try {
             idList.clear();
             Gson gson = new Gson();

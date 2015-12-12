@@ -23,10 +23,9 @@ import net.lomeli.lomlib.util.MathHelper;
 
 public class EntityUtil {
     public static List<SimpleEggInfo> eggList = new ArrayList<SimpleEggInfo>();
-    public static int count = 0;
-
     /**
      * Creates custom LomLib spawn egg for entity
+     *
      * @param entityClass
      * @return
      */
@@ -53,11 +52,12 @@ public class EntityUtil {
 
     /**
      * Check if entity is undead
+     *
      * @param entity
      * @return
      */
     public static boolean isUndeadEntity(EntityLivingBase entity) {
-        return isHostileEntity(entity) ? entity.getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD) : false;
+        return entity.getCreatureAttribute().equals(EnumCreatureAttribute.UNDEAD);
     }
 
     public static boolean isEntityMoving(Entity entity) {
@@ -70,25 +70,16 @@ public class EntityUtil {
      * @param entity
      * @param itemStack
      * @param dropRate
-     * @param hostile
      */
-    public static void entityDropItem(EntityLivingBase entity, ItemStack itemStack, double dropRate, boolean hostile) {
-        if (hostile) {
-            if (isHostileEntity(entity)) {
-                double random = Math.random();
-
-                if (random < dropRate)
-                    entity.entityDropItem(itemStack, 0.0F);
-            }
-        } else {
-            double random = Math.random();
-            if (random < dropRate)
-                entity.entityDropItem(itemStack, 0.0F);
-        }
+    public static void entityDropItem(EntityLivingBase entity, ItemStack itemStack, double dropRate) {
+        double random = Math.random();
+        if (random < dropRate)
+            entity.entityDropItem(itemStack, 0.0F);
     }
 
     /**
      * Gets the source of the damage
+     *
      * @param source
      * @return
      */
@@ -194,11 +185,11 @@ public class EntityUtil {
         }
     }
 
-
     private static final Pattern FAKE_PLAYER_PATTERN = Pattern.compile("^(?:\\[.*\\])|(?:ComputerCraft)$");
 
     /**
      * Checks player is a FakePlayer
+     *
      * @param player
      * @return
      */
@@ -208,6 +199,7 @@ public class EntityUtil {
 
     /**
      * Really poorly done ray
+     *
      * @param player
      * @param world
      * @return
@@ -242,6 +234,7 @@ public class EntityUtil {
 
     /**
      * Register a modded entity and custom spawn egg if needed.
+     *
      * @param entityClass
      * @param entityName
      * @param mod

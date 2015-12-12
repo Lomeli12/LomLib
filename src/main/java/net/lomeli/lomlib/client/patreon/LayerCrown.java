@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.relauncher.Side;
 
 import net.lomeli.lomlib.LomLib;
 import net.lomeli.lomlib.lib.ModLibs;
@@ -20,12 +21,15 @@ public class LayerCrown implements LayerRenderer {
     }
 
     public void doRender(EntityPlayer player, float renderTick) {
-        if (LomLib.proxy.list.isPatreon(player) && !player.isInvisible()) {
+        if (LomLib.crown && LomLib.proxy.list.isPatreon(player) && !player.isInvisible()) {
             if (Loader.isModLoaded("morph")) {
                 try {
-                    Object obj = ObfUtil.invokeMethod(Class.forName("morph.api.Api"), null, new String[]{"getMorphEntity"}, player.getName(), true);
-                    if (obj != null && !(obj instanceof EntityPlayer))
-                        return;
+                    Object morphAPI = ObfUtil.invokeMethod(Class.forName("me.ichun.mods.morph.api.MorphApi"), null, new String[]{"getApiImpl"});
+                    if (morphAPI != null) {
+                        boolean isMorphed = (Boolean) ObfUtil.invokeMethod(Class.forName("me.ichun.mods.morph.api.IApi"), morphAPI, new String[]{"hasMorph"}, player.getName(), Side.CLIENT);
+                        if (isMorphed)
+                            return;
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

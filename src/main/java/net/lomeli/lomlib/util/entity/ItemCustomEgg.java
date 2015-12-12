@@ -1,5 +1,7 @@
 package net.lomeli.lomlib.util.entity;
 
+import com.google.common.base.Strings;
+
 import java.util.List;
 
 import net.minecraft.block.BlockFence;
@@ -142,7 +144,7 @@ public class ItemCustomEgg extends Item {
         String s = ("" + StatCollector.translateToLocal(this.getUnlocalizedName() + ".name")).trim();
         if (stack.getItemDamage() < EntityUtil.eggList.size()) {
             SimpleEggInfo info = EntityUtil.eggList.get(stack.getItemDamage());
-            if (info != null && info.unlocalizedName != null)
+            if (info != null && !Strings.isNullOrEmpty(info.unlocalizedName))
                 s = s + " " + StatCollector.translateToLocal("entity." + info.unlocalizedName + ".name");
         }
         return s;
@@ -158,13 +160,12 @@ public class ItemCustomEgg extends Item {
         if (eggInfo != null) {
             for (int j = 0; j < 1; ++j) {
                 entity = eggInfo.createEntity(worldIn);
-
                 if (entity instanceof EntityLivingBase) {
                     EntityLiving entityliving = (EntityLiving) entity;
                     entity.setLocationAndAngles(x, y, z, MathHelper.wrapAngleTo180_float(worldIn.rand.nextFloat() * 360.0F), 0.0F);
                     entityliving.rotationYawHead = entityliving.rotationYaw;
                     entityliving.renderYawOffset = entityliving.rotationYaw;
-                    entityliving.func_180482_a(worldIn.getDifficultyForLocation(new BlockPos(entityliving)), (IEntityLivingData) null);
+                    entityliving.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityliving)), (IEntityLivingData) null);
                     worldIn.spawnEntityInWorld(entity);
                     entityliving.playLivingSound();
                 }

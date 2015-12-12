@@ -26,7 +26,7 @@ import net.lomeli.lomlib.LomLib;
  *
  * @author Lomeli12
  */
-public class VersionChecker {
+public class VersionChecker implements Runnable {
     private int mod_major, mod_minor, mod_rev;
     private boolean needsUpdate, isDirect, doneTelling;
     private String version, downloadURL, jsonURL, modid, modname, currentVer;
@@ -47,7 +47,8 @@ public class VersionChecker {
         FMLCommonHandler.instance().bus().register(this);
     }
 
-    public void checkForUpdates() {
+    @Override
+    public void run() {
         try {
             LomLib.logger.logInfo("Checking for updates for " + this.modname + "...");
             URL url = new URL(this.jsonURL);

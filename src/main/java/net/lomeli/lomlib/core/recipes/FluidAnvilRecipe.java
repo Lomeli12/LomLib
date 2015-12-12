@@ -1,6 +1,6 @@
 package net.lomeli.lomlib.core.recipes;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -12,7 +12,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.lomeli.lomlib.util.FluidUtil;
 
 public class FluidAnvilRecipe implements IAnvilRecipe {
-    private ItemStack output = null;
+    private final ItemStack output;
     private Object[] inputs = new Object[2];
     private int expLvlCost = 0;
     private boolean reverse;
@@ -90,9 +90,9 @@ public class FluidAnvilRecipe implements IAnvilRecipe {
             else if (target instanceof ItemStack) {
                 if (!OreDictionary.itemMatches((ItemStack) target, itemStack, false))
                     return false;
-            } else if (target instanceof ArrayList) {
+            } else if (target instanceof List) {
                 boolean matched = false;
-                for (ItemStack item : (ArrayList<ItemStack>) target) {
+                for (ItemStack item : (List<ItemStack>) target) {
                     matched = matched || OreDictionary.itemMatches(item, itemStack, false);
                 }
                 if (!matched)

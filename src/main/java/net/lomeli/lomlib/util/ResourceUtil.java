@@ -15,11 +15,6 @@ public class ResourceUtil {
         return new ResourceLocation(modid, resource);
     }
 
-    @Deprecated
-    public static ResourceLocation getResourceUtil(String modid, String resource) {
-        return getResource(modid, resource);
-    }
-
     public static ResourceLocation getGuiResource(String modid, String gui) {
         return getResource(modid, "textures/gui/" + gui);
     }
@@ -33,7 +28,7 @@ public class ResourceUtil {
     }
 
     public static TextureAtlasSprite getSprite(String modid, String resourceLoc) {
-        return TextureAtlasSprite.makeAtlasSprite(getResource(modid, resourceLoc));
+        return FMLClientHandler.instance().getClient().getTextureMapBlocks().getAtlasSprite(modid + ":" + resourceLoc);
     }
 
     public static File getModsFolder() {
@@ -46,6 +41,10 @@ public class ResourceUtil {
 
     public static File getConfigFolder() {
         return FMLCommonHandler.instance().getMinecraftServerInstance().getFile("config");
+    }
+
+    public static TextureAtlasSprite getSprite(ResourceLocation resource) {
+        return resource != null ? getSprite(resource.getResourceDomain(), resource.getResourcePath()) : null;
     }
 
     public static void bindTexture(ResourceLocation texture) {

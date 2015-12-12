@@ -7,13 +7,12 @@ public class ModLibs {
     public static final String CONFIG_FACTORY = "net.lomeli.lomlib.client.config.GuiConfigFactory";
     public static final String MINECRAFT_VERSION = "1.8";
 
-    public static final int MAJOR = 4, MINOR = 2, REVISION = 0;
+    public static final int MAJOR = 5, MINOR = 0, REVISION = 0;
 
     public static final String VERSION = MAJOR + "." + MINOR + "." + REVISION;
 
     public static final String UPDATE_URL = "https://raw.githubusercontent.com/Lomeli12/LomLib/master/update.json";
     public static final String PATREON_URL = "https://raw.githubusercontent.com/Lomeli12/LomLib/master/patreon.json";
-    public static final String CROWN = "config.lomlib.patreon";
 
     public static final String NEI_SHAPED = "recipe.lomlib:shapedFluid";
     public static final String NEI_SHAPELESS = "recipe.lomlib:shapelessFluid";
