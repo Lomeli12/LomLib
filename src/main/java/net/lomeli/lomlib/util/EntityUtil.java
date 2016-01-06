@@ -1,7 +1,5 @@
-package net.lomeli.lomlib.util.entity;
+package net.lomeli.lomlib.util;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import net.minecraft.block.Block;
@@ -17,28 +15,8 @@ import net.minecraft.util.*;
 import net.minecraft.world.World;
 
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
-
-import net.lomeli.lomlib.util.MathHelper;
 
 public class EntityUtil {
-    public static List<SimpleEggInfo> eggList = new ArrayList<SimpleEggInfo>();
-    /**
-     * Creates custom LomLib spawn egg for entity
-     *
-     * @param entityClass
-     * @return
-     */
-    public static ItemStack getEntitySpawnEgg(Class<? extends Entity> entityClass) {
-        if (!eggList.isEmpty()) {
-            for (int i = 0; i < eggList.size(); i++) {
-                SimpleEggInfo info = eggList.get(i);
-                if (info != null && info.entityClass != null && info.entityClass.equals(entityClass))
-                    return new ItemStack(ItemCustomEgg.customEgg, 1, i);
-            }
-        }
-        return null;
-    }
 
     /**
      * Check if entity is hostile
@@ -226,29 +204,5 @@ public class EntityUtil {
             d3 = ((net.minecraft.entity.player.EntityPlayerMP) player).theItemInWorldManager.getBlockReachDistance();
         Vec3 vec31 = vec3.addVector((double) f6 * d3, (double) f5 * d3, (double) f7 * d3);
         return world.rayTraceBlocks(vec3, vec31, hitLiquids, !hitLiquids, false);
-    }
-
-    public static void registerEntity(Class<? extends Entity> entityClass, String entityName, Object mod, int bkEggColor, int fgEggColor, int id) {
-        registerEntity(entityClass, entityName, mod, bkEggColor, fgEggColor, id, true);
-    }
-
-    /**
-     * Register a modded entity and custom spawn egg if needed.
-     *
-     * @param entityClass
-     * @param entityName
-     * @param mod
-     * @param bkEggColor
-     * @param fgEggColor
-     * @param id
-     * @param addEgg
-     */
-    public static void registerEntity(Class<? extends Entity> entityClass, String entityName, Object mod, int bkEggColor, int fgEggColor, int id, boolean addEgg) {
-        EntityRegistry.registerModEntity(entityClass, entityName, id, mod, 64, 3, true);
-        if (addEgg) {
-            SimpleEggInfo info = new SimpleEggInfo(entityClass, bkEggColor, fgEggColor, entityName);
-            if (!eggList.contains(info))
-                eggList.add(info);
-        }
     }
 }

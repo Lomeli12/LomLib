@@ -19,6 +19,7 @@ import net.lomeli.lomlib.core.recipes.AnvilRecipeManager;
 public class LomLibPlugin implements IModPlugin {
     public static final String CRAFTING = "minecraft.crafting";
     public static final String ANVIL = "lomlib.anvil";
+    private IJeiHelpers jeiHelpers;
 
     @Override
     public boolean isModLoaded() {
@@ -27,14 +28,29 @@ public class LomLibPlugin implements IModPlugin {
 
     @Override
     public void register(IModRegistry registry) {
-        registry.addRecipeCategories(new AnvilRecipeCategory());
+        IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
+        registry.addRecipeCategories(new AnvilRecipeCategory(guiHelper));
 
         registry.addRecipeHandlers(new ShapedFluidRecipeHandler(), new ShapelessFluidRecipeHandler(), new FluidAnvilRecipeHandler());
 
-        IGuiHelper guiHelper = JEIManager.guiHelper;
-        registry.addRecipeTransferHelpers(guiHelper.createRecipeTransferHelper(ContainerRepair.class, ANVIL, 1, 9, 10, 36));
+        registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerRepair.class, ANVIL, 0, 2, 3, 36);
         List<Object> recipes = Lists.newArrayList();
         recipes.addAll(AnvilRecipeManager.getRegistry());
         registry.addRecipes(recipes);
+    }
+
+    @Override
+    public void onJeiHelpersAvailable(IJeiHelpers jeiHelpers) {
+        this.jeiHelpers = jeiHelpers;
+    }
+
+    @Override
+    public void onItemRegistryAvailable(IItemRegistry itemRegistry) {
+
+    }
+
+    @Override
+    public void onRecipeRegistryAvailable(IRecipeRegistry recipeRegistry) {
+
     }
 }

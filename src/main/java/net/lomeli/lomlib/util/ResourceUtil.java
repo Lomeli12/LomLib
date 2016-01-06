@@ -16,14 +16,20 @@ public class ResourceUtil {
     }
 
     public static ResourceLocation getGuiResource(String modid, String gui) {
+        if (!gui.endsWith(".png") && !gui.endsWith(".PNG"))
+            gui += ".png";
         return getResource(modid, "textures/gui/" + gui);
     }
 
     public static ResourceLocation getEntityTexture(String modid, String texture) {
+        if (!texture.endsWith(".png") && !texture.endsWith(".PNG"))
+            texture += ".png";
         return getResource(modid, "textures/entities/" + texture);
     }
 
     public static ResourceLocation getModelTexture(String modid, String texture) {
+        if (!texture.endsWith(".png") && !texture.endsWith(".PNG"))
+            texture += ".png";
         return getResource(modid, "textures/model/" + texture);
     }
 

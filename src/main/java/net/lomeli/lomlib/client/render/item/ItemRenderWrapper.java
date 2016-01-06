@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -30,13 +29,13 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 @SuppressWarnings("deprecation")
 public class ItemRenderWrapper implements IFlexibleBakedModel, ISmartBlockModel, ISmartItemModel, IPerspectiveAwareModel {
     private static List<BakedQuad> dummyList = Collections.emptyList();
-    private final Pair<IBakedModel, Matrix4f> selfPair;
+    private final Pair<? extends IFlexibleBakedModel, Matrix4f> selfPair;
     public boolean disableRender = false;
     private IItemRenderer itemRenderer;
 
     public ItemRenderWrapper(IItemRenderer renderer) {
         this.itemRenderer = renderer;
-        selfPair = Pair.of((IBakedModel) this, null);
+        selfPair = Pair.of((IFlexibleBakedModel) this, null);
     }
 
     @Override
@@ -49,7 +48,8 @@ public class ItemRenderWrapper implements IFlexibleBakedModel, ISmartBlockModel,
         itemRenderer.preRenderItem();
         if (!disableRender) {
             Tessellator tess = Tessellator.getInstance();
-            tess.draw();
+            if (tess.getWorldRenderer().isDrawing)
+                tess.draw();
             GlStateManager.pushMatrix();
             GlStateManager.translate(0.5D, 0.5D, 0.5D);
             GlStateManager.scale(-1.0F, -1.0F, 1.0F);
@@ -61,7 +61,7 @@ public class ItemRenderWrapper implements IFlexibleBakedModel, ISmartBlockModel,
             GlStateManager.popMatrix();
 
             WorldRenderer worldRenderer = tess.getWorldRenderer();
-            worldRenderer.begin(1, DefaultVertexFormats.POSITION_TEX_COLOR);
+            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
         }
         return dummyList;
     }
@@ -72,8 +72,8 @@ public class ItemRenderWrapper implements IFlexibleBakedModel, ISmartBlockModel,
     }
 
     @Override
-    public Pair<IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
-        Pair<IBakedModel, Matrix4f> pair = itemRenderer.handlePerspective(cameraTransformType, selfPair);
+    public Pair<? extends IFlexibleBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType) {
+        Pair<? extends IFlexibleBakedModel, Matrix4f> pair = itemRenderer.handlePerspective(cameraTransformType, selfPair);
 
         if (itemRenderer.useVanillaCameraTransform()) {
             switch (cameraTransformType) { //this is here since this model is Perspective aware, vanilla transforms aren't used.

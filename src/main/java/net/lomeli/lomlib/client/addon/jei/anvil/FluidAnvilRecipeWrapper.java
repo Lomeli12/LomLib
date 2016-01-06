@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
 import net.lomeli.lomlib.client.addon.jei.BlankRecipeWrapper;
@@ -28,5 +29,9 @@ public class FluidAnvilRecipeWrapper extends BlankRecipeWrapper implements ICraf
     @Override
     public List<ItemStack> getOutputs() {
         return Collections.singletonList(recipe.recipeOutput());
+    }
+
+    @Override
+    public void drawAnimations(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight) {
     }
 }

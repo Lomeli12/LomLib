@@ -10,7 +10,6 @@ import net.lomeli.lomlib.core.recipes.ShapedFluidRecipe;
 import net.lomeli.lomlib.core.recipes.ShapelessFluidRecipe;
 import net.lomeli.lomlib.core.version.VersionChecker;
 import net.lomeli.lomlib.lib.ModLibs;
-import net.lomeli.lomlib.util.entity.ItemCustomEgg;
 
 public class Proxy {
     public PatreonList list;
@@ -23,7 +22,6 @@ public class Proxy {
         list = new PatreonList();
         if (LomLib.checkForUpdates)
             checkForUpdate();
-        ItemCustomEgg.initCustomEggs();
     }
 
     public void init() {

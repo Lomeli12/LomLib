@@ -1,5 +1,6 @@
 package net.lomeli.lomlib.client.addon.jei.anvil;
 
+import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.JEIManager;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -20,10 +21,10 @@ public class AnvilRecipeCategory implements IRecipeCategory {
     @Nonnull
     private final String localizedName;
 
-    public AnvilRecipeCategory() {
+    public AnvilRecipeCategory(IGuiHelper guiHelper) {
         ResourceLocation location = new ResourceLocation("minecraft:textures/gui/container/anvil.png");
         localizedName = LangUtil.translate("recipe.lomlib:anvilRecipe");
-        background = JEIManager.guiHelper.createDrawable(location, 15, 41, 143, 30);
+        background = guiHelper.createDrawable(location, 15, 41, 143, 30);
     }
 
     @Nonnull
@@ -51,6 +52,11 @@ public class AnvilRecipeCategory implements IRecipeCategory {
 
     @Override
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
+
+    }
+
+    @Override
+    public void drawAnimations(Minecraft minecraft) {
 
     }
 }

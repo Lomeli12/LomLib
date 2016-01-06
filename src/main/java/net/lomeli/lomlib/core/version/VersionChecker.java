@@ -78,7 +78,7 @@ public class VersionChecker implements Runnable {
         if (mod_minor < update.getMinor()) return true;
         if (mod_rev > update.getRevision()) return false;
         if (mod_rev < update.getRevision()) return true;
-        return true;
+        return false;
     }
 
     private void sendMessage() {

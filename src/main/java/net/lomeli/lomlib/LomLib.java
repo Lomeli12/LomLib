@@ -27,8 +27,6 @@ public class LomLib {
 
     @ConfigBoolean(defaultValue = true, comment = "config.lomlib.patreon")
     public static boolean crown;
-    @ConfigBoolean(defaultValue = true, comment = "config.lomlib.modmenu")
-    public static boolean overrideModOptions;
     @ConfigBoolean(defaultValue = true, comment = "config.lomlib.update")
     public static boolean checkForUpdates;
 

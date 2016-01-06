@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
 import net.lomeli.lomlib.client.addon.jei.BlankRecipeWrapper;
@@ -37,5 +38,10 @@ public class ShapelessFluidRecipeWrapper extends BlankRecipeWrapper implements I
     @Override
     public List<ItemStack> getOutputs() {
         return Collections.singletonList(recipe.getRecipeOutput());
+    }
+
+    @Override
+    public void drawAnimations(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight) {
+
     }
 }

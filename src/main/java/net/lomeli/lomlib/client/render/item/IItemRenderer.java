@@ -9,6 +9,8 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.item.ItemStack;
 
+import net.minecraftforge.client.model.IFlexibleBakedModel;
+
 @SuppressWarnings("deprecation")
 public interface IItemRenderer {
     public void preRenderItem();
@@ -23,7 +25,7 @@ public interface IItemRenderer {
 
     public void handleItemState(ItemStack stack);
 
-    public Pair<IBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType, Pair<IBakedModel, Matrix4f> pair);
+    public Pair<? extends IFlexibleBakedModel, Matrix4f> handlePerspective(ItemCameraTransforms.TransformType cameraTransformType, Pair<? extends IFlexibleBakedModel, Matrix4f> pair);
 
     public boolean useVanillaCameraTransform();
 }

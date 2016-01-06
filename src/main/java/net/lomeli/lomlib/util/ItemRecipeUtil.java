@@ -1,7 +1,5 @@
 package net.lomeli.lomlib.util;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -12,7 +10,7 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 
-import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -23,6 +21,7 @@ public class ItemRecipeUtil {
 
     /**
      * Allows you to remove the recipe for an item
+     *
      * @param item
      */
     public static void removeRecipe(ItemStack item) {
@@ -37,7 +36,7 @@ public class ItemRecipeUtil {
     }
 
     @SuppressWarnings("unchecked")
-    public static Object[] getItemShapedRecipe(ItemStack stack) {
+    public static Object[] getItemRecipe(ItemStack stack) {
         Object[] finalRecipe = new Object[9];
         if (stack != null) {
             List<IRecipe> possibleRecipe = new ArrayList<IRecipe>();
@@ -45,7 +44,7 @@ public class ItemRecipeUtil {
             for (Object recipe : CraftingManager.getInstance().getRecipeList()) {
                 if (recipe instanceof IRecipe) {
                     ItemStack output = ((IRecipe) recipe).getRecipeOutput();
-                    if (output != null && stack.getUnlocalizedName().equals(output.getUnlocalizedName()) && stack.getItemDamage() == output.getItemDamage())
+                    if (OreDictionary.itemMatches(stack, output, true))
                         possibleRecipe.add((IRecipe) recipe);
                 }
             }
@@ -70,7 +69,7 @@ public class ItemRecipeUtil {
                         }
                     }
                 } else if (main instanceof ShapedOreRecipe || main instanceof ShapelessOreRecipe) {
-                    Object[] inputs = null;
+                    Object[] inputs;
                     if (main instanceof ShapedOreRecipe)
                         inputs = ((ShapedOreRecipe) main).getInput();
                     else
@@ -84,7 +83,7 @@ public class ItemRecipeUtil {
                             finalRecipe[i] = obj;
                     }
                 } else if (main instanceof ShapedFluidRecipe || main instanceof ShapelessFluidRecipe) {
-                    Object[] inputs = null;
+                    Object[] inputs;
                     if (main instanceof ShapedFluidRecipe)
                         inputs = ((ShapedFluidRecipe) main).getInput();
                     else
@@ -96,22 +95,6 @@ public class ItemRecipeUtil {
                             finalRecipe[i] = ((ArrayList<?>) obj).get(0);
                         else
                             finalRecipe[i] = obj;
-                    }
-                } else {
-                    try {
-                        Field[] fields = main.getClass().getDeclaredFields();
-                        if (Loader.isModLoaded("IC2")) {
-                            if (Class.forName("ic2.core.AdvRecipe").isAssignableFrom(main.getClass()) || Class.forName("ic2.core.AdvShapelessRecipe").isAssignableFrom(main.getClass())) {
-                                Field inputs = fields[2];
-                                if (inputs.getType().isArray()) {
-                                    for (int i = 0; i < Array.getLength(inputs.get(main)); i++) {
-                                        if (i < finalRecipe.length)
-                                            finalRecipe[i] = Array.get(inputs.get(main), i);
-                                    }
-                                }
-                            }
-                        }
-                    } catch (Exception e) {
                     }
                 }
             }

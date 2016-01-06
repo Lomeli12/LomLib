@@ -8,7 +8,6 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.client.GuiModList;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -20,7 +19,6 @@ import net.lomeli.lomlib.client.patreon.LayerCrown;
 import net.lomeli.lomlib.client.render.ModelGenerator;
 import net.lomeli.lomlib.core.Proxy;
 import net.lomeli.lomlib.util.RenderUtils;
-import net.lomeli.lomlib.util.entity.ItemCustomEgg;
 
 public class ProxyClient extends Proxy {
 
@@ -36,11 +34,9 @@ public class ProxyClient extends Proxy {
         super.init();
         MinecraftForge.EVENT_BUS.register(LomLib.config);
         MinecraftForge.EVENT_BUS.register(new ModelGenerator());
-        MinecraftForge.EVENT_BUS.register(this);
         LayerRenderer crownRenderer = new LayerCrown();
         RenderUtils.addLayerToRenderer(Minecraft.getMinecraft().getRenderManager().skinMap.get("default"), crownRenderer);
         RenderUtils.addLayerToRenderer(Minecraft.getMinecraft().getRenderManager().skinMap.get("slim"), crownRenderer);
-        Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(ItemCustomEgg.customEgg, new BasicItemMesh("lomlib:spawnEgg"));
     }
 
     @Override
@@ -54,16 +50,5 @@ public class ProxyClient extends Proxy {
     public void messageClient(String msg) {
         if (Minecraft.getMinecraft().thePlayer != null)
             Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation(msg));
-    }
-
-    @SideOnly(Side.CLIENT)
-    @SubscribeEvent
-    public void guiPostAction(GuiScreenEvent.ActionPerformedEvent.Pre event) {
-        if (LomLib.overrideModOptions && event.gui instanceof GuiIngameMenu) {
-            if (event.button.id == 12) {
-                //event.setCanceled(true);
-                FMLClientHandler.instance().getClient().displayGuiScreen(new GuiModList(event.gui));
-            }
-        }
     }
 }

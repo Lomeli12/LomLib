@@ -23,11 +23,15 @@ public class CommandClearEntities extends CommandBaseLomLib {
         if (sender == null) return;
         List<?> entityList = sender.getEntityWorld().loadedEntityList;
         if (entityList == null || entityList.isEmpty()) return;
-        for (Object entity : entityList) {
-            if (entity instanceof Entity) {
-                if (!(entity instanceof EntityLivingBase))
-                    ((Entity) entity).setDead();
+        try {
+            for (Object entity : entityList) {
+                if (entity instanceof Entity) {
+                    if (!(entity instanceof EntityLivingBase))
+                        ((Entity) entity).setDead();
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         sendMessage(sender, "command.lomlib.clear-entities.success");
     }
