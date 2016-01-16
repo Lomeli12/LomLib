@@ -28,6 +28,7 @@ public class Proxy {
         LomLib.logger.logBasic("Init");
         new Thread(list).start();
         MinecraftForge.EVENT_BUS.register(new AnvilRecipeManager());
+        //AnvilRecipeManager.addRecipe(new FluidAnvilRecipe(new ItemStack(Items.diamond), Items.stick, Items.paper, 13));
     }
 
     public void postInit() {

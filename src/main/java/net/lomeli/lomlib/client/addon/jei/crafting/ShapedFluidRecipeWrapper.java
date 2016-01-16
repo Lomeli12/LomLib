@@ -3,6 +3,7 @@ package net.lomeli.lomlib.client.addon.jei.crafting;
 import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -57,5 +58,11 @@ public class ShapedFluidRecipeWrapper extends BlankRecipeWrapper implements ISha
     @Override
     public void drawAnimations(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight) {
 
+    }
+
+    @Nullable
+    @Override
+    public List<String> getTooltipStrings(int mouseX, int mouseY) {
+        return null;
     }
 }

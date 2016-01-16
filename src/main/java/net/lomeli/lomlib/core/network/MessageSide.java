@@ -5,10 +5,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import net.minecraftforge.fml.relauncher.Side;
+
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface SidedPacket {
-    boolean acceptedServerSide() default true;
+public @interface MessageSide {
+    boolean serverSide() default true;
 
-    boolean acceptedClientSide() default true;
+    boolean clientSide() default true;
 }

@@ -1,11 +1,11 @@
 package net.lomeli.lomlib.client.patreon;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,7 +16,7 @@ public class PatreonList implements Runnable {
     private List<String> idList;
 
     public PatreonList() {
-        idList = new ArrayList<String>();
+        idList = Lists.newArrayList();
     }
 
     @Override

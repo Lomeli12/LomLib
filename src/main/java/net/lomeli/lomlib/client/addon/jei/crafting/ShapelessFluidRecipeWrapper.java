@@ -3,6 +3,7 @@ package net.lomeli.lomlib.client.addon.jei.crafting;
 import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,5 +44,11 @@ public class ShapelessFluidRecipeWrapper extends BlankRecipeWrapper implements I
     @Override
     public void drawAnimations(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight) {
 
+    }
+
+    @Nullable
+    @Override
+    public List<String> getTooltipStrings(int mouseX, int mouseY) {
+        return null;
     }
 }

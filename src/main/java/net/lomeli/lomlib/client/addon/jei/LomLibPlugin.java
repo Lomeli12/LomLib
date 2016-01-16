@@ -22,11 +22,6 @@ public class LomLibPlugin implements IModPlugin {
     private IJeiHelpers jeiHelpers;
 
     @Override
-    public boolean isModLoaded() {
-        return Loader.isModLoaded("LomLib");
-    }
-
-    @Override
     public void register(IModRegistry registry) {
         IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
         registry.addRecipeCategories(new AnvilRecipeCategory(guiHelper));

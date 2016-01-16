@@ -1,8 +1,11 @@
 package net.lomeli.lomlib.client.addon.jei.anvil;
 
+import com.google.common.collect.ImmutableList;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -10,10 +13,12 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
+import net.minecraftforge.fluids.FluidStack;
+
 import net.lomeli.lomlib.client.addon.jei.BlankRecipeWrapper;
 import net.lomeli.lomlib.core.recipes.FluidAnvilRecipe;
 
-public class FluidAnvilRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper {
+public class FluidAnvilRecipeWrapper implements IRecipeWrapper {
     @Nonnull
     private final FluidAnvilRecipe recipe;
 
@@ -23,7 +28,7 @@ public class FluidAnvilRecipeWrapper extends BlankRecipeWrapper implements ICraf
 
     @Override
     public List getInputs() {
-        return Arrays.asList(recipe.recipeInputs());
+        return Collections.singletonList(recipe.recipeInputs());
     }
 
     @Override
@@ -33,5 +38,26 @@ public class FluidAnvilRecipeWrapper extends BlankRecipeWrapper implements ICraf
 
     @Override
     public void drawAnimations(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight) {
+    }
+
+    @Nullable
+    @Override
+    public List<String> getTooltipStrings(int mouseX, int mouseY) {
+        return null;
+    }
+
+    @Override
+    public List<FluidStack> getFluidInputs() {
+        return ImmutableList.of();
+    }
+
+    @Override
+    public List<FluidStack> getFluidOutputs() {
+        return ImmutableList.of();
+    }
+
+    @Override
+    public void drawInfo(@Nonnull Minecraft minecraft, int recipeWidth, int recipeHeight) {
+
     }
 }

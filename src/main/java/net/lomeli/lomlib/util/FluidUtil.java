@@ -18,7 +18,7 @@ public class FluidUtil {
     }
 
     public static boolean isFluidWater(FluidStack fluid) {
-        return isFluidWater(fluid.getFluid());
+        return fluid == null ? false : isFluidWater(fluid.getFluid());
     }
 
     public static boolean isFluidLava(Fluid fluid) {
@@ -26,7 +26,7 @@ public class FluidUtil {
     }
 
     public static boolean isFluidLava(FluidStack fluid) {
-        return isFluidLava(fluid.getFluid());
+        return fluid == null ? false : isFluidLava(fluid.getFluid());
     }
 
     public static boolean areFluidsEqual(FluidStack baseFluid, FluidStack secondFluid) {
@@ -71,12 +71,36 @@ public class FluidUtil {
 
     public static ItemStack getEmptyContainer(ItemStack stack) {
         if (stack != null && isFilledContainer(stack)) {
-            if (stack.getItem() instanceof IFluidContainerItem)
-                return null;
-            else
+            if (stack.getItem() instanceof IFluidContainerItem) {
+                ((IFluidContainerItem) stack.getItem()).drain(stack, Integer.MAX_VALUE, true);
+                return stack;
+            } else
                 return FluidContainerRegistry.drainFluidContainer(stack);
         }
         return null;
+    }
+
+    public static boolean isFluidContainer(ItemStack stack) {
+        if (stack == null || stack.getItem() == null) return false;
+        if (FluidContainerRegistry.isContainer(stack))
+            return true;
+        if (stack.getItem() instanceof IFluidContainerItem)
+            return true;
+        return false;
+    }
+
+    public static int getStackCapacity(ItemStack stack) {
+        if (stack.getItem() instanceof IFluidContainerItem)
+            return ((IFluidContainerItem) stack.getItem()).getCapacity(stack);
+        return FluidContainerRegistry.getContainerCapacity(stack);
+    }
+
+    public static void fillStack(ItemStack stack, FluidStack fluid) {
+        if (stack == null || stack.getItem() == null) return;
+        if (stack.getItem() instanceof IFluidContainerItem) {
+            ((IFluidContainerItem) stack.getItem()).fill(stack, fluid, true);
+        } else
+            FluidContainerRegistry.fillFluidContainer(fluid, stack);
     }
 
     public static List<ItemStack> getContainersForFluid(Fluid targetFluid) {

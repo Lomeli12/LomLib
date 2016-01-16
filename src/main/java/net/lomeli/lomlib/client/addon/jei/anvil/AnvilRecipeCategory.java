@@ -1,7 +1,6 @@
 package net.lomeli.lomlib.client.addon.jei.anvil;
 
 import mezz.jei.api.IGuiHelper;
-import mezz.jei.api.JEIManager;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.IRecipeCategory;
@@ -52,6 +51,8 @@ public class AnvilRecipeCategory implements IRecipeCategory {
 
     @Override
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
+        if (!(recipeWrapper instanceof FluidAnvilRecipeWrapper))
+            return;
 
     }
 

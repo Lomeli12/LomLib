@@ -1,26 +1,27 @@
-package net.lomeli.lomlib.client.patreon;
+package net.lomeli.lomlib.client.layer;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.relauncher.Side;
 
 import net.lomeli.lomlib.LomLib;
+import net.lomeli.lomlib.client.patreon.PatreonCrown;
 import net.lomeli.lomlib.lib.ModLibs;
 import net.lomeli.lomlib.util.ObfUtil;
 import net.lomeli.lomlib.util.RenderUtils;
 
-public class LayerCrown implements LayerRenderer {
+public class LayerCrown implements LayerRenderer<EntityPlayer> {
     public PatreonCrown model;
 
     public LayerCrown() {
         model = new PatreonCrown();
     }
 
-    public void doRender(EntityPlayer player, float renderTick) {
+    @Override
+    public void doRenderLayer(EntityPlayer player, float f, float f1, float partialTicks, float f2, float f3, float f4, float f5) {
         if (LomLib.crown && LomLib.proxy.list.isPatreon(player) && !player.isInvisible()) {
             if (Loader.isModLoaded("morph")) {
                 try {
@@ -34,8 +35,8 @@ public class LayerCrown implements LayerRenderer {
                     e.printStackTrace();
                 }
             }
-            float renderYaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * renderTick - (player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * renderTick);
-            float renderPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * renderTick;
+            float renderYaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * partialTicks - (player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * partialTicks);
+            float renderPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * partialTicks;
             GlStateManager.pushMatrix();
             GlStateManager.disableCull();
             GlStateManager.rotate(renderYaw, 0f, 1f, 0f);
@@ -50,12 +51,6 @@ public class LayerCrown implements LayerRenderer {
             GlStateManager.enableCull();
             GlStateManager.popMatrix();
         }
-    }
-
-    @Override
-    public void doRenderLayer(EntityLivingBase entity, float f, float f1, float renderTick, float f2, float f3, float f4, float f5) {
-        if (entity != null && entity instanceof EntityPlayer)
-            doRender((EntityPlayer) entity, renderTick);
     }
 
     @Override
