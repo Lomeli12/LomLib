@@ -35,12 +35,16 @@ public class LayerCrown implements LayerRenderer<EntityPlayer> {
                     e.printStackTrace();
                 }
             }
-            float renderYaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * partialTicks - (player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * partialTicks);
-            float renderPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * partialTicks;
+
+            float yaw = player.prevRotationYawHead + (player.rotationYawHead - player.prevRotationYawHead) * partialTicks;
+            float yawOffset = player.prevRenderYawOffset + (player.renderYawOffset - player.prevRenderYawOffset) * partialTicks;
+            float pitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * partialTicks;
+
             GlStateManager.pushMatrix();
             GlStateManager.disableCull();
-            GlStateManager.rotate(renderYaw, 0f, 1f, 0f);
-            GlStateManager.rotate(renderPitch, 1f, 0f, 0f);
+            GlStateManager.rotate(yawOffset, 0, -1, 0);
+            GlStateManager.rotate(yaw - 270, 0, 1, 0);
+            GlStateManager.rotate(pitch, 0, 0, 1);
             RenderUtils.translateToHeadLevel(player);
 
             RenderUtils.bindTexture(ModLibs.MOD_ID.toLowerCase(), "textures/Crown.png");

@@ -20,7 +20,7 @@ Open up your *build.gradle* file with your favorite text editor and add this to 
     repositories {
 	    maven {
         	name = 'Lomeli Repo'
-        	url = "http://lomeli12.net/maven/"
+        	url = "http://maven.lomeli12.net/"
     	}
 	}
 	

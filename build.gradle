@@ -47,6 +47,8 @@ dependencies {
 group = "$group"
 archivesBaseName = "$baseName"
 version = "$releaseVersion"
+sourceCompatibility = "$targetJDK"
+targetCompatibility = "$targetJDK"
 
 minecraft {
     version = "$mcVersion-$mcfVersion"
