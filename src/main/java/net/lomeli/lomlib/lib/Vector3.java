@@ -11,6 +11,9 @@ import net.lomeli.lomlib.util.MathHelper;
 public class Vector3 {
     private double x, y, z;
 
+    public Vector3(){
+    }
+
     public Vector3(double x, double y, double z) {
         this.x = x;
         this.y = y;
@@ -19,6 +22,10 @@ public class Vector3 {
 
     public Vector3(Vector3 vec) {
         this(vec.x, vec.y, vec.z);
+    }
+
+    public Vector3(Vec3 vec3) {
+        this(vec3.xCoord, vec3.yCoord, vec3.zCoord);
     }
 
     public Vector3 set(Vector3 vec) {

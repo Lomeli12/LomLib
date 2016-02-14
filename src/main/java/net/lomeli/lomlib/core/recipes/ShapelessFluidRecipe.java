@@ -45,7 +45,7 @@ public class ShapelessFluidRecipe implements IRecipe {
                 if (FluidUtil.isFilledContainer(itemStack))
                     input.add(FluidUtil.getContainersForFluid(FluidUtil.getContainerFluid(itemStack)));
                 else
-                    input.add(new ItemStack((Item) in));
+                    input.add(itemStack);
             } else if (in instanceof Block)
                 input.add(new ItemStack((Block) in));
             else if (in instanceof String) {

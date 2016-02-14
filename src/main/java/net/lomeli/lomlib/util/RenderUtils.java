@@ -248,60 +248,15 @@ public class RenderUtils {
     /**
      * Renders the given texture tiled into a GUI
      */
-    public static void renderTiledTextureAtlas(Minecraft mc, int x, int y, int width, int height, float depth, TextureAtlasSprite sprite) {
+    public static void renderTiledTextureAtlas(int x, int y, int width, int height, float depth, TextureAtlasSprite sprite) {
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 
         putTiledTextureQuads(worldrenderer, x, y, width, height, depth, sprite);
 
         tessellator.draw();
-    }
-
-    /**
-     * Adds a quad to the rendering pipeline. Call startDrawingQuads beforehand. You need to call draw() yourself.
-     */
-    public static void putTiledTextureQuads(WorldRenderer renderer, int x, int y, int width, int height, float depth, TextureAtlasSprite sprite) {
-        float u1 = sprite.getMinU();
-        float v1 = sprite.getMinV();
-
-        // tile vertically
-        do {
-            int renderHeight = Math.min(sprite.getIconHeight(), height);
-            height -= renderHeight;
-
-            float v2 = sprite.getInterpolatedV((16f * renderHeight) / (float) sprite.getIconHeight());
-
-            // we need to draw the quads per width too
-            int x2 = x;
-            int width2 = width;
-            // tile horizontally
-            do {
-                int renderWidth = Math.min(sprite.getIconWidth(), width2);
-                width2 -= renderWidth;
-
-                float u2 = sprite.getInterpolatedU((16f * renderWidth) / (float) sprite.getIconWidth());
-
-                renderer.pos(x2, y, depth).tex(u1, v1).endVertex();
-                renderer.pos(x2, y + renderHeight, depth).tex(u1, v2).endVertex();
-                renderer.pos(x2 + renderWidth, y + renderHeight, depth).tex(u2, v2).endVertex();
-                renderer.pos(x2 + renderWidth, y, depth).tex(u2, v1).endVertex();
-
-                x2 += renderWidth;
-            } while (width2 > 0);
-
-            y += renderHeight;
-        } while (height > 0);
-    }
-
-    public static void drawFluid(Minecraft mc, FluidStack fluid, int x, int y, float zLevel, int width, int height, int maxCapacity) {
-        if (fluid == null || fluid.getFluid() == null)
-            return;
-        ResourceLocation resource = fluid.getFluid().getStill(fluid);
-        TextureAtlasSprite sprite = mc.getTextureMapBlocks().getAtlasSprite(resource.toString());
-        int h = (int) (height * (float) fluid.amount / (float) maxCapacity);
-        renderTiledTextureAtlas(mc, x, y - h, width, h, zLevel, sprite);
     }
 
     public static void drawCutIcon(TextureAtlasSprite sprite, int x, int y, float zLevel, int width, int height, int cut) {
@@ -362,20 +317,20 @@ public class RenderUtils {
         renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
         bindTexture(TextureMap.locationBlocksTexture);
         //RenderUtil.setColorRGBA(color);
-        int brightness = Minecraft.getMinecraft().theWorld.getCombinedLight(pos, fluid.getFluid().getLuminosity());
+        int brightness = FMLClientHandler.instance().getClient().theWorld.getCombinedLight(pos, fluid.getFluid().getLuminosity());
 
         pre(x, y, z);
 
-        TextureAtlasSprite still = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(fluid.getFluid().getStill(fluid).toString());
-        TextureAtlasSprite flowing = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(fluid.getFluid().getFlowing(fluid).toString());
+        TextureAtlasSprite still = FMLClientHandler.instance().getClient().getTextureMapBlocks().getTextureExtry(fluid.getFluid().getStill(fluid).toString());
+        TextureAtlasSprite flowing = FMLClientHandler.instance().getClient().getTextureMapBlocks().getTextureExtry(fluid.getFluid().getFlowing(fluid).toString());
 
         // x/y/z2 - x/y/z1 is because we need the width/height/depth
-        putTexturedQuad(renderer, still, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.DOWN, color, brightness, false);
-        putTexturedQuad(renderer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.NORTH, color, brightness, true);
-        putTexturedQuad(renderer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.EAST, color, brightness, true);
-        putTexturedQuad(renderer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.SOUTH, color, brightness, true);
-        putTexturedQuad(renderer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.WEST, color, brightness, true);
-        putTexturedQuad(renderer, still, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.UP, color, brightness, false);
+        putTexturedQuad(renderer, still,   x1, y1, z1, x2-x1, y2-y1, z2-z1, EnumFacing.DOWN,  color, brightness, false);
+        putTexturedQuad(renderer, flowing, x1, y1, z1, x2-x1, y2-y1, z2-z1, EnumFacing.NORTH, color, brightness, true);
+        putTexturedQuad(renderer, flowing, x1, y1, z1, x2-x1, y2-y1, z2-z1, EnumFacing.EAST,  color, brightness, true);
+        putTexturedQuad(renderer, flowing, x1, y1, z1, x2-x1, y2-y1, z2-z1, EnumFacing.SOUTH, color, brightness, true);
+        putTexturedQuad(renderer, flowing, x1, y1, z1, x2-x1, y2-y1, z2-z1, EnumFacing.WEST,  color, brightness, true);
+        putTexturedQuad(renderer, still  , x1, y1, z1, x2-x1, y2-y1, z2-z1, EnumFacing.UP,    color, brightness, false);
 
         tessellator.draw();
 
@@ -419,6 +374,8 @@ public class RenderUtils {
     // x and x+w has to be within [0,1], same for y/h and z/d
     public static void putTexturedQuad(WorldRenderer renderer, TextureAtlasSprite sprite, double x, double y, double z, double w, double h, double d, EnumFacing face,
                                        int r, int g, int b, int a, int light1, int light2, boolean flowing) {
+        if(sprite == null)
+            return;
         double minU;
         double maxU;
         double minV;
@@ -518,5 +475,49 @@ public class RenderUtils {
                 renderer.pos(x2, y1, z2).color(r, g, b, a).tex(maxU, maxV).lightmap(light1, light2).endVertex();
                 break;
         }
+    }
+
+    public static void drawFluid(int x, int y, int width, int height, float depth, FluidStack fluidStack) {
+        if (fluidStack == null || fluidStack.getFluid() == null)
+            return;
+        TextureAtlasSprite fluidSprite = FMLClientHandler.instance().getClient().getTextureMapBlocks().getAtlasSprite(fluidStack.getFluid().getStill(fluidStack).toString());
+        applyColor(fluidStack.getFluid().getColor(fluidStack));
+        renderTiledTextureAtlas(x, y, width, height, depth, fluidSprite);
+    }
+
+    /**
+     * Adds a quad to the rendering pipeline. Call startDrawingQuads beforehand. You need to call draw() yourself.
+     */
+    public static void putTiledTextureQuads(WorldRenderer renderer, int x, int y, int width, int height, float depth, TextureAtlasSprite sprite) {
+        float u1 = sprite.getMinU();
+        float v1 = sprite.getMinV();
+
+        // tile vertically
+        do {
+            int renderHeight = Math.min(sprite.getIconHeight(), height);
+            height -= renderHeight;
+
+            float v2 = sprite.getInterpolatedV((16f * renderHeight) / (float) sprite.getIconHeight());
+
+            // we need to draw the quads per width too
+            int x2 = x;
+            int width2 = width;
+            // tile horizontally
+            do {
+                int renderWidth = Math.min(sprite.getIconWidth(), width2);
+                width2 -= renderWidth;
+
+                float u2 = sprite.getInterpolatedU((16f * renderWidth) / (float) sprite.getIconWidth());
+
+                renderer.pos(x2, y, depth).tex(u1, v1).endVertex();
+                renderer.pos(x2, y + renderHeight, depth).tex(u1, v2).endVertex();
+                renderer.pos(x2 + renderWidth, y + renderHeight, depth).tex(u2, v2).endVertex();
+                renderer.pos(x2 + renderWidth, y, depth).tex(u2, v1).endVertex();
+
+                x2 += renderWidth;
+            } while (width2 > 0);
+
+            y += renderHeight;
+        } while (height > 0);
     }
 }

@@ -7,14 +7,15 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
-import net.lomeli.lomlib.core.command.CommandLomLib;
 import net.lomeli.lomlib.core.Proxy;
+import net.lomeli.lomlib.core.command.CommandLomLib;
 import net.lomeli.lomlib.core.config.ModConfig;
 import net.lomeli.lomlib.core.config.annotations.ConfigBoolean;
 import net.lomeli.lomlib.lib.ModLibs;
 import net.lomeli.lomlib.util.LogHelper;
 
-@Mod(modid = ModLibs.MOD_ID, name = ModLibs.MOD_NAME, version = ModLibs.VERSION, guiFactory = ModLibs.CONFIG_FACTORY, acceptedMinecraftVersions = ModLibs.MINECRAFT_VERSION, dependencies = ModLibs.DEPENDENCIES)
+@Mod(modid = ModLibs.MOD_ID, name = ModLibs.MOD_NAME, version = ModLibs.VERSION, guiFactory = ModLibs.CONFIG_FACTORY,
+        acceptedMinecraftVersions = ModLibs.MINECRAFT_VERSION, dependencies = ModLibs.DEPENDENCIES)
 public class LomLib {
 
     @Mod.Instance
@@ -40,6 +41,7 @@ public class LomLib {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = LogHelper.createLogger(ModLibs.MOD_NAME);
+
         config = new ModConfig(ModLibs.MOD_ID, event.getSuggestedConfigurationFile(), this);
         config.loadConfig();
 
