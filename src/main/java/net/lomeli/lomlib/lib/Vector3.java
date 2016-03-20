@@ -28,6 +28,10 @@ public class Vector3 {
         this(vec3.xCoord, vec3.yCoord, vec3.zCoord);
     }
 
+    public Vector3(Entity entity) {
+        this(entity.posX, entity.posY, entity.posZ);
+    }
+
     public Vector3 set(Vector3 vec) {
         x = vec.x;
         y = vec.y;
@@ -133,6 +137,10 @@ public class Vector3 {
             return x == vec.x && y == vec.y && z == vec.z;
         }
         return false;
+    }
+
+    public boolean equals(double x0, double y0, double z0) {
+        return x == x0 && y == y0 && z == z0;
     }
 
     public double angle(Vector3 vec) {
