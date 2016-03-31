@@ -5,16 +5,16 @@ import com.google.common.collect.Maps;
 
 import java.util.Map;
 
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 
 public class LangUtil {
     private static String chatFormat = "/&";
-    private static Map<Character, EnumChatFormatting> formatMap;
+    private static Map<Character, TextFormatting> formatMap;
 
     static {
         formatMap = Maps.newHashMap();
-        for (EnumChatFormatting formatting : EnumChatFormatting.values())
+        for (TextFormatting formatting : TextFormatting.values())
             formatMap.put(formatting.formattingCode, formatting);
     }
 
@@ -25,13 +25,13 @@ public class LangUtil {
     }
 
     private static String translate(String unlocal) {
-        return StatCollector.translateToLocal(unlocal).replaceAll(chatFormat, "\u00a7");
+        return I18n.translateToLocal(unlocal).replaceAll(chatFormat, "\u00a7");
     }
 
-    private static EnumChatFormatting getFormatFromChar(char ch) {
-        EnumChatFormatting format = formatMap.get(ch);
+    private static TextFormatting getFormatFromChar(char ch) {
+        TextFormatting format = formatMap.get(ch);
         if (format == null)
-            format = EnumChatFormatting.RESET;
+            format = TextFormatting.RESET;
         return format;
     }
 }

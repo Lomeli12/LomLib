@@ -4,7 +4,7 @@ import com.google.common.base.Throwables;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 
@@ -20,18 +20,18 @@ public class PacketHandler {
         if (messages != null && messages.length > 0) {
             int count = 0;
             for (int i = 0; i < messages.length; i++) {
-                Class<? extends Message> msgClass = messages[i];
+                Class msgClass = messages[i];
                 if (msgClass != null) {
-                    MessageSide side = msgClass.getAnnotation(MessageSide.class);
+                    MessageSide side = (MessageSide) msgClass.getAnnotation(MessageSide.class);
                     if (side == null)
                         throw new RuntimeException("Message not sided. Message must use @MessageSide annotation!");
                     try {
                         if (side.serverSide()) {
-                            packetHandler.registerMessage(msgClass.newInstance(), msgClass, count, Side.SERVER);
+                            packetHandler.registerMessage(msgClass, msgClass, count, Side.SERVER);
                             count++;
                         }
                         if (side.clientSide()) {
-                            packetHandler.registerMessage(msgClass.newInstance(), msgClass, count, Side.CLIENT);
+                            packetHandler.registerMessage(msgClass, msgClass, count, Side.CLIENT);
                             count++;
                         }
                     } catch (Exception e) {
@@ -73,7 +73,7 @@ public class PacketHandler {
             // only send to relevant players
             if (player instanceof EntityPlayerMP) {
                 EntityPlayerMP playerMP = (EntityPlayerMP) player;
-                if (world.getPlayerManager().isPlayerWatchingChunk(playerMP, chunk.xPosition, chunk.zPosition)) {
+                if (world.getPlayerChunkManager().isPlayerWatchingChunk(playerMP, chunk.xPosition, chunk.zPosition)) {
                     sendTo(message, playerMP);
                 }
             }

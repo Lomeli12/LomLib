@@ -3,15 +3,15 @@ package net.lomeli.lomlib.lib;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
 import net.lomeli.lomlib.util.MathHelper;
 
 public class Vector3 {
     private double x, y, z;
 
-    public Vector3(){
+    public Vector3() {
     }
 
     public Vector3(double x, double y, double z) {
@@ -24,7 +24,7 @@ public class Vector3 {
         this(vec.x, vec.y, vec.z);
     }
 
-    public Vector3(Vec3 vec3) {
+    public Vector3(Vec3d vec3) {
         this(vec3.xCoord, vec3.yCoord, vec3.zCoord);
     }
 
@@ -46,8 +46,8 @@ public class Vector3 {
         return this;
     }
 
-    public Vec3 toVec3() {
-        return new Vec3(x, y, z);
+    public Vec3d toVec3() {
+        return new Vec3d(x, y, z);
     }
 
     public BlockPos toBlockPos() {

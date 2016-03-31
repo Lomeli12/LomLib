@@ -8,25 +8,22 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
+import net.minecraft.client.renderer.block.model.ModelManager;
 import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -48,7 +45,7 @@ public class RenderUtils {
      * @param renderer
      * @param layer
      */
-    public static void addLayerToRenderer(RendererLivingEntity renderer, LayerRenderer layer) {
+    public static void addLayerToRenderer(RenderLivingBase renderer, LayerRenderer layer) {
         if (renderer != null && layer != null)
             renderer.addLayer(layer);
     }
@@ -59,8 +56,9 @@ public class RenderUtils {
      * @param clazz
      * @return
      */
-    public static RendererLivingEntity getEntityRenderer(Class<?> clazz) {
-        return (RendererLivingEntity) Minecraft.getMinecraft().getRenderManager().entityRenderMap.get(clazz);
+
+    public static RenderLivingBase getEntityRenderer(Class<?> clazz) {
+        return (RenderLivingBase) Minecraft.getMinecraft().getRenderManager().entityRenderMap.get(clazz);
     }
 
     public static RenderPlayer getPlayerRenderer(String type) {
@@ -68,11 +66,11 @@ public class RenderUtils {
     }
 
     public static void setPlayerUseCount(EntityPlayer player, int count) {
-        if (player != null) player.itemInUseCount = count;
+        if (player != null) player.activeItemStackUseCount = count;
     }
 
     public static RenderItem getNewRenderItems() {
-        return new RenderItem(getTextureManager(), new ModelManager(Minecraft.getMinecraft().getTextureMapBlocks()));
+        return new RenderItem(getTextureManager(), new ModelManager(Minecraft.getMinecraft().getTextureMapBlocks()), Minecraft.getMinecraft().getItemColors());
     }
 
     /**
@@ -81,7 +79,7 @@ public class RenderUtils {
      * @param player
      */
     public static void translateToHeadLevel(EntityPlayer player) {
-        GlStateManager.translate(0, 0.08f - player.getEyeHeight() + (player.isSneaking() ? 0.1725 : 0) - (player.getCurrentArmor(3) != null ? 0.045f : 0f), 0);
+        GlStateManager.translate(0, 0.08f - player.getEyeHeight() + (player.isSneaking() ? 0.1725 : 0) - (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null ? 0.045f : 0f), 0);
     }
 
     public static void bindTexture(String modid, String texture) {
@@ -153,7 +151,7 @@ public class RenderUtils {
         for (String s : toolTipData) {
             String s_ = s;
             if (!first)
-                s_ = EnumChatFormatting.GRAY + s;
+                s_ = TextFormatting.GRAY + s;
             parsedTooltip.add(s_);
             first = false;
         }
@@ -230,14 +228,14 @@ public class RenderUtils {
         GlStateManager.disableAlpha();
         GlStateManager.blendFunc(0x302, 0x303);
         GlStateManager.shadeModel(0x1D01);
-        WorldRenderer worldRenderer = Tessellator.getInstance().getWorldRenderer();
-        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        worldRenderer.color(var8, var9, var10, var7);
-        worldRenderer.pos(par3, par2, z);
-        worldRenderer.pos(par1, par2, z);
-        worldRenderer.color(var12, var13, var14, var11);
-        worldRenderer.pos(par1, par4, z);
-        worldRenderer.pos(par3, par4, z);
+        VertexBuffer vertexBuffer = Tessellator.getInstance().getBuffer();
+        vertexBuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        vertexBuffer.color(var8, var9, var10, var7);
+        vertexBuffer.pos(par3, par2, z);
+        vertexBuffer.pos(par1, par2, z);
+        vertexBuffer.color(var12, var13, var14, var11);
+        vertexBuffer.pos(par1, par4, z);
+        vertexBuffer.pos(par3, par4, z);
         Tessellator.getInstance().draw();
         GlStateManager.shadeModel(0x1D00);
         GlStateManager.disableBlend();
@@ -250,18 +248,18 @@ public class RenderUtils {
      */
     public static void renderTiledTextureAtlas(int x, int y, int width, int height, float depth, TextureAtlasSprite sprite) {
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        VertexBuffer vertexBuffer = tessellator.getBuffer();
+        vertexBuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 
-        putTiledTextureQuads(worldrenderer, x, y, width, height, depth, sprite);
+        putTiledTextureQuads(vertexBuffer, x, y, width, height, depth, sprite);
 
         tessellator.draw();
     }
 
     public static void drawCutIcon(TextureAtlasSprite sprite, int x, int y, float zLevel, int width, int height, int cut) {
         Tessellator tess = Tessellator.getInstance();
-        WorldRenderer renderer = tess.getWorldRenderer();
+        VertexBuffer renderer = tess.getBuffer();
         renderer.begin(7, renderer.getVertexFormat());
         renderer.pos(x, y + height, zLevel).tex(sprite.getMinU(), sprite.getInterpolatedV(height)).endVertex();
         renderer.pos(x + width, y + height, zLevel).tex(sprite.getInterpolatedU(width), sprite.getInterpolatedV(height)).endVertex();
@@ -274,7 +272,7 @@ public class RenderUtils {
         float f = 0.00390625F;
         float f1 = 0.00390625F;
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer renderer = tessellator.getWorldRenderer();
+        VertexBuffer renderer = tessellator.getBuffer();
         renderer.begin(7, DefaultVertexFormats.POSITION_TEX);
         renderer.pos((double) (x + 0), (double) (y + height), (double) zLevel).tex((double) ((float) (textureX + 0) * f), (double) ((float) (textureY + height) * f1)).endVertex();
         renderer.pos((double) (x + width), (double) (y + height), (double) zLevel).tex((double) ((float) (textureX + width) * f), (double) ((float) (textureY + height) * f1)).endVertex();
@@ -313,7 +311,7 @@ public class RenderUtils {
      */
     public static void renderFluidCuboid(FluidStack fluid, BlockPos pos, double x, double y, double z, double x1, double y1, double z1, double x2, double y2, double z2, int color) {
         Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer renderer = tessellator.getWorldRenderer();
+        VertexBuffer renderer = tessellator.getBuffer();
         renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
         bindTexture(TextureMap.locationBlocksTexture);
         //RenderUtil.setColorRGBA(color);
@@ -325,12 +323,12 @@ public class RenderUtils {
         TextureAtlasSprite flowing = FMLClientHandler.instance().getClient().getTextureMapBlocks().getTextureExtry(fluid.getFluid().getFlowing(fluid).toString());
 
         // x/y/z2 - x/y/z1 is because we need the width/height/depth
-        putTexturedQuad(renderer, still,   x1, y1, z1, x2-x1, y2-y1, z2-z1, EnumFacing.DOWN,  color, brightness, false);
-        putTexturedQuad(renderer, flowing, x1, y1, z1, x2-x1, y2-y1, z2-z1, EnumFacing.NORTH, color, brightness, true);
-        putTexturedQuad(renderer, flowing, x1, y1, z1, x2-x1, y2-y1, z2-z1, EnumFacing.EAST,  color, brightness, true);
-        putTexturedQuad(renderer, flowing, x1, y1, z1, x2-x1, y2-y1, z2-z1, EnumFacing.SOUTH, color, brightness, true);
-        putTexturedQuad(renderer, flowing, x1, y1, z1, x2-x1, y2-y1, z2-z1, EnumFacing.WEST,  color, brightness, true);
-        putTexturedQuad(renderer, still  , x1, y1, z1, x2-x1, y2-y1, z2-z1, EnumFacing.UP,    color, brightness, false);
+        putTexturedQuad(renderer, still, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.DOWN, color, brightness, false);
+        putTexturedQuad(renderer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.NORTH, color, brightness, true);
+        putTexturedQuad(renderer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.EAST, color, brightness, true);
+        putTexturedQuad(renderer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.SOUTH, color, brightness, true);
+        putTexturedQuad(renderer, flowing, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.WEST, color, brightness, true);
+        putTexturedQuad(renderer, still, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.UP, color, brightness, false);
 
         tessellator.draw();
 
@@ -358,7 +356,7 @@ public class RenderUtils {
         GlStateManager.popMatrix();
     }
 
-    public static void putTexturedQuad(WorldRenderer renderer, TextureAtlasSprite sprite, double x, double y, double z, double w, double h, double d, EnumFacing face,
+    public static void putTexturedQuad(VertexBuffer renderer, TextureAtlasSprite sprite, double x, double y, double z, double w, double h, double d, EnumFacing face,
                                        int color, int brightness, boolean flowing) {
         int l1 = brightness >> 0x10 & 0xFFFF;
         int l2 = brightness & 0xFFFF;
@@ -372,9 +370,9 @@ public class RenderUtils {
     }
 
     // x and x+w has to be within [0,1], same for y/h and z/d
-    public static void putTexturedQuad(WorldRenderer renderer, TextureAtlasSprite sprite, double x, double y, double z, double w, double h, double d, EnumFacing face,
+    public static void putTexturedQuad(VertexBuffer renderer, TextureAtlasSprite sprite, double x, double y, double z, double w, double h, double d, EnumFacing face,
                                        int r, int g, int b, int a, int light1, int light2, boolean flowing) {
-        if(sprite == null)
+        if (sprite == null)
             return;
         double minU;
         double maxU;
@@ -488,7 +486,7 @@ public class RenderUtils {
     /**
      * Adds a quad to the rendering pipeline. Call startDrawingQuads beforehand. You need to call draw() yourself.
      */
-    public static void putTiledTextureQuads(WorldRenderer renderer, int x, int y, int width, int height, float depth, TextureAtlasSprite sprite) {
+    public static void putTiledTextureQuads(VertexBuffer renderer, int x, int y, int width, int height, float depth, TextureAtlasSprite sprite) {
         float u1 = sprite.getMinU();
         float v1 = sprite.getMinV();
 

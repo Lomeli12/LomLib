@@ -7,8 +7,6 @@ import java.util.List;
 
 import net.minecraft.inventory.ContainerRepair;
 
-import net.minecraftforge.fml.common.Loader;
-
 import net.lomeli.lomlib.client.addon.jei.anvil.AnvilRecipeCategory;
 import net.lomeli.lomlib.client.addon.jei.anvil.FluidAnvilRecipeHandler;
 import net.lomeli.lomlib.client.addon.jei.crafting.ShapedFluidRecipeHandler;
@@ -23,6 +21,7 @@ public class LomLibPlugin implements IModPlugin {
 
     @Override
     public void register(IModRegistry registry) {
+        jeiHelpers = registry.getJeiHelpers();
         IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
         registry.addRecipeCategories(new AnvilRecipeCategory(guiHelper));
 
@@ -32,21 +31,6 @@ public class LomLibPlugin implements IModPlugin {
         List<Object> recipes = Lists.newArrayList();
         recipes.addAll(AnvilRecipeManager.getRegistry());
         registry.addRecipes(recipes);
-    }
-
-    @Override
-    public void onJeiHelpersAvailable(IJeiHelpers jeiHelpers) {
-        this.jeiHelpers = jeiHelpers;
-    }
-
-    @Override
-    public void onItemRegistryAvailable(IItemRegistry itemRegistry) {
-
-    }
-
-    @Override
-    public void onRecipeRegistryAvailable(IRecipeRegistry recipeRegistry) {
-
     }
 
     @Override

@@ -11,20 +11,26 @@ buildscript {
     }
 }
 
-apply plugin: 'net.minecraftforge.gradle.forge'
-
-def loadProperties(String sourceFileName) {
-    def config = new Properties()
-    def propFile = new File(sourceFileName)
-    if (propFile.canRead()) {
-        config.load(new FileInputStream(propFile))
-        for (Map.Entry property in config) {
-            ext[property.key] = property.value;
-        }
-    }
+plugins {
+    id "com.jfrog.bintray" version "1.6"
 }
 
-loadProperties 'build.properties'
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+
+task loadProperties{
+    def prop = new Properties()
+    File configFile = new File('build.properties')
+    File mavenFile = new File('maven.properties')
+    if (configFile.isFile()) {
+        prop.load(new FileInputStream(configFile))
+    }
+    if (mavenFile.isFile()) {
+        prop.load(new FileInputStream(mavenFile))
+    }
+    project.ext.config = new ConfigSlurper().parse prop
+}
 
 repositories {
     maven {
@@ -38,22 +44,23 @@ repositories {
 }
 
 dependencies {
-    compile "codechicken:CodeChickenCore:1.8-$cccVersion:dev"
-    compile "codechicken:NotEnoughItems:1.8-$neiVersion:dev"
-    compile "codechicken:CodeChickenLib:1.8-$cclVersion:dev"
-    deobfCompile "mezz.jei:jei_$mcVersion:$jeiVersion"
+    //compile "codechicken:CodeChickenCore:1.8-${config.cccVersion:dev}"
+    //compile "codechicken:NotEnoughItems:1.8-${config.neiVersion:dev}"
+    //compile "codechicken:CodeChickenLib:1.8-${config.cclVersion:dev}"
+    deobfCompile "mezz.jei:jei_${config.mcVersion}:${config.jeiVersion}"
 }
 
-group = "$group"
-archivesBaseName = "$baseName"
-version = "$releaseVersion"
-sourceCompatibility = "$targetJDK"
-targetCompatibility = "$targetJDK"
+group = config.group
+archivesBaseName = config.baseName
+version = config.releaseVersion
+sourceCompatibility = config.targetJDK
+targetCompatibility = config.targetJDK
 
 minecraft {
-    version = "$mcVersion-$mcfVersion"
+    version = "${config.mcVersion}-${config.mcfVersion}"
     runDir = "run"
-    mappings = "$mcpMap"
+    replace '@VERSION@', project.version
+    mappings = config.mcpMap
 }
 
 processResources {
@@ -73,17 +80,17 @@ jar {
     manifest {
         attributes("FMLAT" : "lomlib_at.cfg")
     }
-    appendix = "$mcVersion"
+    appendix = config.mcVersion
     classifier = "universal"
 }
 
 sourceJar {
-    appendix = "$mcVersion"
+    appendix = config.mcVersion
 }
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output
-    appendix = "$mcVersion"
+    appendix = config.mcVersion
     classifier = "dev"
     manifest {
         attributes("FMLAT" : "lomlib-deobf_at.cfg")
@@ -97,4 +104,47 @@ tasks.withType(Zip) { task ->
     }
 }
 
-build.dependsOn sourceJar, deobfJar
+task writeNewPom << {
+    pom {
+        project {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            inceptionYear new Date().format("yyyy")
+            licenses {
+                license {
+                    name config.licenseName
+                    url config.licenseURL
+                    distribution 'repo'
+                }
+            }
+        }
+    }.writeTo("build/libs/pom.xml")
+}
+
+bintray {
+    if (config.get("apikey") != null) {
+        user = config.user
+        key = config.apikey
+        filesSpec {
+            from 'build/libs'
+            into '.'
+        }
+        publish = true
+        pkg {
+            repo = 'maven'
+            name = config.baseName
+            userOrg = config.user
+            licenses = [config.license]
+            vcsUrl = config.repo
+            version {
+                name = "${config.mcVersion}-${config.releaseVersion}"
+                desc = "${config.baseName} v${config.releaseVersion} for Minecraft ${config.mcVersion}"
+                released = new Date()
+                vcsTag = config.releaseVersion
+            }
+        }
+    }
+}
+
+build.dependsOn sourceJar, deobfJar, writeNewPom

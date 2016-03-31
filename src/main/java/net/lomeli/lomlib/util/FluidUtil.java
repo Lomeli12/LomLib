@@ -110,7 +110,7 @@ public class FluidUtil {
             for (FluidContainerRegistry.FluidContainerData data : FluidContainerRegistry.getRegisteredFluidContainerData()) {
                 Fluid fluid = data.fluid.getFluid();
                 if (fluid != null) {
-                    if (fluid.equals(targetFluid) || fluid.getID() == targetFluid.getID())
+                    if (fluid.equals(targetFluid) || fluid.getName().equals(targetFluid.getName()))
                         list.add(data.filledContainer);
                 }
             }
@@ -126,7 +126,7 @@ public class FluidUtil {
                             FluidStack fluidStack = ((IFluidContainerItem) item).getFluid(stack);
                             if (fluidStack != null && fluidStack.getFluid() != null) {
                                 Fluid fluid = fluidStack.getFluid();
-                                if (fluid.equals(targetFluid) || fluid.getID() == targetFluid.getID())
+                                if (fluid.equals(targetFluid) || fluid.getName().equals(targetFluid.getName()))
                                     list.add(stack);
                             }
                         }

@@ -16,10 +16,10 @@ public class AnvilRecipeManager {
         for (int i = 0; i < recipeList.size(); i++) {
             IAnvilRecipe recipe = recipeList.get(i);
             if (recipe != null) {
-                if (recipe.matches(event.left, event.right)) {
-                    ItemStack output = recipe.getCraftingResult(event.left, event.right);
-                    event.cost = recipe.recipeCost();
-                    event.output = output;
+                if (recipe.matches(event.getLeft(), event.getRight())) {
+                    ItemStack output = recipe.getCraftingResult(event.getLeft(), event.getRight());
+                    event.setCost(recipe.recipeCost());
+                    event.setOutput(output);
                 }
             }
         }

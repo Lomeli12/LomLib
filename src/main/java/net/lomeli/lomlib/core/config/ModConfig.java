@@ -9,10 +9,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
@@ -75,8 +73,8 @@ public class ModConfig {
                     if (field.isAnnotationPresent(ConfigInt.class) && field.getType() == int.class) {
                         ConfigInt fieldConfig = field.getAnnotation(ConfigInt.class);
                         if (!Strings.isNullOrEmpty(fieldConfig.categoryComment()))
-                            config.addCustomCategoryComment(fieldConfig.category(), StatCollector.translateToLocal(fieldConfig.categoryComment()));
-                        int value = config.getInt(!Strings.isNullOrEmpty(fieldConfig.nameOverride()) ? fieldConfig.nameOverride() : field.getName(), fieldConfig.category(), fieldConfig.defaultValue(), fieldConfig.minValue(), fieldConfig.maxValue(), StatCollector.translateToLocal(fieldConfig.comment()));
+                            config.addCustomCategoryComment(fieldConfig.category(), I18n.translateToLocal(fieldConfig.categoryComment()));
+                        int value = config.getInt(!Strings.isNullOrEmpty(fieldConfig.nameOverride()) ? fieldConfig.nameOverride() : field.getName(), fieldConfig.category(), fieldConfig.defaultValue(), fieldConfig.minValue(), fieldConfig.maxValue(), I18n.translateToLocal(fieldConfig.comment()));
                         ObfUtil.setFieldValue(clazz, null, value, field.getName());
                         if (!categories.containsKey(fieldConfig.category()))
                             categories.put(fieldConfig.category(), fieldConfig.categoryComment());
@@ -84,8 +82,8 @@ public class ModConfig {
                     } else if (field.isAnnotationPresent(ConfigFloat.class) && field.getType() == float.class) {
                         ConfigFloat fieldConfig = field.getAnnotation(ConfigFloat.class);
                         if (!Strings.isNullOrEmpty(fieldConfig.categoryComment()))
-                            config.addCustomCategoryComment(fieldConfig.category(), StatCollector.translateToLocal(fieldConfig.categoryComment()));
-                        float value = config.getFloat(!Strings.isNullOrEmpty(fieldConfig.nameOverride()) ? fieldConfig.nameOverride() : field.getName(), fieldConfig.category(), fieldConfig.defaultValue(), fieldConfig.minValue(), fieldConfig.maxValue(), StatCollector.translateToLocal(fieldConfig.comment()));
+                            config.addCustomCategoryComment(fieldConfig.category(), I18n.translateToLocal(fieldConfig.categoryComment()));
+                        float value = config.getFloat(!Strings.isNullOrEmpty(fieldConfig.nameOverride()) ? fieldConfig.nameOverride() : field.getName(), fieldConfig.category(), fieldConfig.defaultValue(), fieldConfig.minValue(), fieldConfig.maxValue(), I18n.translateToLocal(fieldConfig.comment()));
                         ObfUtil.setFieldValue(clazz, null, value, field.getName());
                         if (!categories.containsKey(fieldConfig.category()))
                             categories.put(fieldConfig.category(), fieldConfig.categoryComment());
@@ -93,8 +91,8 @@ public class ModConfig {
                     } else if (field.isAnnotationPresent(ConfigBoolean.class) && field.getType() == boolean.class) {
                         ConfigBoolean fieldConfig = field.getAnnotation(ConfigBoolean.class);
                         if (!Strings.isNullOrEmpty(fieldConfig.categoryComment()))
-                            config.addCustomCategoryComment(fieldConfig.category(), StatCollector.translateToLocal(fieldConfig.categoryComment()));
-                        boolean value = config.getBoolean(!Strings.isNullOrEmpty(fieldConfig.nameOverride()) ? fieldConfig.nameOverride() : field.getName(), fieldConfig.category(), fieldConfig.defaultValue(), StatCollector.translateToLocal(fieldConfig.comment()));
+                            config.addCustomCategoryComment(fieldConfig.category(), I18n.translateToLocal(fieldConfig.categoryComment()));
+                        boolean value = config.getBoolean(!Strings.isNullOrEmpty(fieldConfig.nameOverride()) ? fieldConfig.nameOverride() : field.getName(), fieldConfig.category(), fieldConfig.defaultValue(), I18n.translateToLocal(fieldConfig.comment()));
                         ObfUtil.setFieldValue(clazz, null, value, field.getName());
                         if (!categories.containsKey(fieldConfig.category()))
                             categories.put(fieldConfig.category(), fieldConfig.categoryComment());
@@ -102,8 +100,8 @@ public class ModConfig {
                     } else if (field.isAnnotationPresent(ConfigString.class) && field.getType() == String.class) {
                         ConfigString fieldConfig = field.getAnnotation(ConfigString.class);
                         if (!Strings.isNullOrEmpty(fieldConfig.categoryComment()))
-                            config.addCustomCategoryComment(fieldConfig.category(), StatCollector.translateToLocal(fieldConfig.categoryComment()));
-                        String value = config.getString(!Strings.isNullOrEmpty(fieldConfig.nameOverride()) ? fieldConfig.nameOverride() : field.getName(), fieldConfig.category(), fieldConfig.defaultValue(), StatCollector.translateToLocal(fieldConfig.comment()));
+                            config.addCustomCategoryComment(fieldConfig.category(), I18n.translateToLocal(fieldConfig.categoryComment()));
+                        String value = config.getString(!Strings.isNullOrEmpty(fieldConfig.nameOverride()) ? fieldConfig.nameOverride() : field.getName(), fieldConfig.category(), fieldConfig.defaultValue(), I18n.translateToLocal(fieldConfig.comment()));
                         ObfUtil.setFieldValue(clazz, null, value, field.getName());
                         if (!categories.containsKey(fieldConfig.category()))
                             categories.put(fieldConfig.category(), fieldConfig.categoryComment());
@@ -111,8 +109,8 @@ public class ModConfig {
                     } else if (field.isAnnotationPresent(ConfigStringArray.class) && field.getType() == String[].class) {
                         ConfigStringArray fieldConfig = field.getAnnotation(ConfigStringArray.class);
                         if (!Strings.isNullOrEmpty(fieldConfig.categoryComment()))
-                            config.addCustomCategoryComment(fieldConfig.category(), StatCollector.translateToLocal(fieldConfig.categoryComment()));
-                        String[] value = config.getStringList(!Strings.isNullOrEmpty(fieldConfig.nameOverride()) ? fieldConfig.nameOverride() : field.getName(), fieldConfig.category(), fieldConfig.defaultValue(), StatCollector.translateToLocal(fieldConfig.comment()));
+                            config.addCustomCategoryComment(fieldConfig.category(), I18n.translateToLocal(fieldConfig.categoryComment()));
+                        String[] value = config.getStringList(!Strings.isNullOrEmpty(fieldConfig.nameOverride()) ? fieldConfig.nameOverride() : field.getName(), fieldConfig.category(), fieldConfig.defaultValue(), I18n.translateToLocal(fieldConfig.comment()));
                         ObfUtil.setFieldValue(clazz, null, value, field.getName());
                         if (!categories.containsKey(fieldConfig.category()))
                             categories.put(fieldConfig.category(), fieldConfig.categoryComment());
@@ -138,8 +136,8 @@ public class ModConfig {
     }
 
     @SubscribeEvent
-    public void onConfigChange(ConfigChangedEvent.OnConfigChangedEvent eventArgs) {
-        if (eventArgs.modID.equalsIgnoreCase(modid))
+    public void onConfigChange(ConfigChangedEvent.OnConfigChangedEvent event) {
+        if (event.getModID().equalsIgnoreCase(modid))
             loadConfig();
     }
 }

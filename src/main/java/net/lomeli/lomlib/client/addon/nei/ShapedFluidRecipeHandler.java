@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.client.addon.nei;
+/*package net.lomeli.lomlib.client.addon.nei;
 
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.recipe.ShapedRecipeHandler;
@@ -101,3 +101,4 @@ public class ShapedFluidRecipeHandler extends ShapedRecipeHandler {
         return new CachedShapedRecipe(width, height, items, recipe.getRecipeOutput());
     }
 }
+*/

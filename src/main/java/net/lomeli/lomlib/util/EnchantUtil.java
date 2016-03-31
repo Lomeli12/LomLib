@@ -48,13 +48,14 @@ public class EnchantUtil {
     public static boolean stackHasEnchant(ItemStack stack, Enchantment enchantment) {
         if (stack == null || enchantment == null) return false;
         else {
+            int enchantmentId = Enchantment.getEnchantmentID(enchantment);
             NBTTagList nbttaglist = stack.getEnchantmentTagList();
             if (nbttaglist == null)
                 return false;
             else {
                 for (int i = 0; i < nbttaglist.tagCount(); ++i) {
                     int id = nbttaglist.getCompoundTagAt(i).getShort("id");
-                    if (id == enchantment.effectId)
+                    if (id == enchantmentId)
                         return true;
                 }
                 return false;

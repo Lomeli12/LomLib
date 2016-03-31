@@ -7,7 +7,8 @@ import java.util.List;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.BlockPos;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 
 public class CommandLomLib extends CommandBaseLomLib {
     List<String> commands;
@@ -36,7 +37,7 @@ public class CommandLomLib extends CommandBaseLomLib {
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] args) throws CommandException {
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
         if (sender != null) {
             if (args != null && args.length >= 1) {
                 boolean helpFlag = false;
@@ -47,8 +48,8 @@ public class CommandLomLib extends CommandBaseLomLib {
                 for (CommandBase commandBase : modCommands) {
                     if (helpFlag)
                         sendMessage(sender, "/" + getCommandName() + " " + commandBase.getCommandName());
-                    else if (commandBase.getCommandName().equalsIgnoreCase(args[0]) && commandBase.canCommandSenderUseCommand(sender))
-                        commandBase.processCommand(sender, args);
+                    else if (commandBase.getCommandName().equalsIgnoreCase(args[0]) && commandBase.checkPermission(server, sender))
+                        commandBase.execute(server, sender, args);
                 }
             } else
                 sendMessage(sender, getCommandUsage(sender));
@@ -56,14 +57,14 @@ public class CommandLomLib extends CommandBaseLomLib {
     }
 
     @Override
-    public List addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
+    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos pos) {
         if (sender != null && args != null) {
             if (args.length == 1)
                 return CommandBase.getListOfStringsMatchingLastWord(args, commands);
             else if (args.length >= 2) {
                 for (CommandBase command : modCommands) {
                     if (command.getCommandName().equalsIgnoreCase(args[0]))
-                        return command.addTabCompletionOptions(sender, args, pos);
+                        return command.getTabCompletionOptions(server, sender, args, pos);
                 }
             }
         }

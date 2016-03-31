@@ -4,14 +4,9 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.ItemMeshDefinition;
-import net.minecraft.client.resources.model.IBakedModel;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 
 import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import net.lomeli.lomlib.LomLib;
@@ -43,7 +38,7 @@ public class ModelGenerator {
         if (specialRenders.size() > 0) {
             for (ISpecialRender renderHandler : specialRenders) {
                 IItemRenderer renderer = renderHandler.getRenderer();
-                event.modelRegistry.putObject(new ModelResourceLocation(renderHandler.resourceName(), "inventory"), new ItemRenderWrapper(renderer));
+                event.getModelRegistry().putObject(new ModelResourceLocation(renderHandler.resourceName(), "inventory"), new ItemRenderWrapper(renderer));
             }
         }
     }

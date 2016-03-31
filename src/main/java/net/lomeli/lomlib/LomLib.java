@@ -18,7 +18,7 @@ import net.lomeli.lomlib.util.LogHelper;
         acceptedMinecraftVersions = ModLibs.MINECRAFT_VERSION, dependencies = ModLibs.DEPENDENCIES)
 public class LomLib {
 
-    @Mod.Instance
+    @Mod.Instance(ModLibs.MOD_ID)
     public static LomLib instance;
 
     @SidedProxy(clientSide = ModLibs.CLIENT, serverSide = ModLibs.COMMON)

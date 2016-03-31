@@ -2,18 +2,15 @@ package net.lomeli.lomlib.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderPlayer;
-import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.text.TextComponentTranslation;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.Loader;
 
 import net.lomeli.lomlib.LomLib;
-import net.lomeli.lomlib.client.addon.nei.NEIAddon;
 import net.lomeli.lomlib.client.layer.LayerCrown;
 import net.lomeli.lomlib.client.layer.LayerCustomBipedArmor;
+import net.lomeli.lomlib.client.models.ModelHandler;
 import net.lomeli.lomlib.client.render.ModelGenerator;
 import net.lomeli.lomlib.core.Proxy;
 import net.lomeli.lomlib.util.RenderUtils;
@@ -30,6 +27,7 @@ public class ProxyClient extends Proxy {
     @Override
     public void init() {
         super.init();
+        ModelHandler.registerColorProviers();
         MinecraftForge.EVENT_BUS.register(LomLib.config);
         MinecraftForge.EVENT_BUS.register(new ModelGenerator());
         RenderPlayer renderer = RenderUtils.getPlayerRenderer("default");
@@ -52,6 +50,6 @@ public class ProxyClient extends Proxy {
     @Override
     public void messageClient(String msg) {
         if (Minecraft.getMinecraft().thePlayer != null)
-            Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentTranslation(msg));
+            Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new TextComponentTranslation(msg));
     }
 }

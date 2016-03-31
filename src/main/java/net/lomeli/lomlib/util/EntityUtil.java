@@ -2,7 +2,6 @@ package net.lomeli.lomlib.util;
 
 import java.util.regex.Pattern;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -10,8 +9,11 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import net.minecraftforge.common.util.FakePlayer;
@@ -95,72 +97,27 @@ public class EntityUtil {
         return teleportTo(world, telporter, d0, d1, d2);
     }
 
-    public static boolean teleportToEntity(World world, EntityLivingBase telporter, Entity p_70816_1_) {
-        Vec3 vec3 = new Vec3(telporter.posX - p_70816_1_.posX, telporter.getEntityBoundingBox().minY + (double) (telporter.height / 2.0F) - p_70816_1_.posY + (double) p_70816_1_.getEyeHeight(), telporter.posZ - p_70816_1_.posZ);
-        vec3 = vec3.normalize();
+    public static boolean teleportToEntity(World world, EntityLivingBase telporter, Entity target) {
+        Vec3d vec3d = new Vec3d(telporter.posX - target.posX, telporter.getEntityBoundingBox().minY + (double) (telporter.height / 2.0F) - target.posY + (double) target.getEyeHeight(), telporter.posZ - target.posZ);
+        vec3d = vec3d.normalize();
         double d0 = 16.0D;
-        double d1 = telporter.posX + (world.rand.nextDouble() - 0.5D) * 8.0D - vec3.xCoord * d0;
-        double d2 = telporter.posY + (double) (world.rand.nextInt(16) - 8) - vec3.yCoord * d0;
-        double d3 = telporter.posZ + (world.rand.nextDouble() - 0.5D) * 8.0D - vec3.zCoord * d0;
+        double d1 = telporter.posX + (world.rand.nextDouble() - 0.5D) * 8.0D - vec3d.xCoord * d0;
+        double d2 = telporter.posY + (double) (world.rand.nextInt(16) - 8) - vec3d.yCoord * d0;
+        double d3 = telporter.posZ + (world.rand.nextDouble() - 0.5D) * 8.0D - vec3d.zCoord * d0;
         return teleportTo(world, telporter, d1, d2, d3);
     }
 
-    public static boolean teleportTo(World worldObj, EntityLivingBase telporter, double p_70825_1_, double p_70825_3_, double p_70825_5_) {
-        net.minecraftforge.event.entity.living.EnderTeleportEvent event = new net.minecraftforge.event.entity.living.EnderTeleportEvent(telporter, p_70825_1_, p_70825_3_, p_70825_5_, 0);
+    public static boolean teleportTo(World world, EntityLivingBase telporter, double x, double y, double z) {
+        net.minecraftforge.event.entity.living.EnderTeleportEvent event = new net.minecraftforge.event.entity.living.EnderTeleportEvent(telporter, x, y, z, 0);
         if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event)) return false;
-        double d3 = telporter.posX;
-        double d4 = telporter.posY;
-        double d5 = telporter.posZ;
-        telporter.posX = event.targetX;
-        telporter.posY = event.targetY;
-        telporter.posZ = event.targetZ;
-        boolean flag = false;
-        BlockPos blockpos = new BlockPos(telporter.posX, telporter.posY, telporter.posZ);
+        boolean flag = telporter.teleportTo_(event.getTargetX(), event.getTargetY(), event.getTargetZ());
 
-        if (worldObj.isBlockLoaded(blockpos)) {
-            boolean flag1 = false;
-
-            while (!flag1 && blockpos.getY() > 0) {
-                BlockPos blockpos1 = blockpos.down();
-                Block block = worldObj.getBlockState(blockpos1).getBlock();
-
-                if (block.getMaterial().blocksMovement())
-                    flag1 = true;
-                else {
-                    --telporter.posY;
-                    blockpos = blockpos1;
-                }
-            }
-
-            if (flag1) {
-                telporter.setPositionAndUpdate(telporter.posX, telporter.posY, telporter.posZ);
-
-                if (worldObj.getCollidingBoundingBoxes(telporter, telporter.getEntityBoundingBox()).isEmpty() && !worldObj.isAnyLiquid(telporter.getEntityBoundingBox()))
-                    flag = true;
-            }
+        if (flag) {
+            world.playSound((EntityPlayer) null, telporter.prevPosX, telporter.prevPosY, telporter.prevPosZ, SoundEvents.entity_endermen_teleport, telporter.getSoundCategory(), 1.0F, 1.0F);
+            telporter.playSound(SoundEvents.entity_endermen_teleport, 1.0F, 1.0F);
         }
 
-        if (!flag) {
-            telporter.setPosition(d3, d4, d5);
-            return false;
-        } else {
-            short short1 = 128;
-
-            for (int i = 0; i < short1; ++i) {
-                double d9 = (double) i / ((double) short1 - 1.0D);
-                float f = (worldObj.rand.nextFloat() - 0.5F) * 0.2F;
-                float f1 = (worldObj.rand.nextFloat() - 0.5F) * 0.2F;
-                float f2 = (worldObj.rand.nextFloat() - 0.5F) * 0.2F;
-                double d6 = d3 + (telporter.posX - d3) * d9 + (worldObj.rand.nextDouble() - 0.5D) * (double) telporter.width * 2.0D;
-                double d7 = d4 + (telporter.posY - d4) * d9 + worldObj.rand.nextDouble() * (double) telporter.height;
-                double d8 = d5 + (telporter.posZ - d5) * d9 + (worldObj.rand.nextDouble() - 0.5D) * (double) telporter.width * 2.0D;
-                worldObj.spawnParticle(EnumParticleTypes.PORTAL, d6, d7, d8, (double) f, (double) f1, (double) f2, new int[0]);
-            }
-
-            worldObj.playSoundEffect(d3, d4, d5, "mob.endermen.portal", 1.0F, 1.0F);
-            telporter.playSound("mob.endermen.portal", 1.0F, 1.0F);
-            return true;
-        }
+        return flag;
     }
 
     private static final Pattern FAKE_PLAYER_PATTERN = Pattern.compile("^(?:\\[.*\\])|(?:ComputerCraft)$");
@@ -182,17 +139,17 @@ public class EntityUtil {
      * @param world
      * @return
      */
-    public static MovingObjectPosition rayTrace(EntityPlayer player, World world) {
+    public static RayTraceResult rayTrace(EntityPlayer player, World world) {
         return rayTrace(player, world, true);
     }
 
-    public static MovingObjectPosition rayTrace(EntityPlayer player, World world, boolean hitLiquids) {
+    public static RayTraceResult rayTrace(EntityPlayer player, World world, boolean hitLiquids) {
         float f = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch);
         float f1 = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw);
         double d0 = player.prevPosX + (player.posX - player.prevPosX);
         double d1 = player.prevPosY + (player.posY - player.prevPosY) + (double) (world.isRemote ? player.getEyeHeight() - player.getDefaultEyeHeight() : player.getEyeHeight());
         double d2 = player.prevPosZ + (player.posZ - player.prevPosZ);
-        Vec3 vec3 = new Vec3(d0, d1, d2);
+        Vec3d vec3 = new Vec3d(d0, d1, d2);
         float f2 = (float) MathHelper.cos(-f1 * 0.017453292F - (float) Math.PI);
         float f3 = (float) MathHelper.sin(-f1 * 0.017453292F - (float) Math.PI);
         float f4 = (float) -MathHelper.cos(-f * 0.017453292F);
@@ -201,8 +158,8 @@ public class EntityUtil {
         float f7 = f2 * f4;
         double d3 = 5.0D;
         if (player instanceof net.minecraft.entity.player.EntityPlayerMP)
-            d3 = ((net.minecraft.entity.player.EntityPlayerMP) player).theItemInWorldManager.getBlockReachDistance();
-        Vec3 vec31 = vec3.addVector((double) f6 * d3, (double) f5 * d3, (double) f7 * d3);
+            d3 = ((EntityPlayerMP) player).interactionManager.getBlockReachDistance();
+        Vec3d vec31 = vec3.addVector((double) f6 * d3, (double) f5 * d3, (double) f7 * d3);
         return world.rayTraceBlocks(vec3, vec31, hitLiquids, !hitLiquids, false);
     }
 }

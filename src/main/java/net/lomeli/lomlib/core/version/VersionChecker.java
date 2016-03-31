@@ -8,7 +8,7 @@ import java.net.URL;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.text.TextComponentString;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
@@ -45,6 +45,34 @@ public class VersionChecker implements Runnable {
         this.doneTelling = true;
 
         MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    public VersionChecker(String jsonURL, String modid, String modname) {
+        this(jsonURL, modid, modname, 0, 0, 0);
+        int[] arr = getVersionFromID(modid);
+        this.mod_major = arr[0];
+        this.mod_minor = arr[1];
+        this.mod_rev = arr[2];
+        this.currentVer = this.mod_major + "." + this.mod_minor + "." + this.mod_rev;
+    }
+
+    private int[] getVersionFromID(String str) {
+        int[] versionNumb = {0, 0, 0};
+        String[] arr = str.split(".");
+        for (int i = 0; i < 3; i++) {
+            if (i < arr.length && i < versionNumb.length)
+                versionNumb[i] = parseInt(arr[i]);
+        }
+        return versionNumb;
+    }
+
+    private int parseInt(String str) {
+        try {
+            return Integer.parseInt(str);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     @Override
@@ -110,11 +138,11 @@ public class VersionChecker implements Runnable {
             EntityPlayer player = Minecraft.getMinecraft().thePlayer;
             if (this.needsUpdate) {
                 if (!this.version.isEmpty() && this.doneTelling) {
-                    player.addChatComponentMessage(new ChatComponentText(LangUtil.translate("message.lomlib.update.message", this.modname, this.downloadURL)));
+                    player.addChatComponentMessage(new TextComponentString(LangUtil.translate("message.lomlib.update.message", this.modname, this.downloadURL)));
                     if (this.changeList != null && this.changeList.length > 0) {
-                        player.addChatComponentMessage(new ChatComponentText(LangUtil.translate("message.lomlib.update.changelog")));
+                        player.addChatComponentMessage(new TextComponentString(LangUtil.translate("message.lomlib.update.changelog")));
                         for (String change : changeList)
-                            player.addChatComponentMessage(new ChatComponentText("- " + change));
+                            player.addChatComponentMessage(new TextComponentString("- " + change));
                     }
                     this.doneTelling = true;
                 }

@@ -5,8 +5,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 
 public class BasicInventory implements IInventory {
     private String baseName, customName;
@@ -126,8 +126,8 @@ public class BasicInventory implements IInventory {
     }
 
     @Override
-    public IChatComponent getDisplayName() {
-        return new ChatComponentTranslation(getName());
+    public ITextComponent getDisplayName() {
+        return new TextComponentTranslation(getName());
     }
 
     public void setCustomName(String name) {

@@ -5,7 +5,7 @@ import io.netty.buffer.ByteBuf;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * Additional utils for ByteBuf
@@ -55,15 +55,11 @@ public class ByteUtil {
     }
 
     public static void writeBlockPos(ByteBuf buffer, BlockPos pos) {
-        buffer.writeInt(pos.getX());
-        buffer.writeInt(pos.getY());
-        buffer.writeInt(pos.getZ());
+        buffer.writeLong(pos.toLong());
     }
 
     public static BlockPos readBlockPos(ByteBuf buffer) {
-        int x = buffer.readInt();
-        int y = buffer.readInt();
-        int z = buffer.readInt();
-        return new BlockPos(x, y, z);
+        long posLong = buffer.readLong();
+        return BlockPos.fromLong(posLong);
     }
 }

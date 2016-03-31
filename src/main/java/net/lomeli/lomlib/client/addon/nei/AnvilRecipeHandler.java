@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.client.addon.nei;
+/*package net.lomeli.lomlib.client.addon.nei;
 
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
@@ -132,3 +132,4 @@ public class AnvilRecipeHandler extends TemplateRecipeHandler {
         }
     }
 }
+*/

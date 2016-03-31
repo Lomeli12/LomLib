@@ -2,7 +2,7 @@ package net.lomeli.lomlib.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.*;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 
@@ -26,7 +26,7 @@ public class BlockUtil {
     }
 
     public static float getDistance(BlockPos pos1, BlockPos pos2) {
-        return net.minecraft.util.MathHelper.sqrt_double(pos1.distanceSq(pos2.getX(), pos2.getY(), pos2.getZ()));
+        return net.minecraft.util.math.MathHelper.sqrt_double(pos1.distanceSq(pos2.getX(), pos2.getY(), pos2.getZ()));
     }
 
     public static EnumFacing getFaceFromDif(BlockPos base, BlockPos target) {
