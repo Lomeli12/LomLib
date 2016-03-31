@@ -11,23 +11,14 @@ buildscript {
     }
 }
 
-plugins {
-    id "com.jfrog.bintray" version "1.6"
-}
-
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'maven'
-apply plugin: 'maven-publish'
 
 task loadProperties{
     def prop = new Properties()
     File configFile = new File('build.properties')
-    File mavenFile = new File('maven.properties')
     if (configFile.isFile()) {
         prop.load(new FileInputStream(configFile))
-    }
-    if (mavenFile.isFile()) {
-        prop.load(new FileInputStream(mavenFile))
     }
     project.ext.config = new ConfigSlurper().parse prop
 }
@@ -120,31 +111,6 @@ task writeNewPom << {
             }
         }
     }.writeTo("build/libs/pom.xml")
-}
-
-bintray {
-    if (config.get("apikey") != null) {
-        user = config.user
-        key = config.apikey
-        filesSpec {
-            from 'build/libs'
-            into '.'
-        }
-        publish = true
-        pkg {
-            repo = 'maven'
-            name = config.baseName
-            userOrg = config.user
-            licenses = [config.license]
-            vcsUrl = config.repo
-            version {
-                name = "${config.mcVersion}-${config.releaseVersion}"
-                desc = "${config.baseName} v${config.releaseVersion} for Minecraft ${config.mcVersion}"
-                released = new Date()
-                vcsTag = config.releaseVersion
-            }
-        }
-    }
 }
 
 build.dependsOn sourceJar, deobfJar, writeNewPom
