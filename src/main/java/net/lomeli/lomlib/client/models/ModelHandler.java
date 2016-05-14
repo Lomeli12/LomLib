@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -24,23 +25,40 @@ public class ModelHandler {
         if (holder instanceof IMeshVariant) {
             ItemMeshDefinition def = ((IMeshVariant) holder).getCustomMesh();
             if (def != null) {
-                ModelLoader.setCustomMeshDefinition((Item) holder, def);
+                ModelLoader.setCustomMeshDefinition(holder instanceof Item ? (Item) holder : holder instanceof Block ? Item.getItemFromBlock((Block) holder) : null, def);
                 return;
             }
         }
-        Item item = (Item) holder;
-        String[] variants = holder.getVariants();
-        if (variants != null && variants.length > 0) {
-            for (int i = 0; i < variants.length; i++) {
-                String name = variants[i];
-                ModelResourceLocation loc = new ModelResourceLocation(name, "inventory");
-                ModelLoader.setCustomModelResourceLocation(item, i, loc);
+
+        if (holder instanceof Item) {
+            Item item = (Item) holder;
+            String[] variants = holder.getVariants();
+            if (variants != null && variants.length > 0) {
+                for (int i = 0; i < variants.length; i++) {
+                    String name = variants[i];
+                    ModelResourceLocation loc = new ModelResourceLocation(name, "inventory");
+                    ModelLoader.setCustomModelResourceLocation(item, i, loc);
+                }
+            }
+        } else if (holder instanceof Block) {
+            Block block = (Block) holder;
+            String[] variants = holder.getVariants();
+            if (variants != null && variants.length > 0) {
+                for (int i = 0; i < variants.length; i++) {
+                    String name = variants[i];
+                    ModelResourceLocation loc = new ModelResourceLocation(name, "inventory");
+                    if (holder instanceof IModelVariant) {
+                        loc = new ModelResourceLocation(name, ((IModelVariant) holder).getModelTypes()[i]);
+                        ModelLoader.registerItemVariants(Item.getItemFromBlock(block), loc);
+                    }
+                    ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), i, loc);
+                }
             }
         }
     }
 
-    public static void registerModel(Item item) {
-        if (item instanceof IModelHolder) registerModel((IModelHolder) item);
+    public static void registerModel(Object obj) {
+        if (obj instanceof IModelHolder) registerModel((IModelHolder) obj);
     }
 
     public static void registerColorProviers() {
