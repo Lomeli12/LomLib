@@ -1,5 +1,6 @@
 package net.lomeli.lomlib.client.addon.jei.crafting;
 
+import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 
 import javax.annotation.Nonnull;
@@ -10,7 +11,6 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
-import net.lomeli.lomlib.client.addon.jei.BlankRecipeWrapper;
 import net.lomeli.lomlib.core.recipes.ShapelessFluidRecipe;
 
 public class ShapelessFluidRecipeWrapper extends BlankRecipeWrapper implements ICraftingRecipeWrapper {
@@ -19,14 +19,11 @@ public class ShapelessFluidRecipeWrapper extends BlankRecipeWrapper implements I
 
     public ShapelessFluidRecipeWrapper(ShapelessFluidRecipe recipe) {
         this.recipe = recipe;
-        for (Object input : this.recipe.getInput()) {
-            if (input instanceof ItemStack) {
-                ItemStack itemStack = (ItemStack) input;
-                if (itemStack.stackSize > 1) {
-                    itemStack.stackSize = 1;
-                }
-            }
-        }
+        this.recipe.getInput().stream().filter(input -> input instanceof ItemStack).forEach(input -> {
+            ItemStack itemStack = (ItemStack) input;
+            if (itemStack.stackSize > 1)
+                itemStack.stackSize = 1;
+        });
     }
 
     @Nonnull

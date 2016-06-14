@@ -9,7 +9,6 @@ import net.minecraftforge.fml.client.FMLClientHandler;
 
 import net.lomeli.lomlib.LomLib;
 import net.lomeli.lomlib.client.layer.LayerCrown;
-import net.lomeli.lomlib.client.layer.LayerCustomBipedArmor;
 import net.lomeli.lomlib.client.models.ModelHandler;
 import net.lomeli.lomlib.client.render.ModelGenerator;
 import net.lomeli.lomlib.core.Proxy;
@@ -32,12 +31,8 @@ public class ProxyClient extends Proxy {
         MinecraftForge.EVENT_BUS.register(new ModelGenerator());
         RenderPlayer renderer = RenderUtils.getPlayerRenderer("default");
         RenderUtils.addLayerToRenderer(renderer, new LayerCrown());
-        RenderUtils.addLayerToRenderer(renderer, new LayerCustomBipedArmor(renderer));
-        renderer.layerRenderers.remove(0);
         renderer = RenderUtils.getPlayerRenderer("slim");
         RenderUtils.addLayerToRenderer(renderer, new LayerCrown());
-        RenderUtils.addLayerToRenderer(renderer, new LayerCustomBipedArmor(renderer));
-        renderer.layerRenderers.remove(0);
     }
 
     @Override

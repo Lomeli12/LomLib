@@ -35,7 +35,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 @SideOnly(Side.CLIENT)
 public class RenderUtils {
-    public static final ResourceLocation TEXTURE_MAP = TextureMap.locationBlocksTexture;
+    public static final ResourceLocation TEXTURE_MAP = TextureMap.LOCATION_BLOCKS_TEXTURE;
     public static final ResourceLocation texEnchant = new ResourceLocation("textures/misc/enchanted_item_glint.png");
     public static final float magicNum = 0.0625F;
 
@@ -250,7 +250,7 @@ public class RenderUtils {
         Tessellator tessellator = Tessellator.getInstance();
         VertexBuffer vertexBuffer = tessellator.getBuffer();
         vertexBuffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_MAP);
 
         putTiledTextureQuads(vertexBuffer, x, y, width, height, depth, sprite);
 
@@ -313,7 +313,7 @@ public class RenderUtils {
         Tessellator tessellator = Tessellator.getInstance();
         VertexBuffer renderer = tessellator.getBuffer();
         renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-        bindTexture(TextureMap.locationBlocksTexture);
+        bindTexture(TEXTURE_MAP);
         //RenderUtil.setColorRGBA(color);
         int brightness = FMLClientHandler.instance().getClient().theWorld.getCombinedLight(pos, fluid.getFluid().getLuminosity());
 

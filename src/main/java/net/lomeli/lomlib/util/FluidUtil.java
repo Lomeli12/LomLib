@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import java.util.Iterator;
 import java.util.List;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
@@ -71,8 +72,10 @@ public class FluidUtil {
 
     public static ItemStack getEmptyContainer(ItemStack stack) {
         if (stack != null && isFilledContainer(stack)) {
-            if (stack.getItem() instanceof IFluidContainerItem) {
-                ((IFluidContainerItem) stack.getItem()).drain(stack, Integer.MAX_VALUE, true);
+            if (stack.getItem() == Items.LAVA_BUCKET || stack.getItem() == Items.WATER_BUCKET || stack.getItem() == Items.MILK_BUCKET)
+                return new ItemStack(Items.BUCKET);
+            else if (stack.getItem() instanceof IFluidContainerItem) {
+                ((IFluidContainerItem) stack.getItem()).drain(stack, ((IFluidContainerItem) stack.getItem()).getCapacity(stack), true);
                 return stack;
             } else
                 return FluidContainerRegistry.drainFluidContainer(stack);

@@ -69,14 +69,10 @@ public class PacketHandler {
 
     public void sendToClients(WorldServer world, BlockPos pos, Message message) {
         Chunk chunk = world.getChunkFromBlockCoords(pos);
-        for (EntityPlayer player : world.playerEntities) {
-            // only send to relevant players
-            if (player instanceof EntityPlayerMP) {
-                EntityPlayerMP playerMP = (EntityPlayerMP) player;
-                if (world.getPlayerChunkManager().isPlayerWatchingChunk(playerMP, chunk.xPosition, chunk.zPosition)) {
-                    sendTo(message, playerMP);
-                }
-            }
-        }
+        world.playerEntities.stream().filter(player -> player instanceof EntityPlayerMP).forEach(p -> {
+            EntityPlayerMP player = (EntityPlayerMP) p;
+            if (world.getPlayerChunkMap().isPlayerWatchingChunk(player, chunk.xPosition, chunk.zPosition))
+                sendTo(message, player);
+        });
     }
 }

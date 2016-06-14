@@ -14,15 +14,17 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'maven'
 
-task loadProperties{
-    def prop = new Properties()
-    File configFile = new File('build.properties')
-    if (configFile.isFile()) {
-        prop.load(new FileInputStream(configFile))
-    }
-    project.ext.config = new ConfigSlurper().parse prop
-}
+ext.configFile = file('build.properties')
 
+ext.config = parseConfig(configFile)
+
+def parseConfig(File config) {
+    config.withReader {
+        def prop = new Properties()
+        prop.load(it)
+        return (new ConfigSlurper().parse(prop))
+    }
+}
 repositories {
     maven {
         name = 'codechicken'
@@ -43,7 +45,7 @@ dependencies {
 
 group = config.group
 archivesBaseName = config.baseName
-version = config.releaseVersion
+version = "${config.releaseVersion}_${config.build_number}"
 sourceCompatibility = config.targetJDK
 targetCompatibility = config.targetJDK
 
@@ -59,7 +61,7 @@ processResources {
 
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version': project.version, 'mcversion': project.minecraft.version
     }
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
@@ -69,7 +71,7 @@ processResources {
 
 jar {
     manifest {
-        attributes("FMLAT" : "lomlib_at.cfg")
+        attributes("FMLAT": "lomlib_at.cfg", "FMLCorePluginContainsFMLMod": "true", "FMLCorePlugin": "net.lomeli.lomlib.asm.LomLibPlugin")
     }
     appendix = config.mcVersion
     classifier = "universal"
@@ -84,7 +86,14 @@ task deobfJar(type: Jar) {
     appendix = config.mcVersion
     classifier = "dev"
     manifest {
-        attributes("FMLAT" : "lomlib-deobf_at.cfg")
+        attributes("FMLAT": "lomlib-deobf_at.cfg", "FMLCorePluginContainsFMLMod": "true", "FMLCorePlugin": "net.lomeli.lomlib.asm.LomLibPlugin")
+    }
+}
+
+task incrementBuildNumber {
+    config.build_number = (config.build_number.toString().toInteger()) + 1
+    configFile.withWriter {
+        config.toProperties().store(it, "")
     }
 }
 
@@ -112,5 +121,7 @@ task writeNewPom << {
         }
     }.writeTo("build/libs/pom.xml")
 }
+
+defaultTasks 'incrementBuildNumber'
 
 build.dependsOn sourceJar, deobfJar, writeNewPom

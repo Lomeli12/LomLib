@@ -53,7 +53,6 @@ public class AnvilRecipeCategory implements IRecipeCategory {
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
         if (!(recipeWrapper instanceof FluidAnvilRecipeWrapper))
             return;
-
     }
 
     @Override

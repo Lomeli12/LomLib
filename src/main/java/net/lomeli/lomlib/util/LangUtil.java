@@ -25,13 +25,12 @@ public class LangUtil {
     }
 
     private static String translate(String unlocal) {
-        return I18n.translateToLocal(unlocal).replaceAll(chatFormat, "\u00a7");
+        return I18n.canTranslate(unlocal) ? I18n.translateToLocal(unlocal).replaceAll(chatFormat, "\u00a7") :
+                I18n.translateToFallback(unlocal).replaceAll(chatFormat, "\u00a7");
     }
 
     private static TextFormatting getFormatFromChar(char ch) {
         TextFormatting format = formatMap.get(ch);
-        if (format == null)
-            format = TextFormatting.RESET;
-        return format;
+        return format == null ? TextFormatting.RESET : format;
     }
 }

@@ -1,5 +1,6 @@
 package net.lomeli.lomlib.client.addon.jei.crafting;
 
+import mezz.jei.api.recipe.BlankRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
 
 import javax.annotation.Nonnull;
@@ -11,7 +12,6 @@ import java.util.List;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
-import net.lomeli.lomlib.client.addon.jei.BlankRecipeWrapper;
 import net.lomeli.lomlib.core.recipes.ShapedFluidRecipe;
 
 public class ShapedFluidRecipeWrapper extends BlankRecipeWrapper implements IShapedCraftingRecipeWrapper {

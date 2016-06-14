@@ -36,7 +36,7 @@ public class Proxy {
     }
 
     public void checkForUpdate() {
-        updater = new VersionChecker(ModLibs.UPDATE_URL, ModLibs.MOD_ID, ModLibs.MOD_NAME);
+        updater = new VersionChecker(ModLibs.UPDATE_URL, ModLibs.MOD_ID, ModLibs.MOD_NAME, ModLibs.VERSION);
         new Thread(updater).start();
     }
 

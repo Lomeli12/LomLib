@@ -47,9 +47,9 @@ public class VersionChecker implements Runnable {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    public VersionChecker(String jsonURL, String modid, String modname) {
+    public VersionChecker(String jsonURL, String modid, String modname, String modVersion) {
         this(jsonURL, modid, modname, 0, 0, 0);
-        int[] arr = getVersionFromID(modid);
+        int[] arr = getVersionFromID(modVersion);
         this.mod_major = arr[0];
         this.mod_minor = arr[1];
         this.mod_rev = arr[2];

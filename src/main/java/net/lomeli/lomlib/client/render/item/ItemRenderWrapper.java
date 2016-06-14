@@ -119,7 +119,7 @@ public class ItemRenderWrapper implements IPerspectiveAwareModel {
     }
 
     protected void rebindTexture() {
-        FMLClientHandler.instance().getClient().getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
+        FMLClientHandler.instance().getClient().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
     }
 }
 // *cough* borrowed *cough* from iChunUtil. Thanks iChun <3

@@ -13,14 +13,14 @@ public class SoundUtil {
     private static int size = 0;
 
     static {
-        size = SoundEvent.soundEventRegistry.getKeys().size();
+        size = SoundEvent.REGISTRY.getKeys().size();
     }
 
     @SideOnly(Side.CLIENT)
     public static SoundEvent register(String name) {
         ResourceLocation loc = new ResourceLocation(name);
         SoundEvent e = new SoundEvent(loc);
-        SoundEvent.soundEventRegistry.register(size, loc, e);
+        SoundEvent.REGISTRY.register(size, loc, e);
         size++;
         return e;
     }

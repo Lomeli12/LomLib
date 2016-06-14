@@ -3,6 +3,7 @@ package net.lomeli.lomlib.util;
 import java.util.regex.Pattern;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityItem;
@@ -110,11 +111,11 @@ public class EntityUtil {
     public static boolean teleportTo(World world, EntityLivingBase telporter, double x, double y, double z) {
         net.minecraftforge.event.entity.living.EnderTeleportEvent event = new net.minecraftforge.event.entity.living.EnderTeleportEvent(telporter, x, y, z, 0);
         if (net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event)) return false;
-        boolean flag = telporter.teleportTo_(event.getTargetX(), event.getTargetY(), event.getTargetZ());
+        boolean flag = telporter.attemptTeleport(event.getTargetX(), event.getTargetY(), event.getTargetZ());
 
         if (flag) {
-            world.playSound((EntityPlayer) null, telporter.prevPosX, telporter.prevPosY, telporter.prevPosZ, SoundEvents.entity_endermen_teleport, telporter.getSoundCategory(), 1.0F, 1.0F);
-            telporter.playSound(SoundEvents.entity_endermen_teleport, 1.0F, 1.0F);
+            world.playSound((EntityPlayer) null, telporter.prevPosX, telporter.prevPosY, telporter.prevPosZ, SoundEvents.ENTITY_ENDERMEN_TELEPORT, telporter.getSoundCategory(), 1.0F, 1.0F);
+            telporter.playSound(SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1.0F, 1.0F);
         }
 
         return flag;
@@ -161,5 +162,9 @@ public class EntityUtil {
             d3 = ((EntityPlayerMP) player).interactionManager.getBlockReachDistance();
         Vec3d vec31 = vec3.addVector((double) f6 * d3, (double) f5 * d3, (double) f7 * d3);
         return world.rayTraceBlocks(vec3, vec31, hitLiquids, !hitLiquids, false);
+    }
+
+    public static void setAttackTarget(EntityLiving entity, EntityLivingBase target) {
+        entity.attackTarget = target;
     }
 }
