@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
+import net.lomeli.lomlib.LomLib;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemMeshDefinition;
@@ -12,6 +13,8 @@ import net.minecraft.client.renderer.color.ItemColors;
 import net.minecraft.item.Item;
 
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.LoaderState;
 
 public class ModelHandler {
 
@@ -20,6 +23,9 @@ public class ModelHandler {
     public static void registerModel(IModelHolder holder) {
         if (holder == null)
             return;
+        if (Loader.instance().getModState(Loader.instance().activeModContainer()) != LoaderState.ModState.PREINITIALIZED) {
+            LomLib.logger.logError("Must be registered in Pre-Init");
+        }
         if (holder instanceof IColorProvider)
             colorProviders.add((IColorProvider) holder);
         if (holder instanceof IMeshVariant) {

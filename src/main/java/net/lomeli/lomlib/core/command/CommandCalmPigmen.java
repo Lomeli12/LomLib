@@ -2,6 +2,7 @@ package net.lomeli.lomlib.core.command;
 
 import java.util.List;
 
+import net.lomeli.lomlib.util.EntityUtil;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.monster.EntityPigZombie;
@@ -33,8 +34,7 @@ public class CommandCalmPigmen extends CommandBaseLomLib {
     }
 
     private boolean calmPigmen(EntityPigZombie pigZombie) {
-        pigZombie.angerLevel = 0;
-        pigZombie.setAttackTarget(null);
+        EntityUtil.setPigmenAnger(pigZombie, null, 0);
         return true;
     }
 }

@@ -9,8 +9,8 @@ public class ModLibs {
 
     public static final String VERSION = "@VERSION@";
 
-    public static final String UPDATE_URL = "https://raw.githubusercontent.com/Lomeli12/LomLib/master/update.json";
-    public static final String PATREON_URL = "https://raw.githubusercontent.com/Lomeli12/LomLib/master/patreon.json";
+    public static final String UPDATE_URL = "https://raw.githubusercontent.com/Lomeli12/LomLib/1.9/update.json";
+    public static final String PATREON_URL = "https://raw.githubusercontent.com/Lomeli12/LomLib/1.9/update.json";
 
     public static final String NEI_SHAPED = "recipe.lomlib:shapedFluid";
     public static final String NEI_SHAPELESS = "recipe.lomlib:shapelessFluid";

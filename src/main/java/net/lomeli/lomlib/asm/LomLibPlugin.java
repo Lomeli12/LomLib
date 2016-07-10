@@ -4,6 +4,8 @@ import java.util.Map;
 
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
+@IFMLLoadingPlugin.MCVersion("1.9.4")
+@IFMLLoadingPlugin.SortingIndex(1001)
 public class LomLibPlugin implements IFMLLoadingPlugin {
     @Override
     public String[] getASMTransformerClass() {

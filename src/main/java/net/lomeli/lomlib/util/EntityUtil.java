@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -166,5 +167,10 @@ public class EntityUtil {
 
     public static void setAttackTarget(EntityLiving entity, EntityLivingBase target) {
         entity.attackTarget = target;
+    }
+
+    public static void setPigmenAnger(EntityPigZombie pig, EntityLivingBase target, int angerLevel) {
+        pig.setAttackTarget(target);
+        pig.angerLevel = angerLevel;
     }
 }
