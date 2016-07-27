@@ -1,71 +1,34 @@
 package net.lomeli.lomlib.asm;
 
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.tree.*;
+import com.google.common.collect.Lists;
+import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 
-import java.util.Iterator;
+import java.util.List;
 
 import net.minecraft.launchwrapper.IClassTransformer;
 
-import net.minecraftforge.fml.common.FMLLog;
-
-import static org.objectweb.asm.Opcodes.*;
+import net.lomeli.lomlib.asm.module.BlockCakeModule;
+import net.lomeli.lomlib.asm.module.ItemFoodModule;
+import net.lomeli.lomlib.asm.module.LayerArmorBaseModule;
+import net.lomeli.lomlib.asm.module.TransformerModule;
 
 public class ClassTransformer implements IClassTransformer {
-    private final String[] renderLayerNames = new String[]{"renderArmorLayer", "func_188361_a", "a"};
+    private List<TransformerModule> moduleList;
+
+    public ClassTransformer() {
+        moduleList = Lists.newArrayList();
+        moduleList.add(new LayerArmorBaseModule());
+        moduleList.add(new ItemFoodModule());
+        moduleList.add(new BlockCakeModule());
+    }
 
     @Override
     public byte[] transform(String name, String transformedName, byte[] basicClass) {
-        if (transformedName.equals("net.minecraft.client.renderer.entity.layers.LayerArmorBase")) {
-            log("Working on %s", transformedName);
-
-            ClassReader reader = new ClassReader(basicClass);
-            ClassNode node = new ClassNode();
-            reader.accept(node, 0);
-
-            for (MethodNode method : node.methods) {
-                if (matchesName(method.name, renderLayerNames)) {
-                    log("Found method: %s %s", method.name, method.desc);
-                    Iterator<AbstractInsnNode> iterator = method.instructions.iterator();
-
-                    insL:
-                    while (iterator.hasNext()) {
-                        AbstractInsnNode anode = iterator.next();
-                        if (anode.getOpcode() == ASTORE) {
-                            log("Patching %s in %s", method.name, transformedName);
-                            LabelNode returnNode = new LabelNode();
-                            InsnList newInstructions = new InsnList();
-                            newInstructions.add(new VarInsnNode(ALOAD, 1));
-                            newInstructions.add(new VarInsnNode(ALOAD, 10));
-                            newInstructions.add(new VarInsnNode(ALOAD, 9));
-                            newInstructions.add(new MethodInsnNode(INVOKESTATIC, "net/lomeli/lomlib/client/event/ClientEventHooks", "renderHooks", "(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/item/ItemStack;Lnet/minecraft/inventory/EntityEquipmentSlot;)Z", false));
-                            newInstructions.add(new JumpInsnNode(IFEQ, returnNode));
-                            newInstructions.add(new InsnNode(RETURN));
-                            newInstructions.add(returnNode);
-                            method.instructions.insert(anode, newInstructions);
-                            log("Patched %s in %s", method.name, transformedName);
-                            break insL;
-                        }
-                    }
-                    ClassWriter writer = new ClassWriter(0);
-                    node.accept(writer);
-                    return writer.toByteArray();
-                }
+        for (TransformerModule module : moduleList) {
+            if (module.isClass(name, transformedName)) {
+                return module.transform(name, transformedName, basicClass);
             }
         }
         return basicClass;
-    }
-
-    private static boolean matchesName(String name, String[] possibleName) {
-        for (String str : possibleName) {
-            if (name.equals(str))
-                return true;
-        }
-        return false;
-    }
-
-    private static void log(String str, Object... objs) {
-        FMLLog.info("[LomLib ASM] %s", String.format(str, objs));
     }
 }

@@ -44,4 +44,10 @@ public class ShapedFluidRecipeHandler implements IRecipeHandler<ShapedFluidRecip
         }
         return inputCount > 0;
     }
+
+    @Nonnull
+    @Override
+    public String getRecipeCategoryUid(@Nonnull ShapedFluidRecipe recipe) {
+        return LomLibPlugin.CRAFTING;
+    }
 }

@@ -44,4 +44,10 @@ public class FluidAnvilRecipeHandler implements IRecipeHandler<FluidAnvilRecipe>
         }
         return inputCount > 0;
     }
+
+    @Nonnull
+    @Override
+    public String getRecipeCategoryUid(@Nonnull FluidAnvilRecipe recipe) {
+        return LomLibPlugin.ANVIL;
+    }
 }

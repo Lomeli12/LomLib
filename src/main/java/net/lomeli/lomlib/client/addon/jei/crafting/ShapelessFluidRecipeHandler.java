@@ -4,7 +4,6 @@ import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 
 import javax.annotation.Nonnull;
-
 import java.util.List;
 
 import net.lomeli.lomlib.client.addon.jei.LomLibPlugin;
@@ -43,5 +42,11 @@ public class ShapelessFluidRecipeHandler implements IRecipeHandler<ShapelessFlui
                 inputCount++;
         }
         return inputCount > 0;
+    }
+
+    @Nonnull
+    @Override
+    public String getRecipeCategoryUid(@Nonnull ShapelessFluidRecipe recipe) {
+        return LomLibPlugin.CRAFTING;
     }
 }
