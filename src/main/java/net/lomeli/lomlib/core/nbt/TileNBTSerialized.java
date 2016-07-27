@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 
-public abstract class TileSerialized extends TileEntity {
+public abstract class TileNBTSerialized extends TileEntity {
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
