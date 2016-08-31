@@ -9,9 +9,9 @@ Just a set of utilities that I use often. A prerequisite for most my mods.
 
 ## Version
 
-**Current Stable Version:** 4.0.0
+**Current Stable Version:** 5.0.0
 
-**Dev Version:** 4.0.0
+**Dev Version:** 5.0.0
 
 ## Compiling your mod with LomLib
 

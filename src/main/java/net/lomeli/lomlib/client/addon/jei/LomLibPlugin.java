@@ -29,7 +29,7 @@ public class LomLibPlugin implements IModPlugin {
 
         registry.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerRepair.class, ANVIL, 0, 2, 3, 36);
         List<Object> recipes = Lists.newArrayList();
-        recipes.addAll(AnvilRecipeManager.getRegistry());
+        recipes.addAll(AnvilRecipeManager.INSTANCE.getRegistry());
         registry.addRecipes(recipes);
     }
 

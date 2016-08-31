@@ -1,6 +1,6 @@
 [
 {
-  "modid": "LomLib",
+  "modid": "lomlib",
   "name": "LomLib",
   "description": "Shared library mod required by several of Lomeli's Mods.",
   "version" : "${version}",

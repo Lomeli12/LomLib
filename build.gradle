@@ -1,6 +1,8 @@
 buildscript {
+    ext.kotlin_version = '1.0.2'
     repositories {
         jcenter()
+        mavenCentral()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
@@ -8,23 +10,18 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
+plugins {
+    id 'com.github.johnrengelman.shadow' version '1.2.3'
+}
+
+apply plugin: 'kotlin'
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'maven'
 
-ext.configFile = file('build.properties')
-
-ext.config = parseConfig(configFile)
-
-def parseConfig(File config) {
-    config.withReader {
-        def prop = new Properties()
-        prop.load(it)
-        return (new ConfigSlurper().parse(prop))
-    }
-}
 repositories {
     maven {
         name = 'codechicken'
@@ -36,36 +33,47 @@ repositories {
     }
 }
 
-dependencies {
-    //compile "codechicken:CodeChickenCore:1.8-${config.cccVersion:dev}"
-    //compile "codechicken:NotEnoughItems:1.8-${config.neiVersion:dev}"
-    //compile "codechicken:CodeChickenLib:1.8-${config.cclVersion:dev}"
-    deobfCompile "mezz.jei:jei_${config.mcVersion}:${config.jeiVersion}"
+configurations {
+    shade
+    compile.extendsFrom shade
 }
 
-group = config.group
-archivesBaseName = config.baseName
-version = "${config.releaseVersion}_${config.build_number}"
-sourceCompatibility = config.targetJDK
-targetCompatibility = config.targetJDK
+dependencies {
+    deobfCompile "mezz.jei:jei_${mcVersion}:${jeiVersion}"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
+    compile "org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}"
+}
+
+group = "${group}"
+archivesBaseName = "${baseName}"
+version = "${releaseVersion}"
+sourceCompatibility = "${targetJDK}"
+targetCompatibility = "${targetJDK}"
 
 minecraft {
-    version = "${config.mcVersion}-${config.mcfVersion}"
+    version = "${mcVersion}-${mcfVersion}"
     runDir = "run"
     replace '@VERSION@', project.version
-    mappings = config.mcpMap
+    mappings = "${mcpMap}"
 }
 
 processResources {
     exclude '**/xcf/**'
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+    inputs.property "kotlinversion", "${kotlinVersion}"
 
+    // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-        expand 'version': project.version, 'mcversion': project.minecraft.version
+
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version, 'kotlinversion':"${kotlinVersion}"
     }
+
+    // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
-        exclude 'dependancies.info'
     }
 }
 
@@ -73,27 +81,33 @@ jar {
     manifest {
         attributes("FMLAT": "lomlib_at.cfg", "FMLCorePluginContainsFMLMod": "true", "FMLCorePlugin": "net.lomeli.lomlib.asm.LomLibPlugin")
     }
-    appendix = config.mcVersion
+    appendix = "${mcVersion}"
     classifier = "universal"
 }
 
 sourceJar {
-    appendix = config.mcVersion
+    appendix = "${mcVersion}"
+}
+
+shadowJar {
+    appendix = "${mcVersion}"
+    classifier = "universal"
+    exclude 'mezz/jei/**'
+    relocate 'kotlin', 'net.lomeli.lomlib.repack.kotlin'
+    relocate 'jet.runtime.typeinfo', 'net.lomeli.lomlib.repack.jet.runtime.typeinfo'
+    relocate 'org.jetbrains.annotations', 'net.lomeli.lomlib.repack.org.jetbrains.annotations'
+}
+
+reobf {
+    shadowJar { mappingType }
 }
 
 task deobfJar(type: Jar) {
     from sourceSets.main.output
-    appendix = config.mcVersion
+    appendix = "${mcVersion}"
     classifier = "dev"
     manifest {
         attributes("FMLAT": "lomlib-deobf_at.cfg", "FMLCorePluginContainsFMLMod": "true", "FMLCorePlugin": "net.lomeli.lomlib.asm.LomLibPlugin")
-    }
-}
-
-task incrementBuildNumber {
-    config.build_number = (config.build_number.toString().toInteger()) + 1
-    configFile.withWriter {
-        config.toProperties().store(it, "")
     }
 }
 
@@ -113,8 +127,8 @@ task writeNewPom << {
             inceptionYear new Date().format("yyyy")
             licenses {
                 license {
-                    name config.licenseName
-                    url config.licenseURL
+                    name "${licenseName}"
+                    url "${licenseURL}"
                     distribution 'repo'
                 }
             }
@@ -122,6 +136,8 @@ task writeNewPom << {
     }.writeTo("build/libs/pom.xml")
 }
 
-defaultTasks 'incrementBuildNumber'
+build.dependsOn writeNewPom, reobfShadowJar, deobfJar
 
-build.dependsOn sourceJar, deobfJar, writeNewPom
+artifacts {
+    archives shadowJar
+}

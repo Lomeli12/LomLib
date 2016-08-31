@@ -12,15 +12,15 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.lomeli.lomlib.client.event.RenderArmorEvent;
 import net.lomeli.lomlib.core.event.FoodEatenEvent;
-import net.lomeli.lomlib.util.LogHelper;
+import net.lomeli.lomlib.util.LogUtil;
 
-@Mod(modid = "lomlibtest", name = "LomLibTest", version = "1.0.0", dependencies = "required-after:LomLib;")
+@Mod(modid = "lomlibtest", name = "LomLibTest", version = "1.0.0", dependencies = "required-after:lomlib;")
 public class LomLibTest {
 
     @Mod.Instance("lomlibtest")
     public static LomLibTest instance;
 
-    public static LogHelper log = LogHelper.createLogger("LomLib Test");
+    public static LogUtil log = new LogUtil("LomLib Test");
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
