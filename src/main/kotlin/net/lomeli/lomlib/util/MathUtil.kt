@@ -16,10 +16,10 @@ object MathUtil {
         for (i in 0..65535) {
             SIN_TABLE[i] = Math.sin(i / 65536.0 * 2.0 * Math.PI)
         }
-        SIN_TABLE[0] = 0 as Double
-        SIN_TABLE[16384] = 1 as Double
-        SIN_TABLE[32768] = 0 as Double
-        SIN_TABLE[49152] = 1 as Double
+        SIN_TABLE[0] = 0.0
+        SIN_TABLE[16384] = 1.0
+        SIN_TABLE[32768] = 0.0
+        SIN_TABLE[49152] = 1.0
     }
 
     val RANDOM = Random()
@@ -101,18 +101,18 @@ object MathUtil {
      */
     fun minF(a: Float, b: Float): Float = if (a < b) a else b
 
-    fun minF(a: Int, b: Float): Float = if (a < b) a as Float else b
+    fun minF(a: Int, b: Float): Float = if (a < b) a.toFloat() else b
 
-    fun minF(a: Float, b: Int): Float = if (a < b) a else b as Float
+    fun minF(a: Float, b: Int): Float = if (a < b) a else b.toFloat()
 
     /**
      * Unchecked implementation to determine the larger of two Floats. Parameters should be known to be valid in advance.
      */
     fun maxF(a: Float, b: Float): Float = if (a > b) a else b
 
-    fun maxF(a: Int, b: Float): Float = if (a > b) a as Float else b
+    fun maxF(a: Int, b: Float): Float = if (a > b) a.toFloat() else b
 
-    fun maxF(a: Float, b: Int): Float = if (a > b) a else b as Float
+    fun maxF(a: Float, b: Int): Float = if (a > b) a else b.toFloat()
 
     fun maxAbs(a: Double, b: Double): Double {
         var a = a
