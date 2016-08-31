@@ -17,7 +17,7 @@ import java.util.*
 class ShapedFluidRecipe : IRecipe {
     private val MAX_CRAFT_GRID_WIDTH = 3
     private val MAX_CRAFT_GRID_HEIGHT = 3
-    private var inputs: Array<Any?>
+    private var inputs: ArrayList<Any?>
     var width = 0
     var height = 0
     private var output: ItemStack
@@ -25,7 +25,6 @@ class ShapedFluidRecipe : IRecipe {
 
     constructor(result: ItemStack, vararg recipeIn: Any) {
         output = result.copy()
-        inputs = arrayOfNulls<Any?>(MAX_CRAFT_GRID_HEIGHT * MAX_CRAFT_GRID_WIDTH)
 
         var shape = ""
         var idx = 0
@@ -103,7 +102,10 @@ class ShapedFluidRecipe : IRecipe {
             idx += 2
         }
 
-        inputs = arrayOfNulls<Any?>(width * height)
+        inputs = Lists.newArrayList()
+        for (i in 0..(height * width)) {
+            if (i < (height * width)) inputs.add(null)
+        }
         var x = 0
         for (chr in shape.toCharArray()) {
             inputs[x++] = itemMap[chr]
@@ -118,7 +120,10 @@ class ShapedFluidRecipe : IRecipe {
         width = recipe.recipeWidth
         height = recipe.recipeHeight
 
-        inputs = arrayOfNulls<Any>(recipe.recipeItems.size)
+        inputs = Lists.newArrayList()
+        for (i in 0..recipe.recipeItems.size) {
+            if (i < recipe.recipeItems.size) inputs.add(null)
+        }
 
         for (i in inputs.indices) {
             val ingred = recipe.recipeItems[i] ?: continue
@@ -195,7 +200,7 @@ class ShapedFluidRecipe : IRecipe {
         return true
     }
 
-    fun getInput(): Array<Any> = Lists.newArrayList<Any?>(this.inputs).toArray()
+    fun getInput(): List<Any?> = Lists.newArrayList(this.inputs)
 
     override fun getRemainingItems(inv: InventoryCrafting): Array<ItemStack> = ForgeHooks.defaultRecipeGetRemainingItems(inv)
 }

@@ -20,20 +20,21 @@ class ShapedFluidRecipeHandler : IRecipeHandler<ShapedFluidRecipe> {
     }
 
     override fun isRecipeValid(recipe: ShapedFluidRecipe): Boolean {
-        if (recipe.recipeOutput == null)
+        if (recipe.recipeOutput == null) {
             return false
+        }
         var inputCount = 0
-        if (recipe.getInput() != null) {
+        if (recipe.getInput() != null && recipe.getInput().size > 0) {
             for (input in recipe.getInput()) {
                 if (input is List<*>) {
-                    if (input.size == 0)
+                    if (input.isEmpty())
                         return false
                 }
                 if (input != null)
                     inputCount++
             }
         }
-        return inputCount > 0
+        return inputCount > 0 && inputCount <= 9
     }
 
     override fun getRecipeCategoryUid(recipe: ShapedFluidRecipe): String {

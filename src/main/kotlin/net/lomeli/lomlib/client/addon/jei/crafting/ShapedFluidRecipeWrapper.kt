@@ -2,12 +2,10 @@ package net.lomeli.lomlib.client.addon.jei.crafting
 
 import mezz.jei.api.recipe.BlankRecipeWrapper
 import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper
-import java.util.Arrays
-
+import net.lomeli.lomlib.core.recipes.ShapedFluidRecipe
 import net.minecraft.client.Minecraft
 import net.minecraft.item.ItemStack
-
-import net.lomeli.lomlib.core.recipes.ShapedFluidRecipe
+import java.util.*
 
 class ShapedFluidRecipeWrapper(private val recipe: ShapedFluidRecipe) : BlankRecipeWrapper(), IShapedCraftingRecipeWrapper {
     private val width: Int
@@ -15,10 +13,8 @@ class ShapedFluidRecipeWrapper(private val recipe: ShapedFluidRecipe) : BlankRec
 
     init {
         for (input in this.recipe.getInput()) {
-            if (input is ItemStack) {
-                if (input.stackSize > 1)
-                    input.stackSize = 1
-            }
+            if (input is ItemStack && input.stackSize > 1)
+                input.stackSize = 1
         }
         this.width = this.recipe.width
         this.height = this.recipe.height
@@ -33,7 +29,7 @@ class ShapedFluidRecipeWrapper(private val recipe: ShapedFluidRecipe) : BlankRec
     }
 
     override fun getInputs(): List<*> {
-        return Arrays.asList(*recipe.getInput())
+        return recipe.getInput()
     }
 
     override fun getOutputs(): List<ItemStack> {

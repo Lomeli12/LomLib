@@ -23,13 +23,15 @@ class ShapelessFluidRecipeHandler : IRecipeHandler<ShapelessFluidRecipe> {
         if (recipe.recipeOutput == null)
             return false
         var inputCount = 0
-        for (input in recipe.getInput()) {
-            if (input is List<*>) {
-                if (input.size == 0)
-                    return false
+        if (recipe.getInput() != null && recipe.getInput().size > 0) {
+            for (input in recipe.getInput()) {
+                if (input is List<*>) {
+                    if (input.size == 0)
+                        return false
+                }
+                if (input != null)
+                    inputCount++
             }
-            if (input != null)
-                inputCount++
         }
         return inputCount > 0
     }
