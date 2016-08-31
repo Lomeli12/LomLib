@@ -162,7 +162,7 @@ object EntityUtil {
         return world.rayTraceBlocks(vec3, vec31, hitLiquids, !hitLiquids, false)
     }
 
-    fun setAttackTarget(entity: EntityLiving, target: EntityLivingBase) {
+    fun setAttackTarget(entity: EntityLiving, target: EntityLivingBase?) {
         entity.attackTarget = target
     }
 
