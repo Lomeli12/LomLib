@@ -76,7 +76,7 @@ import java.util.*
      * @param player
      */
     fun translateToHeadLevel(player: EntityPlayer) {
-        var y = 0.08f - player.getEyeHeight()
+        var y = 0.07f - player.getEyeHeight()
         if (player.isSneaking)
             y += 0.1725f
         if (player.getItemStackFromSlot(EntityEquipmentSlot.HEAD) != null)
