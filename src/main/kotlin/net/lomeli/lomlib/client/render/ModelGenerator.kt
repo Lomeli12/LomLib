@@ -2,8 +2,8 @@ package net.lomeli.lomlib.client.render
 
 import com.google.common.collect.Lists
 import net.lomeli.lomlib.LomLib
-import net.lomeli.lomlib.client.render.item.ISpecialRender
-import net.lomeli.lomlib.client.render.item.ItemRenderWrapper
+import net.lomeli.lomlib.client.render.old.item.ISpecialRender
+import net.lomeli.lomlib.client.render.old.item.ItemRenderWrapper
 import net.lomeli.lomlib.lib.ModLibs
 import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraftforge.client.event.ModelBakeEvent

@@ -1,7 +1,12 @@
 package net.lomeli.lomlib.client.render.item
 
-interface ISpecialRender {
-    fun getRenderer(): IItemRenderer
+import net.minecraft.item.ItemStack
+import net.minecraftforge.fml.relauncher.Side
+import net.minecraftforge.fml.relauncher.SideOnly
 
-    fun resourceName(): String
+@SideOnly(Side.CLIENT)
+interface ISpecialRender {
+    fun hasSpecialRenderer(stack: ItemStack?) : Boolean
+
+    fun getSpecialRenderer(stack: ItemStack?) : IItemRenderer
 }

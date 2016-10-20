@@ -1,4 +1,4 @@
-package net.lomeli.lomlib.client.render.item
+package net.lomeli.lomlib.client.render.old.item
 
 import net.minecraft.block.state.IBlockState
 import net.minecraft.client.renderer.GlStateManager
