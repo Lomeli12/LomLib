@@ -77,6 +77,7 @@ class VersionChecker : Runnable {
 
     override fun run() {
         try {
+            if (this.currentVer.equals("@VERSION@")) return
             LomLib.logger.logInfo(LangUtil.translate("message.lomlib.update.checking", this.modname))
             val url = URL(this.jsonURL)
             val gson = Gson()
