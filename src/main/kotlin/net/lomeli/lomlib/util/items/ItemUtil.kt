@@ -9,6 +9,7 @@ import net.minecraft.world.World
 import net.minecraftforge.oredict.OreDictionary
 
 import net.lomeli.lomlib.util.nbt.NBTUtil
+import net.minecraftforge.fml.common.registry.GameRegistry
 
 object ItemUtil {
     fun consumeItem(stack: ItemStack): ItemStack? {
@@ -164,7 +165,33 @@ object ItemUtil {
 
     fun hasItemStack(inventory: IInventory, stack: ItemStack): Boolean = getSlotWithStack(inventory, stack) != -1
 
+    fun hasItem(inventory : IInventory, item: Item) : Boolean {
+        for (i in 0..inventory.sizeInventory - 1) {
+            val slotItem = inventory.getStackInSlot(i)
+            if (slotItem != null && slotItem.item == item) return true
+        }
+        return false
+    }
+
+    fun consumeItem(inventory : IInventory, item: Item) : Boolean {
+        for (i in 0..inventory.sizeInventory - 1) {
+            val slotItem = inventory.getStackInSlot(i)
+            if (slotItem != null && slotItem.item == item && slotItem.stackSize > 0) {
+                slotItem.stackSize--
+                if (slotItem.stackSize <= 0)
+                    inventory.setInventorySlotContents(i, null)
+                return true
+            }
+        }
+        return false
+    }
+
     fun setEntityItemAge(item: EntityItem, age: Int) {
         item.age = age
+    }
+
+    fun registerItem(item : Item, name : String) {
+        item.setRegistryName(name)
+        GameRegistry.register(item)
     }
 }
