@@ -1,5 +1,6 @@
 package net.lomeli.lomlib.client.addon.jei.crafting
 
+import mezz.jei.api.ingredients.IIngredients
 import mezz.jei.api.recipe.BlankRecipeWrapper
 import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper
 import java.util.Collections
@@ -38,5 +39,8 @@ class ShapelessFluidRecipeWrapper(private val recipe: ShapelessFluidRecipe) : Bl
 
     override fun handleClick(minecraft: Minecraft, mouseX: Int, mouseY: Int, mouseButton: Int): Boolean {
         return false
+    }
+
+    override fun getIngredients(ingredients : IIngredients?) {
     }
 }

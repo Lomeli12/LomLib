@@ -12,7 +12,7 @@ interface IAnvilRecipe {
      * *
      * @return
      */
-    fun matches(left: ItemStack, right: ItemStack): Boolean
+    fun matches(left: ItemStack, right: ItemStack?): Boolean
 
     /**
      * Get a copy of the result
@@ -23,7 +23,7 @@ interface IAnvilRecipe {
      * *
      * @return
      */
-    fun getCraftingResult(left: ItemStack, right: ItemStack): ItemStack
+    fun getCraftingResult(left: ItemStack, right: ItemStack?): ItemStack
 
     /**
      * Get the recipe result
@@ -37,7 +37,7 @@ interface IAnvilRecipe {
 
      * @return
      */
-    fun recipeInputs(): Array<Any>
+    fun recipeInputs(): Array<Any?>
 
     /**
      * Cost (in Experience levels) of the recipe
@@ -46,5 +46,5 @@ interface IAnvilRecipe {
      */
     fun recipeCost(): Int
 
-    fun doItemsMatch(itemStack: ItemStack, slot: Int): Boolean
+    fun doItemsMatch(itemStack: ItemStack?, slot: Int): Boolean
 }

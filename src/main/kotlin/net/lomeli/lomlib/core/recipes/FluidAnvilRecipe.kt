@@ -53,15 +53,14 @@ class FluidAnvilRecipe : IAnvilRecipe {
         }
     }
 
-    override fun matches(left: ItemStack, right: ItemStack): Boolean {
+    override fun matches(left: ItemStack, right: ItemStack?): Boolean {
         var flag = doItemsMatch(left, 0) && doItemsMatch(right, 1)
         if (!flag && reverse)
             flag = doItemsMatch(left, 1) && doItemsMatch(right, 0)
         return flag
     }
 
-    @SuppressWarnings("unchecked")
-    override fun doItemsMatch(itemStack: ItemStack, slot: Int): Boolean {
+    override fun doItemsMatch(itemStack: ItemStack?, slot: Int): Boolean {
         if (slot == 0 || slot == 1) {
             val target = inputs[slot]
             if (target == null)
@@ -82,11 +81,11 @@ class FluidAnvilRecipe : IAnvilRecipe {
         return false
     }
 
-    override fun getCraftingResult(left: ItemStack, right: ItemStack): ItemStack = output.copy()
+    override fun getCraftingResult(left: ItemStack, right: ItemStack?): ItemStack = output.copy()
 
     override fun recipeOutput(): ItemStack = output
 
-    override fun recipeInputs(): Array<Any> = inputs.requireNoNulls()
+    override fun recipeInputs(): Array<Any?> = inputs
 
     override fun recipeCost(): Int = expLvlCost
 }

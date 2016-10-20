@@ -1,6 +1,7 @@
 package net.lomeli.lomlib.client.addon.jei.anvil
 
 import com.google.common.collect.ImmutableList
+import mezz.jei.api.ingredients.IIngredients
 import mezz.jei.api.recipe.IRecipeWrapper
 import java.util.Collections
 
@@ -41,5 +42,8 @@ class FluidAnvilRecipeWrapper(private val recipe: FluidAnvilRecipe) : IRecipeWra
 
     override fun handleClick(minecraft: Minecraft, mouseX: Int, mouseY: Int, mouseButton: Int): Boolean {
         return false
+    }
+
+    override fun getIngredients(ingredients : IIngredients?) {
     }
 }

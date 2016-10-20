@@ -2,6 +2,7 @@ package net.lomeli.lomlib.client.addon.jei;
 
 import com.google.common.collect.Lists;
 import mezz.jei.api.*;
+import mezz.jei.api.ingredients.IModIngredientRegistration;
 
 import java.util.List;
 
@@ -35,6 +36,16 @@ public class LomLibPlugin implements IModPlugin {
 
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+
+    }
+
+    @Override
+    public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
+
+    }
+
+    @Override
+    public void registerIngredients(IModIngredientRegistration registry) {
 
     }
 }

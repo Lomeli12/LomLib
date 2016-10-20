@@ -3,6 +3,7 @@ package net.lomeli.lomlib.client.addon.jei.anvil
 import mezz.jei.api.IGuiHelper
 import mezz.jei.api.gui.IDrawable
 import mezz.jei.api.gui.IRecipeLayout
+import mezz.jei.api.ingredients.IIngredients
 import mezz.jei.api.recipe.IRecipeCategory
 import mezz.jei.api.recipe.IRecipeWrapper
 
@@ -43,5 +44,8 @@ class AnvilRecipeCategory(guiHelper: IGuiHelper) : IRecipeCategory<FluidAnvilRec
     }
 
     override fun drawAnimations(minecraft: Minecraft) {
+    }
+
+    override fun setRecipe(recipeLayout : IRecipeLayout?, recipeWrapper : FluidAnvilRecipeWrapper?, ingredients : IIngredients?) {
     }
 }
