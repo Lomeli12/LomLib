@@ -43,4 +43,9 @@ public class ItemRenderTest extends Item implements ISpecialRender{
         if(renderer == null) renderer = new RenderTest();
         return renderer;
     }
+
+    @Override
+    public boolean canItemSwing(@Nullable ItemStack stack) {
+        return true;
+    }
 }

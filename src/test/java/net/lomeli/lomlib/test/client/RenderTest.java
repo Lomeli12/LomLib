@@ -1,6 +1,7 @@
 package net.lomeli.lomlib.test.client;
 
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
@@ -44,6 +45,10 @@ public class RenderTest implements IItemRenderer {
         GlStateManager.color(1f, 1f, 1f, 1f);
         GlStateManager.popMatrix();
         GlStateManager.popMatrix();
+    }
+
+    @Override
+    public void renderThirdPerson(EntityPlayer player, EnumHandSide side, ItemStack stack, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
     }
 
     @Override

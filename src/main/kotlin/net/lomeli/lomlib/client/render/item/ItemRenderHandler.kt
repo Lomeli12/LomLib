@@ -26,8 +26,10 @@ object ItemRenderHandler {
                 val renderer = special.getSpecialRenderer(event.itemStack)
                 if (renderer.useRenderer(RenderType.FIRST_PERSON, event.hand, event.itemStack)) {
                     event.isCanceled = true
-                    val enumhandside = if (event.hand === EnumHand.MAIN_HAND) player.primaryHand else player.primaryHand.opposite()
-                    renderer.renderFirstPerson(event.hand, enumhandside, event.partialTicks, event.swingProgress, event.equipProgress, event.itemStack)
+                    val handSide = if (event.hand === EnumHand.MAIN_HAND) player.primaryHand else player.primaryHand.opposite()
+                    GlStateManager.pushMatrix()
+                    renderer.renderFirstPerson(event.hand, handSide, event.partialTicks, event.swingProgress, event.equipProgress, event.itemStack)
+                    GlStateManager.popMatrix()
                 }
             }
         }

@@ -21,9 +21,8 @@ object ModelHandler {
     fun registerModel(holder: IModelHolder) {
         if (holder == null)
             return
-        if (Loader.instance().getModState(Loader.instance().activeModContainer()) != LoaderState.ModState.PREINITIALIZED) {
+        if (Loader.instance().loaderState != LoaderState.PREINITIALIZATION)
             LomLib.logger.logError("Must be registered in Pre-Init")
-        }
         if (holder is IColorProvider)
             colorProviders.add(holder)
         if (holder is IMeshVariant) {

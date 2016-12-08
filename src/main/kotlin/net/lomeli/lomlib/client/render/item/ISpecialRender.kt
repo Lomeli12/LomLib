@@ -6,7 +6,9 @@ import net.minecraftforge.fml.relauncher.SideOnly
 
 @SideOnly(Side.CLIENT)
 interface ISpecialRender {
-    fun hasSpecialRenderer(stack: ItemStack?) : Boolean
+    fun hasSpecialRenderer(stack : ItemStack?) : Boolean
 
-    fun getSpecialRenderer(stack: ItemStack?) : IItemRenderer
+    fun getSpecialRenderer(stack : ItemStack?) : IItemRenderer
+
+    fun canItemSwing(stack : ItemStack?) : Boolean
 }
