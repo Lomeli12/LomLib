@@ -187,7 +187,7 @@ object NBTUtil {
     }
 
     fun areItemStacksEqualNoNBT(stackA: ItemStack, stackB: ItemStack?): Boolean {
-        if (stackB == null)
+        if (stackB!!.isEmpty)
             return false
 
         return ItemUtil.areItemsTheSame(stackA, stackB) && if (stackA.itemDamage == OreDictionary.WILDCARD_VALUE)
@@ -201,7 +201,7 @@ object NBTUtil {
     }
 
     fun doNBTsMatch(nbtA: NBTTagCompound?, nbtB: NBTTagCompound?): Boolean {
-        return if (nbtA == null) if (nbtB == null) true else false else if (nbtB == null) false else nbtA == nbtB
+        return if (nbtA != null && nbtB != null) nbtA.equals(nbtB) else nbtA == nbtB
     }
 
     fun getPersistedTag(player: EntityPlayer?): NBTTagCompound? {

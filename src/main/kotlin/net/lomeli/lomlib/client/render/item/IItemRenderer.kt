@@ -9,9 +9,11 @@ import net.minecraftforge.fml.relauncher.SideOnly
 
 @SideOnly(Side.CLIENT)
 interface IItemRenderer {
-    fun renderFirstPerson(hand : EnumHand, handSide : EnumHandSide, partialTicks : Float, swingProgress : Float, equipProgress : Float, stack : ItemStack?)
+    fun renderFirstPerson(hand: EnumHand, side: EnumHandSide, partialTicks: Float, swingProgress: Float, equipProgress: Float, stack: ItemStack?)
 
-    fun renderThirdPerson(player : EntityPlayer?, side : EnumHandSide, stack : ItemStack?, limbSwing : Float, limbSwingAmount : Float, partialTicks : Float, ageInTicks : Float, netHeadYaw : Float, headPitch : Float, scale : Float)
+    fun renderThirdPerson(player: EntityPlayer?, hand: EnumHand, side: EnumHandSide, stack: ItemStack?, limbSwing: Float, limbSwingAmount: Float, partialTicks: Float, ageInTicks: Float, netHeadYaw: Float, headPitch: Float, scale: Float)
 
-    fun useRenderer(type : RenderType, hand : EnumHand, stack : ItemStack?) : Boolean
+    fun useArmPreRender(player: EntityPlayer?, hand: EnumHand, side: EnumHandSide): Boolean
+
+    fun useRenderer(type: RenderType, hand: EnumHand, stack: ItemStack?): Boolean
 }

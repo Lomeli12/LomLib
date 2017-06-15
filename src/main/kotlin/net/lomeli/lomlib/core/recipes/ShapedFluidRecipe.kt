@@ -8,6 +8,7 @@ import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.IRecipe
 import net.minecraft.item.crafting.ShapedRecipes
+import net.minecraft.util.NonNullList
 import net.minecraft.world.World
 import net.minecraftforge.common.ForgeHooks
 import net.minecraftforge.fluids.FluidRegistry
@@ -181,7 +182,7 @@ class ShapedFluidRecipe : IRecipe {
                 val slot = inv.getStackInRowAndColumn(x, y)
 
                 if (target is ItemStack) {
-                    if (!OreDictionary.itemMatches(target as ItemStack?, slot, false))
+                    if (!OreDictionary.itemMatches(target, slot, false))
                         return false
                 } else if (target is List<*>) {
                     var matched = false
@@ -192,7 +193,7 @@ class ShapedFluidRecipe : IRecipe {
 
                     if (!matched)
                         return false
-                } else if (target == null && slot != null)
+                } else if (target == null && !slot.isEmpty)
                     return false
             }
         }
@@ -202,5 +203,5 @@ class ShapedFluidRecipe : IRecipe {
 
     fun getInput(): List<Any?> = Lists.newArrayList(this.inputs)
 
-    override fun getRemainingItems(inv: InventoryCrafting): Array<ItemStack> = ForgeHooks.defaultRecipeGetRemainingItems(inv)
+    override fun getRemainingItems(inv: InventoryCrafting?): NonNullList<ItemStack> = ForgeHooks.defaultRecipeGetRemainingItems(inv)
 }

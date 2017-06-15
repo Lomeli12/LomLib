@@ -14,26 +14,26 @@ import net.lomeli.lomlib.core.recipes.FluidAnvilRecipe
 
 class FluidAnvilRecipeWrapper(private val recipe: FluidAnvilRecipe) : IRecipeWrapper {
 
-    override fun getInputs(): List<*> {
+    fun getInputs(): List<*> {
         return listOf(recipe.recipeInputs())
     }
 
-    override fun getOutputs(): List<ItemStack> {
+    fun getOutputs(): List<ItemStack> {
         return listOf(recipe.recipeOutput())
     }
 
-    override fun drawAnimations(minecraft: Minecraft, recipeWidth: Int, recipeHeight: Int) {
+    fun drawAnimations(minecraft: Minecraft, recipeWidth: Int, recipeHeight: Int) {
     }
 
     override fun getTooltipStrings(mouseX: Int, mouseY: Int): List<String>? {
         return null
     }
 
-    override fun getFluidInputs(): List<FluidStack> {
+    fun getFluidInputs(): List<FluidStack> {
         return ImmutableList.of<FluidStack>()
     }
 
-    override fun getFluidOutputs(): List<FluidStack> {
+    fun getFluidOutputs(): List<FluidStack> {
         return ImmutableList.of<FluidStack>()
     }
 

@@ -199,7 +199,7 @@ public class NBTSerializer {
 
     private static ItemStack readItemStack(String key, NBTTagCompound tag) {
         NBTTagCompound itemTag = tag.getCompoundTag(key);
-        return ItemStack.loadItemStackFromNBT(itemTag);
+        return new ItemStack(itemTag);
     }
 
     private static void writeNBTTagCompound(String key, NBTTagCompound nbt, NBTTagCompound tag) {

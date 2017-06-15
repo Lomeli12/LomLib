@@ -12,13 +12,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import java.util.*
 
 object LayerHandler {
-    val layerMap: HashMap<Class<out EntityLivingBase>, ArrayList<LayerRenderer<out EntityLivingBase>>>
-    var playerLayerList : ArrayList<LayerRenderer<out EntityPlayer>>
-
-    init {
-        layerMap = Maps.newHashMap()
-        playerLayerList = Lists.newArrayList()
-    }
+    val layerMap = Maps.newHashMap<Class<out EntityLivingBase>, ArrayList<LayerRenderer<out EntityLivingBase>>>()
+    var playerLayerList = Lists.newArrayList<LayerRenderer<out EntityPlayer>>()
 
     fun addLayerForClass(clazz: Class<out EntityLivingBase>, layer: LayerRenderer<out EntityLivingBase>) {
         if (clazz == EntityPlayer::class.java) {
@@ -36,23 +31,13 @@ object LayerHandler {
     }
 
     fun getEntityLayers(entity: EntityLivingBase): ArrayList<LayerRenderer<out EntityLivingBase>>? {
-        for (entry in layerMap.entries) {
-            if (entry.key.isAssignableFrom(entity.javaClass))
-                return entry.value
-        }
-        return null
+        val out = layerMap.entries.stream().filter({entry -> entry.key.isAssignableFrom(entity.javaClass)}).findFirst().orElse(null)
+        return out?.value
     }
 
     private fun removeEntity(entity: EntityLivingBase) {
-        var key: Class<out EntityLivingBase>? = null
-        for (entry in layerMap.entries) {
-            if (entry.key.isAssignableFrom(entity.javaClass)) {
-                key = entry.key
-                break
-            }
-        }
-        if (key != null)
-            layerMap.remove(key)
+        val query = layerMap.entries.stream().filter({entry -> entry.key.isAssignableFrom(entity.javaClass)}).findFirst().orElse(null)
+        layerMap.remove(query.key)
     }
 
     @SubscribeEvent fun renderPre(event: RenderLivingEvent.Pre<EntityLivingBase>) {

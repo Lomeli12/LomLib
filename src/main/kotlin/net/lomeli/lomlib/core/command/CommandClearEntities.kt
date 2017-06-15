@@ -7,7 +7,7 @@ import net.minecraft.entity.EntityLivingBase
 import net.minecraft.server.MinecraftServer
 
 class CommandClearEntities : CommandBaseLomLib() {
-    override fun getCommandName(): String = "clear-entities"
+    override fun getName(): String = "clear-entities"
 
     override fun getRequiredPermissionLevel(): Int = 2
 

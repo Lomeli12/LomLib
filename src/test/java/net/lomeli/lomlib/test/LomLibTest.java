@@ -1,6 +1,7 @@
 package net.lomeli.lomlib.test;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -41,18 +42,18 @@ public class LomLibTest {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void armorEventTest(RenderArmorEvent event) {
-        //if (event.getSlotStack() != null && event.getSlotStack().getItem() instanceof ItemArmor)
-        //    event.setCanceled(true);
+        if (!event.getSlotStack().isEmpty() && event.getSlotStack().getItem() instanceof ItemArmor)
+            log.logDebug("Equipped %s in %s slot", event.getSlotStack().getDisplayName(), event.getEquipmentSlot());
     }
 
     @SubscribeEvent
     public void onFoodStatsTest(FoodEatenEvent event) {
-        if (event.getEntityPlayer().worldObj.isRemote) return;
-        if (event.getFoodStack() == null) {
+        if (event.getEntityPlayer().world.isRemote) return;
+        if (event.getFoodStack().isEmpty()) {
             log.logInfo("Something went wrong...");
             return;
         }
-        if (!event.getEntityPlayer().worldObj.isRemote)
+        if (!event.getEntityPlayer().world.isRemote)
             log.logInfo("%s ate a(n) %s and got %s to Food Lvl and %s to Saturation.", event.getEntityPlayer().getName(), event.getFoodStack().getDisplayName(), event.getFoodLevel(), event.getFoodSaturationLevel());
     }
 }

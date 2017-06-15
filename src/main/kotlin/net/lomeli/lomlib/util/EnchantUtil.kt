@@ -1,5 +1,6 @@
 package net.lomeli.lomlib.util
 
+import net.lomeli.lomlib.util.items.ItemUtil
 import net.minecraft.enchantment.Enchantment
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
@@ -42,16 +43,16 @@ object EnchantUtil {
     }
 
     fun stackHasEnchant(stack: ItemStack?, enchantment: Enchantment?): Boolean {
-        if (stack == null || enchantment == null)
+        if (stack!!.isEmpty || enchantment == null)
             return false
         else {
             val enchantmentId = Enchantment.getEnchantmentID(enchantment)
-            val nbttaglist = stack!!.getEnchantmentTagList()
+            val nbttaglist = stack.enchantmentTagList
             if (nbttaglist == null)
                 return false
             else {
-                for (i in 0..nbttaglist!!.tagCount() - 1) {
-                    val id = nbttaglist!!.getCompoundTagAt(i).getShort("id")
+                for (i in 0..nbttaglist.tagCount() - 1) {
+                    val id = nbttaglist.getCompoundTagAt(i).getShort("id")
                     if (id as Int == enchantmentId)
                         return true
                 }

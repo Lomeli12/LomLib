@@ -13,7 +13,7 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.nbt.NBTUtil
 
-enum class EnumHeadType private constructor(val id: Int) {
+enum class EnumHeadType constructor(val id: Int) {
 
     NONE(-1),
     SKELETON(0),

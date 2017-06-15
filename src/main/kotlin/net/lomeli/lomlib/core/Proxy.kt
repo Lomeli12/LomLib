@@ -12,13 +12,8 @@ import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.oredict.RecipeSorter
 
 open class Proxy {
-    var list: PatreonList
-    var updater: VersionChecker
-
-    init {
-        list = PatreonList()
-        updater = VersionChecker(ModLibs.UPDATE_URL, ModLibs.MOD_ID, ModLibs.MOD_NAME, ModLibs.VERSION)
-    }
+    var list = PatreonList()
+    var updater = VersionChecker(ModLibs.UPDATE_URL, ModLibs.MOD_ID, ModLibs.MOD_NAME, ModLibs.VERSION)
 
     open fun preInit() {
         LomLib.logger.logBasic("Pre-Init")

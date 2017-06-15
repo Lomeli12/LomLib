@@ -14,4 +14,8 @@ class GuiConfigFactory : IModGuiFactory {
     override fun runtimeGuiCategories(): Set<IModGuiFactory.RuntimeOptionCategoryElement>? = null
 
     override fun getHandlerFor(element: IModGuiFactory.RuntimeOptionCategoryElement): IModGuiFactory.RuntimeOptionGuiHandler? = null
+
+    override fun hasConfigGui(): Boolean = true
+
+    override fun createConfigGui(parentScreen: GuiScreen?): GuiScreen = GuiLomLibConfig(parentScreen!!)
 }

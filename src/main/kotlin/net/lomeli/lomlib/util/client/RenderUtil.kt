@@ -146,7 +146,7 @@ import java.util.*
     fun renderItemToolTip(x: Int, y: Int, stack: ItemStack) {
         val color = 0x505000ff
         val color2 = 0xf0100010.toInt()
-        val toolTipData = stack.getTooltip(mc.thePlayer, false)
+        val toolTipData = stack.getTooltip(mc.player, false)
         val parsedTooltip = ArrayList<String>()
         var first = true
 
@@ -330,12 +330,12 @@ import java.util.*
         renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.BLOCK)
         bindTexture(TEXTURE_MAP)
         //setColorRGBA(color);
-        val brightness = mc.theWorld.getCombinedLight(pos, fluid.fluid.luminosity)
+        val brightness = mc.world.getCombinedLight(pos, fluid.fluid.luminosity)
 
         pre(x, y, z)
 
-        val still = mc.textureMapBlocks.getTextureExtry(fluid.fluid.getStill(fluid).toString())
-        val flowing = mc.textureMapBlocks.getTextureExtry(fluid.fluid.getFlowing(fluid).toString())
+        val still = mc.textureMapBlocks.getTextureExtry(fluid.fluid.getStill(fluid).toString())!!
+        val flowing = mc.textureMapBlocks.getTextureExtry(fluid.fluid.getFlowing(fluid).toString())!!
 
         // x/y/z2 - x/y/z1 is because we need the width/height/depth
         putTexturedQuad(renderer, still, x1, y1, z1, x2 - x1, y2 - y1, z2 - z1, EnumFacing.DOWN, color, brightness, false)

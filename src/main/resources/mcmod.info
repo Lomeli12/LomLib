@@ -6,10 +6,7 @@
   "version" : "${version}",
   "mcversion": "${mcversion}",
   "url": "http://www.lomeli12.net/",
-  "updateUrl": "",
   "authorList": ["Lomeli12"],
-  "logoFile": "assets/lomlib/textures/elements/LomLib.png",
-  "screenshots": [],
-  "dependencies": []
+  "logoFile": "assets/lomlib/textures/elements/LomLib.png"
 }
 ]

@@ -4,7 +4,7 @@ import java.util.Map;
 
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 
-@IFMLLoadingPlugin.MCVersion("1.10.2")
+@IFMLLoadingPlugin.MCVersion("1.11.2")
 @IFMLLoadingPlugin.SortingIndex(1001)
 public class LomLibPlugin implements IFMLLoadingPlugin {
     @Override
@@ -19,7 +19,7 @@ public class LomLibPlugin implements IFMLLoadingPlugin {
 
     @Override
     public String getSetupClass() {
-        return null;
+        return "net.lomeli.lomlib.asm.KotlinSetup";
     }
 
     @Override

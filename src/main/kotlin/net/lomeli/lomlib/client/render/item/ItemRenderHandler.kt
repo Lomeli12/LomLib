@@ -1,6 +1,7 @@
 package net.lomeli.lomlib.client.render.item
 
 import net.lomeli.lomlib.util.MathUtil
+import net.lomeli.lomlib.util.items.ItemUtil
 import net.minecraft.client.renderer.GlStateManager
 import net.minecraft.util.EnumHand
 import net.minecraft.util.EnumHandSide
@@ -20,8 +21,8 @@ object ItemRenderHandler {
     @SubscribeEvent
     fun renderHandEvent(event : RenderSpecificHandEvent) {
         val player = FMLClientHandler.instance().clientPlayerEntity
-        if (event.itemStack != null && event.itemStack?.item is ISpecialRender) {
-            val special = event.itemStack?.item as ISpecialRender
+        if (!event.itemStack.isEmpty && event.itemStack.item is ISpecialRender) {
+            val special = event.itemStack.item as ISpecialRender
             if (special.hasSpecialRenderer(event.itemStack)) {
                 val renderer = special.getSpecialRenderer(event.itemStack)
                 if (renderer.useRenderer(RenderType.FIRST_PERSON, event.hand, event.itemStack)) {
@@ -55,7 +56,7 @@ object ItemRenderHandler {
         GlStateManager.rotate(12f, 0f, 0f, -1f)
         val f = MathUtil.sin(swingProgress * swingProgress * Math.PI).toFloat()
         GlStateManager.rotate(i.toFloat() * (45.0f + f * -20.0f), 0.0f, 1.0f, 0.0f)
-        val f1 = MathUtil.sin(MathHelper.sqrt_float(swingProgress) * Math.PI).toFloat()
+        val f1 = MathUtil.sin(MathHelper.sqrt(swingProgress) * Math.PI).toFloat()
         GlStateManager.rotate(i.toFloat() * f1 * -20.0f, 0.0f, 0.0f, 1.0f)
         GlStateManager.rotate(f1 * -80.0f, 1.0f, 0.0f, 0.0f)
         GlStateManager.rotate(i.toFloat() * -45.0f, 0.0f, 1.0f, 0.0f)

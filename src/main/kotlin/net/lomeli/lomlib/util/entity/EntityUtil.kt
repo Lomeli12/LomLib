@@ -84,13 +84,13 @@ object EntityUtil {
         return false
     }
 
-    fun spawnItemOnEntity(worldObj: World, entity: Entity, stack: ItemStack) {
-        val entityItem = EntityItem(worldObj, entity.posX, entity.posY, entity.posZ, stack)
+    fun spawnItemOnEntity(world: World, entity: Entity, stack: ItemStack) {
+        val entityItem = EntityItem(world, entity.posX, entity.posY, entity.posZ, stack)
         val factor = 0.05f
-        entityItem.motionX = entity.worldObj.rand.nextGaussian() * factor
-        entityItem.motionY = entity.worldObj.rand.nextGaussian() * factor + 0.2f
-        entityItem.motionZ = entity.worldObj.rand.nextGaussian() * factor
-        worldObj.spawnEntityInWorld(entityItem)
+        entityItem.motionX = entity.world.rand.nextGaussian() * factor
+        entityItem.motionY = entity.world.rand.nextGaussian() * factor + 0.2f
+        entityItem.motionZ = entity.world.rand.nextGaussian() * factor
+        world.spawnEntity(entityItem)
     }
 
     fun teleportRandomly(world: World, telporter: EntityLivingBase): Boolean {

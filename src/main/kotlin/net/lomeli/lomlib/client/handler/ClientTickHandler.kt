@@ -19,13 +19,13 @@ object ClientTickHandler {
         val mc = FMLClientHandler.instance().client
         if (event.phase == TickEvent.Phase.START) {
             partialTicks = event.renderTickTime
-            if (mc.thePlayer != null) {
-                val itemStack = mc.thePlayer.heldItemMainhand
-                if (itemStack != null && itemStack.item is ISpecialRender) {
+            if (mc.player != null) {
+                val itemStack = mc.player.heldItemMainhand
+                if (!itemStack.isEmpty && itemStack.item is ISpecialRender) {
                     val special = itemStack.item as ISpecialRender
                     if (!special.canItemSwing(itemStack)) {
-                        mc.thePlayer.swingProgressInt = -1
-                        mc.thePlayer.isSwingInProgress = false
+                        mc.player.swingProgressInt = -1
+                        mc.player.isSwingInProgress = false
 
                     }
                 }
@@ -40,7 +40,7 @@ object ClientTickHandler {
             val mc = FMLClientHandler.instance().client
             if (event.player != null) {
                 val itemStack = event.player.heldItemMainhand
-                if (itemStack != null && itemStack.item is ISpecialRender) {
+                if (!itemStack.isEmpty && itemStack.item is ISpecialRender) {
                     val special = itemStack.item as ISpecialRender
                     if (!special.canItemSwing(itemStack) && !(event.player == mc.renderViewEntity && mc.gameSettings.thirdPersonView == 0)) {
                         if (event.player.itemInUseCount <= 0) {

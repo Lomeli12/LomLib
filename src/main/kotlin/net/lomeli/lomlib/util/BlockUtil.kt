@@ -13,13 +13,13 @@ object BlockUtil {
         GameRegistry.registerTileEntity(tile, tile.name.toLowerCase())
     }
 
-    fun getBlock(world: IBlockAccess, blockPos: BlockPos): Block = world.getBlockState(blockPos).getBlock()
+    fun getBlock(world: IBlockAccess, blockPos: BlockPos): Block = world.getBlockState(blockPos).block
 
     fun getBlock(world: IBlockAccess, x: Int, y: Int, z: Int): Block = getBlock(world, BlockPos(x, y, z))
 
     fun posEqual(pos1: BlockPos, pos2: BlockPos): Boolean = pos1.x === pos2.x && pos1.y === pos2.y && pos1.z === pos2.z
 
-    fun getDistance(pos1: BlockPos, pos2: BlockPos): Float = MathHelper.sqrt_double(pos1.distanceSq(pos2.x as Double, pos2.y as Double, pos2.z as Double))
+    fun getDistance(pos1: BlockPos, pos2: BlockPos): Float = MathHelper.sqrt(pos1.distanceSq(pos2.x as Double, pos2.y as Double, pos2.z as Double))
 
     fun getFaceFromDif(base: BlockPos, target: BlockPos): EnumFacing {
         val xDif = target.x - base.x

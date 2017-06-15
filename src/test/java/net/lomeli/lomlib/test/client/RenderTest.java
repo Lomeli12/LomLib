@@ -1,19 +1,21 @@
 package net.lomeli.lomlib.test.client;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import net.lomeli.lomlib.client.render.item.IItemRenderer;
+import net.lomeli.lomlib.client.render.item.ItemRenderHandler;
+import net.lomeli.lomlib.client.render.item.RenderType;
+import net.lomeli.lomlib.util.client.RenderUtil;
+
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
-
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import net.lomeli.lomlib.client.render.item.IItemRenderer;
-import net.lomeli.lomlib.client.render.item.ItemRenderHandler;
-import net.lomeli.lomlib.client.render.item.RenderType;
-import net.lomeli.lomlib.util.client.RenderUtil;
 
 /**
  * Testing using the gun model from Turtle Gun
@@ -48,7 +50,12 @@ public class RenderTest implements IItemRenderer {
     }
 
     @Override
-    public void renderThirdPerson(EntityPlayer player, EnumHandSide side, ItemStack stack, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    public void renderThirdPerson(EntityPlayer player, EnumHand hand, EnumHandSide side, ItemStack stack, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+    }
+
+    @Override
+    public boolean useArmPreRender(@Nullable EntityPlayer player, @NotNull EnumHand hand, @NotNull EnumHandSide side) {
+        return true;
     }
 
     @Override

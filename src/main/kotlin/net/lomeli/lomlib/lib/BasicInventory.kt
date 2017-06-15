@@ -2,44 +2,44 @@ package net.lomeli.lomlib.lib
 
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IInventory
+import net.minecraft.inventory.ItemStackHelper
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.nbt.NBTTagList
+import net.minecraft.util.NonNullList
 import net.minecraft.util.text.ITextComponent
 import net.minecraft.util.text.TextComponentTranslation
 
 class BasicInventory : IInventory {
-    private var inventory: Array<ItemStack?>
+    private var contents: NonNullList<ItemStack>
     private val baseName: String
     private var customName: String?
 
     constructor(size: Int, baseName: String, customName: String) {
-        this.baseName = baseName;
-        this.customName = customName;
-        this.inventory = arrayOfNulls<ItemStack>(size)
+        this.baseName = baseName
+        this.customName = customName
+        this.contents = NonNullList.withSize(size, ItemStack.EMPTY)
     }
 
     override fun markDirty() {
-
     }
 
-    override fun getSizeInventory(): Int = inventory.size
+    override fun getSizeInventory(): Int = contents.size
 
-    override fun getStackInSlot(index: Int): ItemStack? = inventory[index]
+    override fun getStackInSlot(index: Int): ItemStack? = contents[index]
 
     override fun decrStackSize(index: Int, count: Int): ItemStack? {
-        if (this.inventory[index] != null) {
+        if (this.contents[index] != ItemStack.EMPTY) {
             val itemstack: ItemStack
 
-            if (this.inventory[index]!!.stackSize <= count) {
-                itemstack = this.inventory[index] as ItemStack
-                this.inventory[index] = null
+            if (this.contents[index].count <= count) {
+                itemstack = this.contents[index]
+                this.contents[index] = null
                 return itemstack
             } else {
-                itemstack = this.inventory[index]!!.splitStack(count)
+                itemstack = this.contents[index].splitStack(count)
 
-                if (this.inventory[index]?.stackSize == 0)
-                    this.inventory[index] = null
+                if (this.contents[index].count == 0)
+                    this.contents[index] = null
                 return itemstack
             }
         } else
@@ -48,17 +48,18 @@ class BasicInventory : IInventory {
 
     override fun removeStackFromSlot(index: Int): ItemStack? {
         val stack = this.getStackInSlot(index)
-        inventory[index] = null
+        contents[index] = ItemStack.EMPTY
         return stack
     }
 
     override fun setInventorySlotContents(index: Int, stack: ItemStack?) {
-        inventory[index] = stack
+        if (stack == null || stack.isEmpty) contents[index] = ItemStack.EMPTY
+        else contents[index] = stack
     }
 
     override fun getInventoryStackLimit(): Int = 64
 
-    override fun isUseableByPlayer(player: EntityPlayer): Boolean = true
+    override fun isUsableByPlayer(player: EntityPlayer?): Boolean = true
 
     override fun openInventory(player: EntityPlayer) {
     }
@@ -76,8 +77,12 @@ class BasicInventory : IInventory {
     override fun getFieldCount(): Int = 0
 
     override fun clear() {
-        for (i in inventory.indices)
-            inventory[i] = null
+        for (i in contents.indices)
+            contents[i] = ItemStack.EMPTY
+    }
+
+    override fun isEmpty(): Boolean {
+        throw UnsupportedOperationException("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun getName(): String = if (hasCustomName()) customName.toString() else baseName
@@ -91,32 +96,14 @@ class BasicInventory : IInventory {
     }
 
     fun readNBT(tag: NBTTagCompound): NBTTagCompound {
-        val nbttaglist = tag.getTagList("Items", 10)
-        for (i in 0..nbttaglist.tagCount() - 1) {
-            val nbttagcompound1 = nbttaglist.getCompoundTagAt(i)
-            val j = nbttagcompound1.getByte("Slot").toInt() and 255
-
-            if (j >= 0 && j < this.inventory.size)
-                this.inventory[j] = ItemStack.loadItemStackFromNBT(nbttagcompound1)
-        }
+        ItemStackHelper.loadAllItems(tag, this.contents)
         if (tag.hasKey("customName"))
             customName = tag.getString("customName")
         return tag
     }
 
     fun writeNBT(tag: NBTTagCompound): NBTTagCompound {
-        val nbttaglist = NBTTagList()
-
-        for (i in this.inventory.indices) {
-            if (this.inventory[i] != null) {
-                val nbttagcompound1 = NBTTagCompound()
-                nbttagcompound1.setByte("Slot", i.toByte())
-                this.inventory[i]?.writeToNBT(nbttagcompound1)
-                nbttaglist.appendTag(nbttagcompound1)
-            }
-        }
-
-        tag.setTag("Items", nbttaglist)
+        ItemStackHelper.saveAllItems(tag, this.contents)
         if (hasCustomName())
             tag.setString("customName", customName!!)
         return tag

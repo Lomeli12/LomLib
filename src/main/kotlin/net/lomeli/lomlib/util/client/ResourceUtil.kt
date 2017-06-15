@@ -42,5 +42,5 @@ object ResourceUtil {
         FMLClientHandler.instance().client.renderEngine.bindTexture(texture)
     }
 
-    fun registerTexture(map: TextureMap, resource: ResourceLocation): Boolean = map.setTextureEntry(resource.toString(), map.registerSprite(resource))
+    fun registerTexture(map: TextureMap, resource: ResourceLocation): Boolean = map.setTextureEntry(map.registerSprite(resource))
 }

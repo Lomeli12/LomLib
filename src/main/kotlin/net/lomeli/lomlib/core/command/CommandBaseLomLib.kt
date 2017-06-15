@@ -9,14 +9,14 @@ import net.minecraft.util.text.TextComponentString
 
 abstract class CommandBaseLomLib : CommandBase() {
 
-    abstract override fun getCommandName(): String
+    abstract override fun getName(): String
 
-    override fun getCommandUsage(sender: ICommandSender): String = "command.lomlib.$commandName.usage"
+    override fun getUsage(sender: ICommandSender): String = "command.lomlib.$name.usage"
 
     @Throws(CommandException::class)
     abstract override fun execute(server: MinecraftServer, sender: ICommandSender, args: Array<String>)
 
     protected fun sendMessage(sender: ICommandSender?, message: String) {
-        sender?.addChatMessage(TextComponentString(LangUtil.translate(message)))
+        sender?.sendMessage(TextComponentString(LangUtil.translate(message)))
     }
 }

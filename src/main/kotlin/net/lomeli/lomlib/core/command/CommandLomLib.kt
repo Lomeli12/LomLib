@@ -20,10 +20,10 @@ class CommandLomLib : CommandBaseLomLib {
         modCommands.add(CommandClearHostiles())
 
         for (command in modCommands)
-            commands.add(command.commandName)
+            commands.add(command.name)
     }
 
-    override fun getCommandName(): String = "lomlib"
+    override fun getName(): String = "lomlib"
 
     override fun getRequiredPermissionLevel(): Int = 0
 
@@ -34,28 +34,28 @@ class CommandLomLib : CommandBaseLomLib {
 
                 var helpFlag = false
                 if (args[0].equals("help", ignoreCase = true) || args[0].equals("?", ignoreCase = true)) {
-                    sendMessage(sender, getCommandUsage(sender))
+                    sendMessage(sender, getUsage(sender))
                     helpFlag = true
                 }
                 for (commandBase in modCommands) {
                     if (helpFlag)
-                        sendMessage(sender, "/" + commandName + " " + commandBase.commandName)
-                    else if (commandBase.commandName.equals(args[0], ignoreCase = true) && commandBase.checkPermission(server, sender))
+                        sendMessage(sender, "/" + name + " " + commandBase.name)
+                    else if (commandBase.name.equals(args[0], ignoreCase = true) && commandBase.checkPermission(server, sender))
                         commandBase.execute(server, sender, args)
                 }
             } else
-                sendMessage(sender, getCommandUsage(sender))
+                sendMessage(sender, getUsage(sender))
         }
     }
 
-    override fun getTabCompletionOptions(server: MinecraftServer?, sender: ICommandSender?, args: Array<String>?, pos: BlockPos?): List<String> {
+    override fun getTabCompletions(server: MinecraftServer?, sender: ICommandSender?, args: Array<String>?, pos: BlockPos?): List<String> {
         if (sender != null && args != null) {
             if (args.size == 1)
                 return CommandBase.getListOfStringsMatchingLastWord(args, commands)
             else if (args.size >= 2) {
                 for (command in modCommands) {
-                    if (command.commandName.equals(args[0], ignoreCase = true))
-                        return command.getTabCompletionOptions(server, sender, args, pos)
+                    if (command.name.equals(args[0], ignoreCase = true))
+                        return command.getTabCompletions(server, sender, args, pos)
                 }
             }
         }

@@ -9,14 +9,9 @@ import net.minecraft.item.Item
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.fml.common.LoaderState
-import java.util.*
 
 object ModelHandler {
-    private val colorProviders : ArrayList<IColorProvider>
-
-    init {
-        colorProviders = Lists.newArrayList<IColorProvider>()
-    }
+    private val colorProviders = Lists.newArrayList<IColorProvider>()
 
     fun registerModel(holder: IModelHolder) {
         if (holder == null)

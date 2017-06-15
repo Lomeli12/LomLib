@@ -9,11 +9,12 @@ import net.minecraft.world.World
 import net.minecraftforge.oredict.OreDictionary
 
 import net.lomeli.lomlib.util.nbt.NBTUtil
+import net.minecraft.init.Blocks
 import net.minecraftforge.fml.common.registry.GameRegistry
 
 object ItemUtil {
     fun consumeItem(stack: ItemStack): ItemStack? {
-        if (stack.stackSize == 1) {
+        if (stack.count == 1) {
             if (stack.item.hasContainerItem(stack))
                 return stack.item.getContainerItem(stack)
             else
@@ -25,20 +26,22 @@ object ItemUtil {
         }
     }
 
-    fun itemsEqualWithMetadata(stackA: ItemStack?, stackB: ItemStack?): Boolean = if (stackA == null) if (stackB == null) true else false else stackB != null && areItemsTheSame(stackA, stackB) && (stackA.hasSubtypes == false || stackA.itemDamage == stackB.itemDamage)
+    fun itemsEqualWithMetadata(stackA: ItemStack?, stackB: ItemStack?): Boolean =
+            if (stackA!!.isEmpty) stackB!!.isEmpty else (!stackB!!.isEmpty && areItemsTheSame(stackA, stackB) &&
+                (stackA.hasSubtypes == false || stackA.itemDamage == stackB.itemDamage))
 
     fun itemsEqualWithMetadata(stackA: ItemStack?, stackB: ItemStack?, checkNBT: Boolean): Boolean {
-        return if (stackA == null)
-            if (stackB == null) true else false
+        return if (stackA!!.isEmpty)
+            stackB!!.isEmpty
         else
-            stackB != null && areItemsTheSame(stackA, stackB) && stackA.itemDamage == stackB.itemDamage
+            !stackB!!.isEmpty && areItemsTheSame(stackA, stackB) && stackA.itemDamage == stackB.itemDamage
                     && (!checkNBT || NBTUtil.doNBTsMatch(stackA.tagCompound, stackB.tagCompound))
     }
 
-    fun areItemsTheSame(a: ItemStack, b: ItemStack): Boolean = a.item === b.item && a.itemDamage == b.itemDamage
+    fun areItemsTheSame(a: ItemStack, b: ItemStack): Boolean = a.item == b.item && a.itemDamage == b.itemDamage
 
     fun cloneStack(item: Item?, stackSize: Int): ItemStack? {
-        if (item == null)
+        if (item == null && item != Item.getItemFromBlock(Blocks.AIR))
             return null
 
         val stack = ItemStack(item, stackSize)
@@ -47,17 +50,17 @@ object ItemUtil {
     }
 
     fun cloneStack(stack: ItemStack?, stackSize: Int): ItemStack? {
-        if (stack == null)
+        if (stack!!.isEmpty)
             return null
 
         val retStack = stack.copy()
-        retStack.stackSize = stackSize
+        retStack?.count = stackSize
 
         return retStack
     }
 
     fun dropItemStackIntoWorld(stack: ItemStack?, world: World, x: Double, y: Double, z: Double, velocity: Boolean) {
-        if (stack != null) {
+        if (!stack!!.isEmpty) {
             var x2 = 0.5f
             var y2 = 0.0f
             var z2 = 0.5f
@@ -79,12 +82,12 @@ object ItemUtil {
                 entity.motionZ = 0.0
             }
 
-            world.spawnEntityInWorld(entity)
+            world.spawnEntity(entity)
         }
     }
 
     fun canStacksMerge(stack1: ItemStack?, stack2: ItemStack?): Boolean {
-        if (stack1 == null || stack2 == null)
+        if (stack1!!.isEmpty || stack2!!.isEmpty)
             return false
         if (!stack1.isItemEqual(stack2))
             return false
@@ -96,9 +99,9 @@ object ItemUtil {
     fun searchForPossibleSlot(stack: ItemStack, inventory: IInventory): Int {
         for (i in 0..inventory.sizeInventory - 1) {
             val item = inventory.getStackInSlot(i)
-            if (item == null || item.item == null)
+            if (item.isEmpty)
                 return i
-            else if (canStacksMerge(stack, item) && item.stackSize + stack.stackSize < item.maxStackSize)
+            else if (canStacksMerge(stack, item) && item.count + stack.count < item.maxStackSize)
                 return i
         }
         return -1
@@ -116,7 +119,7 @@ object ItemUtil {
      * @return
      */
     fun insertIntoInventory(inventory: IInventory?, stack: ItemStack?, doMove: Boolean): Boolean {
-        if (stack == null) return false
+        if (stack!!.isEmpty) return false
         if (inventory == null) return false
 
         val slot = searchForPossibleSlot(stack, inventory)
@@ -130,23 +133,23 @@ object ItemUtil {
     fun tryInsertStack(targetInventory: IInventory, slot: Int, stack: ItemStack, canMerge: Boolean): Boolean {
         if (targetInventory.isItemValidForSlot(slot, stack)) {
             val targetStack = targetInventory.getStackInSlot(slot)
-            if (targetStack == null) {
+            if (targetStack.isEmpty) {
                 val limit = targetInventory.inventoryStackLimit
-                if (limit < stack.stackSize)
+                if (limit < stack.count)
                     targetInventory.setInventorySlotContents(slot, stack.splitStack(limit))
                 else {
                     targetInventory.setInventorySlotContents(slot, stack.copy())
-                    stack.stackSize = 0
+                    stack.count = 0
                 }
                 return true
             } else if (canMerge) {
                 if (targetInventory.isItemValidForSlot(slot, stack) && canStacksMerge(stack, targetStack)) {
-                    val space = targetStack.maxStackSize - targetStack.stackSize
-                    val mergeAmount = Math.min(space, stack.stackSize)
+                    val space = targetStack.maxStackSize - targetStack.count
+                    val mergeAmount = Math.min(space, stack.count)
                     val copy = targetStack.copy()
-                    copy.stackSize += mergeAmount
+                    copy.count += mergeAmount
                     targetInventory.setInventorySlotContents(slot, copy)
-                    stack.stackSize -= mergeAmount
+                    stack.count -= mergeAmount
                     return true
                 }
             }
@@ -157,7 +160,7 @@ object ItemUtil {
     fun getSlotWithStack(inventory: IInventory, stack: ItemStack): Int {
         for (i in 0..inventory.sizeInventory - 1) {
             val item = inventory.getStackInSlot(i)
-            if (item != null && OreDictionary.itemMatches(item, stack, false))
+            if (!item.isEmpty && OreDictionary.itemMatches(item, stack, false))
                 return i
         }
         return -1
@@ -168,7 +171,7 @@ object ItemUtil {
     fun hasItem(inventory : IInventory, item: Item) : Boolean {
         for (i in 0..inventory.sizeInventory - 1) {
             val slotItem = inventory.getStackInSlot(i)
-            if (slotItem != null && slotItem.item == item) return true
+            if (!slotItem.isEmpty && slotItem.item == item) return true
         }
         return false
     }
@@ -176,10 +179,10 @@ object ItemUtil {
     fun consumeItem(inventory : IInventory, item: Item) : Boolean {
         for (i in 0..inventory.sizeInventory - 1) {
             val slotItem = inventory.getStackInSlot(i)
-            if (slotItem != null && slotItem.item == item && slotItem.stackSize > 0) {
-                slotItem.stackSize--
-                if (slotItem.stackSize <= 0)
-                    inventory.setInventorySlotContents(i, null)
+            if (!slotItem.isEmpty && slotItem.item == item) {
+                slotItem.count--
+                if (slotItem.count <= 0)
+                    inventory.setInventorySlotContents(i, ItemStack.EMPTY)
                 return true
             }
         }

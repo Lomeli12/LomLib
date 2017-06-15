@@ -7,7 +7,7 @@ import net.minecraft.entity.monster.EntityPigZombie
 import net.minecraft.server.MinecraftServer
 
 class CommandCalmPigmen : CommandBaseLomLib() {
-    override fun getCommandName(): String = "calm-pigmen"
+    override fun getName(): String = "calm-pigmen"
 
     override fun getRequiredPermissionLevel(): Int = 2
 

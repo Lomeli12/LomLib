@@ -11,7 +11,7 @@ class FluidAnvilRecipeHandler : IRecipeHandler<FluidAnvilRecipe> {
         return FluidAnvilRecipe::class.java
     }
 
-    override fun getRecipeCategoryUid(): String {
+    fun getRecipeCategoryUid(): String {
         return LomLibPlugin.ANVIL
     }
 

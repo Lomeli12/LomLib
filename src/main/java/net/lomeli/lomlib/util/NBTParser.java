@@ -262,7 +262,7 @@ public class NBTParser {
     }
 
     private static ItemStack readStack(String fieldName, NBTTagCompound tag) {
-        return ItemStack.loadItemStackFromNBT(readNBT(fieldName, tag));
+        return new ItemStack(readNBT(fieldName, tag));
     }
 
     private static void writeStack(String fieldName, ItemStack stack, NBTTagCompound tag) {

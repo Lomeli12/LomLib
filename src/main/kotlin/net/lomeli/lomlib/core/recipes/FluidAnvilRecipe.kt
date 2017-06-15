@@ -13,14 +13,14 @@ class FluidAnvilRecipe : IAnvilRecipe {
     private var expLvlCost = 0
     private val reverse: Boolean
 
-    constructor(output: ItemStack, leftInput: Any, rightInput: Any, expCost: Int, reverseable: Boolean) {
+    constructor(output: ItemStack, leftInput: Any, rightInput: Any, expCost: Int, reversible: Boolean) {
         this.output = output
         addInput(leftInput, 0)
         addInput(rightInput, 1)
         setXPCost(expCost)
         if (leftInput == null && rightInput == null)
             throw RuntimeException("Invalid Anvil Recipe: Both inputs cannot be null!")
-        reverse = reverseable
+        reverse = reversible
     }
 
     constructor(output: ItemStack, leftInput: Any, rightInput: Any, expCost: Int) : this(output, leftInput, rightInput, expCost, false)
@@ -64,14 +64,14 @@ class FluidAnvilRecipe : IAnvilRecipe {
         if (slot == 0 || slot == 1) {
             val target = inputs[slot]
             if (target == null)
-                return itemStack == null
+                return itemStack!!.isEmpty
             else if (target is ItemStack) {
-                if (!OreDictionary.itemMatches(target as ItemStack?, itemStack, false))
+                if (!OreDictionary.itemMatches(target, itemStack!!, false))
                     return false
             } else if (target is List<*>) {
                 var matched = false
                 for (item in (target as List<ItemStack>?)!!) {
-                    matched = matched || OreDictionary.itemMatches(item, itemStack, false)
+                    matched = matched || OreDictionary.itemMatches(item, itemStack!!, false)
                 }
                 if (!matched)
                     return false

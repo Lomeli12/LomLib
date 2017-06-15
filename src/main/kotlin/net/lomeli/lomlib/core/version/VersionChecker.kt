@@ -133,15 +133,15 @@ class VersionChecker : Runnable {
     }
 
     @SubscribeEvent @SideOnly(Side.CLIENT) fun onClientTick(event: TickEvent.ClientTickEvent) {
-        if (event.phase == TickEvent.Phase.END && Minecraft.getMinecraft().thePlayer != null) {
-            val player = Minecraft.getMinecraft().thePlayer
+        if (event.phase == TickEvent.Phase.END && Minecraft.getMinecraft().player != null) {
+            val player = Minecraft.getMinecraft().player
             if (this.needsUpdate) {
                 if (!this.version!!.isEmpty() && this.doneTelling) {
-                    player.addChatComponentMessage(TextComponentString(LangUtil.translate("message.lomlib.update.message", this.modname, this.downloadURL!!)))
+                    player.sendStatusMessage(TextComponentString(LangUtil.translate("message.lomlib.update.message", this.modname, this.downloadURL!!)), true)
                     if (this.changeList != null && this.changeList.size > 0) {
-                        player.addChatComponentMessage(TextComponentString(LangUtil.translate("message.lomlib.update.changelog")))
+                        player.sendStatusMessage(TextComponentString(LangUtil.translate("message.lomlib.update.changelog")), true)
                         for (change in changeList)
-                            player.addChatComponentMessage(TextComponentString("- " + change))
+                            player.sendStatusMessage(TextComponentString("- " + change), true)
                     }
                     this.doneTelling = true
                 }

@@ -7,7 +7,7 @@ import net.minecraft.entity.monster.IMob
 import net.minecraft.server.MinecraftServer
 
 class CommandClearHostiles : CommandBaseLomLib() {
-    override fun getCommandName(): String = "clear-hostiles"
+    override fun getName(): String = "clear-hostiles"
 
     override fun getRequiredPermissionLevel(): Int = 2
 

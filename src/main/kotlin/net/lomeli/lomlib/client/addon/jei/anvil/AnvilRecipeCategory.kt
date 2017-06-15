@@ -38,14 +38,22 @@ class AnvilRecipeCategory(guiHelper: IGuiHelper) : IRecipeCategory<FluidAnvilRec
     override fun drawExtras(minecraft: Minecraft) {
     }
 
-    override fun setRecipe(recipeLayout: IRecipeLayout, recipeWrapper: FluidAnvilRecipeWrapper) {
+    fun setRecipe(recipeLayout: IRecipeLayout, recipeWrapper: FluidAnvilRecipeWrapper) {
         if (recipeWrapper !is FluidAnvilRecipeWrapper)
             return
     }
 
-    override fun drawAnimations(minecraft: Minecraft) {
+    fun drawAnimations(minecraft: Minecraft) {
     }
 
     override fun setRecipe(recipeLayout : IRecipeLayout?, recipeWrapper : FluidAnvilRecipeWrapper?, ingredients : IIngredients?) {
+    }
+
+    override fun getIcon(): IDrawable? {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getTooltipStrings(mouseX: Int, mouseY: Int): MutableList<String> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

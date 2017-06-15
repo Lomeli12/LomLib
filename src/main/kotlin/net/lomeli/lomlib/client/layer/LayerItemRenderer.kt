@@ -15,17 +15,17 @@ import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 
 @SideOnly(Side.CLIENT)
-class LayerItemRenderer(val entityRenderer : RenderPlayer) : LayerRenderer<EntityPlayer> {
+class LayerItemRenderer(val entityRenderer: RenderPlayer) : LayerRenderer<EntityPlayer> {
 
-    override fun shouldCombineTextures() : Boolean = true
+    override fun shouldCombineTextures(): Boolean = true
 
-    override fun doRenderLayer(player : EntityPlayer?, limbSwing : Float, limbSwingAmount : Float, partialTicks : Float, ageInTicks : Float, netHeadYaw : Float, headPitch : Float, scale : Float) {
+    override fun doRenderLayer(player: EntityPlayer?, limbSwing: Float, limbSwingAmount: Float, partialTicks: Float, ageInTicks: Float, netHeadYaw: Float, headPitch: Float, scale: Float) {
         if (player != null) {
-            val mainStack = player?.heldItemMainhand
-            val offStack = player?.heldItemOffhand
-            val mainSide = player?.primaryHand
-            val offSide = player?.primaryHand?.opposite()
-            if (mainStack != null || offStack != null) {
+            val mainStack = player.heldItemMainhand
+            val offStack = player.heldItemOffhand
+            val mainSide = player.primaryHand
+            val offSide = player.primaryHand.opposite()
+            if (!mainStack.isEmpty || !offStack.isEmpty) {
                 GlStateManager.pushMatrix()
 
                 if (this.entityRenderer.mainModel.isChild) {
@@ -35,34 +35,35 @@ class LayerItemRenderer(val entityRenderer : RenderPlayer) : LayerRenderer<Entit
                 }
                 val mainRenderer = getRenderer(mainStack)
                 if (mainRenderer != null && mainRenderer.useRenderer(RenderType.THIRD_PERSON, EnumHand.MAIN_HAND, mainStack))
-                    renderItem(player, mainSide!!, mainStack, mainRenderer, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale)
+                    renderItem(player, EnumHand.MAIN_HAND, mainSide!!, mainStack, mainRenderer, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale)
                 val offRenderer = getRenderer(offStack)
                 if (offRenderer != null && offRenderer.useRenderer(RenderType.THIRD_PERSON, EnumHand.OFF_HAND, offStack))
-                    renderItem(player, offSide!!, offStack, offRenderer, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale)
+                    renderItem(player, EnumHand.OFF_HAND, offSide!!, offStack, offRenderer, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale)
                 GlStateManager.popMatrix()
             }
         }
     }
 
-    private fun renderItem(player : EntityPlayer, handSide : EnumHandSide, stack : ItemStack?, renderer : IItemRenderer, limbSwing : Float, limbSwingAmount : Float, partialTicks : Float, ageInTicks : Float, netHeadYaw : Float, headPitch : Float, scale : Float) {
-        if (stack != null) {
+    private fun renderItem(player: EntityPlayer, hand: EnumHand, handSide: EnumHandSide, stack: ItemStack?, renderer: IItemRenderer, limbSwing: Float, limbSwingAmount: Float, partialTicks: Float, ageInTicks: Float, netHeadYaw: Float, headPitch: Float, scale: Float) {
+        if (!stack!!.isEmpty) {
             GlStateManager.pushMatrix()
 
             if (player.isSneaking) GlStateManager.translate(0.0f, 0.2f, 0.0f)
 
-            ((entityRenderer.mainModel) as ModelBiped).postRenderArm(0.0625f, handSide)
+            if (renderer.useArmPreRender(player, hand, handSide))
+                ((entityRenderer.mainModel) as ModelBiped).postRenderArm(0.0625f, handSide)
             GlStateManager.rotate(-90.0f, 1.0f, 0.0f, 0.0f)
             GlStateManager.rotate(180.0f, 0.0f, 1.0f, 0.0f)
             val flag = handSide == EnumHandSide.LEFT
             GlStateManager.translate((if (flag) -1 else 1).toFloat() / 16.0f, 0.125f, -0.625f)
-            renderer.renderThirdPerson(player, handSide, stack, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale)
+            renderer.renderThirdPerson(player, hand, handSide, stack, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, scale)
             GlStateManager.popMatrix()
         }
 
     }
 
-    private fun getRenderer(item : ItemStack?) : IItemRenderer? {
-        if (item != null && item.item is ISpecialRender) {
+    private fun getRenderer(item: ItemStack?): IItemRenderer? {
+        if (!item!!.isEmpty && item.item is ISpecialRender) {
             val special = item.item as ISpecialRender
             if (special.hasSpecialRenderer(item))
                 return special.getSpecialRenderer(item)

@@ -24,7 +24,7 @@ import net.minecraftforge.fml.relauncher.SideOnly
     }
 
     @SideOnly(Side.CLIENT) fun playSoundAtEntity(entity: Entity?, event: SoundEvent, category: SoundCategory, volume: Float, pitch: Float) {
-        if (entity != null && entity.worldObj != null)
-            entity.worldObj.playSound(null, entity.posX, entity.posY, entity.posZ, event, category, volume, pitch)
+        if (entity != null && entity.world != null)
+            entity.world.playSound(null, entity.posX, entity.posY, entity.posZ, event, category, volume, pitch)
     }
 }

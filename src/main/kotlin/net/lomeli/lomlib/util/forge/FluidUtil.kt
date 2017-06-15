@@ -10,6 +10,7 @@ import net.minecraftforge.fluids.*
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack
 
+//TODO Probably broken, needs fix
 object FluidUtil {
 
     fun isFluidWater(fluid: Fluid): Boolean = FluidRegistry.WATER == fluid
@@ -31,7 +32,7 @@ object FluidUtil {
     }
 
     fun getContainerStack(stack: ItemStack?): FluidStack? {
-        if (stack != null && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.NORTH)) {
+        if (!stack!!.isEmpty && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.NORTH)) {
             var capability = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.NORTH) as FluidHandlerItemStack
             if (capability is FluidHandlerItemStack)
                 return capability.fluid
@@ -40,7 +41,7 @@ object FluidUtil {
     }
 
     fun getContainerFluid(stack: ItemStack?): Fluid? {
-        if (stack != null) {
+        if (!stack!!.isEmpty) {
             val fluidStack = getContainerStack(stack)
             return fluidStack?.fluid
         }
@@ -48,7 +49,7 @@ object FluidUtil {
     }
 
     fun isFilledContainer(stack: ItemStack?): Boolean {
-        if (stack != null && stack.item != null && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.NORTH)) {
+        if (!stack!!.isEmpty && stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.NORTH)) {
             var capability = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.NORTH) as FluidHandlerItemStack
             return capability.drain(1, false) != null
         }
@@ -56,57 +57,44 @@ object FluidUtil {
     }
 
     fun getEmptyContainer(stack: ItemStack?): ItemStack? {
-        if (stack != null && isFilledContainer(stack)) {
+        if (isFilledContainer(stack!!)) {
             if (stack.item === Items.LAVA_BUCKET || stack.item === Items.WATER_BUCKET || stack.item === Items.MILK_BUCKET)
                 return ItemStack(Items.BUCKET)
-            else if (stack.item is IFluidContainerItem) {
+            /*else if (stack.item is IFluidContainerItem) {
                 (stack.item as IFluidContainerItem).drain(stack, (stack.item as IFluidContainerItem).getCapacity(stack), true)
                 return stack
             } else
-                return FluidContainerRegistry.drainFluidContainer(stack)
+                return FluidContainerRegistry.drainFluidContainer(stack)*/
         }
         return null
     }
 
     fun isFluidContainer(stack: ItemStack?): Boolean {
-        if (stack == null || stack.item == null) return false
+        if (stack!!.isEmpty) return false
         return stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.NORTH)
     }
 
     fun getStackCapacity(stack: ItemStack): Int {
         if (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.NORTH)) {
             var capability = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.NORTH)
-            return capability.tankProperties[0].capacity
+            return capability!!.tankProperties[0].capacity
         }
-        if (stack.item is IFluidContainerItem)
-            return (stack.item as IFluidContainerItem).getCapacity(stack)
-        return FluidContainerRegistry.getContainerCapacity(stack)
+        return -1
     }
 
     fun fillStack(stack: ItemStack?, fluid: FluidStack) {
-        if (stack == null || stack.item == null) return
+        if (stack!!.isEmpty) return
         if (stack.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.NORTH)) {
             var capability = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.NORTH)
-            capability.fill(fluid, true)
+            capability!!.fill(fluid, true)
             return
         }
-        if (stack.item is IFluidContainerItem) {
-            (stack.item as IFluidContainerItem).fill(stack, fluid, true)
-        } else
-            FluidContainerRegistry.fillFluidContainer(fluid, stack)
     }
 
     fun getContainersForFluid(targetFluid: Fluid?): List<ItemStack> {
         val list = Lists.newArrayList<ItemStack>()
 
         if (targetFluid != null) {
-            for (data in FluidContainerRegistry.getRegisteredFluidContainerData()) {
-                val fluid = data.fluid.fluid
-                if (fluid != null) {
-                    if (fluid == targetFluid || fluid.name == targetFluid.name)
-                        list.add(data.filledContainer)
-                }
-            }
             val itemIterator = Item.REGISTRY.iterator()
             if (itemIterator != null) {
                 while (itemIterator.hasNext()) {
@@ -120,19 +108,6 @@ object FluidUtil {
                             if (fluidStack?.fluid == targetFluid || fluidStack?.fluid?.name == targetFluid.name) {
                                 list.add(stackItem)
                                 continue
-                            }
-                        }
-                    }
-                    if (item is IFluidContainerItem) {
-                        for (i in 0..item.maxDamage) {
-                            val stack = ItemStack(item, 1, i)
-                            if (item.fill(stack, FluidStack(targetFluid, Fluid.BUCKET_VOLUME), true) == 0)
-                                break
-                            val fluidStack = item.getFluid(stack)
-                            if (fluidStack != null && fluidStack.fluid != null) {
-                                val fluid = fluidStack.fluid
-                                if (fluid == targetFluid || fluid.name == targetFluid.name)
-                                    list.add(stack)
                             }
                         }
                     }
